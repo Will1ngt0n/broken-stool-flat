@@ -7,8 +7,18 @@
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+<form [formGroup]="registrationForm">
+  <ion-input (ionChange)='change()' id='name'></ion-input>
+  <ion-input formControlName="number" placeholder='number'></ion-input>
+  <ion-button (click)='addUser()' id='add-user'>submit</ion-button>
+  <!-- <ion-button (click)='requestCode()' id='add-user'>submit</ion-button> -->
+</form>
+<ion-button (click)='googleSignIn()'>use google</ion-button>
+<div id='recaptcha-container'></div>
+<div>
+    <ion-input (ionChange)='change()' id='nam'></ion-input>
+  
+  <ion-input [(ngModel)]='inputCode'></ion-input>
+  <ion-button (click)="login()">Go</ion-button>
+</div>
 </ion-content>

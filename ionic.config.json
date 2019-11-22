@@ -1,5 +1,7 @@
 {
   "name": "BrokenStool-CMS",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
