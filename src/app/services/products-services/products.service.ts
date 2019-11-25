@@ -5,8 +5,10 @@ import * as firebase from 'firebase'
 })
 export class ProductsService {
   productsRef
+
   constructor() {
     //this.productsRef = firebase.firestore().collection('Products').doc('Winter')
+
   }
   addItem(department, selectedCategory,  itemName, description, price, size){
     return this.productsRef.doc(department).collection(selectedCategory).add({
@@ -18,8 +20,15 @@ export class ProductsService {
   }
 
   getCategories(){
-    return firebase.firestore().collection('Products').doc('Winter').get().then(result => {
-      console.log(result.data());
+    return firebase.firestore().collection('Products').doc('Winter').collection('Hat 500').get().then(result => {
+      console.log(result);
+      for(let key in result.docs){
+        console.log(result.docs[key].data());
+        
+      }
+      let data = result.docs
+      console.log(data.values());
+      
       
     })
   }

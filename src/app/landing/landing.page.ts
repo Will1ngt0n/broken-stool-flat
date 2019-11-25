@@ -20,6 +20,7 @@ export class LandingPage implements OnInit {
   price : String
   description : String
   size : Array<any> = []
+  colors : Object = {}
   constructor(public route : Router, public authService : AuthService, public productService : ProductsService) {
     // this.authService.checkingAuthState().then( (result : any) => {
     //   let user : any = result
@@ -28,7 +29,8 @@ export class LandingPage implements OnInit {
     //   }
     // })
     console.log(this.department);
-
+    this.productService.getCategories()
+    this.colors = {red : ''}
   }
   changeDepartment(event){
     console.log(event.target['value']);
@@ -88,7 +90,7 @@ export class LandingPage implements OnInit {
 
   //Clearing all form variables and form inputs respectively
   clearForm(){
-    this.departmentOptions = ['Department']
+    this.departmentOptions = ['Department', 'Summer', 'Winter', 'Bags', 'Kwanga']
     this.categoryOptions = ['Category']
     this.selectedCategory = ''
     this.itemName = ''
