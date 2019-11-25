@@ -1,9 +1,152 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>SummerGear</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
-</ion-content>
+    <div class="content-container">
+      <div class="nav-bar">
+        <div class="nav-content">
+          <div id="title">
+            <h4>DankieJesu</h4>
+          </div>
+          <div id="searchbar">
+            <ion-searchbar></ion-searchbar>
+          </div>
+          <div id="admin">
+            <p>Administrator</p>
+            <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="body-content">
+        <div id="left" padding>
+            <div class="history-items">
+              <div class="title-top">
+                <h5>History</h5>
+                <ion-icon name="close" id="closer"></ion-icon>
+              </div>
+              <div class="items-list">
+                <ion-card>
+                  <p class="floating">Paid</p>
+                  <p class="floating" id="bottom-right">Items (8)</p>
+                  <p><b>John Doe</b></p>
+                  <p>R 799.90</p>
+                  <p>REF: NGH2345678987654</p>
+    
+                </ion-card>
+              </div>
+            </div>
+            <div class="pending-items">
+              <div class="title-top">
+                <h5>Pedning Orders</h5>
+                <ion-icon name="close" id="closer"></ion-icon>
+              </div>
+              <div class="items-list">
+                <ion-card>
+                  <p class="floating" id="bottom-right">Items (8)</p>
+                  <p><b>John Doe</b></p>
+                  <p>R 799.90</p>
+                  <p>REF: NGH2345678987654</p>
+    
+                </ion-card>
+              </div>
+            </div>
+            <div class="inventory-items">
+              <div class="title-top">
+                <h5>Inventory</h5>
+                <ion-icon name="close" id="closer"></ion-icon>
+              </div>
+              <div class="items-list">
+                <ion-card>
+                  <img src="../../assets/imgs/images.jpg" alt="">
+                  <p><b>John Doe</b></p>
+                  <p>R 799.90</p>
+                  
+                  <div class="quantities">
+                    <div>
+                        <ion-icon name="remove"></ion-icon>
+                    </div>
+                    <div><input type="text" value="78"></div>
+                    <div><ion-icon name="add"></ion-icon></div>
+                    <div>Save</div>
+                  </div>
+    
+                </ion-card>
+              </div>
+            </div>
+          <h3>Hello Lunga</h3>
+          <div class="side-buttons">Pending Orders</div>
+          <div class="side-buttons">History</div>
+          <div class="side-buttons">Inventory</div>
+        </div>
+        <div id="mid">
+          <div class="top-bar">
+            <ion-button color="dark" fill="outline">
+              <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+            <div class="page-title">
+              Summer Gear
+            </div>
+          </div>
+          <div class="SubCat">
+            <h3>T-Shirts</h3>
+            <img src="../../assets/imgs/images.jpg" alt="">
+          </div>
+          <div class="SubCat">
+            <h3>Swearers</h3>
+            <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
+          </div>
+          <div class="SubCat">
+            <h3>Caps</h3>
+            <img src="../../assets/imgs/3-Pic.jpg" alt="">
+          </div>
+          <div class="SubCat">
+            <h3>Bucket Hats</h3>
+            <img src="../../assets/imgs/images (9).jpg" alt="">
+          </div>
+          <div class="SubCat">
+            <h3>Shorts</h3>
+            <img src="../../assets/imgs/images (5).jpg" alt="">
+          </div>
+          <div class="SubCat">
+            <h3>Crop tops</h3>
+            <img src="../../assets/imgs/images (4).jpg" alt="">
+          </div>
+          <div class="SubCat">
+            <h3>Bags</h3>
+            <img src="../../assets/imgs/images (7).jpg" alt="">
+          </div>
+  
+        </div>
+        <div id="right">
+          
+          <div class="adding">
+            <h4>Add Item</h4>
+            
+      <select (change)="changeDepartment($event);">
+          <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
+      
+        </select><br>
+      
+        <select (change)="changeCategory($event);" >
+            <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
+        </select><br>
+      
+        <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName'>
+        <input type="text" class="user-input" placeholder = "Price" [(ngModel)]='price'>
+        <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'></textarea>
+        <div class="sizes">
+          
+      <input type='checkbox' name='checkboxXS'  id='check' (change)='check($event, "XS")'> XS
+      <input type='checkbox' name='checkboxS'  (change)='check($event, "S")'> S 
+      <input type='checkbox' name='checkboxM'  (change)='check($event, "M")'> M
+      <input type='checkbox' name='checkboxL'  (change)='check($event, "L")'> L
+      <input type='checkbox' name='checkboxXL'  (change)='check($event, "XL")'> XL
+      <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
+      <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
+        </div>
+      
+        <ion-button (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
+        <ion-button (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  
