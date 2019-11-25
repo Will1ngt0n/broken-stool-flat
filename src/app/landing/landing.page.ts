@@ -25,12 +25,6 @@ export class LandingPage implements OnInit {
   accessory: boolean;
 
   constructor(public route: Router, public authService: AuthService, public productService: ProductsService) {
-    // this.authService.checkingAuthState().then( (result : any) => {
-    //   let user : any = result
-    //   if (user === null){
-    //     this.route.navigate(['/login'])
-    //   }
-    // })
     console.log(this.department);
     this.productService.getCategories()
     this.colors = { red: '' }
@@ -115,12 +109,6 @@ export class LandingPage implements OnInit {
     console.log(this.description);
     console.log(this.price);
     console.log(this.size);
-
-
-
-
-
-
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size
       , this.accessory, this.summer).then(result => {
       this.clearForm();
@@ -129,12 +117,7 @@ export class LandingPage implements OnInit {
 
   //Clearing all form variables and form inputs respectively
   clearForm() {
-  //  this.departmentOptions = []
-  //  if (this.departmentOptions.length<=0) {
-     // console.log('Department ', this.department);
-      
-      this.departmentOptions = ['Dankie Jesu', 'Kwanga']
-  //  }
+    this.departmentOptions = ['Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts',
     'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats']
     this.selectedCategory = ''
@@ -152,24 +135,4 @@ export class LandingPage implements OnInit {
     document.getElementsByName('checkboxXXL')[0]['checked'] = false
     document.getElementsByName('checkboxXXXL')[0]['checked'] = false
   }
-  // checkBrand(event) {
-  //   console.log(event.target['value']);
-  //   let radioButton = event.target['value']
-  //   if (radioButton) {
-  //     if (event.target.checked === true) {
-  //       console.log(radioButton);
-  //       if (radioButton === 'Kwanga') {
-  //         console.log(radioButton);
-  //         this.departmentOptions = ['Kwanga']
-  //         this.categoryOptions = ['Formal', 'Tradition ', 'Smart Casual', 'Sports wear']
-  //       } else if (radioButton === 'Dankie Jesu') {
-  //         console.log(radioButton);
-  //         this.departmentOptions = []
-  //         this.categoryOptions = ['Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts',
-  //       'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats']
-  //       }
-  //     }
-  //   }
-  // }
-
 }
