@@ -6,10 +6,8 @@
 
 <ion-content>
   <select (change)="changeDepartment($event);">
-    <option value='Summer'>Summer</option>
-    <option value='Winter'>Winter</option>
-    <option value='Kwanga'>Kwanga</option>
-    <option value='Bags'>Bags</option>
+    <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
+
   </select><br>
 
   <select (change)="changeCategory($event);" >

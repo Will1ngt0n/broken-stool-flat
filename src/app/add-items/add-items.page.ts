@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-services/auth.service';
 import { LoginPageModule } from '../login/login.module';
 import { VirtualTimeScheduler } from 'rxjs';
+import { ProductsService } from '../services/products-services/products.service';
 
 @Component({
   selector: 'app-add-items',
@@ -11,6 +12,7 @@ import { VirtualTimeScheduler } from 'rxjs';
 })
 export class AddItemsPage implements OnInit {
   department : any
+  departmentOptions : Array<any> = ['Department', 'Summer', 'Winter', 'Bags', 'Kwanga']
   summer : boolean = false
   winter : boolean = false
   kwanga : boolean = false
@@ -20,7 +22,7 @@ export class AddItemsPage implements OnInit {
   price : String
   description : String
   size : Array<any> = []
-  constructor(public route : Router, public authService : AuthService) {
+  constructor(public route : Router, public authService : AuthService, public productService : ProductsService) {
     // this.authService.checkingAuthState().then( (result : any) => {
     //   let user : any = result
     //   if (user === null){
@@ -79,14 +81,9 @@ export class AddItemsPage implements OnInit {
       
       }
     }
-
-  
-    
-
-    console.log(event.target.checked);
+       console.log(event.target.checked);
     console.log(event.target['name']);
-    document.getElementById('check')
-    console.log(document.getElementById('check'));
+  
     
   }
   setSize(size){
@@ -97,9 +94,27 @@ export class AddItemsPage implements OnInit {
     this.route.navigate(['/'])
   }
   addProduct(){
-
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size).then(result => {
+      console.log(result);
+      
+    })
   }
-  clearForm(){
 
+  //Clearing all form variables and form inputs respectively
+  clearForm(){
+    this.departmentOptions = ['Department']
+    this.categoryOptions = ['Category']
+    this.selectedCategory = ''
+    this.itemName = ''
+    this.price = ''
+    this.description = ''
+    this.size = []
+    document.getElementsByName('checkboxXS')[0]['checked'] = false
+    document.getElementsByName('checkboxS')[0]['checked'] = false
+    document.getElementsByName('checkboxM')[0]['checked'] = false
+    document.getElementsByName('checkboxL')[0]['checked'] = false
+    document.getElementsByName('checkboxXL')[0]['checked'] = false
+    document.getElementsByName('checkboxXXL')[0]['checked'] = false
+    document.getElementsByName('checkboxXXXL')[0]['checked'] = false
   }
 }

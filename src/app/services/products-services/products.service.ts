@@ -4,9 +4,23 @@ import * as firebase from 'firebase'
   providedIn: 'root'
 })
 export class ProductsService {
+  productsRef
+  constructor() {
+    //this.productsRef = firebase.firestore().collection('Products').doc('Winter')
+  }
+  addItem(department, selectedCategory,  itemName, description, price, size){
+    return this.productsRef.doc(department).collection(selectedCategory).add({
+      price : price,
+      size : size,
+      name : itemName,
+      description : description,
+    })
+  }
 
-  constructor() { }
-  addItem(){
-    
+  getCategories(){
+    return firebase.firestore().collection('Products').doc('Winter').get().then(result => {
+      console.log(result.data());
+      
+    })
   }
 }
