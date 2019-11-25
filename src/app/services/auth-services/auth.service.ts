@@ -110,7 +110,7 @@ export class AuthService {
           resolve (user)
         }else{
           console.log('not logged in');
-          
+          resolve (null)
         }
       })
     })
