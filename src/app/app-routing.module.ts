@@ -12,6 +12,35 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'landing',
+    loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
+  },
+  {
+    path: 'sales-specials',
+    loadChildren: () => import('./sales-specials/sales-specials.module').then( m => m.SalesSpecialsPageModule)
+  },
+  {
+    path: 'kwanga-sub-categories',
+    loadChildren: () => import('./kwanga-sub-categories/kwanga-sub-categories.module').then( m => m.KwangaSubCategoriesPageModule)
+  },
+  {
+    path: 'summer-gear',
+    loadChildren: () => import('./summer-gear/summer-gear.module').then( m => m.SummerGearPageModule)
+  },
+  {
+    path: 'winter-gear',
+    loadChildren: () => import('./winter-gear/winter-gear.module').then( m => m.WinterGearPageModule)
+  },
+  {
+    path: 'items-list',
+    loadChildren: () => import('./items-list/items-list.module').then( m => m.ItemsListPageModule)
+  },
+  {
+    path: 'sign-in',
+    loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule)
+  },
+
 ];
 
 @NgModule({
