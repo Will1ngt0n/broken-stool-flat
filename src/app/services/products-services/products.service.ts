@@ -5,17 +5,21 @@ import * as firebase from 'firebase'
 })
 export class ProductsService {
   productsRef
-
+  new
+  products = []
   constructor() {
-    //this.productsRef = firebase.firestore().collection('Products').doc('Winter')
-
+    this.products = []
   }
-  addItem(department, selectedCategory,  itemName, description, price, size){
-    return this.productsRef.doc(department).collection(selectedCategory).add({
+  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer){
+    console.log(department);
+    console.log(selectedCategory);
+    return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
       price : price,
       size : size,
       name : itemName,
       description : description,
+      isAccerory: accessory,
+      isSummer: summer
     })
   }
 
