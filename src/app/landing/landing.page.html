@@ -89,15 +89,15 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item">
+            <div class="box-item" (click)='viewSales("viewAll")'>
               <p id="item-label1">View All Specials</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
-            <div class="box-item">
+            <div class="box-item" (click)='viewSales("Dankie Jesu")'>
               <p id="item-label">Dankie Jesu Clothing</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
-            <div class="box-item">
+            <div class="box-item" (click)='viewSales("Kwanga")'>
               <p id="item-label">Kwanga Apparel</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
@@ -215,7 +215,7 @@
       <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'></textarea>
       <div class="sizes">
         
-    <input type='checkbox' name='checkboxXS'  id='check' (change)='check($event, "XS")'> XS
+    <input type='checkbox' name='checkboxXS'  (change)='check($event, "XS")'> XS
     <input type='checkbox' name='checkboxS'  (change)='check($event, "S")'> S 
     <input type='checkbox' name='checkboxM'  (change)='check($event, "M")'> M
     <input type='checkbox' name='checkboxL'  (change)='check($event, "L")'> L
@@ -224,6 +224,15 @@
     <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
       </div>
     
+      <!-- Div for colors, checkboxes work but currently can't add pictures -->
+      <div class='colors' [hidden]='color'>
+        <h5>Available colors</h5>
+        <input type='checkbox' name='checkboxBlack'  (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type='checkbox' name='checkboxBrown'  (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type='checkbox' name='checkboxOrange'  (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type='checkbox' name='checkboxYellow'  (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type='checkbox' name='checkboxWhite'  (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
       <ion-button (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
       <ion-button (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
         </div>
