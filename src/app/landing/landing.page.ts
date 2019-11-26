@@ -33,6 +33,8 @@ export class LandingPage implements OnInit {
     let date = moment(new Date()).format('LLLL');
     console.log(date);
     this.loadSummerItems()
+    this.loadKwangaItems()
+    this.loadWinterItems()
   }
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
@@ -162,7 +164,17 @@ export class LandingPage implements OnInit {
   loadSummerItems(){
     return this.productService.getRecentSummerItems().then(result => {
       console.log(result);
-      
+    })
+  }
+
+  loadWinterItems(){
+    return this.productService.getRecentWinterItems().then(result => {
+      console.log(result);
+    })
+  }
+  loadKwangaItems(){
+    return this.productService.getKwangaRecentItems().then(result => {
+      console.log(result);
     })
   }
 }

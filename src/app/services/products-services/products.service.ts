@@ -86,7 +86,33 @@ export class ProductsService {
         data.push({productID : productID, Brand: item['Brand'], category : item['category'], description : item['description'], group : item['group'], name : item['name'], price : item['price']})
       }
       console.log(data);
-      
+      return data
+    })
+  }
+  getRecentWinterItems(){
+    return firebase.firestore().collection('Products').where('Brand', '==', 'Dankie Jesu').where('group', '==', 'winter').orderBy('timestamp', 'desc').limit(5).get().then(result => {
+      console.log(result);
+      let data = []
+      for(let key in result.docs){
+        let productID = result.docs[key].id
+        let item = result.docs[key].data()
+        data.push({productID : productID, Brand: item['Brand'], category : item['category'], description : item['description'], group : item['group'], name : item['name'], price : item['price']})
+      }
+      console.log(data);
+      return data
+    })
+  }
+  getKwangaRecentItems(){
+    return firebase.firestore().collection('Products').where('Brand', '==', 'Kwanga').orderBy('timestamp', 'desc').limit(5).get().then(result => {
+      console.log(result);
+      let data = []
+      for(let key in result.docs){
+        let productID = result.docs[key].id
+        let item = result.docs[key].data()
+        data.push({productID : productID, Brand: item['Brand'], category : item['category'], description : item['description'], group : item['group'], name : item['name'], price : item['price']})
+      }
+      console.log(data);
+      return data
     })
   }
 }
