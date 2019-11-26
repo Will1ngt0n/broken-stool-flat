@@ -40,6 +40,14 @@ const routes: Routes = [
     path: 'sign-in',
     loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule)
   },
+  {
+    path: 'order-receipt',
+    loadChildren: () => import('./order-receipt/order-receipt.module').then( m => m.OrderReceiptPageModule)
+  },
+  {
+    path: 'pending-order',
+    loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule)
+  },
 
 ];
 
