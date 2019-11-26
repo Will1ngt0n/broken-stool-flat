@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'kwanga-sub-categories', pathMatch: 'full' },
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   {
     path: 'add-items',
@@ -17,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
   },
   {
-    path: 'sales-specials',
+    path: 'sales-specials/:query',
     loadChildren: () => import('./sales-specials/sales-specials.module').then( m => m.SalesSpecialsPageModule)
   },
   {
