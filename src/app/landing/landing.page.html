@@ -198,13 +198,15 @@
         
         <div class="adding">
           <h4>Add Item</h4>
-          
-    <select (change)="changeDepartment($event);">
+        
+       <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory" (click)='isAccessory($event)'>
+       <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer" (click)='isSummer($event)'>
+        <select (click)="changeDepartment($event);">
         <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
     
       </select><br>
     
-      <select (change)="changeCategory($event);" >
+      <select (click)="changeCategory($event);" >
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
       </select><br>
     
