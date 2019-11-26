@@ -32,7 +32,7 @@ export class LandingPage implements OnInit {
     this.summer = false;
     let date = moment(new Date()).format('LLLL');
     console.log(date);
-    this.loadSummerItems()
+    // this.loadSummerItems()
   }
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
@@ -159,10 +159,10 @@ export class LandingPage implements OnInit {
   viewSales(query){
     this.route.navigate(['/sales-specials/', query])    
   }
-  loadSummerItems(){
-    return this.productService.getRecentSummerItems().then(result => {
-      console.log(result);
+  // loadSummerItems(){
+  //   return this.productService.getRecentSummerItems().then(result => {
+  //     console.log(result);
       
-    })
-  }
+  //   })
+  // }
 }
