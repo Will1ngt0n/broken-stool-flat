@@ -80,7 +80,7 @@
       </div>
       <div id="mid">
         <div class="top-bar">
-          <ion-button color="dark" fill="outline">
+          <ion-button color="dark" fill="outline" (click)='back()'>
             <ion-icon name="arrow-back"></ion-icon>
           </ion-button>
           <div class="page-title">
@@ -90,55 +90,52 @@
           </div>
         </div>
         <div class="SubCat" id="kwangaSubcat">
-          <div class="gridder">
+          <div class="gridder" *ngFor='let item of kwangaSales'>
             <img src="../../assets/imgs/images.jpg" alt="">
             <div id="info">
-              <h5>Kwanga Apparel Jersey</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae vitae nostrum voluptas nesciunt
-                voluptates, dicta, dolorem, iure quaerat odit magnam nisi accusamus perferendis modi aliquam reiciendis
-                reprehenderit laudantium maxime. Tempore.</p>
-              <p><b>R 399.90</b></p>
+              <h5>{{item.name}}</h5>
+              <p>{{item.description}}.</p>
+              <p><b>R {{item.salePrice}}</b></p>
               <div class="options">
-                <div>Update</div>
-                <div>Hide</div>
-                <div>Delete</div>
+                <div (click)='updateItem(item.productID)'>Update</div>
+                <div (click)='hideItem(item.productID)'>Hide</div>
+                <div (click)='deleteItem(item.productID)'>Delete</div>
               </div>
             </div>
           </div>
         </div>
         <div class="SubCat" id="DankieSubcat">
-          <div class="gridder">
+          <div class="gridder" *ngFor='let item of dankieJesuSales'>
             <img src="../../assets/imgs/images.jpg" alt="">
             <div id="info">
-              <h5>Dankie Jesu Sweater</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae vitae nostrum voluptas nesciunt
-                voluptates, dicta, dolorem, iure quaerat odit magnam nisi accusamus perferendis modi aliquam reiciendis
-                reprehenderit laudantium maxime. Tempore.</p>
-              <p><b>R 399.90</b></p>
+              <h5>{{item.name}}</h5>
+              <p>{{item.description}}</p>
+              <p><b>R {{item.salePrice}}</b></p>
               <div class="options">
-                <div>Update</div>
-                <div>Hide</div>
-                <div>Delete</div>
+                <div (click)='updateItem(item.productID)'>Update</div>
+                <div (click)='hideItem(item.productID)'>Hide</div>
+                <div (click)='deleteItem(item.productID)'>Delete</div>
               </div>
             </div>
           </div>
         </div>
         <div class="SubCat" id="AllSubcat">
-          <div class="gridder">
-            <img src="../../assets/imgs/images.jpg" alt="">
-            <div id="info">
-              <h5>SOHO Jeans</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae vitae nostrum voluptas nesciunt
-                voluptates, dicta, dolorem, iure quaerat odit magnam nisi accusamus perferendis modi aliquam reiciendis
-                reprehenderit laudantium maxime. Tempore.</p>
-              <p><b>R 399.90</b></p>
-              <div class="options">
-                <div>Update</div>
-                <div>Hide</div>
-                <div>Delete</div>
-              </div>
-            </div>
+          <div *ngFor='let item of allSales'>
+              <div class="gridder">
+                  <img src="../../assets/imgs/images.jpg" alt="">
+                  <div id="info">
+                    <h5>{{item.name}}</h5>
+                    <p>{{item.description}}</p>
+                    <p><b>R {{item.salePrice}}</b></p>
+                    <div class="options">
+                      <div (click)='updateItem(item.productID)'>Update</div>
+                      <div (click)='hideItem(item.productID)'>Hide</div>
+                      <div (click)='deleteItem(item.productID)'>Delete</div>
+                    </div>
+                  </div>
+                </div>
           </div>
+
         </div>
 
       </div>
