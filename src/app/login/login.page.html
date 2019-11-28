@@ -1,9 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <div class="container">
+    <div class="inner-container">
+      <div id="left">
+        <div class="logo-container-left">
+          <img src="../../assets/imgs/Logo.png" id="logo-left" alt="">
+        </div>
+      </div>
+      <div id="right">
+        <div class="cont">
+          <div class="logo-container-right">
+            <img src="../../assets/imgs/Logo.png" id="logo" alt="">
+          </div>
+          <h3>Sign In</h3>
+          <p id="prompt">Please insert your email and password to login.</p>
+          <ion-item lines="null">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password"></ion-input>
+          </ion-item>
+          <p id="password-forgotten">I forgot my password</p>
+          <ion-button color="dark">Login</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
