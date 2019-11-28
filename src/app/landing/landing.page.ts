@@ -179,7 +179,6 @@ export class LandingPage implements OnInit {
         console.log(index);
         this.color.splice(index, 1)
         console.log(this.color);
-       hgv
       }
     }
     console.log(event.target.checked);
