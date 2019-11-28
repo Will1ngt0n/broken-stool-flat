@@ -46,28 +46,28 @@
       </div>
     </div>
     <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
-        <p id="topic-item"><b>{{promoUdpate}}</b></p>
-        <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
-        <div class="item-data">
-          <h3>Wu-Tang Hoodie</h3>
-          <p class="item-detail">
-            R 399.90
-          </p>
-          <p class="item-detail">Description</p>
-          <p class="description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui excepturi quibusdam corporis! orem ipsum, dolor
-            sit amet consectetur adipisicing elit. Qui excepturi quibusdam corporis!
-          </p>
-          <input type="text" placeholder="Percentile % (e.g 20)">
-          <div class="gridded-inputs">
-            <input type="text" placeholder="Start Date"><input type="text" placeholder="End Date">
-          </div>
-          <div class="gridded-inputs">
-            <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-            <ion-button color="success">Promote</ion-button>
-          </div>
+      <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
+      <div class="item-data">
+        <h3>Wu-Tang Hoodie</h3>
+        <p class="item-detail">
+          R 399.90
+        </p>
+        <p class="item-detail">Description</p>
+        <p class="description">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui excepturi quibusdam corporis! orem ipsum, dolor
+          sit amet consectetur adipisicing elit. Qui excepturi quibusdam corporis!
+        </p>
+        <input type="text" placeholder="Percentile % (e.g 20)">
+        <div class="gridded-inputs">
+          <input type="text" placeholder="Start Date"><input type="text" placeholder="End Date">
+        </div>
+        <div class="gridded-inputs">
+          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+          <ion-button color="success">Promote</ion-button>
         </div>
       </div>
+    </div>
   </div>
   <div class="content-container">
     <div class="nav-bar">
@@ -89,7 +89,7 @@
         <div class="history-items">
           <div class="title-top">
             <h5>History</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
             <ion-card>
@@ -98,14 +98,13 @@
               <p><b>John Doe</b></p>
               <p>R 799.90</p>
               <p>REF: NGH2345678987654</p>
-
             </ion-card>
           </div>
         </div>
         <div class="pending-items">
           <div class="title-top">
-            <h5>Pedning Orders</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
+            <h5>Pending Orders</h5>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
             <ion-card>
@@ -113,14 +112,13 @@
               <p><b>John Doe</b></p>
               <p>R 799.90</p>
               <p>REF: NGH2345678987654</p>
-
             </ion-card>
           </div>
         </div>
         <div class="inventory-items">
           <div class="title-top">
             <h5>Inventory</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
             <ion-card>
@@ -143,9 +141,9 @@
           </div>
         </div>
         <h3>Hello Lunga</h3>
-        <div class="side-buttons">Pending Orders</div>
-        <div class="side-buttons">History</div>
-        <div class="side-buttons">Inventory</div>
+        <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
+        <div class="side-buttons" (click)="showHistoryList()">History</div>
+        <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
       </div>
       <div id="mid">
         <div class="top-bar">
@@ -154,7 +152,7 @@
           </ion-button>
           <div class="page-title">
             <!-- Use this section to change views by use of *ngIf, replace directory label and content according to the specific page -->
-            Kwanga Apparel / Formal Wear 
+            Kwanga Apparel / Formal Wear
           </div>
         </div>
         <div class="SubCat">
@@ -175,7 +173,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div id="right">
 
