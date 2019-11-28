@@ -17,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
   },
   {
-    path: 'sales-specials/:query',
+    path: 'sales-specials',
     loadChildren: () => import('./sales-specials/sales-specials.module').then( m => m.SalesSpecialsPageModule)
   },
   {

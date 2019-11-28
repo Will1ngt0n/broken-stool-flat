@@ -80,7 +80,7 @@
           <ion-button color="dark">Home</ion-button>
         </div>
         <div class="slide-specials">
-          <ion-item>
+          <ion-item (click)='viewSales("viewAll")'>
             <ion-label>Sales &amp; Specials</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -104,7 +104,7 @@
           </div>
         </div>
         <div class="slide-winter-summer">
-          <ion-item>
+          <ion-item (click)='viewMore("summer-gear")'>
             <ion-label>Summer Gear</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -113,31 +113,16 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item">
-              <p id="item-label">SOHO T-Shirt</p>
+            <div class="box-item" *ngFor='let item of summerGear'>
+              <p id="item-label">{{item.product.description}}</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
-            <div class="box-item">
-              <p id="item-label">SOHO Shirt</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">SOHO Summer Skirt</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">SOHO Straw Hat</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">Lorem ipsum Dolor</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
+
           </div>
         </div>
 
         <div class="slide-winter-summer">
-          <ion-item>
+          <ion-item (click)='viewMore("winter-gear")'>
             <ion-label>Winter Gear</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -146,31 +131,16 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item">
-              <p id="item-label">SOHO T-Shirt</p>
+            <div class="box-item" *ngFor='let item of winterGear'>
+              <p id="item-label">{{item.product.description}}</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
-            <div class="box-item">
-              <p id="item-label">SOHO Shirt</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">SOHO Summer Skirt</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">SOHO Straw Hat</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">Lorem ipsum Dolor</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
+
           </div>
         </div>
 
         <div class="slide-specials">
-          <ion-item>
+          <ion-item (click)='viewMore("kwanga-sub-categories")'>
             <ion-label>Kwanga Apparel</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -179,18 +149,11 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item">
-              <p id="item-label1">View All Specials</p>
+            <div class="box-item" *ngFor='let item of kwangaGear'>
+              <p id="item-label1">{{item.product.description}}</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
-            <div class="box-item">
-              <p id="item-label">Dankie Jesu Clothing</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-            <div class="box-item">
-              <p id="item-label">Kwanga Apparel</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
+
           </div>
         </div>
       </div>
@@ -206,13 +169,13 @@
     
       </select><br>
     
-      <select (click)="changeCategory($event);" >
+      <select [disabled]='!department' (click)="changeCategory($event);" >
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
       </select><br>
     
-      <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName'>
-      <input type="text" class="user-input" placeholder = "Price" [(ngModel)]='price'>
-      <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'></textarea>
+      <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkValidity()'>
+      <input type="number" class="user-input" placeholder = "Price" [(ngModel)]='price'  (keyup)='checkValidity()'>
+      <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'  (keyup)='checkValidity()'></textarea>
       <div class="sizes">
         
     <input type='checkbox' name='checkboxXS'  (change)='check($event, "XS")'> XS
@@ -223,9 +186,9 @@
     <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
     <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
       </div>
-    
+      <input *ngIf='' width='100px' type="file" value='Insert black picture' [(ngModel)]='blackPic'/>
       <!-- Div for colors, checkboxes work but currently can't add pictures -->
-      <div class='colors' [hidden]='color'>
+      <div class='colors' >
         <h5>Available colors</h5>
         <input type='checkbox' name='checkboxBlack'  (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
         <input type='checkbox' name='checkboxBrown'  (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -233,8 +196,8 @@
         <input type='checkbox' name='checkboxYellow'  (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
         <input type='checkbox' name='checkboxWhite'  (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
-      <ion-button (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
-      <ion-button (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
+      <ion-button [disabled]='!addForm' (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
+      <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
         </div>
       </div>
     </div>

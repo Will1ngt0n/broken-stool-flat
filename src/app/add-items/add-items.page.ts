@@ -22,6 +22,7 @@ export class AddItemsPage implements OnInit {
   price: String
   description: String
   size: Array<any> = []
+  color : Array<any> = []
   colors: Object = {};
   accessory: boolean;
 
@@ -99,6 +100,24 @@ export class AddItemsPage implements OnInit {
     console.log(event.target['name']);
 
   }
+  checkColor(event, color){
+    console.log(color);
+    console.log(this.size);
+    let checkbox = event.target['name']
+    if (checkbox) {
+      if (event.target.checked === true) {
+        this.color.push(color)
+        console.log(this.color);
+      } else if (event.target.checked === false) {
+        let index = this.color.indexOf(color)
+        console.log(index);
+        this.color.splice(index, 1)
+        console.log(this.color);
+      }
+    }
+    console.log(event.target.checked);
+    console.log(event.target['name']);
+  }
 
   addItem() {
     this.route.navigate(['/'])
@@ -111,7 +130,7 @@ export class AddItemsPage implements OnInit {
     console.log(this.price);
     console.log(this.size);
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size
-      , this.accessory, this.summer).then(result => {
+      , this.accessory, this.summer, this.colors).then(result => {
       this.clearForm();
     })
   }
