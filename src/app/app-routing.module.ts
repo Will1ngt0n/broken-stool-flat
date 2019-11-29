@@ -33,7 +33,7 @@ const routes: Routes = [
     loadChildren: () => import('./winter-gear/winter-gear.module').then( m => m.WinterGearPageModule)
   },
   {
-    path: 'items-list',
+    path: 'items-list/:id',
     loadChildren: () => import('./items-list/items-list.module').then( m => m.ItemsListPageModule)
   },
   {

@@ -88,19 +88,17 @@
           </div>
         </div>
         <div class="SubCat">
-          <div class="gridder">
+          <div class="gridder" *ngFor = 'let item of currentViewedItems'>
             <img src="../../assets/imgs/images.jpg" alt="">
             <div id="info">
-              <h5>SOHO Jeans</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae vitae nostrum voluptas nesciunt
-                voluptates, dicta, dolorem, iure quaerat odit magnam nisi accusamus perferendis modi aliquam reiciendis
-                reprehenderit laudantium maxime. Tempore.</p>
-              <p><b>R 399.90</b></p>
+              <h5>{{item.data.name}}</h5>
+              <p>{{item.data.description}}.</p>
+              <p><b>R {{item.data.price}}</b></p>
               <div class="options">
-                <div>Promote</div>
-                <div>Update</div>
-                <div>Hide</div>
-                <div>Delete</div>
+                <div (click)='promoteItem(item.productID, item.brand, item.category)'>Promote</div>
+                <div (click)='updateItem(item.productID, item.brand, item.category)'>Update</div>
+                <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
               </div>
             </div>
           </div>
