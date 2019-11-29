@@ -19,12 +19,16 @@ export class ItemsListPage implements OnInit {
   description
   quantity
   name
+  itemName
+  itemPrice
+  itemDescription
+  promoUdpate: string;
   constructor(private activatedRoute : ActivatedRoute, private productsService : ProductsService) {
     //this.loadKwangaItems()
     //this.loadDankieJesuItems()
     //this.loadViewedCategory()
   }
-  
+
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(result => {
       console.log(result);
@@ -95,5 +99,47 @@ export class ItemsListPage implements OnInit {
       console.log(result);
       
     })
+  }
+  toggleUpdate(productID, brand, category, name, description, price) {
+    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
+
+    promoUpd[0].style.display = "flex";
+    this.promoUdpate = "Update item"
+    this.itemName = name
+    this.itemPrice = price
+    this.itemDescription = description
+  }
+  togglePromo() {
+    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
+
+    promoUpd[0].style.display = "flex";
+    this.promoUdpate = "Promote item"
+  }
+  dismissPromo() {
+    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
+
+    promoUpd[0].style.display = "none"
+  }
+
+  showPendingList(){
+    var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf <HTMLElement>;
+    historyItems[0].style.display = "block"
+  }
+  showHistoryList(){
+    var pendingItems = document.getElementsByClassName("history-items") as HTMLCollectionOf <HTMLElement>;
+    pendingItems[0].style.display = "block"
+  }
+  showInventoryList(){
+    var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf <HTMLElement>;
+    inventoryItems[0].style.display = "block"
+  }
+  dismissList(){
+    var historyItems = document.getElementsByClassName("history-items") as HTMLCollectionOf <HTMLElement>;
+    historyItems[0].style.display = "none";
+    var pendingItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf <HTMLElement>;
+    pendingItems[0].style.display = "none";
+    var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf <HTMLElement>;
+    inventoryItems[0].style.display = "none"
+
   }
 }

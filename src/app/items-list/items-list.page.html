@@ -1,4 +1,73 @@
 <ion-content>
+  <div class="del-upd-del">
+    <div class="inner-cont-opt" *ngIf="promoUdpate === 'Promote item'">
+      <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
+      <div class="item-data">
+        <h3>Wu-Tang Hoodie</h3>
+        <p class="item-detail">
+          R 399.90
+        </p>
+        <p class="item-detail">Choose Avalable Sizes</p>
+        <div class="sizes-colours-item">
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">XS</p>
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">S</p>
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">M</p>
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">L</p>
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">XL</p>
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">XXL</p>
+          <ion-checkbox color="primary"></ion-checkbox>
+          <p id="text-size">XXXL</p>
+        </div>
+        <p class="item-detail">Choose Available Colours</p>
+        <div class="sizes-colours-item">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <input type="text" placeholder="Item Name"><br>
+
+        <input type="number" placeholder="Price">
+        <br>
+        <textarea placeholder="Item Description" rows="3"></textarea>
+        <div class="gridded-inputs">
+          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+          <ion-button color="success">Promote</ion-button>
+        </div>
+      </div>
+    </div>
+    <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
+      <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
+      <div class="item-data">
+        <h3>{{itemName}}</h3>
+        <p class="item-detail">
+          R {{itemPrice}}
+        </p>
+        <p class="item-detail">Description</p>
+        <p class="description">
+          {{itemDescription}}
+        </p>
+        <input type="text" placeholder="Percentile % (e.g 20)">
+        <div class="gridded-inputs">
+          <input type="text" placeholder="Start Date"><input type="text" placeholder="End Date">
+        </div>
+        <div class="gridded-inputs">
+          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+          <ion-button color="success"  (click)='updateItem(item.productID, item.brand, item.category)'>Promote</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="content-container">
     <div class="nav-bar">
       <div class="nav-content">
@@ -19,7 +88,7 @@
         <div class="history-items">
           <div class="title-top">
             <h5>History</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
             <ion-card>
@@ -28,14 +97,13 @@
               <p><b>John Doe</b></p>
               <p>R 799.90</p>
               <p>REF: NGH2345678987654</p>
-
             </ion-card>
           </div>
         </div>
         <div class="pending-items">
           <div class="title-top">
-            <h5>Pedning Orders</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
+            <h5>Pending Orders</h5>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
             <ion-card>
@@ -43,14 +111,13 @@
               <p><b>John Doe</b></p>
               <p>R 799.90</p>
               <p>REF: NGH2345678987654</p>
-
             </ion-card>
           </div>
         </div>
         <div class="inventory-items">
           <div class="title-top">
             <h5>Inventory</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
             <ion-card>
@@ -73,9 +140,9 @@
           </div>
         </div>
         <h3>Hello Lunga</h3>
-        <div class="side-buttons">Pending Orders</div>
-        <div class="side-buttons">History</div>
-        <div class="side-buttons">Inventory</div>
+        <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
+        <div class="side-buttons" (click)="showHistoryList()">History</div>
+        <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
       </div>
       <div id="mid">
         <div class="top-bar">
@@ -87,23 +154,26 @@
             Kwanga Apparel / Formal Wear
           </div>
         </div>
-        <div class="SubCat">
-          <div class="gridder" *ngFor = 'let item of currentViewedItems'>
+        <div class="SubCat"  *ngFor = 'let item of currentViewedItems'>
+          <div class="gridder">
             <img src="../../assets/imgs/images.jpg" alt="">
             <div id="info">
               <h5>{{item.data.name}}</h5>
               <p>{{item.data.description}}.</p>
               <p><b>R {{item.data.price}}</b></p>
               <div class="options">
-                <div (click)='promoteItem(item.productID, item.brand, item.category)'>Promote</div>
+                <!-- <div (click)='promoteItem(item.productID, item.brand, item.category)'>Promote</div>
                 <div (click)='updateItem(item.productID, item.brand, item.category)'>Update</div>
+                <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div> -->
+                <div (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">Promote</div>
+                <div (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">Update</div>
                 <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
                 <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
       <div id="right">
 
