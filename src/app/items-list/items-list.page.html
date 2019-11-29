@@ -41,7 +41,7 @@
         <textarea placeholder="Item Description" rows="3"></textarea>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success">Promote</ion-button>
+          <ion-button color="success" (click)='promoteItem(pricePercentage, priceNumber, startDate, endDate, productID, brand, category)'>Promote</ion-button>
         </div>
       </div>
     </div>
@@ -59,11 +59,11 @@
         </p>
         <input type="text" placeholder="Percentile % (e.g 20)">
         <div class="gridded-inputs">
-          <input type="text" placeholder="Start Date"><input type="text" placeholder="End Date">
+          <input type="date" placeholder="Start Date"><input type="date" placeholder="End Date">
         </div>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success"  (click)='updateItem(item.productID, item.brand, item.category)'>Promote</ion-button>
+          <ion-button color="success"  (click)='updateItem(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory)'>Update</ion-button>
         </div>
       </div>
     </div>

@@ -654,12 +654,22 @@ export class ProductsService {
       console.log(result);
     })
   }
-  updateItem(productID, brand, category, price, description, name, quantity){
-    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
-      price : price,
-      description : description,
-      name : name,
-      quantity : quantity
+  updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName){
+    return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+      price : itemPrice,
+      description : itemDescription,
+      name : itemName
+    })
+  }
+  promoteItem(pricePercentage, priceNumber, startDate, endDate, itemBrand, itemCategory, itemID){
+    return firebase.firestore().collection('Specials').doc(itemBrand).collection(itemCategory).doc(itemID).set({
+      saleprice : priceNumber,
+      startDate : startDate,
+      endDate : endDate,
+      hideItem : false
+    }).then(result => {
+      console.log(result);
+      
     })
   }
 }

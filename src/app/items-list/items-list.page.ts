@@ -19,9 +19,8 @@ export class ItemsListPage implements OnInit {
   description
   quantity
   name
-  itemName
-  itemPrice
-  itemDescription
+  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID
+  pricePercentage; priceNumber; startDate; endDate
   promoUdpate: string;
   constructor(private activatedRoute : ActivatedRoute, private productsService : ProductsService) {
     //this.loadKwangaItems()
@@ -73,8 +72,11 @@ export class ItemsListPage implements OnInit {
       //console.log(this.allItems);
     })
   }
-  promoteItem(productID){
-    
+  promoteItem(pricePercentage, priceNumber, startDate, endDate, itemBrand, itemCategory, itemID){
+    return this.productsService.promoteItem(this.pricePercentage, this.priceNumber, this.startDate, this.endDate, this.itemBrand, this.itemCategory, this.itemID).then(result => {
+      console.log(result);
+      
+    })
   }
   deleteItem(productID, brand, category){
     return this.productsService.deleteItemFromInventory(productID, brand, category).then(result => {
@@ -91,14 +93,14 @@ export class ItemsListPage implements OnInit {
       console.log(result);
     })
   }
-  updateItem(productID, brand, category){
-
-  }
-  submitUpdatedItem(productID, brand, category){
-    return this.productsService.updateItem(productID, brand, category, this.price, this.description, this.name, this.quantity).then(result => {
+  updateItem(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory){
+    return this.productsService.updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName).then(result => {
       console.log(result);
       
     })
+  }
+  submitUpdatedItem(itemName, itemPrice, itemDescription){
+
   }
   toggleUpdate(productID, brand, category, name, description, price) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
@@ -108,12 +110,21 @@ export class ItemsListPage implements OnInit {
     this.itemName = name
     this.itemPrice = price
     this.itemDescription = description
+    this.itemBrand = brand
+    this.itemCategory = category
+    this.itemID = productID
   }
-  togglePromo() {
+  togglePromo(productID, brand, category, name, description, price) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
     this.promoUdpate = "Promote item"
+    this.itemName = name
+    this.itemPrice = price
+    this.itemDescription = description
+    this.itemBrand = brand
+    this.itemCategory = category
+    this.itemID = productID
   }
   dismissPromo() {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
