@@ -14,6 +14,9 @@ export class LandingPage implements OnInit {
   brands : Array<any> = []
   allSales : Array<any> = []
   allProducts : Array<any> = []
+  inventory : Array<any> = []
+  history : Array<any> = []
+  pendingOrders : Array<any> = []
   addForm : boolean 
   formHasValues : boolean 
   department : any
@@ -21,6 +24,7 @@ export class LandingPage implements OnInit {
   kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
   categoryOptions: Array<any> = ['Select Category']
+  inventoryItems :  Array<any> = []
   summer : boolean;
   winter : boolean = false
   kwanga : boolean = false
@@ -49,7 +53,7 @@ export class LandingPage implements OnInit {
   whiteAvailable; whitePic
   constructor(public navCtrl : NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
-    this.productService.getCategories()
+    //this.productService.getCategories()
     this.loadDankieJesuItems()
     this.loadKwangaItems()
     this.colors = { red: '' }
@@ -72,8 +76,13 @@ export class LandingPage implements OnInit {
 
     //this.getSummerItems()
     console.log(this.department);
-    this.getAllItems()
+    // this.getAllItems()
     this.orderItems()
+
+    this.getPendingOrders()
+    this.getReadyOrders()
+    this.getClosedOrders()
+    this.getInventory()
   }
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
@@ -93,9 +102,7 @@ export class LandingPage implements OnInit {
   }
   isSummer(data) {
     if (data.target.checked === true) {
-      // console.log('Accessory');
       this.summer = true;
-
     } else {
       this.summer = false;
     }
@@ -252,34 +259,34 @@ export class LandingPage implements OnInit {
     this.navCtrl.navigateForward(['sales-specials'], navOptions)    
   }
 
-  getWinterItems(){
-    return this.productService.getSeasonalRecentItems('Winter').then(result => {
-      console.log(result);
-      //this.seasonalWear = result
-      let array : Array<any> = []
-      for(let key in result){
-            array.push(result[key])
+  // getWinterItems(){
+  //   return this.productService.getSeasonalRecentItems('Winter').then(result => {
+  //     console.log(result);
+  //     //this.seasonalWear = result
+  //     let array : Array<any> = []
+  //     for(let key in result){
+  //           array.push(result[key])
   
         
-        console.log(key);
-        console.log(result[key]);
+  //       console.log(key);
+  //       console.log(result[key]);
         
-      }
-      console.log(array);
-      for(let i in array){
-        for(let j in this.allProducts){
-          console.log(this.allProducts[j].productID);
-          if(array[i] === this.allProducts[j].productID){
-            console.log(this.allProducts[j].productID);
-            this.winterGear.push(this.allProducts[j])
-        }
-      }
-    }
-    console.log(this.winterGear);
+  //     }
+  //     console.log(array);
+  //     for(let i in array){
+  //       for(let j in this.allProducts){
+  //         console.log(this.allProducts[j].productID);
+  //         if(array[i] === this.allProducts[j].productID){
+  //           console.log(this.allProducts[j].productID);
+  //           this.winterGear.push(this.allProducts[j])
+  //       }
+  //     }
+  //   }
+  //   console.log(this.winterGear);
     
 
-  })
-  }
+  // })
+  // }
   viewMore(query){
     this.route.navigate(['/'+ query])
   }
@@ -329,22 +336,29 @@ export class LandingPage implements OnInit {
       
   //   })
   // }
-  getAllItems(){
-    // this.productService.getProducts().then(result => {
-    //   console.log(result);
-    //   this.allProducts = []
-    //   this.allProducts = result
-      // this.getSummerItems()
-      // this.getWinterItems()
-      // this.getKwangaItems()
-    // })
-  }
+  // getAllItems(){
+  //   // this.productService.getProducts().then(result => {
+  //   //   console.log(result);
+  //   //   this.allProducts = []
+  //   //   this.allProducts = result
+  //     // this.getSummerItems()
+  //     // this.getWinterItems()
+  //     // this.getKwangaItems()
+  //   // })
+  // }
   
   loadKwangaItems(){
     let category : String
+    console.log(this.kwangaCategories);
+    console.log('run this shixt again');
+    
+    
     for(let key in this.kwangaCategories){
       category  = this.kwangaCategories[key]
       this.loadItems(category, 'Kwanga')
+      console.log(this.kwangaCategories[key]);
+      console.log('kwanga is here');
+      
     }
   }
   loadDankieJesuItems(){
@@ -358,43 +372,63 @@ export class LandingPage implements OnInit {
     
   }
   loadItems(category, brand){
+    //console.log(brand, ' ' , 'okay?');
+    
     //console.log(1234);
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
-      console.log(result);
+      if(result !== undefined){
+        //console.log(result);
+      }
+      //console.log(result, 'result');
+      
       for(let key in result){
         if(brand === 'Kwanga'){
-          console.log('I belong to Kwanga');
+         // console.log('I belong to Kwanga');
           this.kwangaProducts.push(result[key])
+         // console.log(this.kwangaProducts);
+          this.allProducts.push(result[key])
+        // console.log(this.allProducts);
+          
         }else if(brand === 'Dankie Jesu'){
-          console.log('I belong to Dankie Jesu');
+          //console.log('I belong to Dankie Jesu');
           this.dankieJesuProducts.push(result[key])
+          this.allProducts.push(result[key])
+          console.log(this.allProducts, 'I think i am running perfectly');
           if(result[key].data.isSummer === true){
             this.summerProducts.push(result[key])
+            console.log(this.summerProducts, 'I will never run ');
+            
           }else if(result[key].data.isSummer === false){
             this.winterProducts.push(result[key])
+            //console.log(result[key].data, 'more info');
+            
           }
         }
-        console.log(result);
+        //console.log(result);
         //this.allItems.push(result[key])
         //this.currentViewedItems.push(result[key])
       }
-      console.log(this.summerProducts);
-      console.log(this.winterProducts);
+      if(this.summerProducts.length > 0 ){
+      //  console.log(this.summerProducts, ' all summer products');
+      }else if(this.winterProducts.length > 0){
+      //  console.log(this.winterProducts, ' all winter products');       
+      }
+
       
       
-      console.log(this.kwangaProducts);
-      console.log(this.dankieJesuProducts);
-      console.log(this.winterGear);
-      console.log(this.summerGear);
+    //  console.log(this.kwangaProducts);
+  //    console.log(this.dankieJesuProducts);
+      //console.log(this.winterGear);
+     // console.log(this.summerGear);
       
       // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
       // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
       // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
       // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
-      console.log(this.summerGear);
-      console.log(this.winterProducts);
-      console.log(this.winterGear);
+      //console.log(this.summerGear);
+      //console.log(this.winterProducts);
+      //console.log(this.winterGear);
       
       })
 
@@ -416,11 +450,55 @@ export class LandingPage implements OnInit {
         this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
         for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
         for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
-        console.log(this.summerGear);
-        console.log(this.winterProducts);
-        console.log(this.winterGear);
+        //console.log(this.summerGear);
+       // console.log(this.winterProducts);
+        //console.log(this.winterGear);
       }
       //console.log(this.allItems);
-  
+  getInventory(){
+    console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
+    
+  }
+  getPendingOrders(){
+    //console.log(this.allProducts);
+    return this.productService.getPendingOrders().then(result => {
+      //console.log(result);
+      //this.inventoryItems = result
+      //console.log(result);
+      this.pendingOrders = result
+      //console.log(this.pendingOrders);
+      
+    })
+    // return this.productService.getPendingOrders().then( result => {
+       
+    // })
+  }
+  getReadyOrders(){
+    //console.log(this.allProducts);
+    return this.productService.getReadyOrders().then(result => {
+     // console.log(result);
+      ///this.inventoryItems = result
+      //console.log(result);
+      
+    })
+  }
+
+  // get orders that are closed, history, status == closed
+  getClosedOrders(){
+    ////console.log(this.allProducts);
+    return this.productService.getClosedOrders().then(result => {
+      ///console.log(result);
+      //this.inventoryItems = result
+      //console.log(result);
+      
+    })
+  }
+  closeOrder(docID){
+    return this.productService.closedOrder(docID).then(result => {
+      //console.log(result);
+      
+    })
+  }
+
   }
 

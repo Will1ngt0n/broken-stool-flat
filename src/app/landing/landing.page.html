@@ -149,13 +149,50 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item" *ngFor='let item of kwangaGear'>
+            <div class="box-item" *ngFor='let item of kwangaProducts'>
               <p id="item-label1">{{item.data.description}}</p>
               <img class="bg" src="../../assets/imgs/images.jpg" alt="">
             </div>
 
           </div>
         </div>
+
+
+
+
+<!-- 
+
+  asdfsfsaf
+  sdfsdfdsf
+  sfsf
+  sfdsafadsf
+  please delete
+-->
+        <div class="slide-specials">
+          <ion-item (click)='viewMore("kwanga-sub-categories")'>
+            <ion-label>Kwanga Apparel</ion-label>
+            <ion-note slot="end" color="primary">
+              See All
+              <ion-icon name="arrow-forward"></ion-icon>
+
+            </ion-note>
+          </ion-item>
+          <div class="items">
+            <div class="box-item" *ngFor='let item of allProducts'>
+              <p id="item-label1">{{item.data.description}}</p>
+              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
+            </div>
+
+          </div>
+        </div>
+
+<!--                               -->
+
+
+
+
+
+
       </div>
       <div id="right">
         

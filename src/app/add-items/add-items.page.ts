@@ -28,7 +28,7 @@ export class AddItemsPage implements OnInit {
 
   constructor(public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
-    this.productService.getCategories()
+    //this.productService.getCategories()
     this.colors = { red: '' }
     this.accessory = false;
     this.summer = false;
