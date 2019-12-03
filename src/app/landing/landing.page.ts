@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-services/auth.service';
 import { ProductsService } from '../services/products-services/products.service';
 import * as moment from 'moment';
 import { NavController } from '@ionic/angular';
+import { IonSlides } from '@ionic/angular';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.scss'],
 })
 export class LandingPage implements OnInit {
+
   sales: Array<any> = []
   brands: Array<any> = []
   allSales: Array<any> = []
@@ -47,6 +49,34 @@ export class LandingPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable; yellowPic
   whiteAvailable; whitePic
+  miniSearchBarState: boolean = false;
+  @ViewChild('sliderRef', { static: false }) slides: IonSlides;
+  @ViewChild('sliderRefSmall', { static: true }) mySlides: IonSlides;
+
+  sliderConfig = {
+    pagination: '.swiper-pagination',
+    paginationClickable: true,
+    spaceBetween: 10,
+    slidesPerView: 1.8, //use any number 1.8 or 4.2 or 7.3 etc..
+    direction: 'horizontal',
+    parallax: true,
+    freeMode: false,
+    allowSwipeToPrev: true,
+    roundLengths: false,
+    effect: 'fade'
+  }
+  sliderConfigSmall = {
+    pagination: '.swiper-pagination',
+    paginationClickable: true,
+    spaceBetween: 10,
+    slidesPerView: 2.32, //use any number 1.8 or 4.2 or 7.3 etc..
+    direction: 'horizontal',
+    parallax: true,
+    freeMode: false,
+    allowSwipeToPrev: true,
+    roundLengths: false,
+    effect: 'fade'
+  }
   constructor(public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
     this.productService.getCategories()
@@ -66,6 +96,7 @@ export class LandingPage implements OnInit {
       console.log(date);
 
     }
+    
     //this.loadSummerItems()
 
     //this.loadBrandProducts()
@@ -74,6 +105,7 @@ export class LandingPage implements OnInit {
     console.log(this.department);
     this.getAllItems()
     this.orderItems()
+    
   }
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
@@ -360,43 +392,43 @@ export class LandingPage implements OnInit {
   loadItems(category, brand) {
     //console.log(1234);
     let data: Array<any> = []
-    return this.productService.loadCategoryItems(category, brand).then(result => {
-      console.log(result);
-      for (let key in result) {
-        if (brand === 'Kwanga') {
-          console.log('I belong to Kwanga');
-          this.kwangaProducts.push(result[key])
-        } else if (brand === 'Dankie Jesu') {
-          console.log('I belong to Dankie Jesu');
-          this.dankieJesuProducts.push(result[key])
-          if (result[key].data.isSummer === true) {
-            this.summerProducts.push(result[key])
-          } else if (result[key].data.isSummer === false) {
-            this.winterProducts.push(result[key])
-          }
-        }
-        console.log(result);
-        //this.allItems.push(result[key])
-        //this.currentViewedItems.push(result[key])
-      }
-      console.log(this.summerProducts);
-      console.log(this.winterProducts);
+    // return this.productService.loadCategoryItems(category, brand).then(result => {
+    //   console.log(result);
+    //   for (let key in result) {
+    //     if (brand === 'Kwanga') {
+    //       console.log('I belong to Kwanga');
+    //       this.kwangaProducts.push(result[key])
+    //     } else if (brand === 'Dankie Jesu') {
+    //       console.log('I belong to Dankie Jesu');
+    //       this.dankieJesuProducts.push(result[key])
+    //       if (result[key].data.isSummer === true) {
+    //         this.summerProducts.push(result[key])
+    //       } else if (result[key].data.isSummer === false) {
+    //         this.winterProducts.push(result[key])
+    //       }
+    //     }
+    //     console.log(result);
+    //     //this.allItems.push(result[key])
+    //     //this.currentViewedItems.push(result[key])
+    //   }
+    //   console.log(this.summerProducts);
+    //   console.log(this.winterProducts);
 
 
-      console.log(this.kwangaProducts);
-      console.log(this.dankieJesuProducts);
-      console.log(this.winterGear);
-      console.log(this.summerGear);
+    //   console.log(this.kwangaProducts);
+    //   console.log(this.dankieJesuProducts);
+    //   console.log(this.winterGear);
+    //   console.log(this.summerGear);
 
-      // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
-      // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
-      console.log(this.summerGear);
-      console.log(this.winterProducts);
-      console.log(this.winterGear);
+    //   // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+    //   // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+    //   // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
+    //   // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
+    //   console.log(this.summerGear);
+    //   console.log(this.winterProducts);
+    //   console.log(this.winterGear);
 
-    })
+    // })
 
     // this.summerGear.push(this.summerProducts[0])
     // for(let i in this.summerProducts){
@@ -441,6 +473,29 @@ export class LandingPage implements OnInit {
     pendingItems[0].style.display = "none";
     var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
     inventoryItems[0].style.display = "none"
+
+  }
+
+  showLeftSide() {
+    console.log("Showing left side menu");
+    document.getElementById("left-items-list").style.left = "0"
+
+  }
+  showSearchBar() {
+    console.log("Showing searchbar");
+    if (this.miniSearchBarState == true){
+      this.miniSearchBarState = false;
+      console.log(this.miniSearchBarState);
+      
+    }
+    else{
+      this.miniSearchBarState = true;
+      console.log(this.miniSearchBarState);
+    }
+  }
+  showRightSide() {
+    console.log("Showing right side menu");
+    document.getElementById("right-items-list").style.left = "0"
 
   }
 }
