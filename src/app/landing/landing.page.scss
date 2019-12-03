@@ -219,6 +219,7 @@ ion-searchbar {
   background: #f2f2f2;
   top: 0;
   left: 0;
+  animation: faderIn 300ms;
   .title-top {
     border-bottom: 1px solid black;
     height: 30px;
@@ -266,6 +267,7 @@ ion-searchbar {
   background: #f2f2f2;
   top: 0;
   left: 0;
+  animation: faderIn 300ms;
   .title-top {
     border-bottom: 1px solid black;
     height: 30px;
@@ -305,7 +307,7 @@ ion-searchbar {
   }
 }
 .inventory-items {
-  // display: none;
+  display: none;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -313,6 +315,7 @@ ion-searchbar {
   background: #f2f2f2;
   top: 0;
   left: 0;
+  animation: faderIn 300ms;
   .title-top {
     border-bottom: 1px solid black;
     height: 30px;
@@ -433,5 +436,15 @@ ion-searchbar {
   }
   .sizes {
     width: 100%;
+  }
+}
+
+
+@keyframes faderIn {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
   }
 }

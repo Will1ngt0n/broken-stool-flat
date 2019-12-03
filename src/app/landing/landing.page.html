@@ -19,7 +19,7 @@
           <div class="history-items">
             <div class="title-top">
               <h5>History</h5>
-              <ion-icon name="close" id="closer"></ion-icon>
+              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
             <div class="items-list" *ngFor='let item of history'>
               <ion-card>
@@ -35,7 +35,7 @@
           <div class="pending-items">
             <div class="title-top">
               <h5>Pedning Orders</h5>
-              <ion-icon name="close" id="closer"></ion-icon>
+              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
             <div class="items-list">
               <ion-card>
@@ -50,7 +50,7 @@
           <div class="inventory-items">
             <div class="title-top">
               <h5>Inventory</h5>
-              <ion-icon name="close" id="closer"></ion-icon>
+              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
             <div class="items-list">
               <ion-card>
@@ -70,10 +70,9 @@
               </ion-card>
             </div>
           </div>
-        <h3>Hello Lunga</h3>
-        <div class="side-buttons">Pending Orders</div>
-        <div class="side-buttons">History</div>
-        <div class="side-buttons">Inventory</div>
+          <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
+          <div class="side-buttons" (click)="showHistoryList()">History</div>
+          <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
       </div>
       <div id="mid">
         <div class="top-bar">
@@ -156,43 +155,6 @@
 
           </div>
         </div>
-
-
-
-
-<!-- 
-
-  asdfsfsaf
-  sdfsdfdsf
-  sfsf
-  sfdsafadsf
-  please delete
--->
-        <div class="slide-specials">
-          <ion-item (click)='viewMore("kwanga-sub-categories")'>
-            <ion-label>Kwanga Apparel</ion-label>
-            <ion-note slot="end" color="primary">
-              See All
-              <ion-icon name="arrow-forward"></ion-icon>
-
-            </ion-note>
-          </ion-item>
-          <div class="items">
-            <div class="box-item" *ngFor='let item of allProducts'>
-              <p id="item-label1">{{item.data.description}}</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
-            </div>
-
-          </div>
-        </div>
-
-<!--                               -->
-
-
-
-
-
-
       </div>
       <div id="right">
         

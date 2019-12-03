@@ -16,64 +16,64 @@
       </div>
       <div class="body-content">
         <div id="left" padding>
-            <div class="history-items">
-              <div class="title-top">
-                <h5>History</h5>
-                <ion-icon name="close" id="closer"></ion-icon>
-              </div>
-              <div class="items-list" *ngFor='let item of history'>
-                <ion-card>
-                  <p class="floating">Paid</p>
-                  <p class="floating" id="bottom-right">Items (8)</p>
-                  <p><b>{{item.customerName}}</b></p>
-                  <p>R {{item.detail.totalPrice}}</p>
-                  <p>REF: {{item.refNo}}</p>
-    
-                </ion-card>
-              </div>
+          <div class="history-items">
+            <div class="title-top">
+              <h5>History</h5>
+              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
-            <div class="pending-items">
-              <div class="title-top">
-                <h5>Pedning Orders</h5>
-                <ion-icon name="close" id="closer"></ion-icon>
-              </div>
-              <div class="items-list" *ngFor='let item of pendingOrders'>
-                <ion-card>
-                  <p class="floating" id="bottom-right">Items (8)</p>
-                  <p><b>{{item.customerName}}</b></p>
-                  <p>R {{item.detail.totalPrice}}</p>
-                  <p>REF: {{item.refNo}}</p>
-    
-                </ion-card>
-              </div>
+            <div class="items-list">
+              <ion-card>
+                <p class="floating">Paid</p>
+                <p class="floating" id="bottom-right">Items (8)</p>
+                <p><b>John Doe</b></p>
+                <p>R 799.90</p>
+                <p>REF: NGH2345678987654</p>
+              </ion-card>
             </div>
-            <div class="inventory-items">
-              <div class="title-top">
-                <h5>Inventory</h5>
-                <ion-icon name="close" id="closer"></ion-icon>
-              </div>
-              <div class="items-list">
-                <ion-card>
-                  <img src="../../assets/imgs/images.jpg" alt="">
-                  <p><b>John Doe</b></p>
-                  <p>R 799.90</p>
-                  
-                  <div class="quantities">
-                    <div>
-                        <ion-icon name="remove"></ion-icon>
-                    </div>
-                    <div><input type="text" value="78"></div>
-                    <div><ion-icon name="add"></ion-icon></div>
-                    <div>Save</div>
+          </div>
+          <div class="pending-items">
+            <div class="title-top">
+              <h5>Pending Orders</h5>
+              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
+            </div>
+            <div class="items-list">
+              <ion-card>
+                <p class="floating" id="bottom-right">Items (8)</p>
+                <p><b>John Doe</b></p>
+                <p>R 799.90</p>
+                <p>REF: NGH2345678987654</p>
+              </ion-card>
+            </div>
+          </div>
+          <div class="inventory-items">
+            <div class="title-top">
+              <h5>Inventory</h5>
+              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
+            </div>
+            <div class="items-list">
+              <ion-card>
+                <img src="../../assets/imgs/images.jpg" alt="">
+                <p><b>John Doe</b></p>
+                <p>R 799.90</p>
+  
+                <div class="quantities">
+                  <div>
+                    <ion-icon name="remove"></ion-icon>
                   </div>
-    
-                </ion-card>
-              </div>
+                  <div><input type="text" value="78"></div>
+                  <div>
+                    <ion-icon name="add"></ion-icon>
+                  </div>
+                  <div>Save</div>
+                </div>
+  
+              </ion-card>
             </div>
+          </div>
           <h3>Hello Lunga</h3>
-          <div class="side-buttons">Pending Orders</div>
-          <div class="side-buttons">History</div>
-          <div class="side-buttons">Inventory</div>
+          <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
+          <div class="side-buttons" (click)="showHistoryList()">History</div>
+          <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
         </div>
         <div id="mid">
           <div class="top-bar">

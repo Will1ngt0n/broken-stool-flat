@@ -29,29 +29,29 @@ export class LandingPage implements OnInit {
   winter : boolean = false
   kwanga : boolean = false
   selectedCategory: any
-  itemName : String
-  price : String
+  itemName: String
+  price: String
   description: String
-  size : Array<any> = []
-  color : Array<any> = []
-  colors : Object = {};
-  accessory : boolean;
-  summerGear : Array<any> = []
-  winterGear : Array<any> = []
-  kwangaGear : Array<any> = []
-  kwangaProducts : Array<any> = []
-  dankieJesuProducts : Array<any> = []
-  summerProducts : Array<any> = []
-  winterProducts : Array<any> = []
-  orderedWinterProducts : Array<any> = []
-  orderedSummerProducts : Array<any> = []
-  seasonalWear : Array<any> = []
+  size: Array<any> = []
+  color: Array<any> = []
+  colors: Object = {};
+  accessory: boolean;
+  summerGear: Array<any> = []
+  winterGear: Array<any> = []
+  kwangaGear: Array<any> = []
+  kwangaProducts: Array<any> = []
+  dankieJesuProducts: Array<any> = []
+  summerProducts: Array<any> = []
+  winterProducts: Array<any> = []
+  orderedWinterProducts: Array<any> = []
+  orderedSummerProducts: Array<any> = []
+  seasonalWear: Array<any> = []
   blackAvailable; blackPic
-  brownAvailable;  brownPic
+  brownAvailable; brownPic
   orangeAvailable; orangePic
-  yellowAvailable;  yellowPic
+  yellowAvailable; yellowPic
   whiteAvailable; whitePic
-  constructor(public navCtrl : NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
+  constructor(public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
     //this.productService.getCategories()
     this.loadDankieJesuItems()
@@ -66,9 +66,9 @@ export class LandingPage implements OnInit {
     let tee = moment(new Date('10/12/2019')).format('LLLL')
     console.log(date);
     console.log(tee);
-    if(date > tee){
+    if (date > tee) {
       console.log(date);
-      
+
     }
     this.orderItems()
 
@@ -88,7 +88,7 @@ export class LandingPage implements OnInit {
     if (this.department === 'Kwanga') {
       this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports wear']
     }
-    if(this.department === 'Select Department'){
+    if (this.department === 'Select Department') {
       this.department = undefined
     }
     this.checkValidity()
@@ -103,7 +103,7 @@ export class LandingPage implements OnInit {
   changeCategory() {
     console.log(event.target['value']);
     this.selectedCategory = event.target['value']
-    if(this.selectedCategory === 'Select Category'){
+    if (this.selectedCategory === 'Select Category') {
       this.selectedCategory = undefined
     }
     this.checkValidity()
@@ -144,7 +144,7 @@ export class LandingPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
-  checkValidity(){
+  checkValidity() {
     console.log(this.department);
     console.log(this.selectedCategory);
     console.log(this.itemName);
@@ -153,24 +153,24 @@ export class LandingPage implements OnInit {
     console.log(this.size);
     console.log(this.color);
 
-    if(this.selectedCategory === undefined || this.department === undefined || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === ''){
+    if (this.selectedCategory === undefined || this.department === undefined || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '') {
       this.addForm = false
       console.log(this.addForm);
-      
-    }else{
+
+    } else {
       this.addForm = true
       console.log(this.addForm);
     }
-    if(this.department !== undefined || this.selectedCategory !== undefined||  this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== ''){
+    if (this.department !== undefined || this.selectedCategory !== undefined || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '') {
       this.formHasValues = true
       console.log(this.formHasValues);
-      
-    }else{
+
+    } else {
       this.formHasValues = false
       console.log(this.formHasValues);
     }
   }
-  checkColor(event, color){
+  checkColor(event, color) {
     this.checkValidity()
     console.log(color);
     console.log(this.size);
@@ -215,10 +215,10 @@ export class LandingPage implements OnInit {
     let date = moment(new Date()).format('LLLL');
     console.log(date);
 
-      return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color).then(result => {
-        this.clearForm();
-      })
-    
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color).then(result => {
+      this.clearForm();
+    })
+
 
   }
 
@@ -234,8 +234,8 @@ export class LandingPage implements OnInit {
     this.size = [];
     document.getElementById('accessory')['checked'] = false;
     document.getElementById('summer')['checked'] = false;
-    let checkboxes : Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
-    for(let i = 0; i < checkboxes.length; i++){
+    let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
+    for (let i = 0; i < checkboxes.length; i++) {
       document.getElementsByName(checkboxes[i])[0]['checked'] = false
     }
     this.formHasValues = false
@@ -244,12 +244,12 @@ export class LandingPage implements OnInit {
   }
 
   //Routing to sales page
-  viewSales(query){
+  viewSales(query) {
     console.log(query);
     let navOptions = {
-      queryParams : {query : query}
+      queryParams: { query: query }
     }
-    this.navCtrl.navigateForward(['sales-specials'], navOptions)    
+    this.navCtrl.navigateForward(['sales-specials'], navOptions)
   }
 
   viewMore(query){
@@ -264,15 +264,15 @@ export class LandingPage implements OnInit {
       
     }
   }
-  loadDankieJesuItems(){
-    let category : String
-    for(let key in this.dankieJesuCategories){
+  loadDankieJesuItems() {
+    let category: String
+    for (let key in this.dankieJesuCategories) {
       category = this.dankieJesuCategories[key]
       this.loadItems(category, 'Dankie Jesu')
     }
   }
-  loadViewedCategory(){
-    
+  loadViewedCategory() {
+
   }
   loadItems(category, brand){
     let data : Array<any> = []
@@ -288,7 +288,7 @@ export class LandingPage implements OnInit {
           this.allProducts.push(result[key])
           if(result[key].data.isSummer === true){
             this.summerProducts.push(result[key])
-          }else if(result[key].data.isSummer === false){
+          } else if (result[key].data.isSummer === false) {
             this.winterProducts.push(result[key])
           }
         }
@@ -331,5 +331,27 @@ export class LandingPage implements OnInit {
     })
   }
 
-  }
+  //console.log(this.allItems);
 
+  showPendingList() {
+    var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
+    historyItems[0].style.display = "block"
+  }
+  showHistoryList() {
+    var pendingItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
+    pendingItems[0].style.display = "block"
+  }
+  showInventoryList() {
+    var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
+    inventoryItems[0].style.display = "block"
+  }
+  dismissList() {
+    var historyItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
+    historyItems[0].style.display = "none";
+    var pendingItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
+    pendingItems[0].style.display = "none";
+    var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
+    inventoryItems[0].style.display = "none"
+
+  }
+}

@@ -334,6 +334,26 @@ export class WinterGearPage implements OnInit {
     //let parameter = [{category: value, brand: 'Kwanga'}]
     //this.route.navigate(['/items-list', value], parameter)
     let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'}}
-    this.navCtrl.navigateForward(['/items-list', value], parameter)
   }
+  showPendingList() {
+    var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
+    historyItems[0].style.display = "block"
+  }
+  showHistoryList() {
+    var pendingItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
+    pendingItems[0].style.display = "block"
+  }
+  showInventoryList() {
+    var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
+    inventoryItems[0].style.display = "block"
+  }
+  dismissList() {
+    var historyItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
+    historyItems[0].style.display = "none";
+    var pendingItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
+    pendingItems[0].style.display = "none";
+    var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
+    inventoryItems[0].style.display = "none"
+  }
+
 }
