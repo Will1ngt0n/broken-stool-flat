@@ -89,13 +89,13 @@
               <div class="btn-top" id="kwanga" (click)="toggleKwanga()">Kwanga Apparel</div>
           </div>
         </div>
-        <div class="SubCat" id="kwangaSubcat">
-          <div class="gridder" *ngFor='let item of kwangaSales'>
+        <div class="SubCat" id="kwangaSubcat" *ngFor='let item of kwangaFullSales'>
+          <div class="gridder" >
             <img src="../../assets/imgs/images.jpg" alt="">
             <div id="info">
-              <h5>{{item.name}}</h5>
-              <p>{{item.description}}.</p>
-              <p><b>R {{item.salePrice}}</b></p>
+              <h5>{{item.data.name}}</h5>
+              <p>{{item.data.description}}</p>
+              <p><b>R {{item.data.salePrice}}</b></p>
               <div class="options">
                 <div (click)='updateItem(item.productID)'>Update</div>
                 <div (click)='hideItem(item.productID)'>Hide</div>
@@ -104,13 +104,13 @@
             </div>
           </div>
         </div>
-        <div class="SubCat" id="DankieSubcat">
-          <div class="gridder" *ngFor='let item of dankieJesuSales'>
+        <div class="SubCat" id="DankieSubcat" *ngFor='let item of DJSales'>
+          <div class="gridder" >
             <img src="../../assets/imgs/images.jpg" alt="">
             <div id="info">
-              <h5>{{item.name}}</h5>
-              <p>{{item.description}}</p>
-              <p><b>R {{item.salePrice}}</b></p>
+              <h5>{{item.data.name}}</h5>
+              <p>{{item.data.description}}</p>
+              <p><b>R {{item.data.salePrice}}</b></p>
               <div class="options">
                 <div (click)='updateItem(item.productID)'>Update</div>
                 <div (click)='hideItem(item.productID)'>Hide</div>
@@ -119,14 +119,14 @@
             </div>
           </div>
         </div>
-        <div class="SubCat" id="AllSubcat">
-          <div *ngFor='let item of allSales'>
+        <div class="SubCat" id="AllSubcat" *ngFor='let item of allBrandSales'>
+          <div >
               <div class="gridder">
                   <img src="../../assets/imgs/images.jpg" alt="">
                   <div id="info">
-                    <h5>{{item.name}}</h5>
-                    <p>{{item.description}}</p>
-                    <p><b>R {{item.salePrice}}</b></p>
+                    <h5>{{item.data.name}}</h5>
+                    <p>{{item.data.description}}</p>
+                    <p><b>R {{item.data.salePrice}}</b></p>
                     <div class="options">
                       <div (click)='updateItem(item.productID)'>Update</div>
                       <div (click)='hideItem(item.productID)'>Hide</div>

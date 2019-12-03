@@ -10,10 +10,16 @@ import { ProductsService } from '../services/products-services/products.service'
 export class SalesSpecialsPage implements OnInit {
   sales : Array<any> = []
   brands : Array<any> = []
+  DJSales : Array<any> = []
+  kwangaFullSales : Array<any> = []
+  allBrandSales : Array<any> = []
   query
   kwangaSales : Array<any> = []
   dankieJesuSales : Array<any> = []
   allSales : Array<any> = []
+  kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
+  dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
+  
   constructor(public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
 
     //this.getDankieJesuSales('Dankie Jesu')
@@ -23,6 +29,7 @@ export class SalesSpecialsPage implements OnInit {
 
     this.loadAll()
     //this.getKwangaSales('Kwanga')
+    this.iterateThrough()
   }
 
   ngOnInit() {
@@ -31,11 +38,11 @@ export class SalesSpecialsPage implements OnInit {
       this.query = params['query']
       console.log(this.query);
       if(this.query === 'viewAll'){
-        this.toggleAll()
+        //this.toggleAll()
       }else if(this.query === 'Dankie Jesu'){
-        this.toggleDankie()
+       // this.toggleDankie()
       }else{
-        this.toggleKwanga()
+        ///this.toggleKwanga()
       }
     })
   }
@@ -75,7 +82,12 @@ export class SalesSpecialsPage implements OnInit {
   //     return result
   //   })
   // }
+  
   toggleDankie(){
+    console.log(document.getElementById('dankie'));
+    
+
+    alert("dankie")
     var kwa = document.getElementById("kwanga").style.background = "white";
     var kwa = document.getElementById("kwanga").style.color = "#7c0000";
     var kwaCat = document.getElementById("kwangaSubcat").style.display = "none";
@@ -88,7 +100,10 @@ export class SalesSpecialsPage implements OnInit {
     var allSubs = document.getElementById("allSubs").style.color = "#7c0000";
     var allSubsCat = document.getElementById("AllSubcat").style.display = "none";
   }
+
   toggleKwanga(){
+    
+    alert("Kwanga")
     var kwa = document.getElementById("kwanga").style.background = "#7c0000";
     var kwa = document.getElementById("kwanga").style.color = "white";
     var kwaCat = document.getElementById("kwangaSubcat").style.display = "block";
@@ -103,6 +118,8 @@ export class SalesSpecialsPage implements OnInit {
 
   }
   toggleAll(){
+    
+    alert("All")
     var kwa = document.getElementById("kwanga").style.background = "white";
     var kwa = document.getElementById("kwanga").style.color = "#7c0000";
     var kwaCat = document.getElementById("kwangaSubcat").style.display = "none";
@@ -120,57 +137,87 @@ export class SalesSpecialsPage implements OnInit {
     this.route.navigate(['/landing'])
   }
   
-  loadAll(){
-    this.productsService.getAllSales().then(result => {
-      console.log(result);
-      this.sales
-      this.sales = result
-      this.loadBrandProducts()
+  loadAll(){}
+
+  iterateThrough(){
+    console.log(this.kwangaCategories);
+    
+    for(let key in this.dankieJesuCategories){
+      console.log(this.dankieJesuCategories[key]);
+      
+      this.loadCategoryItems('Dankie Jesu', this.dankieJesuCategories[key])
+      
+      //focus on me. 
+    }
+    for(let key in this.kwangaCategories){
+      this.loadCategoryItems('Kwanga', this.kwangaCategories[key])
+    }
+  }
+  loadCategoryItems(brand, category){
+    return this.productsService.getAllSales(brand, category).then(result => {
+      //console.log(result);
+      let array = []
+      array = result
+      //this.sales
+      //this.sales = result
+      if(array.length !== 0){
+        for(let key in result){
+          console.log(result[key]);
+          
+          if(brand === 'Dankie Jesu'){
+            this.dankieJesuSales.push(result[key])
+            
+          }else if(brand === 'Kwanga'){
+            this.kwangaSales.push(result[key])
+          }
+        }
+
+        console.log(this.dankieJesuSales);
+        console.log(this.kwangaSales);
+        
+        
+        console.log(this.sales);
+       
+        for(let key in this.dankieJesuSales){
+          console.log(this.dankieJesuSales[key].productID)
+          let productID = this.dankieJesuSales[key].productID
+          let item = this.dankieJesuSales[key]
+          this.loadProducts(brand, category, productID, item)
+        }
+        for(let key in this.kwangaSales){
+          console.log(this.kwangaSales[key]);
+          let productID = this.kwangaSales[key].productID
+          let item = this.dankieJesuSales[key]
+          this.loadProducts(brand, category, productID, item)
+        }
+      }
+
+      //this.loadProducts(brand, category, )
     })
     //   console.log(result);
       
     //})
   }
-  loadBrandProducts(){
-    this.productsService.getBrandProducts().then(result => {
+  loadProducts(brand, category, productID, item){
+    this.productsService.getProduct(brand, category, productID, item).then(result => {
       console.log(result);
-      this.brands = result
-      this.loadProducts()
+      let array = []
+      array = result
+      console.log(array);
+      if(brand === 'Dankie Jesu' && array.length !== 0){
+        this.DJSales.push(result[0])
+        this.allBrandSales.push(result[0])
+      }else if(brand === 'Kwanga' && array.length !== 0){
+        this.kwangaFullSales.push(result[0])
+        this.allBrandSales.push(result[0])
+      }
+      
+      //this.loadProducts()
+      console.log(this.DJSales);
     })
+
+    
   }
-  loadProducts(){
-    this.productsService.getProducts().then(result => {
-      console.log(result);
-      let data : Array<any> = result
-      console.log(data);
-      for(let i in this.sales){
-        console.log(this.sales[i].productID);
-        for(let j in data){
-          console.log(data[j].productID);
-          if(this.sales[i].productID === data[j].productID){
-            console.log(data[j]);
-            this.sales[i].name = data[j].product.name
-            this.sales[i].description = data[j].product.description
-            this.sales[i].normalPrice = data[j].product.price
-        }
-      }
-      console.log(this.sales);
-      for(let l in this.brands){
-        for(let n in this.brands[l].products){
-          if(this.sales[i].productID === this.brands[l].products[n]){
-            console.log('match');
-            this.sales[i].brand = this.brands[l].id
-          }
-        }
-        console.log(this.sales);
-      }
-      }
-      this.allSales = this.sales
-      console.log(this.allSales);
-      this.getDankieJesuSales('Dankie Jesu')
-      this.getKwangaSales('Kwanga')
-  })
-}
 
 deleteItem(productID){
   return this.productsService.deleteSpecialsItem(productID).then(result => {

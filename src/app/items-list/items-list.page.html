@@ -41,7 +41,7 @@
         <textarea placeholder="Item Description" rows="3"></textarea>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success">Promote</ion-button>
+          <ion-button color="success" (click)='promoteItem(pricePercentage, priceNumber, startDate, endDate, productID, brand, category)'>Promote</ion-button>
         </div>
       </div>
     </div>
@@ -49,22 +49,21 @@
       <p id="topic-item"><b>{{promoUdpate}}</b></p>
       <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
       <div class="item-data">
-        <h3>Wu-Tang Hoodie</h3>
+        <h3>{{itemName}}</h3>
         <p class="item-detail">
-          R 399.90
+          R {{itemPrice}}
         </p>
         <p class="item-detail">Description</p>
         <p class="description">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui excepturi quibusdam corporis! orem ipsum, dolor
-          sit amet consectetur adipisicing elit. Qui excepturi quibusdam corporis!
+          {{itemDescription}}
         </p>
         <input type="text" placeholder="Percentile % (e.g 20)">
         <div class="gridded-inputs">
-          <input type="text" placeholder="Start Date"><input type="text" placeholder="End Date">
+          <input type="date" placeholder="Start Date"><input type="date" placeholder="End Date">
         </div>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success">Promote</ion-button>
+          <ion-button color="success"  (click)='updateItem(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory)'>Update</ion-button>
         </div>
       </div>
     </div>
@@ -155,21 +154,22 @@
             Kwanga Apparel / Formal Wear
           </div>
         </div>
-        <div class="SubCat">
-            <div class="gridder">
-              <img src="../../assets/imgs/images.jpg" alt="">
-              <div id="info">
-                <h5>SOHO Jeans</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae vitae nostrum voluptas nesciunt
-                  voluptates, dicta, dolorem, iure quaerat odit magnam nisi accusamus perferendis modi aliquam reiciendis
-                  reprehenderit laudantium maxime. Tempore.</p>
-                <p><b>R 399.90</b></p>
-                <div class="options">
-                  <div (click)="togglePromo()">Promote</div>
-                  <div (click)="toggleUpdate()">Update</div>
-                  <div>Hide</div>
-                  <div>Delete</div>
-                </div>
+        <div class="SubCat"  *ngFor = 'let item of currentViewedItems'>
+          <div class="gridder">
+            <img src="../../assets/imgs/images.jpg" alt="">
+            <div id="info">
+              <h5>{{item.data.name}}</h5>
+              <p>{{item.data.description}}.</p>
+              <p><b>R {{item.data.price}}</b></p>
+              <div class="options">
+                <!-- <div (click)='promoteItem(item.productID, item.brand, item.category)'>Promote</div>
+                <div (click)='updateItem(item.productID, item.brand, item.category)'>Update</div>
+                <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div> -->
+                <div (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">Promote</div>
+                <div (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">Update</div>
+                <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
               </div>
             </div>
         </div>

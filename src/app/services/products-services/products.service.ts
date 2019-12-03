@@ -1,5 +1,6 @@
 import { Injectable, Query } from '@angular/core';
 import * as firebase from 'firebase'
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +15,7 @@ export class ProductsService {
   addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color){
     console.log(department);
     console.log(selectedCategory);
-    return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc('Item').collection('Product').add({
+    return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
       quantity: 1,
       color: color,
       // brand: department,
@@ -23,9 +24,10 @@ export class ProductsService {
       size : size,
       name : itemName,
       description : description,
-      isAccerory: accessory,
+      isAccessory: accessory,
       isSummer: summer,
-      timestamp : firebase.firestore.FieldValue.serverTimestamp()
+      timestamp : firebase.firestore.FieldValue.serverTimestamp(),
+      dateAdded : moment(new Date()).format('LLLL')
     }).then(result => {
       console.log(result);
       
@@ -53,8 +55,10 @@ export class ProductsService {
       console.log(data.values());
     })
   }
-  getAllSales(){
-    return firebase.firestore().collectionGroup('Specials').get().then(result => {
+
+  //Getting sales items
+  getAllSales(brand, category){
+    return firebase.firestore().collection('Specials').doc(brand).collection(category).get().then(result => {
       let sales : Array<any> = []
       for(let key in result.docs){
         
@@ -62,9 +66,48 @@ export class ProductsService {
         console.log(productID);
       console.log(result.docs[key].data());
       let data = result.docs[key].data()
-      sales.push({description: data['description'], productID: productID, name: data['name'], category : data['category'], brand : data['brand'], normalPrice : data['price'], salePrice: data['saleprice'], startDate : data['startDate'], endDate : data['endDate']})
+      sales.push({productID: productID, data : data})
+      // this.getProduct(brand, category, productID, data).then(res=> {
+        
+        
+      //   sales = res
+      //   console.log(sales);
+        
+      //   //return sales
+      // })
+    }
+    return sales
+  })
+  
+  }
+  getProduct(brand, category, productID, data){
+    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).get().then(product => {
+      let productData : Object = {}
+      let sales : Array<any> = []
+      //console.log(product.data());
+      productData = product.data()
+      //console.log(data);
+      
+      if(productData){
+        console.log(productData['name']);
+        sales.push({
+          productID: productID,
+          data : {
+            brand: brand,
+            category: category,
+            name: productData['name'],
+            salePrice: data['data']['saleprice'],
+            description: productData['description'],
+            dateAdded : productData['dateAdded'],
+            isAccessory: productData['isAccessory'],
+            isSummer: productData['isSummer'],
+            normalPrice: productData['price'],
+            quantity: productData['quantity'],
+            size : productData['size']
+          }
+        })
+        console.log(sales);
       }
-      console.log(sales);
       return sales
     })
   }
@@ -73,7 +116,7 @@ export class ProductsService {
       let sales : Array<any> = []
       console.log(Object(result.docs));
       
-      for(let key in result.docs){
+      for(let key in result.docs){ 
         console.log(key);
         //console.log(result.query);
         console.log(result[key].data().productsRef);
@@ -125,18 +168,18 @@ export class ProductsService {
     })
 
   }
-  getSales(query){
-    console.log(query);
-    if(query === 'viewAll'){
-      return this.getAllSales().then(result => { 
-        return result  
-      })
-    }else{
-      return this.getBrandSales(query).then(result => {
-        return result
-      })
-    }
-  }
+  // getSales(query){
+  //   console.log(query);
+  //   if(query === 'viewAll'){
+  //     return this.getAllSales().then(result => { 
+  //       return result  
+  //     })
+  //   }else{
+  //     return this.getBrandSales(query).then(result => {
+  //       return result
+  //     })
+  //   }
+  // }
   getRecentSummerItems(){
     return firebase.firestore().collection('Products').where('brand', '==', 'Dankie Jesu').where('isSummer', '==', true).orderBy('timestamp', 'desc').limit(5).get().then(result => {
       console.log(result);
@@ -198,20 +241,333 @@ export class ProductsService {
     })
   }
 
-  getProducts(){
-    return firebase.firestore().collectionGroup('Product').get().then(result => {
-      console.log(result);
-      let products : Array<any> = []
-      for(let i in result.docs){
-        let ID = result.docs[i].id
-        console.log(ID);
-        
-        products.push({productID : ID, product : result.docs[i].data()})
-      }
-      console.log(products);
-      return products
-    })
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   deleteSpecialsItem(productID){
     return firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
       console.log(result);
@@ -254,6 +610,66 @@ export class ProductsService {
         data.push({productID : result.docs[key].id, itemsSold: result.docs[key].data().itemsSold})
       }
       return data
+    })
+  }
+
+  loadCategoryItems(category, brand){
+    console.log(brand);
+    console.log(category);
+    
+    
+    return firebase.firestore().collection('Products').doc(brand).collection(category).get().then(result => {
+      //console.log(result.docs);
+      console.log(result);
+      let data : Array<any> = []
+      for(let key in result.docs){
+        console.log('sdfdsfs');
+        console.log(result.docs[key].data());
+        let productID = result.docs[key].id
+        let docData = result.docs[key].data()
+        data.push({productID: productID, data: docData, category: category, brand: brand})
+      }
+      console.log(data);
+      if(data.length !== 0){
+        return data
+      }
+    })
+  }
+  deleteItemFromInventory(productID, brand, category){
+    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {
+      console.log(result);
+    })
+  }
+  hideProduct(productID, brand, category){
+    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
+      hideItem : true
+    }).then(result => {
+      console.log(result);
+    })
+  }
+  showProduct(productID, brand, category){
+    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
+      hideItem : false
+    }).then(result => {
+      console.log(result);
+    })
+  }
+  updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName){
+    return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+      price : itemPrice,
+      description : itemDescription,
+      name : itemName
+    })
+  }
+  promoteItem(pricePercentage, priceNumber, startDate, endDate, itemBrand, itemCategory, itemID){
+    return firebase.firestore().collection('Specials').doc(itemBrand).collection(itemCategory).doc(itemID).set({
+      saleprice : priceNumber,
+      startDate : startDate,
+      endDate : endDate,
+      hideItem : false
+    }).then(result => {
+      console.log(result);
+      
     })
   }
 }
