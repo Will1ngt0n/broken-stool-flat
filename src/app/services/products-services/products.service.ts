@@ -360,10 +360,24 @@ export class ProductsService {
         let refNo = result.docs[key].id
        // console.log(result.docs[key].data());
         let data = result.docs[key].data()
-        pendingOrder.push({refNo : refNo, details : data})
+        let userID = data.userID
+        console.log(userID);
+        //this.loadUser(userID)
+
+        pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
       };
       return pendingOrder
       })
+  }
+  loadUser(userID){
+    return firebase.firestore().collection('userProfile').doc(userID).get().then(data => {
+      let user
+      let userName = data.data().name
+      let userID = data.id
+      console.log(userName, userID);
+      user = {name: userName, userID: userID}
+      return user
+    })
   }
   getReadyOrders(){
     return firebase.firestore().collection('Order').where('status', '==', 'ready').get().then(result => {
@@ -400,6 +414,13 @@ export class ProductsService {
   closedOrder(orderID){
     return firebase.firestore().collection('Order').doc(orderID).update({
       status : 'closed'
+    })
+  }
+  updateQuantity(brand, category, productID, quantity){
+    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
+      quantity: quantity
+    }).then( result => {
+      return result
     })
   }
 } 

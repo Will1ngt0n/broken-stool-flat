@@ -334,6 +334,7 @@ export class SummerGearPage implements OnInit {
     //let parameter = [{category: value, brand: 'Kwanga'}]
     //this.route.navigate(['/items-list', value], parameter)
     let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'}}
+    
   }
   showPendingList() {
     var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;

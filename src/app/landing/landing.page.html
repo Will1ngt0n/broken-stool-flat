@@ -34,15 +34,15 @@
           </div>
           <div class="pending-items">
             <div class="title-top">
-              <h5>Pedning Orders</h5>
+              <h5>Pending Orders</h5>
               <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
             <div class="items-list">
-              <ion-card>
-                <p class="floating" id="bottom-right">Items (8)</p>
-                <!-- <p><b>{{item.detail.userID}}</b></p>
-                <p>R {{item.detail.totalPrice}}</p>
-                <p>REF: {{item.refNo}}</p> -->
+              <ion-card  *ngFor='let item of pendingOrders'>
+                <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
+                <p><b>{{item.details.name}}</b></p>
+                <p>R {{item.details.totalPrice}}</p>
+                <p>REF: {{item.refNo}}</p> 
   
               </ion-card>
             </div>
@@ -53,18 +53,18 @@
               <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
             <div class="items-list">
-              <ion-card>
+              <ion-card *ngFor='let item of allProducts'>
                 <img src="../../assets/imgs/images.jpg" alt="">
-                <p><b>SoHo Skirt</b></p>
-                <p>R 799.90</p>
+                <p><b>{{item.data.name}}</b></p>
+                <p>{{item.data.quantity}}</p>
                 
                 <div class="quantities">
                   <div>
-                      <ion-icon name="remove"></ion-icon>
+                      <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                   </div>
-                  <div><input type="number" value="78"></div>
-                  <div><ion-icon name="add"></ion-icon></div>
-                  <div>Save</div>
+                  <div><input type="number" [id]='item.productID' [value]="item.data.quantity" (keyup)='changePrice(value, item)'></div>
+                  <div><ion-icon name="add" (click)='add(item)'></ion-icon></div>
+                  <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
                 </div>
   
               </ion-card>

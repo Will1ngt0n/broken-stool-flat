@@ -16,6 +16,7 @@ export class LandingPage implements OnInit {
   allProducts : Array<any> = []
   inventory : Array<any> = []
   history : Array<any> = []
+  readyOrders : Array<any> = []
   pendingOrders : Array<any> = []
   addForm : boolean 
   formHasValues : boolean 
@@ -283,6 +284,8 @@ export class LandingPage implements OnInit {
         if(brand === 'Kwanga'){
           this.kwangaProducts.push(result[key])
           this.allProducts.push(result[key])
+          console.log(this.allProducts);
+          
         }else if(brand === 'Dankie Jesu'){
           this.dankieJesuProducts.push(result[key])
           this.allProducts.push(result[key])
@@ -312,17 +315,42 @@ export class LandingPage implements OnInit {
   getPendingOrders(){
     return this.productService.getPendingOrders().then(result => {
       this.pendingOrders = result
+      console.log(this.pendingOrders);
+      for(let key in this.pendingOrders){
+        this.loadUserName(this.pendingOrders[key].details.userID)
+      }
     })
+  }
+  loadUserName(data){
+
+      // return this.productService.loadUser(ID).then(result => {
+      //   this.pendingOrders[key].name = result
+      //   console.log(this.pendingOrders);
+      // })
+    return this.productService.loadUser(data).then(result => {
+      console.log(result);
+      for(let key in this.pendingOrders){
+        if(this.pendingOrders[key].details.userID === result.userID){
+          this.pendingOrders[key].details.name = result.name
+        }
+      }
+      console.log(this.pendingOrders);
+      
+    })
+    //thisgffdsg
+
+    
   }
   getReadyOrders(){
     return this.productService.getReadyOrders().then(result => {
+      this.readyOrders = result
     })
   }
 
   // get orders that are closed, history, status == closed
   getClosedOrders(){
     return this.productService.getClosedOrders().then(result => {
-      
+      this.history = result
     })
   }
   closeOrder(docID){
@@ -353,5 +381,40 @@ export class LandingPage implements OnInit {
     var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
     inventoryItems[0].style.display = "none"
 
+  }
+  subtract(item){
+    console.log(item.productID);
+    for(let key in this.allProducts){
+      if(this.allProducts[key].productID === item.productID){
+        this.allProducts[key].data.quantity = this.allProducts[key].data.quantity - 1
+      }
+    }
+  }
+  add(item){
+    console.log(item);
+    for(let key in this.allProducts){
+      if(this.allProducts[key].productID === item.productID){
+        this.allProducts[key].data.quantity = this.allProducts[key].data.quantity + 1
+      }
+    }
+  }
+  changePrice(event, item){
+    console.log(item);
+    //console.log(event);
+    let number = document.getElementById(item.productID)['value']
+    console.log(number)
+    for(let key in this.allProducts){
+      if(this.allProducts[key].productID === item.productID){
+        this.allProducts[key].data.quantity = number
+      }
+    }
+    
+  }
+  saveQuantity(brand, category, productID, quantity){
+    console.log(brand, category, productID, quantity);
+    return this.productService.updateQuantity(brand, category, productID, quantity).then(result => {
+      console.log(result);
+      
+    })
   }
 }
