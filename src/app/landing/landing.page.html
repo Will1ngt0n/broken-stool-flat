@@ -21,12 +21,12 @@
               <h5>History</h5>
               <ion-icon name="close" id="closer"></ion-icon>
             </div>
-            <div class="items-list">
+            <div class="items-list" *ngFor='let item of history'>
               <ion-card>
                 <p class="floating">Paid</p>
-                <p><b>John Doe</b></p>
-                <p>R 799.90</p>
-                <p>REF: NGH2345678987654</p>
+                <!-- <p><b>{{item.detail.userID}}</b></p>
+                <p>R {{item.detail.totalPrice}}</p>
+                <p>REF: {{item.refNo}}</p> -->
                 <p>Items (8)</p>
   
               </ion-card>
@@ -40,9 +40,9 @@
             <div class="items-list">
               <ion-card>
                 <p class="floating" id="bottom-right">Items (8)</p>
-                <p><b>John Doe</b></p>
-                <p>R 799.90</p>
-                <p>REF: NGH2345678987654</p>
+                <!-- <p><b>{{item.detail.userID}}</b></p>
+                <p>R {{item.detail.totalPrice}}</p>
+                <p>REF: {{item.refNo}}</p> -->
   
               </ion-card>
             </div>

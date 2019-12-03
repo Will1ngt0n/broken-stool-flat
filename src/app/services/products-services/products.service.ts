@@ -393,7 +393,7 @@ export class ProductsService {
         let data = result.docs[key].data()
         closedOrder.push({refNo : refNo, details : data})
       };
-      //  console.log(closedOrder);
+      console.log(closedOrder);
         return closedOrder
       })
   }

@@ -70,13 +70,6 @@ export class LandingPage implements OnInit {
       console.log(date);
       
     }
-    //this.loadSummerItems()
-
-    //this.loadBrandProducts()
-
-    //this.getSummerItems()
-    console.log(this.department);
-    // this.getAllItems()
     this.orderItems()
 
     this.getPendingOrders()
@@ -259,105 +252,15 @@ export class LandingPage implements OnInit {
     this.navCtrl.navigateForward(['sales-specials'], navOptions)    
   }
 
-  // getWinterItems(){
-  //   return this.productService.getSeasonalRecentItems('Winter').then(result => {
-  //     console.log(result);
-  //     //this.seasonalWear = result
-  //     let array : Array<any> = []
-  //     for(let key in result){
-  //           array.push(result[key])
-  
-        
-  //       console.log(key);
-  //       console.log(result[key]);
-        
-  //     }
-  //     console.log(array);
-  //     for(let i in array){
-  //       for(let j in this.allProducts){
-  //         console.log(this.allProducts[j].productID);
-  //         if(array[i] === this.allProducts[j].productID){
-  //           console.log(this.allProducts[j].productID);
-  //           this.winterGear.push(this.allProducts[j])
-  //       }
-  //     }
-  //   }
-  //   console.log(this.winterGear);
-    
-
-  // })
-  // }
   viewMore(query){
     this.route.navigate(['/'+ query])
   }
-//   getSummerItems(){
-//     return this.productService.getSeasonalRecentItems('Summer').then(result => {
-//       console.log(result);
-//       // = result
-//       let array : Array<any> = []
-//       for(let key in result){
-        
-//             array.push(result[key])
-          
-        
-//         console.log(key);
-//         console.log(result[key]);
-        
-//       }
-//       console.log(array);
-//       for(let i in array){
-//         for(let j in this.allProducts){
-//           console.log(this.allProducts[j].productID);
-//           if(array[i] === this.allProducts[j].productID){
-//             console.log(this.allProducts[j].productID);
-//             this.summerGear.push(this.allProducts[j])
-//         }
-//       }
-//     }
-//     console.log(this.summerGear);
-    
-
-//   })
-// }
-  // getKwangaItems(){
-  //   this.productService.getKwangaPopularItems().then(result => {
-  //     console.log(result);
-  //     let array : Array<any> = []
-  //     for(let key in result){
-  //       for(let j in this.allProducts){
-  //         console.log(this.allProducts[j].productID);
-  //         if(result[key].productID === this.allProducts[j].productID){
-  //           console.log(this.allProducts[j].productID);
-  //           this.kwangaGear.push(this.allProducts[j])
-  //       }
-  //     }        
-  //     }
-  //     console.log(this.kwangaGear);
-      
-  //   })
-  // }
-  // getAllItems(){
-  //   // this.productService.getProducts().then(result => {
-  //   //   console.log(result);
-  //   //   this.allProducts = []
-  //   //   this.allProducts = result
-  //     // this.getSummerItems()
-  //     // this.getWinterItems()
-  //     // this.getKwangaItems()
-  //   // })
-  // }
   
   loadKwangaItems(){
     let category : String
-    console.log(this.kwangaCategories);
-    console.log('run this shixt again');
-    
-    
     for(let key in this.kwangaCategories){
       category  = this.kwangaCategories[key]
       this.loadItems(category, 'Kwanga')
-      console.log(this.kwangaCategories[key]);
-      console.log('kwanga is here');
       
     }
   }
@@ -372,130 +275,58 @@ export class LandingPage implements OnInit {
     
   }
   loadItems(category, brand){
-    //console.log(brand, ' ' , 'okay?');
-    
-    //console.log(1234);
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
-        //console.log(result);
       }
-      //console.log(result, 'result');
-      
       for(let key in result){
         if(brand === 'Kwanga'){
-         // console.log('I belong to Kwanga');
           this.kwangaProducts.push(result[key])
-         // console.log(this.kwangaProducts);
           this.allProducts.push(result[key])
-        // console.log(this.allProducts);
-          
         }else if(brand === 'Dankie Jesu'){
-          //console.log('I belong to Dankie Jesu');
           this.dankieJesuProducts.push(result[key])
           this.allProducts.push(result[key])
-          console.log(this.allProducts, 'I think i am running perfectly');
           if(result[key].data.isSummer === true){
             this.summerProducts.push(result[key])
-            console.log(this.summerProducts, 'I will never run ');
-            
           }else if(result[key].data.isSummer === false){
             this.winterProducts.push(result[key])
-            //console.log(result[key].data, 'more info');
-            
           }
         }
-        //console.log(result);
-        //this.allItems.push(result[key])
-        //this.currentViewedItems.push(result[key])
       }
       if(this.summerProducts.length > 0 ){
-      //  console.log(this.summerProducts, ' all summer products');
-      }else if(this.winterProducts.length > 0){
-      //  console.log(this.winterProducts, ' all winter products');       
+      }else if(this.winterProducts.length > 0){   
       }
 
-      
-      
-    //  console.log(this.kwangaProducts);
-  //    console.log(this.dankieJesuProducts);
-      //console.log(this.winterGear);
-     // console.log(this.summerGear);
-      
-      // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
-      // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
-      //console.log(this.summerGear);
-      //console.log(this.winterProducts);
-      //console.log(this.winterGear);
-      
       })
-
-      // this.summerGear.push(this.summerProducts[0])
-      // for(let i in this.summerProducts){
-      //   for(let j in this.summerGear){
-      //     if(this.summerGear[j].data.dateAdded < this.summerProducts[i].data.dateAdded){
-      //       let array = this.summerGear[j]
-      //       this.summerGear[j] = this.summerProducts[i]
-      //       this.summerGear.push(array)
-      //     }
-      //   }
-      // }
-
-      
       }
       orderItems(){
         this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
         this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
         for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
         for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
-        //console.log(this.summerGear);
-       // console.log(this.winterProducts);
-        //console.log(this.winterGear);
       }
-      //console.log(this.allItems);
   getInventory(){
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
     
   }
   getPendingOrders(){
-    //console.log(this.allProducts);
     return this.productService.getPendingOrders().then(result => {
-      //console.log(result);
-      //this.inventoryItems = result
-      //console.log(result);
       this.pendingOrders = result
-      //console.log(this.pendingOrders);
-      
     })
-    // return this.productService.getPendingOrders().then( result => {
-       
-    // })
   }
   getReadyOrders(){
-    //console.log(this.allProducts);
     return this.productService.getReadyOrders().then(result => {
-     // console.log(result);
-      ///this.inventoryItems = result
-      //console.log(result);
-      
     })
   }
 
   // get orders that are closed, history, status == closed
   getClosedOrders(){
-    ////console.log(this.allProducts);
     return this.productService.getClosedOrders().then(result => {
-      ///console.log(result);
-      //this.inventoryItems = result
-      //console.log(result);
       
     })
   }
   closeOrder(docID){
     return this.productService.closedOrder(docID).then(result => {
-      //console.log(result);
       
     })
   }

@@ -18,7 +18,11 @@ export class KwangaSubCategoriesPage implements OnInit {
     console.log(value);
     //let parameter = [{category: value, brand: 'Kwanga'}]
     //this.route.navigate(['/items-list', value], parameter)
-    let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Kwanga'}}
+    let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Kwanga', title: 'Kwanga Apparel', link: 'kwanga-sub-categories'}}
     this.navCtrl.navigateForward(['/items-list', value], parameter)
+  }
+
+  back(){
+    this.route.navigate(['/landing'])
   }
 }
