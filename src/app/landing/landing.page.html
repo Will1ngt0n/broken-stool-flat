@@ -201,4 +201,165 @@
       </div>
     </div>
   </div>
+  <div class="mobile-view">
+    <div class="small-nav">
+      <div (click)="showLeftSide()">
+        <ion-icon name="menu"></ion-icon>
+      </div>
+      <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
+      <div *ngIf="miniSearchBarState">
+        <ion-searchbar></ion-searchbar>
+      </div>
+      <div (click)="showSearchBar()">
+        <ion-icon name="{{searchButtonState}}"></ion-icon>
+      </div>
+      <div (click)="showRightSide()">
+        <ion-icon name="add-circle"></ion-icon>
+      </div>
+    </div>
+    <div id="left-items-list">
+      <div class="top-bar">
+        Menu
+        <ion-button fill="clear" color="dark" icon-only id="dismiss-button" (click)="hideSideMenu()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="small-side-items" *ngIf="sideMenuButtons">
+        <!-- showPendingList() -->
+        <div id="smallOne" (click)="showPendingListSmall()">Pending Orders</div>
+        <!-- showHistoryList() -->
+        <div id="smallTwo" (click)="showHistoryListSmall()">History</div>
+        <!-- showInventoryList() -->
+        <div id="smallThree" (click)="showInventoryListSmall()">Inventory</div>
+      </div>
+      <!-- *ngIf="!sideMenuButtons" -->
+      <div class="small-side-items" *ngIf="!sideMenuButtons">
+        <div class="forPending" *ngIf="listOfItems === 1">
+          <div class="title-top">
+            <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
+            <h5>Pending Orders</h5>
+          </div>
+          <div class="myItems">
+            <p><b>John Doe</b></p>
+            <p>R 799.90</p>
+            <p>REF: NGH2345678987654</p>
+            <p>Items (8)</p>
+          </div>
+        </div>
+        <div class="forHistory" *ngIf="listOfItems === 2">
+
+
+          <div class="title-top">
+            <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
+            <h5>History</h5>
+          </div>
+          <div class="myItems">
+            <p>Paid</p>
+            <p><b>John Doe</b></p>
+            <p>R 799.90</p>
+            <p>REF: NGH2345678987654</p>
+            <p>Items (8)</p>
+          </div>
+        </div>
+        <div class="forInventory" *ngIf="listOfItems === 3">
+
+          <div class="title-top">
+            <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
+            <h5>Inventory</h5>
+          </div>
+          <div class="myItems">
+            <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
+            <p id="nameOfItem">SoHo Jersey</p>
+            <p id="item-price">R799.90</p>
+            QTY:
+            <input type="number" id="qtyInput" value="30">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="right-items-list">
+      <div class="top-bar">
+        Add Item
+        <ion-button fill="clear" color="dark" icon-only id="dismiss-button" (click)="hideSideMenu()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    <div class="cont-small">
+      <div class="welcomer">
+        Welcome Lunga
+      </div>
+      <div class="butuh">
+
+        <ion-button expand="full" class="outerBtns" color="transparent">
+          <span>Sales &amp; Specials <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
+        </ion-button>
+        <div class="slide-section">
+          <ion-slides pager="false" [options]="sliderConfig" #sliderRef>
+            <ion-slide>
+              <div class="slide-img">
+                <h4>View All</h4>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="slide-img">
+                <h4>Dankie Jesu</h4>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="slide-img">
+                <h4>Kwanga Apparel</h4>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+          </ion-slides>
+        </div>
+        <ion-button expand="full" class="midBtns" color="transparent">
+          <span>Summer Gear <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
+        </ion-button>
+        <ion-button expand="full" class="midBtns" color="transparent">
+          <span>Winter Gear<ion-icon slot="end" name="arrow-forward"></ion-icon></span>
+        </ion-button>
+        <ion-button expand="full" class="outerBtns" color="transparent">
+          <span>Kwanga Apparel<ion-icon slot="end" name="arrow-forward"></ion-icon></span>
+        </ion-button>
+        <div class="slide-section2">
+          <ion-slides pager="false" [options]="sliderConfigSmall" #sliderRefSmall>
+            <ion-slide>
+              <div class="slide-img">
+                <p>SoHo Jeans</p>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="slide-img">
+                <p>SoHo Jeans</p>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="slide-img">
+                <p>SoHo Jeans</p>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="slide-img">
+                <p>SoHo Jeans</p>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="slide-img">
+                <p>SoHo Jeans</p>
+                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+              </div>
+            </ion-slide>
+          </ion-slides>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
