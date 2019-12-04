@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { AuthService } from '../services/auth-services/auth.service';
 import { ProductsService } from '../services/products-services/products.service';
 import * as moment from 'moment';
@@ -21,6 +21,7 @@ export class LandingPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
+  picture
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
@@ -47,6 +48,7 @@ export class LandingPage implements OnInit {
   orderedWinterProducts: Array<any> = []
   orderedSummerProducts: Array<any> = []
   seasonalWear: Array<any> = []
+  status = ['ready', 'recieved', 'collected', 'processed', 'cancelled']
   blackAvailable; blackPic
   brownAvailable; brownPic
   orangeAvailable; orangePic
@@ -72,8 +74,10 @@ export class LandingPage implements OnInit {
 
     }
     this.orderItems()
-
-    this.getPendingOrders()
+    for(let key in this.status){
+      this.getPendingOrders(this.status[key])
+    }
+ 
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
@@ -215,8 +219,9 @@ export class LandingPage implements OnInit {
     console.log(this.size);
     let date = moment(new Date()).format('LLLL');
     console.log(date);
-
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color).then(result => {
+    console.log(this.picture);
+    
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
       this.clearForm();
     })
 
@@ -312,12 +317,18 @@ export class LandingPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
     
   }
-  getPendingOrders(){
-    return this.productService.getPendingOrders().then(result => {
-      this.pendingOrders = result
-      console.log(this.pendingOrders);
-      for(let key in this.pendingOrders){
-        this.loadUserName(this.pendingOrders[key].details.userID)
+  getPendingOrders(status){
+    return this.productService.getPendingOrders(status).then(result => {
+      console.log(result);
+      let array = result
+      if(result.length !== 0){
+        for(let key in result){
+          this.pendingOrders.push(result[key])
+          console.log(this.pendingOrders);
+        }
+        for(let key in this.pendingOrders){
+          this.loadUserName(this.pendingOrders[key].details.userID)
+        }
       }
     })
   }
@@ -332,6 +343,7 @@ export class LandingPage implements OnInit {
       for(let key in this.pendingOrders){
         if(this.pendingOrders[key].details.userID === result.userID){
           this.pendingOrders[key].details.name = result.name
+          this.pendingOrders[key].details.cell = result.cell
         }
       }
       console.log(this.pendingOrders);
@@ -412,9 +424,23 @@ export class LandingPage implements OnInit {
   }
   saveQuantity(brand, category, productID, quantity){
     console.log(brand, category, productID, quantity);
+    if(quantity === ''){
+      quantity = 0
+    }
     return this.productService.updateQuantity(brand, category, productID, quantity).then(result => {
       console.log(result);
-      
     })
+  }
+  viewPendingOrder(item){
+    console.log(item);
+    let parameter : NavigationExtras = {queryParams : {refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing'}}
+    this.navCtrl.navigateForward(['pending-order'], parameter);
+  }
+  log(){
+    console.log(this.picture);
+  }
+
+  addPicture(){
+    
   }
 }

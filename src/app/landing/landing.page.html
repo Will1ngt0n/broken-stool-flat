@@ -38,7 +38,7 @@
               <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
             <div class="items-list">
-              <ion-card  *ngFor='let item of pendingOrders'>
+              <ion-card  *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
                 <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
                 <p><b>{{item.details.name}}</b></p>
                 <p>R {{item.details.totalPrice}}</p>
@@ -185,7 +185,7 @@
     <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
     <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
       </div>
-      <input *ngIf='' width='100px' type="file" value='Insert black picture' [(ngModel)]='blackPic'/>
+      <!-- <button  width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' (click)='addPicture()'></button> -->
       <!-- Div for colors, checkboxes work but currently can't add pictures -->
       <div class='colors' >
         <h5>Available colors</h5>

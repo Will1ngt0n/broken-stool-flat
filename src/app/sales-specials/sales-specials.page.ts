@@ -32,6 +32,7 @@ export class SalesSpecialsPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
+  picture
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   categoryOptions: Array<any> = ['Select Category']
   inventoryItems :  Array<any> = []
@@ -431,7 +432,7 @@ addItem() {
   this.route.navigate(['/'])
 }
 addProduct() {
-    return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color).then(result => {
+    return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
       this.clearForm();
     })
 }

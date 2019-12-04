@@ -10,6 +10,7 @@ import { ProductsService } from '../services/products-services/products.service'
 })
 export class AddItemsPage implements OnInit {
   department: any
+  picture
   departmentOptions: Array<any> = ['Department', 'Dankie Jesu', 'Kwanga']
   summer: boolean;
   winter: boolean = false
@@ -93,8 +94,7 @@ export class AddItemsPage implements OnInit {
     this.route.navigate(['/'])
   }
   addProduct() {
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size
-      , this.accessory, this.summer, this.colors).then(result => {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.colors, this.picture).then(result => {
       this.clearForm();
     })
   }

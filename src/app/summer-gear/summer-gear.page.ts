@@ -19,6 +19,7 @@ export class SummerGearPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
+  picture
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
@@ -45,6 +46,7 @@ export class SummerGearPage implements OnInit {
   orderedWinterProducts : Array<any> = []
   orderedSummerProducts : Array<any> = []
   seasonalWear : Array<any> = []
+  status = ['ready', 'recieved', 'collected', 'processed', 'cancelled']
   blackAvailable; blackPic
   brownAvailable;  brownPic
   orangeAvailable; orangePic
@@ -71,7 +73,9 @@ export class SummerGearPage implements OnInit {
     // }
     this.orderItems()
 
-    this.getPendingOrders()
+    for(let key in this.status){
+      this.getPendingOrders(this.status[key])
+    }
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
@@ -214,7 +218,7 @@ export class SummerGearPage implements OnInit {
     // let date = moment(new Date()).format('LLLL');
     // console.log(date);
 
-      return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color).then(result => {
+      return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
         this.clearForm();
       })
     
@@ -308,11 +312,42 @@ export class SummerGearPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
     
   }
-  getPendingOrders(){
-    return this.productService.getPendingOrders().then(result => {
-      this.pendingOrders = result
+  getPendingOrders(status){
+    return this.productService.getPendingOrders(status).then(result => {
+      console.log(result);
+      let array = result
+      if(result.length !== 0){
+        for(let key in result){
+          this.pendingOrders.push(result[key])
+          console.log(this.pendingOrders);
+        }
+        for(let key in this.pendingOrders){
+          this.loadUserName(this.pendingOrders[key].details.userID)
+        }
+      }
     })
   }
+  loadUserName(data){
+
+    // return this.productService.loadUser(ID).then(result => {
+    //   this.pendingOrders[key].name = result
+    //   console.log(this.pendingOrders);
+    // })
+  return this.productService.loadUser(data).then(result => {
+    console.log(result);
+    for(let key in this.pendingOrders){
+      if(this.pendingOrders[key].details.userID === result.userID){
+        this.pendingOrders[key].details.name = result.name
+        this.pendingOrders[key].details.cell = result.cell
+      }
+    }
+    console.log(this.pendingOrders);
+    
+  })
+  //thisgffdsg
+
+  
+}
   getReadyOrders(){
     return this.productService.getReadyOrders().then(result => {
     })
@@ -334,7 +369,7 @@ export class SummerGearPage implements OnInit {
     //let parameter = [{category: value, brand: 'Kwanga'}]
     //this.route.navigate(['/items-list', value], parameter)
     let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'}}
-    
+    this.navCtrl.navigateForward(['items-list', value], parameter);
   }
   showPendingList() {
     var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;

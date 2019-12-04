@@ -14,13 +14,17 @@ export class ItemsListPage implements OnInit {
   //summerCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags']
   //winterCategories : Array<any> = ['Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
   allItems : Array<any> = []
-  currentViewedItems : Array<any> = []
+  currentViewedItems : Array<any> = [] //products under the category and brand the user just clicked on in previous pages
   price
   description
   quantity
   name
+  productName
+  //promos and updates
   itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID
-  pricePercentage; priceNumber; startDate; endDate
+  editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
+
+  //pricePercentage; priceNumber; startDate; endDate
   promoUdpate: string;
   link
   title
@@ -34,6 +38,7 @@ export class ItemsListPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
+  picture
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
    categoryOptions: Array<any> = ['Select Category']
   inventoryItems :  Array<any> = []
@@ -55,6 +60,7 @@ export class ItemsListPage implements OnInit {
   orderedWinterProducts : Array<any> = []
   orderedSummerProducts : Array<any> = []
   seasonalWear : Array<any> = []
+  status = ['ready', 'recieved', 'collected', 'processed', 'cancelled']
   blackAvailable; blackPic
   brownAvailable;  brownPic
   orangeAvailable; orangePic
@@ -81,7 +87,9 @@ export class ItemsListPage implements OnInit {
     // }
     this.orderItems()
 
-    this.getPendingOrders()
+    for(let key in this.status){
+      this.getPendingOrders(this.status[key])
+    }
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
@@ -153,13 +161,13 @@ export class ItemsListPage implements OnInit {
   checkValidity(){
     console.log(this.department);
     console.log(this.selectedCategory);
-    console.log(this.itemName);
+    console.log(this.productName);
     console.log(this.description);
     console.log(this.price);
     console.log(this.size);
     console.log(this.color);
 
-    if(this.selectedCategory === undefined || this.department === undefined || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === ''){
+    if(this.selectedCategory === undefined || this.department === undefined || this.size.length === 0 || this.color.length === 0 || this.productName === '' || this.description === '' || this.price === ''){
       this.addForm = false
       console.log(this.addForm);
       
@@ -167,7 +175,7 @@ export class ItemsListPage implements OnInit {
       this.addForm = true
       console.log(this.addForm);
     }
-    if(this.department !== undefined || this.selectedCategory !== undefined||  this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== ''){
+    if(this.department !== undefined || this.selectedCategory !== undefined||  this.size.length !== 0 || this.color.length !== 0 || this.productName !== '' || this.description !== '' || this.price !== ''){
       this.formHasValues = true
       console.log(this.formHasValues);
       
@@ -214,14 +222,14 @@ export class ItemsListPage implements OnInit {
   addProduct() {
     console.log(this.department);
     console.log(this.selectedCategory);
-    console.log(this.itemName);
+    console.log(this.productName);
     console.log(this.description);
     console.log(this.price);
     console.log(this.size);
     //let date = moment(new Date()).format('LLLL');
    // console.log(date);
 
-      return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color).then(result => {
+      return this.productsService.addItem(this.department, this.selectedCategory, this.productName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
         this.clearForm();
       })
     
@@ -234,7 +242,7 @@ export class ItemsListPage implements OnInit {
     this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
-    this.itemName = ''
+    this.productName = ''
     this.price = ''
     this.description = ''
     this.size = [];
@@ -258,9 +266,9 @@ export class ItemsListPage implements OnInit {
   //   //this.navCtrl.navigateForward(['sales-specials'], navOptions)    
   // }
 
-  viewMore(query){
-    this.route.navigate(['/'+ query])
-  }
+  // viewMore(query){
+  //   this.route.navigate(['/'+ query])
+  // }
   
   loadKwangaItems(){
     let category : String
@@ -280,11 +288,27 @@ export class ItemsListPage implements OnInit {
   loadViewedCategory(){
     
   }
+  //Loading items from the category and brand the user just clicked on in the previous pages
+  loadCategoryItems(category, brand){
+    let data : Array<any> = []
+    return this.productsService.loadCategoryItems(category, brand).then(result => {
+      if(result !== undefined){
+      }
+      console.log(result);
+      
+      for(let key in result){
+        console.log(result[key]);
+        this.currentViewedItems.push(result[key])
+      }
+    })
+  }
   loadItems(category, brand){
     let data : Array<any> = []
     return this.productsService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
       }
+      console.log(result);
+      
       for(let key in result){
         if(brand === 'Kwanga'){
           this.kwangaProducts.push(result[key])
@@ -315,11 +339,42 @@ export class ItemsListPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
     
   }
-  getPendingOrders(){
-    return this.productsService.getPendingOrders().then(result => {
-      this.pendingOrders = result
+  getPendingOrders(status){
+    return this.productsService.getPendingOrders(status).then(result => {
+      console.log(result);
+      let array = result
+      if(result.length !== 0){
+        for(let key in result){
+          this.pendingOrders.push(result[key])
+          console.log(this.pendingOrders);
+        }
+        for(let key in this.pendingOrders){
+          this.loadUserName(this.pendingOrders[key].details.userID)
+        }
+      }
     })
   }
+  loadUserName(data){
+
+    // return this.productService.loadUser(ID).then(result => {
+    //   this.pendingOrders[key].name = result
+    //   console.log(this.pendingOrders);
+    // })
+  return this.productsService.loadUser(data).then(result => {
+    console.log(result);
+    for(let key in this.pendingOrders){
+      if(this.pendingOrders[key].details.userID === result.userID){
+        this.pendingOrders[key].details.name = result.name
+        this.pendingOrders[key].details.cell = result.cell
+      }
+    }
+    console.log(this.pendingOrders);
+    
+  })
+  //thisgffdsg
+
+  
+}
   getReadyOrders(){
     return this.productsService.getReadyOrders().then(result => {
     })
@@ -356,7 +411,7 @@ export class ItemsListPage implements OnInit {
       console.log(brand);
       console.log(this.currentCategory);
       console.log(this.currentCategory);
-      this.loadItems(this.currentCategory, brand)
+      this.loadCategoryItems(this.currentCategory, brand)
     })
   }
   // loadKwangaItems(){
@@ -399,11 +454,19 @@ export class ItemsListPage implements OnInit {
   //     //console.log(this.allItems);
   //   })
   // }
-  promoteItem(pricePercentage, priceNumber, startDate, endDate, itemBrand, itemCategory, itemID){
-    return this.productsService.promoteItem(this.pricePercentage, this.priceNumber, this.startDate, this.endDate, this.itemBrand, this.itemCategory, this.itemID).then(result => {
-      console.log(result);
+  promoteItem(){
+    console.log(this.editPercentage);
+    console.log(this.editStartDate);
+    console.log(this.editEndDate);
+    console.log(this.itemID);
+    let price = this.itemPrice - this.itemPrice*this.editPercentage/100
+    console.log(price);
+    
+    
+    // return this.productsService.promoteItem(this.pricePercentage, this.priceNumber, this.startDate, this.endDate, this.itemBrand, this.itemCategory, this.itemID).then(result => {
+    //   console.log(result);
       
-    })
+    // })
   }
   deleteItem(productID, brand, category){
     return this.productsService.deleteItemFromInventory(productID, brand, category).then(result => {
@@ -421,10 +484,12 @@ export class ItemsListPage implements OnInit {
     })
   }
   updateItem(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory){
-    return this.productsService.updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName).then(result => {
-      console.log(result);
+    console.log(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory);
+    
+    // return this.productsService.updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName).then(result => {
+    //   console.log(result);
       
-    })
+    // })
   }
   submitUpdatedItem(itemName, itemPrice, itemDescription){
 

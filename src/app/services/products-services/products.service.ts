@@ -12,7 +12,7 @@ export class ProductsService {
     this.products = []
   }
 
-  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color){
+  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture){
    // console.log(department);
   //  console.log(selectedCategory);
     return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
@@ -42,6 +42,13 @@ export class ProductsService {
           })
         }
       }
+      //firebase.storage().ref().child(result.id + '')
+      let storageRef = firebase.storage().ref('clothes/' + result.id)
+      console.log(picture);
+      
+      storageRef.put(picture).then((data) => {
+        console.log('Saved');
+      })
     })
   }
 
@@ -350,8 +357,8 @@ export class ProductsService {
     
   }
   
-  getPendingOrders(){
-    return firebase.firestore().collection('Order').where('status', '==', 'Order recieved').get().then(result => {
+  getPendingOrders(status){
+    return firebase.firestore().collection('Order').where('status', '==', status).get().then(result => {
       let pendingOrder = []
      // console.log(result);
       
@@ -373,9 +380,10 @@ export class ProductsService {
     return firebase.firestore().collection('userProfile').doc(userID).get().then(data => {
       let user
       let userName = data.data().name
+      let number = data.data().cellPhone
       let userID = data.id
       console.log(userName, userID);
-      user = {name: userName, userID: userID}
+      user = {name: userName, userID: userID, cell: number}
       return user
     })
   }
@@ -394,9 +402,10 @@ export class ProductsService {
       return readyOrder
     })
   }
-
+  //getClosedOrders()
+  //retrieving all order history
   getClosedOrders(){
-    return firebase.firestore().collection('Order').where('status', '==', 'closed').get().then(result => {
+    return firebase.firestore().collection('orderHistory').get().then(result => {
       let closedOrder = []
       //console.log(result);
       
@@ -411,9 +420,13 @@ export class ProductsService {
         return closedOrder
       })
   }
+
+  //closeOrder(),
+  //similar to orderCollected() ln 457 but for delivery
   closedOrder(orderID){
     return firebase.firestore().collection('Order').doc(orderID).update({
       status : 'closed'
+      //status: 'collected' ?
     })
   }
   updateQuantity(brand, category, productID, quantity){
@@ -422,5 +435,40 @@ export class ProductsService {
     }).then( result => {
       return result
     })
+  }
+
+  getOrderDetails(refNo){
+    return firebase.firestore().collection('Order').doc(refNo).get().then(result => {
+      let item = result.data()
+      let data : Array<any> = []
+      console.log(item);
+      
+      data = [{details: item, refNo: refNo}]
+      return data
+    })
+  }
+  //orderReady(), orderCollected, cancelOrder(), processOrder()
+  //four functions from pending-orders page. changing order status
+  // only using processOrder()
+  orderReady(refNo){
+    return firebase.firestore().collection('Order').doc(refNo).update({
+      status: 'ready'
+    })
+  }
+  orderCollected(refNo){
+    return firebase.firestore().collection('Order').doc(refNo).update({
+      status: 'collected'
+    })
+  }
+  cancelOrder(refNo){
+    return firebase.firestore().collection('Order').doc(refNo).update({
+      status: 'cancelled'
+    }) 
+  }
+  processOrder(refNo, status){
+    console.log(status);
+    return firebase.firestore().collection('Order').doc(refNo).update({
+      status: status
+    }) 
   }
 } 

@@ -4,6 +4,28 @@
       <p id="topic-item"><b>{{promoUdpate}}</b></p>
       <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
       <div class="item-data">
+        <h3>{{itemName}}</h3>
+        <p class="item-detail">
+          R {{itemPrice}}
+        </p>
+        <p class="item-detail">Description</p>
+        <p class="description">
+          {{itemDescription}}
+        </p>
+        <input type="text" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'>
+        <div class="gridded-inputs">
+          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate'/><input type="date" placeholder="End Date" [(ngModel)]='editEndDate'/>
+        </div>
+        <div class="gridded-inputs">
+          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+          <ion-button color="success"  (click)='promoteItem()'>Promote</ion-button>
+        </div>
+      </div>
+    </div>
+    <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
+      <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
+      <div class="item-data">
         <h3>Wu-Tang Hoodie</h3>
         <p class="item-detail">
           R 399.90
@@ -34,41 +56,19 @@
           <div></div>
           <div></div>
         </div>
-        <input type="text" placeholder="Item Name"><br>
+        <input type="text" placeholder="Item Name"><br/>
 
         <input type="number" placeholder="Price">
-        <br>
+        <br/>
         <textarea placeholder="Item Description" rows="3"></textarea>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success" (click)='promoteItem(pricePercentage, priceNumber, startDate, endDate, productID, brand, category)'>Promote</ion-button>
-        </div>
-      </div>
-    </div>
-    <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
-      <p id="topic-item"><b>{{promoUdpate}}</b></p>
-      <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
-      <div class="item-data">
-        <h3>{{itemName}}</h3>
-        <p class="item-detail">
-          R {{itemPrice}}
-        </p>
-        <p class="item-detail">Description</p>
-        <p class="description">
-          {{itemDescription}}
-        </p>
-        <input type="text" placeholder="Percentile % (e.g 20)">
-        <div class="gridded-inputs">
-          <input type="date" placeholder="Start Date"><input type="date" placeholder="End Date">
-        </div>
-        <div class="gridded-inputs">
-          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success"  (click)='updateItem(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory)'>Update</ion-button>
+          <ion-button color="success" (click)='updateItem(pricePercentage, priceNumber, startDate, endDate, productID, brand, category)'>Update</ion-button>
         </div>
       </div>
     </div>
   </div>
-  <div class="content-container">
+  <div class="content-container"> 
     <div class="nav-bar">
       <div class="nav-content">
         <div id="title">
@@ -94,8 +94,8 @@
             <ion-card>
               <p class="floating">Paid</p>
               <p class="floating" id="bottom-right">Items (8)</p>
-              <p><b>{{item.customerName}}</b></p>
-              <p>R {{item.detail.totalPrice}}</p>
+              <p><b>{{item.details.name}}</b></p>
+              <p>R {{item.details.totalPrice}}</p>
               <p>REF: {{item.refNo}}</p>
             </ion-card>
           </div>
@@ -108,8 +108,8 @@
           <div class="items-list" *ngFor='let item of pendingOrders'>
             <ion-card>
               <p class="floating" id="bottom-right">Items (8)</p>
-              <p><b>{{item.customerName}}</b></p>
-              <p>R {{item.detail.totalPrice}}</p>
+              <p><b>{{item.details.name}}</b></p>
+              <p>R {{item.details.totalPrice}}</p>
               <p>REF: {{item.refNo}}</p>
             </ion-card>
           </div>
@@ -190,7 +190,7 @@
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
       </select><br>
     
-      <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkValidity()'>
+      <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='productName' (keyup)='checkValidity()'>
       <input type="number" class="user-input" placeholder = "Price" [(ngModel)]='price'  (keyup)='checkValidity()'>
       <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'  (keyup)='checkValidity()'></textarea>
       <div class="sizes">
@@ -203,7 +203,7 @@
     <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
     <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
       </div>
-      <input *ngIf='' width='100px' type="file" value='Insert black picture' [(ngModel)]='blackPic'/>
+      <!-- <input width='100px' type="file" value='Insert black picture' [(ngModel)]='picture'/> -->
       <!-- Div for colors, checkboxes work but currently can't add pictures -->
       <div class='colors' >
         <h5>Available colors</h5>
@@ -218,5 +218,6 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </ion-content>
