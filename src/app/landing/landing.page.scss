@@ -119,6 +119,7 @@ ion-searchbar {
   ion-note {
     color: #7c0000;
     font-weight: bold;
+    cursor: pointer;
   }
   .items {
     width: 100%;
@@ -179,6 +180,7 @@ ion-searchbar {
   ion-note {
     color: #7c0000;
     font-weight: bold;
+    cursor: pointer;
   }
   .items {
     width: 100%;
@@ -466,7 +468,7 @@ ion-searchbar {
     display: none;
   }
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1025px) {
   .mobile-view {
     display: none;
   }
@@ -503,6 +505,8 @@ ion-searchbar {
     animation: 300ms faderIn;
     ion-searchbar {
       width: 100%;
+      max-width: 250px;
+      float: right;
     }
   }
   .small-nav > div:nth-child(3) {
@@ -529,7 +533,7 @@ ion-searchbar {
     height: 100vh;
     background: rgb(255, 255, 255);
     position: absolute;
-    left: -0%;
+    left: -100%;
     z-index: 100000;
     overflow-y: hidden;
   }
@@ -603,7 +607,7 @@ ion-searchbar {
     }
   }
   .slide-img {
-    width: 100%;
+    width: calc(100% - 10px);
     height: 100%;
     background: red;
     border-radius: 10px;
@@ -631,60 +635,98 @@ ion-searchbar {
       text-shadow: 0px 3px 10px black;
     }
   }
-  .small-side-items{
+  .small-side-items {
     width: 100%;
     height: calc(100% - 35px);
     background: white;
     padding-top: 20px;
     animation: 300ms faderIn;
     overflow-y: scroll;
-    #smallOne, #smallTwo, #smallThree{
+    #smallOne,
+    #smallTwo,
+    #smallThree {
       width: 100%;
       height: 50px;
-      border-bottom: .5px solid rgba(0, 0, 0, 0.205);
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.205);
       line-height: 50px;
       text-align: center;
     }
-    #smallOne{
-      background: rgb(225, 225, 225)  
+    #smallOne {
+      background: rgb(225, 225, 225);
     }
-    #smallTwo{
-      background: rgb(235, 235, 235)
+    #smallTwo {
+      background: rgb(235, 235, 235);
     }
-    #smallThree{    
-      background: whitesmoke
+    #smallThree {
+      background: whitesmoke;
     }
-    .forPending, .forHistory, .forInventory{
+    .forPending,
+    .forHistory,
+    .forInventory {
       width: 100%;
-      height: 100%;
+      height: 90%;
+      overflow-y: scroll;
     }
   }
-  .myItems{
+  .myItems {
     width: calc(100% - 20px);
     margin: 10px auto;
     background: white;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.342);
-    p{
+    p {
       margin: 0;
     }
-    img{
+    img {
       width: 100%;
       height: 200px;
       object-fit: cover;
       border: 5px;
     }
-    #nameOfItem{
+    #nameOfItem {
       font-size: 18px;
       margin-top: 10px;
     }
-    #item-price{
+    #item-price {
       font-size: 14px;
       color: grey;
     }
-    #qtyInput{
+    #qtyInput {
       width: 100px;
     }
+  }
+  .inserter {
+    border-bottom: 1px solid black;
+    margin: 10px auto;
+    width: calc(100% - 20px);
+  }
+
+  select,
+  .user-input {
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .user-input {
+    padding-left: 5px;
+  }
+  textarea {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    resize: none;
+  }
+  .sizes {
+    width: 100%;
+  }
+
+  #saveBtton{
+    height: 30px
+  }
+  #backButton{
+    height: 30px;
+    margin-top: -10px;
   }
 }
