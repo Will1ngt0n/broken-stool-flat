@@ -514,12 +514,12 @@ getInventory(){
   
 }
 getPendingOrders(){
-  return this.productsService.getPendingOrders().then(result => {
-    if(result.length !== 0){
-      this.pendingOrders = result
-      console.log(this.pendingOrders, 'pending orders');      
-    }
-  })
+  //return this.productsService.getPendingOrders().then(result => {
+ //   if(result.length !== 0){
+  //    this.pendingOrders = result
+   //   console.log(this.pendingOrders, 'pending orders');      
+ //   }
+ // })
 }
 getReadyOrders(){
   return this.productsService.getReadyOrders().then(result => {
