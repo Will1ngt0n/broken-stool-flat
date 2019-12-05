@@ -62,6 +62,14 @@ export class SalesSpecialsPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable;  yellowPic
   whiteAvailable; whitePic
+
+
+
+
+
+
+  
+  miniSearchBarState: boolean = false;
   constructor(public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
 
     //this.getDankieJesuSales('Dankie Jesu')
@@ -514,12 +522,12 @@ getInventory(){
   
 }
 getPendingOrders(){
-  //return this.productsService.getPendingOrders().then(result => {
- //   if(result.length !== 0){
-  //    this.pendingOrders = result
-   //   console.log(this.pendingOrders, 'pending orders');      
- //   }
- // })
+  // return this.productsService.getPendingOrders().then(result => {
+  //   if(result.length !== 0){
+  //     this.pendingOrders = result
+  //     console.log(this.pendingOrders, 'pending orders');      
+  //   }
+  // })
 }
 getReadyOrders(){
   return this.productsService.getReadyOrders().then(result => {
@@ -648,5 +656,83 @@ filterItems(query, array){
 
     //return array.filter(item => item.toLowerCase().indexOf(query) >= 0);
     //return queryFormatted
+
+
+
+
+
+
+    
+}
+
+showPendingList() {
+  var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
+  historyItems[0].style.display = "block"
+}
+showHistoryList() {
+  var pendingItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
+  pendingItems[0].style.display = "block"
+}
+showInventoryList() {
+  var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
+  inventoryItems[0].style.display = "block"
+}
+dismissList() {
+  var historyItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
+  historyItems[0].style.display = "none";
+  var pendingItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
+  pendingItems[0].style.display = "none";
+  var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
+  inventoryItems[0].style.display = "none"
+
+}
+
+showLeftSide() {
+  console.log("Showing left side menu");
+  document.getElementById("left-items-list").style.left = "0"
+
+}
+searchButtonState:string = "search"
+showSearchBar() {
+  console.log("Showing searchbar");
+  if (this.miniSearchBarState == true) {
+    this.miniSearchBarState = false;
+    console.log(this.miniSearchBarState);
+    this.searchButtonState = "search"
+  }
+  else {
+    this.miniSearchBarState = true;
+    console.log(this.miniSearchBarState);
+    this.searchButtonState = "close"
+  }
+}
+showRightSide() {
+  console.log("Showing right side menu");
+  document.getElementById("right-items-list").style.right = "0"
+
+}
+
+sideMenuButtons: boolean = true;
+hideSideMenu() {
+  this.sideMenuButtons = true
+  document.getElementById("left-items-list").style.left = "-100%"
+  document.getElementById("right-items-list").style.right = "-100%"
+}
+listOfItems: number = 0
+showPendingListSmall(){
+  this.sideMenuButtons = false;
+  this.listOfItems = 1;
+}
+showHistoryListSmall(){
+  this.sideMenuButtons = false;
+  this.listOfItems = 2;
+}
+showInventoryListSmall(){
+  this.sideMenuButtons = false;
+  this.listOfItems = 3;
+}
+stepBackToBtns(){
+  this.sideMenuButtons = true;
+  this.listOfItems = 0;
 }
 }

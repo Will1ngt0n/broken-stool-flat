@@ -16,63 +16,66 @@
     </div>
     <div class="body-content">
       <div id="left" padding>
-          <div class="history-items">
-            <div class="title-top">
-              <h5>History</h5>
-              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
-            </div>
-            <div class="items-list" *ngFor='let item of history'>
-              <ion-card>
-                <p class="floating">Paid</p>
-                <!-- <p><b>{{item.detail.userID}}</b></p>
+        <div class="history-items">
+          <div class="title-top">
+            <h5>History</h5>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
+          </div>
+          <div class="items-list" *ngFor='let item of history'>
+            <ion-card>
+              <p class="floating">Paid</p>
+              <!-- <p><b>{{item.detail.userID}}</b></p>
                 <p>R {{item.detail.totalPrice}}</p>
                 <p>REF: {{item.refNo}}</p> -->
-                <p>Items (8)</p>
-  
-              </ion-card>
-            </div>
+              <p>Items (8)</p>
+
+            </ion-card>
           </div>
-          <div class="pending-items">
-            <div class="title-top">
-              <h5>Pending Orders</h5>
-              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
-            </div>
-            <div class="items-list">
-              <ion-card  *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
-                <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
-                <p><b>{{item.details.name}}</b></p>
-                <p>R {{item.details.totalPrice}}</p>
-                <p>REF: {{item.refNo}}</p> 
-  
-              </ion-card>
-            </div>
+        </div>
+        <div class="pending-items">
+          <div class="title-top">
+            <h5>Pending Orders</h5>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
-          <div class="inventory-items">
-            <div class="title-top">
-              <h5>Inventory</h5>
-              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
-            </div>
-            <div class="items-list">
-              <ion-card *ngFor='let item of allProducts'>
-                <img src="../../assets/imgs/images.jpg" alt="">
-                <p><b>{{item.data.name}}</b></p>
-                <p>{{item.data.quantity}}</p>
-                
-                <div class="quantities">
-                  <div>
-                      <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
-                  </div>
-                  <div><input type="number" [id]='item.productID' [value]="item.data.quantity" (keyup)='changePrice(value, item)'></div>
-                  <div><ion-icon name="add" (click)='add(item)'></ion-icon></div>
-                  <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
+          <div class="items-list">
+            <ion-card *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
+              <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
+              <p><b>{{item.details.name}}</b></p>
+              <p>R {{item.details.totalPrice}}</p>
+              <p>REF: {{item.refNo}}</p>
+
+            </ion-card>
+          </div>
+        </div>
+        <div class="inventory-items">
+          <div class="title-top">
+            <h5>Inventory</h5>
+            <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
+          </div>
+          <div class="items-list">
+            <ion-card *ngFor='let item of allProducts'>
+              <img src="../../assets/imgs/images.jpg" alt="">
+              <p><b>{{item.data.name}}</b></p>
+              <p>{{item.data.quantity}}</p>
+
+              <div class="quantities">
+                <div>
+                  <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
-  
-              </ion-card>
-            </div>
+                <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
+                    (keyup)='changePrice(value, item)'></div>
+                <div>
+                  <ion-icon name="add" (click)='add(item)'></ion-icon>
+                </div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
+              </div>
+
+            </ion-card>
           </div>
-          <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
-          <div class="side-buttons" (click)="showHistoryList()">History</div>
-          <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
+        </div>
+        <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
+        <div class="side-buttons" (click)="showHistoryList()">History</div>
+        <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
       </div>
       <div id="mid">
         <div class="top-bar">
@@ -157,46 +160,57 @@
         </div>
       </div>
       <div id="right">
-        
+
         <div class="adding">
           <h4>Add Item</h4>
-        
-       <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory" (click)='isAccessory($event)'>
-       <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer" (click)='isSummer($event)'>
-        <select (click)="changeDepartment($event);">
-        <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
-    
-      </select><br>
-    
-      <select [disabled]='!department' (click)="changeCategory($event);" >
-          <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
-      </select><br>
-    
-      <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkValidity()'>
-      <input type="number" class="user-input" placeholder = "Price" [(ngModel)]='price'  (keyup)='checkValidity()'>
-      <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'  (keyup)='checkValidity()'></textarea>
-      <div class="sizes">
-        
-    <input type='checkbox' name='checkboxXS'  (change)='check($event, "XS")'> XS
-    <input type='checkbox' name='checkboxS'  (change)='check($event, "S")'> S 
-    <input type='checkbox' name='checkboxM'  (change)='check($event, "M")'> M
-    <input type='checkbox' name='checkboxL'  (change)='check($event, "L")'> L
-    <input type='checkbox' name='checkboxXL'  (change)='check($event, "XL")'> XL
-    <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
-    <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
-      </div>
-      <!-- <button  width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' (click)='addPicture()'></button> -->
-      <!-- Div for colors, checkboxes work but currently can't add pictures -->
-      <div class='colors' >
-        <h5>Available colors</h5>
-        <input type='checkbox' name='checkboxBlack'  (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type='checkbox' name='checkboxBrown'  (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type='checkbox' name='checkboxOrange'  (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type='checkbox' name='checkboxYellow'  (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type='checkbox' name='checkboxWhite'  (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-      </div>
-      <ion-button [disabled]='!addForm' (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
-      <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
+
+          <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory"
+            (click)='isAccessory($event)'>
+          <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer"
+            (click)='isSummer($event)'>
+          <select (click)="changeDepartment($event);">
+            <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
+
+          </select><br>
+
+          <select [disabled]='!department' (click)="changeCategory($event);">
+            <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
+          </select><br>
+
+          <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName'
+            (keyup)='checkValidity()'>
+          <input type="number" class="user-input" placeholder="Price" [(ngModel)]='price' (keyup)='checkValidity()'>
+          <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'
+            (keyup)='checkValidity()'></textarea>
+          <div class="sizes">
+
+            <input type='checkbox' name='checkboxXS' (change)='check($event, "XS")'> XS
+            <input type='checkbox' name='checkboxS' (change)='check($event, "S")'> S
+            <input type='checkbox' name='checkboxM' (change)='check($event, "M")'> M
+            <input type='checkbox' name='checkboxL' (change)='check($event, "L")'> L
+            <input type='checkbox' name='checkboxXL' (change)='check($event, "XL")'> XL
+            <input type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
+            <input type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
+          </div>
+          <!-- <button  width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' (click)='addPicture()'></button> -->
+          <!-- Div for colors, checkboxes work but currently can't add pictures -->
+          <div class='colors'>
+            <h5>Available colors</h5>
+            <input type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px'
+              style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type='checkbox' name='checkboxBrown' (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px'
+              style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type='checkbox' name='checkboxOrange' (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px'
+              style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type='checkbox' name='checkboxYellow' (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px'
+              style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img width='15px'
+              style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
+          </ion-button>
+          <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form
+          </ion-button>
         </div>
       </div>
     </div>
@@ -236,7 +250,9 @@
       <div class="small-side-items" *ngIf="!sideMenuButtons">
         <div class="forPending" *ngIf="listOfItems === 1">
           <div class="title-top">
-            <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
+            <ion-button icon-only  (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
+            <ion-icon name="arrow-back" class="backBtn"></ion-icon>
+            </ion-button>
             <h5>Pending Orders</h5>
           </div>
           <div class="myItems">
@@ -250,7 +266,9 @@
 
 
           <div class="title-top">
-            <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
+              <ion-button icon-only  (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
+              <ion-icon name="arrow-back" class="backBtn"></ion-icon>
+              </ion-button>
             <h5>History</h5>
           </div>
           <div class="myItems">
@@ -264,7 +282,9 @@
         <div class="forInventory" *ngIf="listOfItems === 3">
 
           <div class="title-top">
-            <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
+              <ion-button icon-only  (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
+              <ion-icon name="arrow-back" class="backBtn"></ion-icon>
+              </ion-button>
             <h5>Inventory</h5>
           </div>
           <div class="myItems">
@@ -273,6 +293,8 @@
             <p id="item-price">R799.90</p>
             QTY:
             <input type="number" id="qtyInput" value="30">
+            <br>
+            <ion-button id="saveBtton">Save</ion-button>
           </div>
         </div>
       </div>
@@ -284,6 +306,55 @@
           <ion-icon name="close"></ion-icon>
         </ion-button>
       </div>
+      <br>
+      <div>
+
+        <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory"
+          (click)='isAccessory($event)'>
+        <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer" (click)='isSummer($event)'>
+        <select (click)="changeDepartment($event);">
+          <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
+
+        </select><br>
+
+        <select [disabled]='!department' (click)="changeCategory($event);">
+          <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
+        </select><br>
+
+        <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkValidity()'>
+        <input type="number" class="user-input" placeholder="Price" [(ngModel)]='price' (keyup)='checkValidity()'>
+        <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'
+          (keyup)='checkValidity()'></textarea>
+        <div class="sizes">
+
+          <input type='checkbox' name='checkboxXS' (change)='check($event, "XS")'> XS
+          <input type='checkbox' name='checkboxS' (change)='check($event, "S")'> S
+          <input type='checkbox' name='checkboxM' (change)='check($event, "M")'> M
+          <input type='checkbox' name='checkboxL' (change)='check($event, "L")'> L
+          <input type='checkbox' name='checkboxXL' (change)='check($event, "XL")'> XL
+          <input type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
+          <input type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
+        </div>
+        <!-- <button  width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' (click)='addPicture()'></button> -->
+        <!-- Div for colors, checkboxes work but currently can't add pictures -->
+        <div class='colors'>
+          <h5>Available colors</h5>
+          <input type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px'
+            style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type='checkbox' name='checkboxBrown' (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px'
+            style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type='checkbox' name='checkboxOrange' (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px'
+            style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type='checkbox' name='checkboxYellow' (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px'
+            style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img width='15px'
+            style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
+        </ion-button>
+        <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form
+        </ion-button>
+      </div>
     </div>
     <div class="cont-small">
       <div class="welcomer">
@@ -291,7 +362,7 @@
       </div>
       <div class="butuh">
 
-        <ion-button expand="full" class="outerBtns" color="transparent">
+        <ion-button expand="full" class="outerBtns" color="transparent" (click)='viewSales("viewAll")'>
           <span>Sales &amp; Specials <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
         <div class="slide-section">
@@ -316,13 +387,13 @@
             </ion-slide>
           </ion-slides>
         </div>
-        <ion-button expand="full" class="midBtns" color="transparent">
+        <ion-button expand="full" class="midBtns" color="transparent"  (click)='viewMore("summer-gear")'>
           <span>Summer Gear <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
-        <ion-button expand="full" class="midBtns" color="transparent">
+        <ion-button expand="full" class="midBtns" color="transparent" (click)='viewMore("winter-gear")'>
           <span>Winter Gear<ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
-        <ion-button expand="full" class="outerBtns" color="transparent">
+        <ion-button expand="full" class="outerBtns" color="transparent" (click)='viewMore("kwanga-sub-categories")'>
           <span>Kwanga Apparel<ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
         <div class="slide-section2">
