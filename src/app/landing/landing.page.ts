@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AuthService } from '../services/auth-services/auth.service';
 import { ProductsService } from '../services/products-services/products.service';
 import * as moment from 'moment';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
+
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -22,7 +23,9 @@ export class LandingPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
-  picture
+  picture : File
+  searchArray
+  pictures : Array<any> = []
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
@@ -55,9 +58,18 @@ export class LandingPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable; yellowPic
   whiteAvailable; whitePic
+  dankieJesuPic : object = {}
+  kwangaPic  : object = {}
+  AllCatpic : object = {}
   miniSearchBarState: boolean = false;
   @ViewChild('sliderRef', { static: false }) slides: IonSlides;
   @ViewChild('sliderRefSmall', { static: true }) mySlides: IonSlides;
+  @ViewChild('fileInput', {static:true}) fileInput : ElementRef
+  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
+
+
+
+
 
   sliderConfig = {
     pagination: '.swiper-pagination',
@@ -83,7 +95,7 @@ export class LandingPage implements OnInit {
     roundLengths: false,
     effect: 'fade'
   }
-  constructor(public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
+  constructor(private alertController : AlertController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
     //this.productService.getCategories()
     this.loadDankieJesuItems()
@@ -102,15 +114,67 @@ export class LandingPage implements OnInit {
       console.log(date);
 
     }
-    this.orderItems()
-    for(let key in this.status){
+
+    for(let key = 0; key < this.status.length; key++){
       this.getPendingOrders(this.status[key])
+      if(key === this.status.length -1){
+        this.orderItems()
+      }
     }
  
     this.getReadyOrders()
-    this.getClosedOrders()
+    this.getOrderHistory()
     this.getInventory()
+
   }
+  signOutPopup(){
+    this.presentLogoutConfirmAlert()
+  }
+  async presentLogoutConfirmAlert() {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'You are about to sign out',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: (okay) => {
+            console.log('Confirm Okay');
+            return this.signOut()
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  signOut(){
+    return this.authService.signOut().then(result => {
+      console.log(result);
+      this.route.navigate(['/login'])
+    })
+  }
+
+  // ionViewCanEnter() : Promise<any> {
+  //   return this.authService.checkingAuthState().then(result => {
+  //     if(result === null){
+  //        //return this.route.navigate(['/login'])
+  //        return false
+  //     }else{
+  //       return true
+  //     }
+  //   }).catch(error => {
+  //     return this.route.navigate(['/login'])
+  //   })
+  // }
+
+  
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
 
@@ -143,6 +207,14 @@ export class LandingPage implements OnInit {
     this.checkValidity()
   }
   ngOnInit() {
+    return this.authService.checkingAuthState().then( result => {
+      if(result == null){
+        this.route.navigate(['/login'])
+      }else{
+        this.loadPictures()
+      }
+    })
+
   }
 
   ionViewDidEnter() {
@@ -249,7 +321,34 @@ export class LandingPage implements OnInit {
     let date = moment(new Date()).format('LLLL');
     console.log(date);
     console.log(this.picture);
+
+  //   let fullPath = this.picture
+  //   let format 
+  //  // let split = this.picture.split('\\')
+  //   console.log(split);
+  //   let imageData = split[split.length -1]
+  //   let split2 = imageData.split('.')
+  //   let imageFormat = split2[1]
+  //   console.log(split2);
+  //   let imageName = split2[0]
+  //   console.log(imageFormat);
+  //   console.log(imageName);
     
+    
+  //   new File(['fijRKjhudDjiokDhg1524164151'],
+  //                    '../img/Products/fijRKjhudDjiokDhg1524164151.jpg', 
+  //                    {type:'image/jpg'});
+
+
+  //   new File([imageName], fullPath, {type:'image/' + imageFormat});
+  //   let parts = [
+  //     new Blob([this.picture], {type: 'image/' + imageFormat})
+  //   ];
+  //   let picture = new File(parts, imageName, {
+  //     lastModified: Number(new Date()), // optional - default = now
+  //     type: '"image/jpeg"' // optional - default = ''
+  // })
+  //console.log(picture);
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
       this.clearForm();
     })
@@ -267,8 +366,11 @@ export class LandingPage implements OnInit {
     this.price = ''
     this.description = ''
     this.size = [];
+    this.picture = undefined
     document.getElementById('accessory')['checked'] = false;
     document.getElementById('summer')['checked'] = false;
+    this.fileInput.nativeElement.value = ''
+    this.departmentCombo.nativeElement.value ='Select Category'
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
     for (let i = 0; i < checkboxes.length; i++) {
       document.getElementsByName(checkboxes[i])[0]['checked'] = false
@@ -313,34 +415,53 @@ export class LandingPage implements OnInit {
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
-      }
-      for(let key in result){
+        for(let key in result){
         if(brand === 'Kwanga'){
           this.kwangaProducts.push(result[key])
           this.allProducts.push(result[key])
           console.log(this.allProducts);
-          
+          if(this.kwangaGear.length < 4){
+            this.kwangaGear.push(result[key])
+          }
         }else if(brand === 'Dankie Jesu'){
           this.dankieJesuProducts.push(result[key])
           this.allProducts.push(result[key])
           if(result[key].data.isSummer === true){
             this.summerProducts.push(result[key])
+            if(this.summerGear.length < 5){
+              this.summerGear.push(result[key])
+            }
           } else if (result[key].data.isSummer === false) {
             this.winterProducts.push(result[key])
+            if(this.winterGear.length < 5){
+              this.winterGear.push(result[key])
+            }
           }
         }
       }
+      }
+
       if(this.summerProducts.length > 0 ){
       }else if(this.winterProducts.length > 0){   
       }
-
+      console.log(this.kwangaGear, this.summerGear, this.winterGear)
+        this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        console.log(this.kwangaGear, this.summerGear, this.winterGear)
       })
       }
       orderItems(){
-        this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
-        for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
+        // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        // console.log(this.summerProducts);
+        
+        // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
+        // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
+        // console.log(this.summerGear);
+        // console.log(this.winterGear);
+        
+        
       }
   getInventory(){
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
@@ -389,10 +510,33 @@ export class LandingPage implements OnInit {
   }
 
   // get orders that are closed, history, status == closed
-  getClosedOrders(){
-    return this.productService.getClosedOrders().then(result => {
+  getOrderHistory(){
+    return this.productService.getOrderHistory().then(result => {
       this.history = result
+      let totalPrice : Number = 0
+      let numberOfItems : Number = 0
+      console.log(this.history);
+      for(let key in this.history){
+        totalPrice = 0
+        numberOfItems = 0
+        for(let i in this.history[key].details.orders){
+          console.log(this.history[key].details.orders[i]);
+          totalPrice = +totalPrice + +this.history[key].details.orders[i].cost * +this.history[key].details.orders[i].quantity
+          numberOfItems = +numberOfItems + +this.history[key].details.orders[i].quantity
+          console.log(totalPrice);
+          console.log(numberOfItems);
+        }
+        this.history[key].details.totalPrice = totalPrice
+        this.history[key].details.numberOfItems = numberOfItems
+        console.log(this.history[key]);
+        
+      }
     })
+  }
+  viewOrderHistory(item){
+    console.log(item);
+    let parameter : NavigationExtras = {queryParams : {category: item, link: '/landing', refNo: item.refNo, userID: item.details.uid}}
+    this.navCtrl.navigateForward(['order-receipt'], parameter);
   }
   closeOrder(docID){
     return this.productService.closedOrder(docID).then(result => {
@@ -465,13 +609,99 @@ export class LandingPage implements OnInit {
     let parameter : NavigationExtras = {queryParams : {refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing'}}
     this.navCtrl.navigateForward(['pending-order'], parameter);
   }
-  log(){
-    console.log(this.picture);
+ 
+  addPicture(event){
+    this.picture = <File>event.target.files[0]
   }
 
-  addPicture(){
+  //Search functionality
+  search(query){
+    this.filterItems(query, this.allProducts)
+    this.searchArray = []
+  }
+  filterItems(query, array){
+    let queryFormatted = query.toLowerCase();
+    console.log(queryFormatted);
+    console.log(array);
+    if(queryFormatted !== ''){
+      let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
+      let addBrand : boolean
+      let addCategory : boolean
+      let addName : boolean
+      addName = false
+      addCategory = false
+      addBrand = false
+      //console.log(brandResult);
+      //console.log(categoryResult);
+      console.log(nameResult);
+      this.searchArray = nameResult
+    }else if(queryFormatted === ''){
+      this.searchArray = []
+    }
   }
 
+  async loadPictures(){
+    return this.productService.getPictures().then(result => {
+      console.log(result);
+      let pictures : Array<any> = []
+      for(let key in result.items){
+        result.items[key].getDownloadURL().then(link => {
+          let path = result.items[key].fullPath
+          let splitPath = path.split('/')
+          let pictureID = splitPath[splitPath.length -1]
+          // picture['link'] = link
+          // picture['productID'] = pictureID
+          this.pictures.push({link : link, productID : pictureID})
+          console.log(this.pictures);
+          this.insertPictures()
+         });
+         return result
+        }
+    })
+  }
+  
+  insertPictures(){
+    console.log(this.pictures);
+    console.log(this.winterGear);
+    console.log(this.summerGear);
+    
+    
+    for(let i in this.pictures){
+      //Adding pictures to products arrays
+      for(let key in this.allProducts){
+        if(this.pictures[i].productID === this.allProducts[key].productID){
+          console.log('ddsfds');
+          this.allProducts[key].pictures = {link: this.pictures[i].link}
+          console.log(this.allProducts[key])
+        }
+
+      }
+      for(let key in this.kwangaProducts){
+        if(this.pictures[i].productID === this.kwangaProducts[key].productID){
+          console.log('ddsfds');
+          this.kwangaProducts[key].pictures = {link: this.pictures[i].link}
+          console.log(this.kwangaProducts[key])
+        }
+        this.kwangaPic = this.kwangaProducts[0]
+      }
+      for(let key in this.summerGear){
+        if(this.pictures[i].productID === this.summerGear[key].productID){
+          console.log('ddsfds');
+          this.summerGear[key].pictures = {link: this.pictures[i].link}
+          console.log(this.summerGear[key])
+        }
+        this.dankieJesuPic = this.summerProducts[0]
+      }
+      for(let key in this.winterGear){
+        if(this.pictures[i].productID === this.winterGear[key].productID){
+          console.log('ddsfds');
+          this.winterGear[key].pictures = {link: this.pictures[i].link}
+          console.log(this.winterGear[key])
+        }
+        this.AllCatpic = this.winterProducts[0]
+      }
+    }
+  }
   showLeftSide() {
     console.log("Showing left side menu");
     document.getElementById("left-items-list").style.left = "0"

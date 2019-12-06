@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
+import { AuthService } from '../services/auth-services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-sales-specials',
@@ -33,6 +35,7 @@ export class SalesSpecialsPage implements OnInit {
   formHasValues : boolean 
   department : any
   picture
+  pictures : Array<any> = []
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   categoryOptions: Array<any> = ['Select Category']
   inventoryItems :  Array<any> = []
@@ -62,7 +65,9 @@ export class SalesSpecialsPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable;  yellowPic
   whiteAvailable; whitePic
-  constructor(public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
+  newPrice; newPricePercentage; newStartDate; newEndDate
+  promoUpdate
+  constructor(private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
 
     //this.getDankieJesuSales('Dankie Jesu')
 
@@ -98,20 +103,63 @@ export class SalesSpecialsPage implements OnInit {
     this.getClosedOrders()
     this.getInventory()
   }
+  signOutPopup(){
+    this.presentLogoutConfirmAlert()
+  }
+  async presentLogoutConfirmAlert() {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'You are about to sign out',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: (okay) => {
+            console.log('Confirm Okay');
+            return this.signOut()
+          }
+        }
+      ]
+    });
 
+    await alert.present();
+  }
+  signOut(){
+    return this.authService.signOut().then(result => {
+      console.log(result);
+    })
+  }
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
-      console.log(params);
-      this.query = params['query']
-      console.log(this.query);
-      if(this.query === 'viewAll'){
-        //this.toggleAll()
-      }else if(this.query === 'Dankie Jesu'){
-       // this.toggleDankie()
+    return this.authService.checkingAuthState().then( result => {
+      if(result == null){
+        this.route.navigate(['/login'])
       }else{
-        ///this.toggleKwanga()
+        //this.loadPictures()
+        this.activatedRoute.queryParams.subscribe(params => {
+          console.log(params);
+          this.query = params['query']
+          console.log(this.query);
+          if(this.query === 'viewAll'){
+            //this.toggleAll()
+          }else if(this.query === 'Dankie Jesu'){
+           // this.toggleDankie()
+          }else{
+            ///this.toggleKwanga()
+          }
+          this.loadPictures().then(result => {
+            console.log(result);
+            
+          })
+        })
       }
     })
+
   }
   getKwangaSales(query){
     for(let i in this.allSales){
@@ -130,25 +178,52 @@ export class SalesSpecialsPage implements OnInit {
     console.log(this.dankieJesuSales);
   }
 
-  // getAllSales(){
-  //   return this.productsService.getAllSales().then(result => {
-  //     console.log(result);
-  //     this.allSales = result
-  //     console.log(this.allSales);
-  //     // for(let i = 0; i < this.allSales.length; i++){
-  //     //   if(this.allSales[i].brand === 'Kwanga'){
-  //     //     console.log('Kwanga');
-  //     //     this.kwangaSales.push(this.allSales[i])
-  //     //   }else if(this.allSales[i].brand === 'Dankie Jesu'){
-  //     //     console.log('Dankie Jesu');
-  //     //     this.dankieJesuSales.push(this.allSales[i])
-  //     //   }
-  //     // }
-  //     // console.log(this.kwangaSales);
-  //     // console.log(this.dankieJesuSales);
-  //     return result
-  //   })
-  // }
+  async loadPictures(){
+    return this.productsService.getPictures().then(result => {
+      console.log(result);
+      let pictures : Array<any> = []
+      for(let key in result.items){
+        result.items[key].getDownloadURL().then(link => {
+          let path = result.items[key].fullPath
+          let splitPath = path.split('/')
+          let pictureID = splitPath[splitPath.length -1]
+          // picture['link'] = link
+          // picture['productID'] = pictureID
+          this.pictures.push({link : link, productID : pictureID})
+          console.log(this.pictures);
+          this.insertPictures()
+         });
+         return result
+        }
+    })
+  }
+  insertPictures(){
+    for(let i in this.pictures){
+      //Adding pictures to products arrays
+      for(let key in this.kwangaFullSales){
+        if(this.pictures[i].productID === this.kwangaFullSales[key].productID){
+          console.log('ddsfds');
+          this.kwangaFullSales[key].pictures = {link: this.pictures[i].link}
+          console.log(this.kwangaFullSales[key])
+        }
+      }
+      for(let key in this.DJSales){
+        if(this.pictures[i].productID === this.DJSales[key].productID){
+          console.log('ddsfds');
+          this.DJSales[key].pictures = {link: this.pictures[i].link}
+          console.log(this.DJSales[key])
+        }
+      }
+      for(let key in this.allBrandSales){
+        if(this.pictures[i].productID === this.allBrandSales[key].productID){
+          console.log('ddsfds');
+          this.allBrandSales[key].pictures = {link: this.pictures[i].link}
+          console.log(this.allBrandSales[key])
+        }
+      }
+      
+    }
+  }
   
   toggleDankie(){
     //console.log(document.getElementById('dankie'));
@@ -290,22 +365,25 @@ export class SalesSpecialsPage implements OnInit {
     })
   }
 
-deleteItem(productID){
+deleteItem(item, productID){
   console.log(productID);
+  console.log(item);
   
-  return this.productsService.deleteSpecialsItem(productID).then(result => {
+  return this.productsService.deleteSpecialsItem(productID, item).then(result => {
     console.log(result);
   })
 }
 
-hideItem(productID){
-  return this.productsService.hideItem(productID).then(result => {
+hideItem(item, productID){
+  return this.productsService.hideItem(productID, item).then(result => {
     console.log(result);
   })
 }
 
-updateItem(){
-  
+updateItem(productID, item){
+  return this.productsService.updateSpecialsItem(productID, item, this.newPrice, this.newPricePercentage, this.newStartDate, this.newEndDate).then(result => {
+    
+  })
 }
 /////////Adding product form (validation and data retrieval)
 changeDepartment(event) {
@@ -514,12 +592,12 @@ getInventory(){
   
 }
 getPendingOrders(){
-  return this.productsService.getPendingOrders().then(result => {
-    if(result.length !== 0){
-      this.pendingOrders = result
-      console.log(this.pendingOrders, 'pending orders');      
-    }
-  })
+  // return this.productsService.getPendingOrders().then(result => {
+  //   if(result.length !== 0){
+  //     this.pendingOrders = result
+  //     console.log(this.pendingOrders, 'pending orders');      
+  //   }
+  // })
 }
 getReadyOrders(){
   return this.productsService.getReadyOrders().then(result => {
@@ -528,7 +606,7 @@ getReadyOrders(){
   })
 }
 getClosedOrders(){
-  return this.productsService.getClosedOrders().then(result => {
+  return this.productsService.getOrderHistory().then(result => {
     if(result.length !== 0){
       this.history = result
       console.log(this.history, 'closed orders');
@@ -541,7 +619,7 @@ closeOrder(docID){
     
   })
 }
-
+//Search functionality
 search(query){
   this.filterItems(query, this.allProducts)
   this.searchArray = []
@@ -551,11 +629,6 @@ filterItems(query, array){
   console.log(queryFormatted);
   console.log(array);
   if(queryFormatted !== ''){
-    //console.log(array.filter(item => item.brand.toLowerCase().indexOf(queryFormatted) >= 0) || array.filter(item => item.category.toLowerCase().indexOf(queryFormatted) >= 0) || array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0));
-    // console.log(array.filter(item => item.category.toLowerCase().indexOf(queryFormatted) >= 0));
-    // console.log(array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0));
-    let brandResult = array.filter(item => item.brand.toLowerCase().indexOf(queryFormatted) >= 0) 
-    let categoryResult = array.filter(item => item.category.toLowerCase().indexOf(queryFormatted) >= 0)
     let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
     let addBrand : boolean
     let addCategory : boolean
@@ -563,90 +636,32 @@ filterItems(query, array){
     addName = false
     addCategory = false
     addBrand = false
-    console.log(brandResult);
-    console.log(categoryResult);
+    //console.log(brandResult);
+    //console.log(categoryResult);
     console.log(nameResult);
-    if(brandResult.length !== 0){
-      for(let key in brandResult){
-        if(this.searchArray.length !== 0){
-          for(let i in this.searchArray){
-            if(this.searchArray[i].productID !== brandResult[key].productID){
-              // this.searchArray.push(brandResult[key])
-              addBrand = true
-            }else if(this.searchArray[i].productID === brandResult[key].productID){
-              console.log(this.searchArray[i].productID, '=', brandResult[key].productID, 'found a match');
-              addBrand = false
-              console.log(addBrand);
-              
-            }
-          }
-          if(addBrand === true){
-            this.searchArray.push(brandResult[key])
-          }
-        }else if(this.searchArray.length === 0){
-        this.searchArray.push(brandResult[key])
-        }
-      }
-    }
-    if(categoryResult.length !== 0){
-      for(let key in categoryResult){
-        if(this.searchArray.length !== 0){
-          for(let i in this.searchArray){
-            if(this.searchArray[i].productID !== categoryResult[key].productID){
-             // this.searchArray.push(categoryResult[key])
-             addCategory = true
-            }else if(this.searchArray[i].productID === categoryResult[key].productID){
-              console.log(this.searchArray[i].productID,'=', categoryResult[key].productID, 'found a match');
-              addCategory = false
-              console.log(addCategory);
-              
-            }
-          }
-          if(addCategory === true){
-            this.searchArray.push(categoryResult[key])
-          }
-        }else if(this.searchArray.length === 0){
-         this.searchArray.push(categoryResult[key])
-        }
-
-
-      }
-    }
-    if(nameResult.length !== 0){
-      for(let key in nameResult){
-        if(this.searchArray.length !== 0){
-          for(let i in this.searchArray){
-            if(this.searchArray[i].productID !== nameResult[key].productID){
-              
-              
-              // this.searchArray.push(nameResult[key])
-              addName = true
-            }else if(this.searchArray[i].productID === nameResult[key].productID){
-              console.log(this.searchArray[i].productID,'=', nameResult[key].productID, 'found a match');
-              
-              addName = false
-              console.log(addName);
-              
-            }
-          }
-          if(addName === true){
-            this.searchArray.push(nameResult[key])
-          }
-        }else if(this.searchArray.length === 0){
-         this.searchArray.push(nameResult[key])
-        }
-
-      }
-    }
-    console.log(this.searchArray);
-    
+    this.searchArray = nameResult
   }else if(queryFormatted === ''){
     this.searchArray = []
   }
+}
 
+toggleUpdate(item) {
+  console.log(item);
+  this.promoUpdate = 'Update item'
+  console.log(this.promoUpdate);
   
-
-    //return array.filter(item => item.toLowerCase().indexOf(query) >= 0);
-    //return queryFormatted
+  var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
+  promoUpd[0].style.display = "flex";
+  // this.promoUdpate = "Promote item"
+  // this.itemName = name
+  // this.itemPrice = price
+  // this.itemDescription = description
+  // this.itemBrand = brand
+  // this.itemCategory = category
+  // this.itemID = productID
+  // this.newEndDate = 
+  // this.newPrice = 
+  // this.newPricePercentage =
+  // this.newStartDate =
 }
 }

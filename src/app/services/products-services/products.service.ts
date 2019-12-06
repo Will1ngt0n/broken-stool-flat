@@ -42,7 +42,7 @@ export class ProductsService {
           })
         }
       }
-      //firebase.storage().ref().child(result.id + '')
+
       let storageRef = firebase.storage().ref('clothes/' + result.id)
       console.log(picture);
       
@@ -248,17 +248,28 @@ export class ProductsService {
     })
   }
 
-  deleteSpecialsItem(productID){
-    return firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
+  deleteSpecialsItem(productID, item){
+    return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).delete().then(result => {
     //  console.log(result);
       return result
+    }).catch(error => {
+      return 'Not deleted'
     })
   }
-  hideItem(productID){
-    return firebase.firestore().collection('Specials').doc(productID).update({
+  hideItem(productID, item){
+    return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).update({
       hideItem : true
     }).then(result => {
      // console.log(result);
+    })
+  }
+
+  updateSpecialsItem(productID, item, newPrice, newPricePercentage, newStartDate, newEndDate){
+    return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).update({
+      saleprice: newPrice,
+      endDate: newEndDate,
+      startDate: newStartDate,
+      discount: newPricePercentage
     })
   }
   
@@ -334,22 +345,27 @@ export class ProductsService {
      // console.log(result);
     })
   }
-  updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName){
+  updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes){
     return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
       price : itemPrice,
       description : itemDescription,
-      name : itemName
+      name : itemName,
+      size: sizes
+    }).then(result => {
+
+      return 'success'
     })
   }
-  promoteItem(pricePercentage, priceNumber, startDate, endDate, itemBrand, itemCategory, itemID){
+  promoteItem(price, percentage, startDate, endDate, itemBrand, itemCategory, itemID){
     return firebase.firestore().collection('Specials').doc(itemBrand).collection(itemCategory).doc(itemID).set({
-      saleprice : priceNumber,
+      saleprice : price,
+      discount: percentage,
       startDate : startDate,
       endDate : endDate,
       hideItem : false
     }).then(result => {
      // console.log(result);
-      
+      return 'success'
     })
   }
 
@@ -404,7 +420,7 @@ export class ProductsService {
   }
   //getClosedOrders()
   //retrieving all order history
-  getClosedOrders(){
+  getOrderHistory(){
     return firebase.firestore().collection('orderHistory').get().then(result => {
       let closedOrder = []
       //console.log(result);
@@ -447,6 +463,18 @@ export class ProductsService {
       return data
     })
   }
+  getOrderHistoryDetails(refNo){
+    return firebase.firestore().collection('orderHistory').doc(refNo).get().then(result => {
+      let item = result.data()
+      let data : Array<any> = []
+      console.log(item);
+      
+      data = [{details: item, refNo: refNo}]
+      console.log(data);
+      
+      return data
+    })
+  }
   //orderReady(), orderCollected, cancelOrder(), processOrder()
   //four functions from pending-orders page. changing order status
   // only using processOrder()
@@ -460,15 +488,50 @@ export class ProductsService {
       status: 'collected'
     })
   }
-  cancelOrder(refNo){
-    return firebase.firestore().collection('Order').doc(refNo).update({
-      status: 'cancelled'
-    }) 
+  cancelOrder(refNo, status, userID, products){
+    return firebase.firestore().collection('orderHistory').doc(refNo).set({
+      status: status,
+      reciept: 'N/A',
+      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      refNo: refNo,
+      uid: userID,
+      orders: products
+    }).then( result => {
+      return firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
+        console.log('deleted');
+        return 'Order has been cancelled'
+      })
+    })
   }
   processOrder(refNo, status){
     console.log(status);
     return firebase.firestore().collection('Order').doc(refNo).update({
       status: status
     }) 
+  }
+  getPictures(){
+    return firebase.storage().ref('clothes').listAll().then(result => {
+      //let picture : object = {}
+      let pictures : Array<any> = []
+      for(let key in result.items){
+        result.items[key].getDownloadURL().then(link => {
+          let path = result.items[key].fullPath
+          let splitPath = path.split('/')
+          let pictureID = splitPath[splitPath.length -1]
+          // picture['link'] = link
+          // picture['productID'] = pictureID
+          pictures.push({link : link, productID : pictureID})
+          console.log(pictures);
+          
+         });
+         console.log('idiot');
+         
+         console.log(pictures);
+         return result
+      }
+
+      
+      //return pictures
+    })
   }
 } 

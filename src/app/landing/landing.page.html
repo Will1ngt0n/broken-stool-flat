@@ -6,10 +6,10 @@
           <h4>DankieJesu</h4>
         </div>
         <div id="searchbar">
-          <ion-searchbar></ion-searchbar>
+          <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
         </div>
-        <div id="admin">
-          <p>Administrator</p>
+        <div id="admin" (click)='signOutPopup()'>
+          <p>Sign out</p>
           <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
         </div>
       </div>
@@ -21,13 +21,13 @@
               <h5>History</h5>
               <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
             </div>
-            <div class="items-list" *ngFor='let item of history'>
-              <ion-card>
+            <div class="items-list" >
+              <ion-card *ngFor='let item of history' (click)='viewOrderHistory(item)'>
                 <p class="floating">Paid</p>
-                <!-- <p><b>{{item.detail.userID}}</b></p>
-                <p>R {{item.detail.totalPrice}}</p>
-                <p>REF: {{item.refNo}}</p> -->
-                <p>Items (8)</p>
+                <p><b>{{item.details.userID}}</b></p>
+                <p>R {{item.details.totalPrice}}</p>
+                <p>REF: {{item.refNo}}</p>
+                <p>Items ({{item.details.numberOfItems}})</p>
   
               </ion-card>
             </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="items-list">
               <ion-card *ngFor='let item of allProducts'>
-                <img src="../../assets/imgs/images.jpg" alt="">
+                <img [src]="item.pictures.link" *ngIf ='item.pictures'  alt="">
                 <p><b>{{item.data.name}}</b></p>
                 <p>{{item.data.quantity}}</p>
                 
@@ -112,9 +112,9 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item" *ngFor='let item of summerProducts'>
+            <div class="box-item" *ngFor='let item of summerGear'>
               <p id="item-label">{{item.data.description}}</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
+              <img class="bg" [src]="item.pictures.link" *ngIf='item.pictures'  alt="">
             </div>
 
           </div>
@@ -130,9 +130,9 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item" *ngFor='let item of winterProducts'>
+            <div class="box-item" *ngFor='let item of winterGear'>
               <p id="item-label">{{item.data.description}}</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
+              <img class="bg" [src]="item.pictures.link" *ngIf ='item.pictures'  alt="">
             </div>
 
           </div>
@@ -148,9 +148,9 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item" *ngFor='let item of kwangaProducts'>
+            <div class="box-item" *ngFor='let item of kwangaGear'>
               <p id="item-label1">{{item.data.description}}</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" alt="">
+              <img class="bg" [src]="item.pictures.link" *ngIf ='item.pictures'  alt="">
             </div>
 
           </div>
@@ -164,7 +164,7 @@
        <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory" (click)='isAccessory($event)'>
        <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer" (click)='isSummer($event)'>
         <select (click)="changeDepartment($event);">
-        <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
+        <option #departmentCombo value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
     
       </select><br>
     
@@ -185,7 +185,10 @@
     <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
     <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
       </div>
-      <!-- <button  width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' (click)='addPicture()'></button> -->
+
+      <!-- <button value='Insert picture'> -->
+        <input #fileInput width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png" (change)='addPicture($event)' >
+      <!-- </button> -->
       <!-- Div for colors, checkboxes work but currently can't add pictures -->
       <div class='colors' >
         <h5>Available colors</h5>

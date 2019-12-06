@@ -8,8 +8,8 @@
         <div id="searchbar">
           <ion-searchbar></ion-searchbar>
         </div>
-        <div id="admin">
-          <p>Administrator</p>
+        <div id="admin" (click)='signOutPopup()'>
+          <p>Sign out</p>
           <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
         </div>
       </div>
@@ -21,9 +21,9 @@
         <div class="box-card">
           <div>
             <h4>Order Receipt</h4>
-            <h5>John Doe</h5>
-            <p class="nums">0813917127</p>
-            <p class="refNum"><b>REF</b> JFV21245664688656456</p>
+            <h5>{{name}}</h5>
+            <p class="nums">{{cell}}</p>
+            <p class="refNum"><b>REF</b> {{refNo}}</p>
             <div id="note">
               <i>Use this reference number to compare against the reference number provided by your back provider.</i>
             </div>
@@ -36,19 +36,17 @@
             </p>
             <div class="items">
               <div class="subtitle">
-                <p class="item">SOHO Ts</p>
-                <p class="item">SOHO Sweater</p>
+                <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
 
                 <p class="item"><b>Total Quantity</b></p>
                 <p class="item"><b>Grand Total</b></p>
                 <p><b>Order Type</b></p>
               </div>
               <div class="subtitle">
-                <p>2</p>
-                <p>1</p>
+                <p *ngFor='let item of products'>{{item.quantity}}</p>
 
-                <p><b>3</b></p>
-                <p><b>R 899.20</b></p>
+                <p><b>{{totalQuantity}}</b></p>
+                <p><b>R {{totalPrice}}</b></p>
                 <p>Collection</p>
               </div>
             </div>
@@ -57,66 +55,18 @@
             </p>
             <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
             <p id="Notifier">Order has been closed.</p>
-            <ion-button color="dark">Go Back</ion-button>
+            <ion-button color="dark" (click)='goBack()'>Go Back</ion-button>
           </div>
           <div>
             <p class="titleName">
               Items Ordered
             </p>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
+            <ion-card *ngFor='let item of products'>
+              <img [src]="item.pictures.link" *ngIf='item.pictures'  alt="">
               <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
-              </div>
-            </ion-card>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-              <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
-              </div>
-            </ion-card>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-              <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
-              </div>
-            </ion-card>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-              <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
-              </div>
-            </ion-card>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-              <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
-              </div>
-            </ion-card>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-              <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
-              </div>
-            </ion-card>
-            <ion-card>
-              <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-              <div class="cont-container">
-                <h4>SOHO Ts</h4>
-                <p>R 210.00</p>
-                <p><b>QTY</b> 2</p>
+                <h4>{{item.product_name}}</h4>
+                <p>R {{item.cost}}</p>
+                <p><b>QTY</b> {{item.quantity}}</p>
               </div>
             </ion-card>
           </div>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
-
+import * as firebase from 'firebase'
+import { AuthService } from '../services/auth-services/auth.service';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -18,11 +20,16 @@ export class ItemsListPage implements OnInit {
   price
   description
   quantity
+  searchArray
   name
   productName
+  pictures : Array<any> = []
   //promos and updates
-  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID
+  //promos
+  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
+  //updates
+  updateName; updatePrice; updateDescription; updateColors : Array<any> = []; updateSizes : Array<any> = []
 
   //pricePercentage; priceNumber; startDate; endDate
   promoUdpate: string;
@@ -66,7 +73,7 @@ export class ItemsListPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable;  yellowPic
   whiteAvailable; whitePic
-  constructor(private activatedRoute : ActivatedRoute, private productsService : ProductsService, public route : Router) {
+  constructor(private alertController : AlertController, private authService : AuthService, private activatedRoute : ActivatedRoute, private productsService : ProductsService, public route : Router) {
     console.log(this.department);
     //this.productsService.getCategories()
     this.loadDankieJesuItems()
@@ -93,6 +100,39 @@ export class ItemsListPage implements OnInit {
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
+  }
+  signOutPopup(){
+    this.presentLogoutConfirmAlert()
+  }
+  async presentLogoutConfirmAlert() {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'You are about to sign out',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: (okay) => {
+            console.log('Confirm Okay');
+            return this.signOut()
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  signOut(){
+    return this.authService.signOut().then(result => {
+      console.log(result);
+      
+    })
   }
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
@@ -300,7 +340,84 @@ export class ItemsListPage implements OnInit {
         console.log(result[key]);
         this.currentViewedItems.push(result[key])
       }
+     //this.loadPictures()
+     console.log('mine');
+     
+    }).then(result => {
+      console.log(result);
+      
+      //this.loadPictures()
     })
+
+  }
+  async loadPictures(){
+    return this.productsService.getPictures().then(result => {
+      console.log(result);
+      let pictures : Array<any> = []
+      for(let key in result.items){
+        result.items[key].getDownloadURL().then(link => {
+          let path = result.items[key].fullPath
+          let splitPath = path.split('/')
+          let pictureID = splitPath[splitPath.length -1]
+          // picture['link'] = link
+          // picture['productID'] = pictureID
+          this.pictures.push({link : link, productID : pictureID})
+          console.log(this.pictures);
+          this.insertPictures()
+         });
+         return result
+        }
+      
+      //return pictures
+    })
+  }
+
+
+
+  // loadPictures(){
+  //   console.log('damn');
+    
+  //   return firebase.storage().ref('clothes').listAll().then(result => {
+  //     console.log(result);
+      
+  //     let pictures : Array<any> = []
+  //     for(let key in result.items){
+  //       result.items[key].getDownloadURL().then(link => {
+  //         let path = result.items[key].fullPath
+  //         let splitPath = path.split('/')
+  //         let pictureID = splitPath[splitPath.length -1]
+  //         // picture['link'] = link
+  //         // picture['productID'] = pictureID
+  //         pictures.push({link : link, productID : pictureID})
+  //         console.log(pictures);
+  //         this.pictures.push({link : link, productID : pictureID})
+  //         console.log(this.pictures);
+  //         this.insertPictures()
+  //        });
+   
+    
+         
+  //     }
+  //   })
+  // }
+  insertPictures(){
+    for(let i in this.pictures){
+      //Adding pictures to allProducts arrays
+      for(let key in this.allProducts){
+        if(this.pictures[i].productID === this.allProducts[key].productID){
+          console.log('ddsfds');
+          this.allProducts[key].pictures = {link: this.pictures[i].link}
+          console.log(this.allProducts[key])
+        }
+      }
+      //Adding pictures to items on the current view
+      for(let key in this.currentViewedItems){
+        if(this.pictures[i].productID === this.currentViewedItems[key].productID){
+          this.currentViewedItems[key].pictures = {link: this.pictures[i].link}
+          console.log(this.currentViewedItems[key]);
+        }
+      }
+    }
   }
   loadItems(category, brand){
     let data : Array<any> = []
@@ -382,7 +499,7 @@ export class ItemsListPage implements OnInit {
 
   // get orders that are closed, history, status == closed
   getClosedOrders(){
-    return this.productsService.getClosedOrders().then(result => {
+    return this.productsService.getOrderHistory().then(result => {
       
     })
   }
@@ -398,21 +515,32 @@ export class ItemsListPage implements OnInit {
 
   //////native to this page
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(result => {
-      console.log(result);
-      this.currentCategory = result.category
-      let brand = result.brand
-      this.title = result.title
-      console.log(this.title)
-      this.link = result.link
-      console.log(this.link);
-      
-      
-      console.log(brand);
-      console.log(this.currentCategory);
-      console.log(this.currentCategory);
-      this.loadCategoryItems(this.currentCategory, brand)
+    return this.authService.checkingAuthState().then( result => {
+      if(result == null){
+        this.route.navigate(['/login'])
+      }else{
+        this.activatedRoute.queryParams.subscribe(result => {
+          console.log(result);
+          this.currentCategory = result.category
+          let brand = result.brand
+          this.title = result.title
+          console.log(this.title)
+          this.link = result.link
+          console.log(this.link);
+          
+          
+          console.log(brand);
+          console.log(this.currentCategory);
+          console.log(this.currentCategory);
+          this.loadCategoryItems(this.currentCategory, brand)
+          this.loadPictures().then(result => {
+            console.log(result);
+            
+          })
+        })
+      }
     })
+
   }
   // loadKwangaItems(){
   //   let category : String
@@ -463,10 +591,13 @@ export class ItemsListPage implements OnInit {
     console.log(price);
     
     
-    // return this.productsService.promoteItem(this.pricePercentage, this.priceNumber, this.startDate, this.endDate, this.itemBrand, this.itemCategory, this.itemID).then(result => {
-    //   console.log(result);
-      
-    // })
+    return this.productsService.promoteItem(price, this.editPercentage, this.editStartDate, this.editEndDate, this.itemBrand, this.itemCategory, this.itemID).then(result => {
+      console.log(result);
+      if(result === 'success'){
+        console.log(result);
+        return this.dismissPromo()
+      }
+    })
   }
   deleteItem(productID, brand, category){
     return this.productsService.deleteItemFromInventory(productID, brand, category).then(result => {
@@ -483,30 +614,35 @@ export class ItemsListPage implements OnInit {
       console.log(result);
     })
   }
-  updateItem(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory){
-    console.log(itemName, itemPrice, itemDescription, itemID, itemBrand, itemCategory);
+  updateItem(){
+    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.updateSizes);
+    //console.log(this.updateName);
     
-    // return this.productsService.updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName).then(result => {
-    //   console.log(result);
-      
-    // })
+    return this.productsService.updateItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes).then(result => {
+      console.log(result);
+      if(result === 'success'){
+        console.log(result);
+         return this.dismissPromo()
+      }
+    })
   }
   submitUpdatedItem(itemName, itemPrice, itemDescription){
 
   }
-  toggleUpdate(productID, brand, category, name, description, price) {
+  toggleUpdate(productID, brand, category, name, description, price, imageLink) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
     this.promoUdpate = "Update item"
-    this.itemName = name
-    this.itemPrice = price
-    this.itemDescription = description
+    this.updateName = name
+    this.updatePrice = price
+    this.updateDescription = description
     this.itemBrand = brand
     this.itemCategory = category
     this.itemID = productID
+    this.itemImageLink = imageLink
   }
-  togglePromo(productID, brand, category, name, description, price) {
+  togglePromo(productID, brand, category, name, description, price, imageLink) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
@@ -517,6 +653,7 @@ export class ItemsListPage implements OnInit {
     this.itemBrand = brand
     this.itemCategory = category
     this.itemID = productID
+    this.itemImageLink = imageLink
   }
   dismissPromo() {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
@@ -545,4 +682,48 @@ export class ItemsListPage implements OnInit {
     inventoryItems[0].style.display = "none"
 
   }
+
+  checkSizeUpdateCheckboxes(event, size){
+    console.log(size);
+    console.log(this.updateSizes);    
+    let checkbox = event.target['name']
+    if (checkbox) {
+      if (event.target.checked === true) {
+        this.updateSizes.push(size)
+        console.log(this.updateSizes);
+      } else if (event.target.checked === false) {
+        let index = this.updateSizes.indexOf(size)
+        console.log(index);
+        this.updateSizes.splice(index, 1)
+        console.log(this.updateSizes);
+      }
+    }
+    // console.log(event.target.checked);
+    // console.log(event.target['name']);
+  }
+//Search functionality
+search(query){
+  this.filterItems(query, this.allProducts)
+  this.searchArray = []
+}
+filterItems(query, array){
+  let queryFormatted = query.toLowerCase();
+  console.log(queryFormatted);
+  console.log(array);
+  if(queryFormatted !== ''){
+    let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
+    let addBrand : boolean
+    let addCategory : boolean
+    let addName : boolean
+    addName = false
+    addCategory = false
+    addBrand = false
+    //console.log(brandResult);
+    //console.log(categoryResult);
+    console.log(nameResult);
+    this.searchArray = nameResult
+  }else if(queryFormatted === ''){
+    this.searchArray = []
+  }
+}
 }

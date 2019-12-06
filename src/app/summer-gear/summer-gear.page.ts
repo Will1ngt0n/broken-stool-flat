@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 import { ProductsService } from '../services/products-services/products.service';
+import { AuthService } from '../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-summer-gear',
@@ -20,6 +21,8 @@ export class SummerGearPage implements OnInit {
   formHasValues : boolean 
   department : any
   picture
+  searchArray
+  searchInput
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
@@ -52,7 +55,7 @@ export class SummerGearPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable;  yellowPic
   whiteAvailable; whitePic
-  constructor(private navCtrl : NavController, public route : Router, public productService : ProductsService) {
+  constructor(private alertController : AlertController, private authService : AuthService, private navCtrl : NavController, public route : Router, public productService : ProductsService) {
     console.log(this.department);
     //this.productService.getCategories()
     this.loadDankieJesuItems()
@@ -79,6 +82,38 @@ export class SummerGearPage implements OnInit {
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
+  }
+  signOutPopup(){
+    this.presentLogoutConfirmAlert()
+  }
+  async presentLogoutConfirmAlert() {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'You are about to sign out',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: (okay) => {
+            console.log('Confirm Okay');
+            return this.signOut()
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  signOut(){
+    return this.authService.signOut().then(result => {
+      console.log(result);
+    })
   }
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
@@ -112,6 +147,13 @@ export class SummerGearPage implements OnInit {
     this.checkValidity()
   }
   ngOnInit() {
+    return this.authService.checkingAuthState().then( result => {
+      if(result == null){
+        this.route.navigate(['/login'])
+      }else{
+        //this.loadPictures()
+      }
+    })
   }
 
   ionViewDidEnter() {
@@ -355,7 +397,7 @@ export class SummerGearPage implements OnInit {
 
   // get orders that are closed, history, status == closed
   getClosedOrders(){
-    return this.productService.getClosedOrders().then(result => {
+    return this.productService.getOrderHistory().then(result => {
       
     })
   }
@@ -364,13 +406,41 @@ export class SummerGearPage implements OnInit {
       
     })
   }
-  switchViews(value){
+  navigateForward(value){
     console.log(value);
     //let parameter = [{category: value, brand: 'Kwanga'}]
     //this.route.navigate(['/items-list', value], parameter)
     let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'}}
     this.navCtrl.navigateForward(['items-list', value], parameter);
   }
+
+  //Search functionality
+  search(query){
+    this.filterItems(query, this.allProducts)
+    this.searchArray = []
+  }
+  filterItems(query, array){
+    let queryFormatted = query.toLowerCase();
+    console.log(queryFormatted);
+    console.log(array);
+    if(queryFormatted !== ''){
+      let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
+      let addBrand : boolean
+      let addCategory : boolean
+      let addName : boolean
+      addName = false
+      addCategory = false
+      addBrand = false
+      //console.log(brandResult);
+      //console.log(categoryResult);
+      console.log(nameResult);
+      this.searchArray = nameResult
+    }else if(queryFormatted === ''){
+      this.searchArray = []
+    }
+  }
+
+
   showPendingList() {
     var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
     historyItems[0].style.display = "block"

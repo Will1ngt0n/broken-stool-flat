@@ -6,10 +6,10 @@
             <h4>DankieJesu</h4>
           </div>
           <div id="searchbar">
-            <ion-searchbar></ion-searchbar>
+            <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
           </div>
-          <div id="admin">
-            <p>Administrator</p>
+          <div id="admin" (click)='signOutPopup()'>
+            <p>Sign out</p>
             <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
           </div>
         </div>
@@ -84,23 +84,23 @@
               Winter Gear
             </div>
           </div>
-          <div class="SubCat"  (click)='switchViews("Hoodies")'>
+          <div class="SubCat"  (click)='navigateForward("Hoodies")'>
             <h3>Hoodies</h3>
             <img src="../../assets/imgs/images.jpg" alt="">
           </div>
-          <div class="SubCat"  (click)='switchViews("Sweaters")'>
+          <div class="SubCat"  (click)='navigateForward("Sweaters")'>
             <h3>Sweaters</h3>
             <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
           </div>
-          <div class="SubCat"  (click)='switchViews("Track Suits")'>
+          <div class="SubCat"  (click)='navigateForward("Track Suits")'>
             <h3>Track Suits</h3>
             <img src="../../assets/imgs/3-Pic.jpg" alt="">
           </div>
-          <div class="SubCat"  (click)='switchViews("Winter Hats")'>
+          <div class="SubCat"  (click)='navigateForward("Winter Hats")'>
             <h3>Winter Hats</h3>
             <img src="../../assets/imgs/images (9).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Bags")'>
+          <div class="SubCat" (click)='navigateForward("Bags")'>
             <h3>Bags</h3>
             <img src="../../assets/imgs/images (4).jpg" alt="">
           </div>

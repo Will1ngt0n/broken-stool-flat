@@ -1,5 +1,81 @@
 
 <ion-content>
+    <div class="del-upd-del">
+        <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
+          <p id="topic-item"><b>{{promoUdpate}}</b></p>
+          <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
+          <div class="item-data">
+            <h3>{{itemName}}</h3>
+            <p class="item-detail">
+              R {{itemPrice}}
+            </p>
+            <p class="item-detail">Description</p>
+            <p class="description">
+              {{itemDescription}}
+            </p>
+            <input type="text" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'>
+            <div class="gridded-inputs">
+              <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' /><input type="date"
+                placeholder="End Date" [(ngModel)]='editEndDate' />
+            </div>
+            <div class="gridded-inputs">
+              <ion-button color="danger" (click)="dismissUpdate()">Cancel</ion-button>
+              <ion-button color="success" (click)='updateItem()'>Promote</ion-button>
+            </div>
+          </div>
+        </div>
+        <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update items'">
+          <p id="topic-item"><b>{{promoUdpate}}</b></p>
+          <img src="../../assets/imgs/images (4).jpg" alt="" id="item-image">
+          <div class="item-data">
+            <h3>Wu-Tang Hoodie</h3>
+            <p class="item-detail">
+              R 399.90
+            </p>
+            <p class="item-detail">Choose Avalable Sizes</p>
+            <div class="sizes-colours-item">
+              <ion-checkbox color="primary" name='checkboxXS' (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'>
+              </ion-checkbox>
+              <p id="text-size">XS</p>
+              <ion-checkbox color="primary" name='checkboxS' (ionChange)='checkSizeUpdateCheckboxes($event, "S")'>
+              </ion-checkbox>
+              <p id="text-size">S</p>
+              <ion-checkbox color="primary" name='checkboxM' (ionChange)='checkSizeUpdateCheckboxes($event, "M")'>
+              </ion-checkbox>
+              <p id="text-size">M</p>
+              <ion-checkbox color="primary" name='checkboxL' (ionChange)='checkSizeUpdateCheckboxes($event, "L")'>
+              </ion-checkbox>
+              <p id="text-size">L</p>
+              <ion-checkbox color="primary" name='checkboxXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'>
+              </ion-checkbox>
+              <p id="text-size">XL</p>
+              <ion-checkbox color="primary" name='checkboxXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'>
+              </ion-checkbox>
+              <p id="text-size">XXL</p>
+              <ion-checkbox color="primary" name='checkboxXXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'>
+              </ion-checkbox>
+              <p id="text-size">XXXL</p>
+            </div>
+            <p class="item-detail">Choose Available Colours</p>
+            <div class="sizes-colours-item">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <input type="text" placeholder="Item Name" [(ngModel)]='updateName' /><br />
+            <input type="number" placeholder="Price" [(ngModel)]='updatePrice' />
+            <br />
+            <textarea placeholder="Item Description" rows="3" [(ngModel)]='updateDescription'></textarea>
+            <div class="gridded-inputs">
+              <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+              <ion-button color="success" (click)='updateItem()'>Update</ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
   <div class="content-container">
     <div class="nav-bar">
       <div class="nav-content">
@@ -9,8 +85,8 @@
         <div id="searchbar">
           <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
         </div>
-        <div id="admin">
-          <p>Administrator</p>
+        <div id="admin" (click)='signOutPopup()'>
+          <p>Sign out</p>
           <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
         </div>
       </div>
@@ -97,9 +173,9 @@
               <p>{{item.data.description}}</p>
               <p><b>R {{item.data.salePrice}}</b></p>
               <div class="options">
-                <div (click)='updateItem(item.productID)'>Update</div>
-                <div (click)='hideItem(item.productID)'>Hide</div>
-                <div (click)='deleteItem(item.productID)'>Delete</div>
+                <div (click)='toggleUpdate(item)'>Update</div>
+                <div (click)='hideItem(item, item.productID)'>Hide</div>
+                <div (click)='deleteItem(item, item.productID)'>Delete</div>
               </div>
             </div>
           </div>
@@ -112,9 +188,9 @@
               <p>{{item.data.description}}</p>
               <p><b>R {{item.data.salePrice}}</b></p>
               <div class="options">
-                <div (click)='updateItem(item.productID)'>Update</div>
-                <div (click)='hideItem(item.productID)'>Hide</div>
-                <div (click)='deleteItem(item.productID)'>Delete</div>
+                <div (click)='toggleUpdate(item)'>Update</div>
+                <div (click)='hideItem(item, item.productID)'>Hide</div>
+                <div (click)='deleteItem(item, item.productID)'>Delete</div>
               </div>
             </div>
           </div>
@@ -128,9 +204,9 @@
                     <p>{{item.data.description}}</p>
                     <p><b>R {{item.data.salePrice}}</b></p>
                     <div class="options">
-                      <div (click)='updateItem(item.productID)'>Update</div>
-                      <div (click)='hideItem(item.productID)'>Hide</div>
-                      <div (click)='deleteItem(item.productID)'>Delete</div>
+                      <div (click)='toggleUpdate(item)'>Update</div>
+                      <div (click)='hideItem(item, item.productID)'>Hide</div>
+                      <div (click)='deleteItem(item, item.productID)'>Delete</div>
                     </div>
                   </div>
                 </div>
