@@ -463,12 +463,12 @@ ion-searchbar {
   }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1330px) {
   .content-container {
     display: none;
   }
 }
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1331px) {
   .mobile-view {
     display: none;
   }
@@ -602,9 +602,6 @@ ion-searchbar {
   }
   ion-slides {
     height: 100%;
-    ion-slide {
-      // border: 2px solid red;
-    }
   }
   .slide-img {
     width: calc(100% - 10px);

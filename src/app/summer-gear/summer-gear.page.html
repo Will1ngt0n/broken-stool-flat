@@ -162,7 +162,7 @@
 
     
   <div class="mobile-view">
-      <div class="small-nav">
+      <!-- <div class="small-nav">
         <div (click)="showLeftSide()">
           <ion-icon name="menu"></ion-icon>
         </div>
@@ -176,8 +176,8 @@
         <div (click)="showRightSide()">
           <ion-icon name="add-circle"></ion-icon>
         </div>
-      </div>
-      <div id="left-items-list">
+      </div> -->
+      <!-- <div id="left-items-list">
         <div class="my-top-bar">
           Menu
           <ion-button fill="clear" color="dark" icon-only id="dismiss-button" (click)="hideSideMenu()">
@@ -185,14 +185,10 @@
           </ion-button>
         </div>
         <div class="small-side-items" *ngIf="sideMenuButtons">
-          <!-- showPendingList() -->
           <div id="smallOne" (click)="showPendingListSmall()">Pending Orders</div>
-          <!-- showHistoryList() -->
           <div id="smallTwo" (click)="showHistoryListSmall()">History</div>
-          <!-- showInventoryList() -->
           <div id="smallThree" (click)="showInventoryListSmall()">Inventory</div>
         </div>
-        <!-- *ngIf="!sideMenuButtons" -->
         <div class="small-side-items" *ngIf="!sideMenuButtons">
           <div class="forPending" *ngIf="listOfItems === 1">
             <div class="title-top">
@@ -281,8 +277,6 @@
               <input type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
               <input type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
             </div>
-            <!-- <button  width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' (click)='addPicture()'></button> -->
-            <!-- Div for colors, checkboxes work but currently can't add pictures -->
             <div class='colors'>
               <h5>Available colors</h5>
               <input type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px'
@@ -301,9 +295,46 @@
             <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form
             </ion-button>
           </div>
-      </div>
+      </div> -->
       <div class="cont-small">
+          <div class="top-bar">
+            <ion-button color="dark" fill="outline" (click)='back()'>
+              <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+            <div class="page-title">
+              Summer Gear
+            </div>
+          </div>
+          <div class="SubCat" (click)='switchViews("T-Shirts")'>
+            <h3>T-Shirts</h3>
+            <img src="../../assets/imgs/images.jpg" alt="">
+          </div>
+          <div class="SubCat" (click)='switchViews("Sweaters")'>
+            <h3>Sweaters</h3>
+            <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
+          </div>
+          <div class="SubCat" (click)='switchViews("Caps")'>
+            <h3>Caps</h3>
+            <img src="../../assets/imgs/3-Pic.jpg" alt="">
+          </div>
+          <div class="SubCat" (click)='switchViews("Bucket Hats")'>
+            <h3>Bucket Hats</h3>
+            <img src="../../assets/imgs/images (9).jpg" alt="">
+          </div>
+          <div class="SubCat" (click)='switchViews("Sports")'>
+            <h3>Shorts</h3>
+            <img src="../../assets/imgs/images (5).jpg" alt="">
+          </div>
+          <div class="SubCat" (click)='switchViews("Crop Tops")'>
+            <h3>Crop Tops</h3>
+            <img src="../../assets/imgs/images (4).jpg" alt="">
+          </div>
+          <div class="SubCat" (click)='switchViews("Bags")'>
+            <h3>Bags</h3>
+            <img src="../../assets/imgs/images (7).jpg" alt="">
+          </div>
   
+        
       </div>
     </div>
   </ion-content>

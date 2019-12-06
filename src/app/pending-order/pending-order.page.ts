@@ -18,6 +18,7 @@ export class PendingOrderPage implements OnInit {
   cell
   totalQuantity : Number
   routingPage
+  status = ""
   constructor(private route : Router, private activatedRoute : ActivatedRoute, private productsService: ProductsService) { }
 
   ngOnInit() {
@@ -42,6 +43,9 @@ getOrder(refNo, name){
     this.item['details'].name = name
     console.log(this.item);
     this.products = this.item['details']['product']
+    this.status = this.item['details']['status'] // edited
+    console.log("Order Status: ",this.status);
+    
     this.quantity = this.products.length
     this.totalPrice = this.item['details']['totalPrice']
     console.log(this.products);
@@ -57,6 +61,7 @@ countQuantity(){
   
 }
 goBack(){
+  alert("clicked")
   this.route.navigate([this.routingPage])
 }
 
@@ -67,10 +72,11 @@ cancelOrder(){
   })
 }
 processOrder(){
+  alert("clicked")
   let status
-  if(this.item['details']['status'] === 'Order recieved' || this.item['details']['status'] === 'received'){
+  // if(this.item['details']['status'] === 'Order recieved' || this.item['details']['status'] === 'received'){
     status = 'processed'
-  }
+  // }
   return this.productsService.processOrder(this.refNo, status).then(result => {
 
   })
@@ -79,13 +85,23 @@ processOrder(){
 orderReady(){
   let status = 'ready'
   return this.productsService.processOrder(this.refNo, status).then(result => {
-
+    
   })
 }
 orderCollected(){
   let status = 'collected'
   return this.productsService.processOrder(this.refNo, status).then(result => {
-
+    window.location.reload()
   })
+}
+
+btnNext: string = "";
+showNext(){
+  if(this.btnNext == ""){
+    this.btnNext = "processed"
+  }
+  else if(this.btnNext == "processed"){
+    this.btnNext = "ready"
+  }
 }
 }

@@ -21,8 +21,8 @@
             <h5>History</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
-          <div class="items-list" *ngFor='let item of history'>
-            <ion-card>
+          <div class="items-list">
+            <ion-card *ngFor='let item of history'>
               <p class="floating">Paid</p>
               <!-- <p><b>{{item.detail.userID}}</b></p>
                 <p>R {{item.detail.totalPrice}}</p>
@@ -250,25 +250,28 @@
       <div class="small-side-items" *ngIf="!sideMenuButtons">
         <div class="forPending" *ngIf="listOfItems === 1">
           <div class="title-top">
-            <ion-button icon-only  (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
-            <ion-icon name="arrow-back" class="backBtn"></ion-icon>
+            <ion-button icon-only (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
+              <ion-icon name="arrow-back" class="backBtn"></ion-icon>
             </ion-button>
             <h5>Pending Orders</h5>
           </div>
-          <div class="myItems">
-            <p><b>John Doe</b></p>
-            <p>R 799.90</p>
-            <p>REF: NGH2345678987654</p>
-            <p>Items (8)</p>
+          <div class="myItems" *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
+            <p><b>{{item.details.name}}</b></p>
+            <p>R {{item.details.totalPrice}}</p>
+            <p>REF: {{item.refNo}}</p>
+            <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
           </div>
+          <ion-card>
+
+          </ion-card>
         </div>
         <div class="forHistory" *ngIf="listOfItems === 2">
 
 
           <div class="title-top">
-              <ion-button icon-only  (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
+            <ion-button icon-only (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
               <ion-icon name="arrow-back" class="backBtn"></ion-icon>
-              </ion-button>
+            </ion-button>
             <h5>History</h5>
           </div>
           <div class="myItems">
@@ -282,20 +285,39 @@
         <div class="forInventory" *ngIf="listOfItems === 3">
 
           <div class="title-top">
-              <ion-button icon-only  (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
+            <ion-button icon-only (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
               <ion-icon name="arrow-back" class="backBtn"></ion-icon>
-              </ion-button>
+            </ion-button>
             <h5>Inventory</h5>
           </div>
-          <div class="myItems">
+          <div class="myItems" *ngFor='let item of allProducts'>
             <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
-            <p id="nameOfItem">SoHo Jersey</p>
-            <p id="item-price">R799.90</p>
+            <p><b>{{item.data.name}}</b></p>
             QTY:
-            <input type="number" id="qtyInput" value="30">
+            <input type="number" id="qtyInput" [value]="item.data.quantity">
             <br>
-            <ion-button id="saveBtton">Save</ion-button>
+            <ion-button id="saveBtton"
+              (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</ion-button>
           </div>
+
+          <ion-card>
+            <img src="../../assets/imgs/images.jpg" alt="">
+            <p><b>{{item.data.name}}</b></p>
+            <p>{{item.data.quantity}}</p>
+
+            <div class="quantities">
+              <div>
+                <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
+              </div>
+              <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
+                  (keyup)='changePrice(value, item)'></div>
+              <div>
+                <ion-icon name="add" (click)='add(item)'></ion-icon>
+              </div>
+              <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
+            </div>
+
+          </ion-card>
         </div>
       </div>
     </div>
@@ -367,19 +389,19 @@
         </ion-button>
         <div class="slide-section">
           <ion-slides pager="false" [options]="sliderConfig" #sliderRef>
-            <ion-slide>
+            <ion-slide (click)='viewSales("viewAll")'>
               <div class="slide-img">
                 <h4>View All</h4>
                 <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
               </div>
             </ion-slide>
-            <ion-slide>
+            <ion-slide (click)='viewSales("Dankie Jesu")'>
               <div class="slide-img">
                 <h4>Dankie Jesu</h4>
                 <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
               </div>
             </ion-slide>
-            <ion-slide>
+            <ion-slide (click)='viewSales("Kwanga")'>
               <div class="slide-img">
                 <h4>Kwanga Apparel</h4>
                 <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
@@ -387,7 +409,7 @@
             </ion-slide>
           </ion-slides>
         </div>
-        <ion-button expand="full" class="midBtns" color="transparent"  (click)='viewMore("summer-gear")'>
+        <ion-button expand="full" class="midBtns" color="transparent" (click)='viewMore("summer-gear")'>
           <span>Summer Gear <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
         <ion-button expand="full" class="midBtns" color="transparent" (click)='viewMore("winter-gear")'>

@@ -246,3 +246,72 @@
           padding-right: 10px;
       }
   }
+
+  
+
+
+@media screen and (max-width: 850px){
+  .content-container{
+    display: none;
+  }
+}
+@media screen and (min-width: 851px){
+  .mobile-view{
+    display: none;
+  }
+}
+.mobile-view{
+  width: 100%;
+  height: 100%;
+  background: whitesmoke;
+  overflow-y: hidden;
+  .top{
+    width: 100%;
+    height: 50px;
+    background: white;
+    line-height: 50px;
+    font-weight: bold;
+    color: rgb(32, 32, 32)
+  }
+  #bckBtn{
+    margin: 0;
+    height: 100%;
+    float: left
+  }
+  .grid{
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+  }
+  #receipt{
+    border-top: 2px solid grey;
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 0;
+    ion-button{
+      width: 300px
+    }
+    #note{
+      font-size: 10px;
+    }
+  }
+  ion-card{
+    height: 100px;
+    img{
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+    .cont-container{
+        width: calc(100% - 120px);
+        height: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        h4{
+          font-size: 16px;
+        }
+        p{
+          font-size: 12px;
+        }
+    }
+  }
+}
