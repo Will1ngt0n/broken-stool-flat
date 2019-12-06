@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule) },
   { path: 'add-items', loadChildren: () => import('./add-items/add-items.module').then( m => m.AddItemsPageModule) },
   { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule) },
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'sign-in', loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule) },
   { path: 'order-receipt', loadChildren: () => import('./order-receipt/order-receipt.module').then( m => m.OrderReceiptPageModule) },
   { path: 'pending-order', loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule) },
-  { path: '**', redirectTo: 'landing', pathMatch: 'full' }
+  // { path: '**', redirectTo: 'login', pathMatch: 'full' }
 
 ];
 

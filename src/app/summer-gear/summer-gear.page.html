@@ -6,10 +6,10 @@
             <h4>DankieJesu</h4>
           </div>
           <div id="searchbar">
-            <ion-searchbar></ion-searchbar>
+            <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
           </div>
-          <div id="admin">
-            <p>Administrator</p>
+          <div id="admin" (click)='signOutPopup()'>
+            <p>Sign out</p>
             <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
           </div>
         </div>
@@ -84,31 +84,31 @@
               Summer Gear
             </div>
           </div>
-          <div class="SubCat" (click)='switchViews("T-Shirts")'>
+          <div class="SubCat" (click)='navigateForward("T-Shirts")'>
             <h3>T-Shirts</h3>
             <img src="../../assets/imgs/images.jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Sweaters")'>
+          <div class="SubCat" (click)='navigateForward("Sweaters")'>
             <h3>Sweaters</h3>
             <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Caps")'>
+          <div class="SubCat" (click)='navigateForward("Caps")'>
             <h3>Caps</h3>
             <img src="../../assets/imgs/3-Pic.jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Bucket Hats")'>
+          <div class="SubCat" (click)='navigateForward("Bucket Hats")'>
             <h3>Bucket Hats</h3>
             <img src="../../assets/imgs/images (9).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Sports")'>
+          <div class="SubCat" (click)='navigateForward("Shorts")'>
             <h3>Shorts</h3>
             <img src="../../assets/imgs/images (5).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Crop Tops")'>
+          <div class="SubCat" (click)='navigateForward("Crop Tops")'>
             <h3>Crop Tops</h3>
             <img src="../../assets/imgs/images (4).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Bags")'>
+          <div class="SubCat" (click)='navigateForward("Bags")'>
             <h3>Bags</h3>
             <img src="../../assets/imgs/images (7).jpg" alt="">
           </div>

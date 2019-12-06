@@ -13,7 +13,7 @@ export class AuthService {
   requestLogin(number, appVerifier){
     return firebase.auth().signInWithPhoneNumber(number, appVerifier).then(confirmationResult => {
       window.confirmationResult = confirmationResult;
-
+​
       let result = {success: true, result: confirmationResult}
       return result
     }).catch((error) => {
@@ -21,7 +21,7 @@ export class AuthService {
       return result
     });
   }
-
+​
   login(code, confirmationResult){
     return confirmationResult.confirm(code).then( (result) => {
       var user = result.user; console.log(user);
@@ -58,14 +58,32 @@ export class AuthService {
        return error
      })
   }
+​
+  loginWithEmail(email, password){
+    return firebase.firestore().collection('Admin').get().then(result => {
+      for(let key in result.docs){
+        let docEmail = result.docs[key].data().email
+        console.log(docEmail);
+        if(docEmail === email){
+          return firebase.auth().signInWithEmailAndPassword(email, password).then(result => {
+            console.log(result);
+            return result
+          })
+        }
+      }
+    })
+​
+  }
   //Allowing users to reset their password
   passwordReset(emailAddress){
-    firebase.auth().sendPasswordResetEmail(emailAddress).then(() => {
+   return firebase.auth().sendPasswordResetEmail(emailAddress).then(() => {
       // Email sent.
       console.log("Email has been sent")
+      return 'Email has been sent. Open your email to reset your password'
     }).catch((error) => {
       // An error happened.
       console.log(error)
+      return 'Error'
     });
   }
   //Function : Routing logged out users to the login page
@@ -124,8 +142,8 @@ export class AuthService {
     //   })
     // })
   }
-
-
+​
+​
   //delete?
   retrievingUserInfo(uid){
     return new Promise((resolve, reject) => {
@@ -145,7 +163,7 @@ export class AuthService {
       
     })
   }
-
+​
   updateProfile(userID, newUsername, username, newEmail, email){
     return new Promise((resolve, reject) => {
       if(newUsername !== username){
@@ -174,6 +192,6 @@ export class AuthService {
       resolve ()
     })
   }
-
-
+​
+​
 }

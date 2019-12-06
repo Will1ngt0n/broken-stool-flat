@@ -88,55 +88,10 @@
             <div class="btn-top" id="kwanga" (click)="toggleKwanga()">Kwanga Apparel</div>
           </div>
         </div>
-        <!-- <div class="SubCat" id="kwangaSubcat" *ngFor='let item of kwangaFullSales'>
-          <div class="gridder">
-            <img src="../../assets/imgs/images.jpg" alt="">
-            <div id="info">
-              <h5>{{item.data.name}}</h5>
-              <p>{{item.data.description}}</p>
-              <p><b>R {{item.data.salePrice}}</b></p>
-              <div class="options">
-                <div (click)='updateItem(item.productID)'>Update</div>
-                <div (click)='hideItem(item.productID)'>Hide</div>
-                <div (click)='deleteItem(item.productID)'>Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="SubCat" id="DankieSubcat" *ngFor='let item of DJSales'>
-          <div class="gridder">
-            <img src="../../assets/imgs/images.jpg" alt="">
-            <div id="info">
-              <h5>{{item.data.name}}</h5>
-              <p>{{item.data.description}}</p>
-              <p><b>R {{item.data.salePrice}}</b></p>
-              <div class="options">
-                <div (click)='updateItem(item.productID)'>Update</div>
-                <div (click)='hideItem(item.productID)'>Hide</div>
-                <div (click)='deleteItem(item.productID)'>Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="SubCat" id="AllSubcat" *ngFor='let item of allBrandSales'>
-          <div>
-            <div class="gridder">
-              <img src="../../assets/imgs/images.jpg" alt="">
-              <div id="info">
-                <h5>{{item.data.name}}</h5>
-                <p>{{item.data.description}}</p>
-                <p><b>R {{item.data.salePrice}}</b></p>
-                <div class="options">
-                  <div (click)='updateItem(item.productID)'>Update</div>
-                  <div (click)='hideItem(item.productID)'>Hide</div>
-                  <div (click)='deleteItem(item.productID)'>Delete</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div>
 
-        </div> -->
-        <div class="list" *ngIf="brandName === 'All'">
+        </div>
+        <!-- <div class="list" *ngIf="brandName === 'All'">
 
           <div class="SubCat" id="first">
             <div class="gridder">
@@ -156,12 +111,32 @@
         </div>
         <div class="list" *ngIf="brandName === 'Kwanga Apparel'">
 
-          <div class="SubCat" id="third">
+          <div class="SubCat" id="third" >
             <div class="gridder">
               <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
               <div id="info">Kwanga Apparel List</div>
             </div>
           </div>
+        </div> -->
+        <div *ngFor="let item of allProducts">
+            <div *ngIf="brandName === 'All'">
+  
+              <div *ngIf="item.brand === 'Kwanga' || item.brand === 'Dankie Jesu'">
+                {{item.data.name}}
+              </div>
+            </div>
+            <div *ngIf="brandName === 'Dankie Jesu'">
+  
+              <div *ngIf="item.brand === 'Dankie Jesu'">
+                  {{item.data.name}}
+              </div>
+            </div>
+            <div *ngIf="brandName === 'Kwanga Apparel'">
+  
+              <div *ngIf="item.brand === 'Kwanga'">
+                  {{item.data.name}}
+              </div>
+            </div>
         </div>
       </div>
       <div id="right">
@@ -197,7 +172,7 @@
             <input type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
             <input type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
           </div>
-          <input width='100px' type="file" value='Insert black picture' [(ngModel)]='picture' />
+          <input #fileInput width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png" (change)='addPicture($event)' >
           <!-- Div for colors, checkboxes work but currently can't add pictures -->
           <div class='colors'>
             <h5>Available colors</h5>
@@ -389,8 +364,7 @@
             <p>R 1000.90</p>
             <div class="opts">
               <div>
-                <button icon-only
-                  (click)="toggleUpdate()">
+                <button icon-only (click)="toggleUpdate()">
                   <ion-icon ios="ios-create" md="md-create"></ion-icon>
                 </button>
               </div>
@@ -469,36 +443,36 @@
           </div>
         </div>
       </div>
-      
+
       <div class="list">
-      <div class="SubCats">
-        <div>
-          <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
-        </div>
-        <div>
-          <h5>Item Name</h5>
-          <!-- <p>{{item.data.description}}</p> -->
-          <p>R 1000.90</p>
-          <div class="opts">
-            <div>
-              <button icon-only
-                (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">
-                <ion-icon ios="ios-create" md="md-create"></ion-icon>
-              </button>
-            </div>
-            <div>
-              <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
-                <ion-icon name="eye-off"></ion-icon>
-              </button>
-            </div>
-            <div>
-              <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
-                <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
-              </button>
+        <div class="SubCats">
+          <div>
+            <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
+          </div>
+          <div>
+            <h5>Item Name</h5>
+            <!-- <p>{{item.data.description}}</p> -->
+            <p>R 1000.90</p>
+            <div class="opts">
+              <div>
+                <button icon-only
+                  (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">
+                  <ion-icon ios="ios-create" md="md-create"></ion-icon>
+                </button>
+              </div>
+              <div>
+                <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
+                  <ion-icon name="eye-off"></ion-icon>
+                </button>
+              </div>
+              <div>
+                <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
+                  <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
       </div>
 

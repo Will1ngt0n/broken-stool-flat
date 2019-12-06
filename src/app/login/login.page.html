@@ -13,18 +13,21 @@
             <img src="../../assets/imgs/Logo.png" id="logo" alt="">
             <br>
           </div>
-          <h3>Sign In</h3>
-          <p id="prompt">Please insert your email and password to login.</p>
-          <ion-item lines="null">
-            <ion-label position="floating">Email</ion-label>
-            <ion-input type="email"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input type="password"></ion-input>
-          </ion-item>
-          <p id="password-forgotten">I forgot my password</p>
-          <ion-button color="dark">Login</ion-button>
+          <form [formGroup]='loginForm'>
+              <h3>Sign In</h3>
+              <p id="prompt">Please insert your email and password to login.</p>
+              <ion-item lines="null">
+                <ion-label position="floating">Email</ion-label>
+                <ion-input type="email" formControlName='email'></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input type="password" formControlName='password'></ion-input>
+              </ion-item>
+              <p id="password-forgotten" (click)='resetPassword()'>I forgot my password</p>
+              <ion-button [disabled]='!loginForm.valid' color="dark" (click)='login()'>Login</ion-button>
+          </form>
+
         </div>
       </div>
     </div>
