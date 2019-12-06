@@ -55,6 +55,7 @@ export class WinterGearPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable;  yellowPic
   whiteAvailable; whitePic
+  miniSearchBarState: boolean = false;
   constructor(private alertController : AlertController, private authService : AuthService, private navCtrl : NavController, public route : Router, public productsService : ProductsService ) {
     console.log(this.department);
     //this.productsService.getCategories()
@@ -461,6 +462,55 @@ export class WinterGearPage implements OnInit {
     pendingItems[0].style.display = "none";
     var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
     inventoryItems[0].style.display = "none"
+
   }
 
+  showLeftSide() {
+    console.log("Showing left side menu");
+    document.getElementById("left-items-list").style.left = "0"
+
+  }
+  searchButtonState:string = "search"
+  showSearchBar() {
+    console.log("Showing searchbar");
+    if (this.miniSearchBarState == true) {
+      this.miniSearchBarState = false;
+      console.log(this.miniSearchBarState);
+      this.searchButtonState = "search"
+    }
+    else {
+      this.miniSearchBarState = true;
+      console.log(this.miniSearchBarState);
+      this.searchButtonState = "close"
+    }
+  }
+  showRightSide() {
+    console.log("Showing right side menu");
+    document.getElementById("right-items-list").style.right = "0"
+
+  }
+
+  sideMenuButtons: boolean = true;
+  hideSideMenu() {
+    this.sideMenuButtons = true
+    document.getElementById("left-items-list").style.left = "-100%"
+    document.getElementById("right-items-list").style.right = "-100%"
+  }
+  listOfItems: number = 0
+  showPendingListSmall(){
+    this.sideMenuButtons = false;
+    this.listOfItems = 1;
+  }
+  showHistoryListSmall(){
+    this.sideMenuButtons = false;
+    this.listOfItems = 2;
+  }
+  showInventoryListSmall(){
+    this.sideMenuButtons = false;
+    this.listOfItems = 3;
+  }
+  stepBackToBtns(){
+    this.sideMenuButtons = true;
+    this.listOfItems = 0;
+  }
 }

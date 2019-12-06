@@ -445,6 +445,21 @@ export class ProductsService {
       //status: 'collected' ?
     })
   }
+  closedOrders(refNo, status, userID, products){
+    return firebase.firestore().collection('orderHistory').doc(refNo).set({
+      status: status,
+      reciept: 'N/A',
+      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      refNo: refNo,
+      uid: userID,
+      orders: products
+    }).then( result => {
+      return firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
+        console.log('deleted');
+        return 'Order has been deleted'
+      })
+    })
+  }
   updateQuantity(brand, category, productID, quantity){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       quantity: quantity

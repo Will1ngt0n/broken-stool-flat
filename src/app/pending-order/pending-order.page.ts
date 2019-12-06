@@ -164,7 +164,7 @@ orderReady(){
 }
 orderCollected(){
   let status = 'collected'
-  return this.productsService.processOrder(this.refNo, status).then(result => {
+  return this.productsService.closedOrders(this.refNo, status, this.userID, this.products).then(result => {
     this.route.navigate([this.routingPage])
   })
 }

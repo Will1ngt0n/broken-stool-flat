@@ -74,7 +74,7 @@ export class LandingPage implements OnInit {
   sliderConfig = {
     pagination: '.swiper-pagination',
     paginationClickable: true,
-    spaceBetween: 10,
+    spaceBetween: 0,
     slidesPerView: 1.8, //use any number 1.8 or 4.2 or 7.3 etc..
     direction: 'horizontal',
     parallax: true,
@@ -86,7 +86,7 @@ export class LandingPage implements OnInit {
   sliderConfigSmall = {
     pagination: '.swiper-pagination',
     paginationClickable: true,
-    spaceBetween: 10,
+    spaceBetween: 0,
     slidesPerView: 2.32, //use any number 1.8 or 4.2 or 7.3 etc..
     direction: 'horizontal',
     parallax: true,
