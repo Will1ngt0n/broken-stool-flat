@@ -86,7 +86,7 @@
           </div>
           <div class="SubCat" (click)='navigateForward("T-Shirts")'>
             <h3>T-Shirts</h3>
-            <img src="../../assets/imgs/images.jpg" alt="">
+            <img src="../../assets/imgs/486x486.jpeg" alt="">
           </div>
           <div class="SubCat" (click)='navigateForward("Sweaters")'>
             <h3>Sweaters</h3>
@@ -162,140 +162,6 @@
 
     
   <div class="mobile-view">
-      <!-- <div class="small-nav">
-        <div (click)="showLeftSide()">
-          <ion-icon name="menu"></ion-icon>
-        </div>
-        <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
-        <div *ngIf="miniSearchBarState">
-          <ion-searchbar></ion-searchbar>
-        </div>
-        <div (click)="showSearchBar()">
-          <ion-icon name="{{searchButtonState}}"></ion-icon>
-        </div>
-        <div (click)="showRightSide()">
-          <ion-icon name="add-circle"></ion-icon>
-        </div>
-      </div> -->
-      <!-- <div id="left-items-list">
-        <div class="my-top-bar">
-          Menu
-          <ion-button fill="clear" color="dark" icon-only id="dismiss-button" (click)="hideSideMenu()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </div>
-        <div class="small-side-items" *ngIf="sideMenuButtons">
-          <div id="smallOne" (click)="showPendingListSmall()">Pending Orders</div>
-          <div id="smallTwo" (click)="showHistoryListSmall()">History</div>
-          <div id="smallThree" (click)="showInventoryListSmall()">Inventory</div>
-        </div>
-        <div class="small-side-items" *ngIf="!sideMenuButtons">
-          <div class="forPending" *ngIf="listOfItems === 1">
-            <div class="title-top">
-              <ion-button icon-only (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
-                <ion-icon name="arrow-back" class="backBtn"></ion-icon>
-              </ion-button>
-              <h5>Pending Orders</h5>
-            </div>
-            <div class="myItems">
-              <p><b>John Doe</b></p>
-              <p>R 799.90</p>
-              <p>REF: NGH2345678987654</p>
-              <p>Items (8)</p>
-            </div>
-          </div>
-          <div class="forHistory" *ngIf="listOfItems === 2">
-  
-  
-            <div class="title-top">
-              <ion-button icon-only (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
-                <ion-icon name="arrow-back" class="backBtn"></ion-icon>
-              </ion-button>
-              <h5>History</h5>
-            </div>
-            <div class="myItems">
-              <p>Paid</p>
-              <p><b>John Doe</b></p>
-              <p>R 799.90</p>
-              <p>REF: NGH2345678987654</p>
-              <p>Items (8)</p>
-            </div>
-          </div>
-          <div class="forInventory" *ngIf="listOfItems === 3">
-  
-            <div class="title-top">
-              <ion-button icon-only (click)="stepBackToBtns()" id="backButton" fill="clear" color="dark">
-                <ion-icon name="arrow-back" class="backBtn"></ion-icon>
-              </ion-button>
-              <h5>Inventory</h5>
-            </div>
-            <div class="myItems">
-              <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
-              <p id="nameOfItem">SoHo Jersey</p>
-              <p id="item-price">R799.90</p>
-              QTY:
-              <input type="number" id="qtyInput" value="30">
-              <br>
-              <ion-button id="saveBtton">Save</ion-button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="right-items-list">
-        <div class="my-top-bar">
-            Add Item
-            <ion-button fill="clear" color="dark" icon-only id="dismiss-button" (click)="hideSideMenu()">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </div>
-          <br>
-          <div>
-    
-            <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory"
-              (click)='isAccessory($event)'>
-            <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer" (click)='isSummer($event)'>
-            <select (click)="changeDepartment($event);">
-              <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
-    
-            </select><br>
-    
-            <select [disabled]='!department' (click)="changeCategory($event);">
-              <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
-            </select><br>
-    
-            <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkValidity()'>
-            <input type="number" class="user-input" placeholder="Price" [(ngModel)]='price' (keyup)='checkValidity()'>
-            <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'
-              (keyup)='checkValidity()'></textarea>
-            <div class="sizes">
-    
-              <input type='checkbox' name='checkboxXS' (change)='check($event, "XS")'> XS
-              <input type='checkbox' name='checkboxS' (change)='check($event, "S")'> S
-              <input type='checkbox' name='checkboxM' (change)='check($event, "M")'> M
-              <input type='checkbox' name='checkboxL' (change)='check($event, "L")'> L
-              <input type='checkbox' name='checkboxXL' (change)='check($event, "XL")'> XL
-              <input type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
-              <input type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
-            </div>
-            <div class='colors'>
-              <h5>Available colors</h5>
-              <input type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px'
-                style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type='checkbox' name='checkboxBrown' (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px'
-                style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type='checkbox' name='checkboxOrange' (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px'
-                style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type='checkbox' name='checkboxYellow' (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px'
-                style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img width='15px'
-                style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
-            <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
-            </ion-button>
-            <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form
-            </ion-button>
-          </div>
-      </div> -->
       <div class="cont-small">
           <div class="top-bar">
             <ion-button color="dark" fill="outline" (click)='back()'>
@@ -305,31 +171,31 @@
               Summer Gear
             </div>
           </div>
-          <div class="SubCat" (click)='switchViews("T-Shirts")'>
+          <div class="SubCat" (click)='navigateForward("T-Shirts")'>
             <h3>T-Shirts</h3>
-            <img src="../../assets/imgs/images.jpg" alt="">
+            <img src="../../assets/imgs/486x486.jpeg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Sweaters")'>
+          <div class="SubCat" (click)='navigateForward("Sweaters")'>
             <h3>Sweaters</h3>
             <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Caps")'>
+          <div class="SubCat" (click)='navigateForward("Caps")'>
             <h3>Caps</h3>
             <img src="../../assets/imgs/3-Pic.jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Bucket Hats")'>
+          <div class="SubCat" (click)='navigateForward("Bucket Hats")'>
             <h3>Bucket Hats</h3>
             <img src="../../assets/imgs/images (9).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Sports")'>
+          <div class="SubCat" (click)='navigateForward("Sports")'>
             <h3>Shorts</h3>
             <img src="../../assets/imgs/images (5).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Crop Tops")'>
+          <div class="SubCat" (click)='navigateForward("Crop Tops")'>
             <h3>Crop Tops</h3>
             <img src="../../assets/imgs/images (4).jpg" alt="">
           </div>
-          <div class="SubCat" (click)='switchViews("Bags")'>
+          <div class="SubCat" (click)='navigateForward("Bags")'>
             <h3>Bags</h3>
             <img src="../../assets/imgs/images (7).jpg" alt="">
           </div>

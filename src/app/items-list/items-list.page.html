@@ -218,4 +218,68 @@
       </div>
     </div>
     </div>
+
+
+    
+
+
+
+
+
+
+
+
+
+  <div class="mobile-view">
+      <div class="cont-small">
+        <div class="top-bar">
+          <ion-button color="dark" fill="outline" (click)='back()'>
+            <ion-icon name="arrow-back"></ion-icon>
+          </ion-button>
+          <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
+          </div>
+        </div>
+        <div *ngFor="let item of allProducts">
+        <div>
+  
+          <div class="SubCats">
+            <div>
+                <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+                <img src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
+            </div>
+            <div>
+              <h5>{{item.data.name}}</h5>
+              <!-- <p>{{item.data.description}}</p> -->
+              <p>R {{item.data.price}}</p>
+              <div class="opts">
+                <div>
+                  <button icon-only (click)="toggleUpdate()">
+                      <ion-icon name="flash"></ion-icon>
+                  </button>
+                </div>
+                <div>
+                    <button icon-only (click)="toggleUpdate()">
+                      <ion-icon ios="ios-create" md="md-create"></ion-icon>
+                    </button>
+                </div>
+                <div>
+                    <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
+                      <ion-icon name="eye-off"></ion-icon>
+                    </button>
+                </div>
+                <div>
+                  <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
+                    <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        </div>
+  
+  
+      </div>
+    </div>
   </ion-content>

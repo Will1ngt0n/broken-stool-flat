@@ -549,4 +549,14 @@ export class ProductsService {
       //return pictures
     })
   }
+  refreshPendingOrder(refNo){
+    return firebase.firestore().collection('Order').doc(refNo).get().then(result => {
+
+      
+      let data = result.data()
+      console.log(data);
+      let status = data.status
+      return status
+    })
+  }
 } 

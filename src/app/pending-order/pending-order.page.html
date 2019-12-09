@@ -102,10 +102,10 @@
           Items Ordered
         </p>
         <ion-card *ngFor='let item of products'>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
+          <img [src]="item.pictures.link" *ngIf='item.pictures'  alt="">
           <div class="cont-container">
             <h4>{{item.product_name}}</h4>
-            <p>R {{item.unitCost}}</p>
+            <p>R {{item.cost}}</p>
             <p><b>QTY</b> {{item.quantity}}</p>
           </div>
         </ion-card>
@@ -148,10 +148,13 @@
           </p>
           <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
           <p id="Notifier" *ngIf="status === 'collected'">Order has been closed.</p>
-        <ion-button color="danger" (click)="cancelOrder()" *ngIf="status !== 'collected'">Cancel</ion-button>
-        <ion-button color="warning" (click)="processOrder()" *ngIf="status === 'recieved'"> Process Order</ion-button>
-        <ion-button color="success" (click)="orderReady()" *ngIf="status === 'processed'">Ready for Collection</ion-button>
-        <ion-button color="success" (click)="orderCollected()" *ngIf="status === 'ready'">Collected</ion-button>
+          <div *ngIf='status'>
+              <ion-button color="danger" (click)="cancelOrder()" *ngIf="status !== 'collected'">Cancel</ion-button>
+              <ion-button color="warning" (click)="processOrder()" *ngIf="status === 'received'"> Process Order</ion-button>
+              <ion-button color="success" (click)="orderReady()" *ngIf="status === 'processed'">Ready for Collection</ion-button>
+              <ion-button color="success" (click)="orderCollected()" *ngIf="status === 'ready'">Collected</ion-button>
+          </div>
+
       </div>
     </div>
   </div>

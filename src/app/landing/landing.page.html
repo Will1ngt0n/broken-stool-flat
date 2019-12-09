@@ -36,6 +36,7 @@
         </div>
       </div>
     </div>
+
     <div class="body-content">
       <div id="left" padding>
         <div class="history-items">
@@ -76,7 +77,7 @@
           </div>
           <div class="items-list">
             <ion-card *ngFor='let item of allProducts'>
-              <img [src]="item.pictures.link" *ngIf='item.pictures' alt="">
+              <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
               <p><b>{{item.data.name}}</b></p>
               <p>{{item.data.quantity}}</p>
 
@@ -101,7 +102,7 @@
       </div>
       <div id="mid">
         <div class="top-bar">
-          <ion-button color="dark">Home</ion-button>
+          <ion-button color="dark" (click)="reloadPage()">Home</ion-button>
         </div>
         <div class="slide-specials">
           <ion-item (click)='viewSales("viewAll")'>
@@ -115,17 +116,17 @@
           <div class="items">
             <div class="box-item" (click)='viewSales("viewAll")'>
               <p id="item-label1">View All Specials</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf='!allSpecialsPicture' alt="">
+              <img class="bg" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F08hGnhI4XSIwbQ9qY2Wb?alt=media&token=166fe9d6-30d2-4512-ac0f-af8e7f9e7aa6" *ngIf='!allSpecialsPicture' alt="">
               <img class="bg" [src]="allSpecialsPicture" *ngIf='allSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Dankie Jesu")'>
               <p id="item-label">Dankie Jesu Clothing</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf='!dankieJesuSpecialsPicture' alt="">
+              <img class="bg" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F6qqPZbeyylRdNnkxyJ2K?alt=media&token=976dbe35-5ee2-4dbb-ba85-5330fbbd8a17" *ngIf='!dankieJesuSpecialsPicture' alt="">
               <img class="bg" [src]="dankieJesuSpecialsPicture" *ngIf='dankieJesuSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Kwanga")'>
               <p id="item-label">Kwanga Apparel</p>
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf='!kwangaSpecialsPicture' alt="">
+              <img class="bg" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2FbmaQWCCKXVTCF0KLvThX?alt=media&token=ca79efc9-e56a-4356-b129-e562fcf0ae67" *ngIf='!kwangaSpecialsPicture' alt="">
               <img class="bg" [src]="kwangaSpecialsPicture" *ngIf='kwangaSpecialsPicture' alt="">
             </div>
           </div>
@@ -142,8 +143,8 @@
           <div class="items">
             <div class="box-item" *ngFor='let item of summerGear'>
               <p id="item-label">{{item.data.name}}</p>
-              <img class="bg" [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
             </div>
 
           </div>
@@ -161,8 +162,8 @@
           <div class="items">
             <div class="box-item" *ngFor='let item of winterGear'>
               <p id="item-label">{{item.data.name}}</p>
-              <img class="bg" [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
             </div>
 
           </div>
@@ -180,8 +181,8 @@
           <div class="items">
             <div class="box-item" *ngFor='let item of kwangaGear'>
               <p id="item-label1">{{item.data.name}}</p>
-              <img class="bg" [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
             </div>
 
           </div>
@@ -344,64 +345,45 @@
         <div class="slide-section">
           <ion-slides pager="false" [options]="sliderConfig" #sliderRef>
             <ion-slide>
-              <div class="slide-img">
+              <div class="slide-img" (click)='viewSales("viewAll")'>
                 <h4>View All</h4>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+                <img class="slide-img" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F08hGnhI4XSIwbQ9qY2Wb?alt=media&token=166fe9d6-30d2-4512-ac0f-af8e7f9e7aa6" *ngIf='!allSpecialsPicture' alt="">
+                <img class="slide-img" [src]="allSpecialsPicture" *ngIf='allSpecialsPicture' alt="">
               </div>
             </ion-slide>
             <ion-slide>
-              <div class="slide-img">
+              <div class="slide-img" (click)='viewSales("Dankie Jesu")'>
                 <h4>Dankie Jesu</h4>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+                <img class="slide-img" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F6qqPZbeyylRdNnkxyJ2K?alt=media&token=976dbe35-5ee2-4dbb-ba85-5330fbbd8a17" *ngIf='!dankieJesuSpecialsPicture' alt="">
+                <img class="slide-img" [src]="dankieJesuSpecialsPicture" *ngIf='dankieJesuSpecialsPicture' alt="">
               </div>
             </ion-slide>
             <ion-slide>
-              <div class="slide-img">
+              <div class="slide-img" (click)='viewSales("Kwanga")'>
                 <h4>Kwanga Apparel</h4>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+                <img class="slide-img" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2FbmaQWCCKXVTCF0KLvThX?alt=media&token=ca79efc9-e56a-4356-b129-e562fcf0ae67" *ngIf='!kwangaSpecialsPicture' alt="">
+                <img class="slide-img" [src]="kwangaSpecialsPicture" *ngIf='kwangaSpecialsPicture' alt="">
               </div>
             </ion-slide>
           </ion-slides>
         </div>
-        <ion-button expand="full" class="midBtns" color="transparent">
+        <ion-button expand="full" class="midBtns" color="transparent" (click)='viewMore("summer-gear")'>
           <span>Summer Gear <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
-        <ion-button expand="full" class="midBtns" color="transparent">
+        <ion-button expand="full" class="midBtns" color="transparent" (click)='viewMore("winter-gear")'>
           <span>Winter Gear<ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
-        <ion-button expand="full" class="outerBtns" color="transparent">
+        <ion-button expand="full" class="outerBtns" color="transparent" (click)='viewMore("kwanga-sub-categories")'>
           <span>Kwanga Apparel<ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
         <div class="slide-section2">
           <ion-slides pager="false" [options]="sliderConfigSmall" #sliderRefSmall>
-            <ion-slide>
+            <ion-slide *ngFor='let item of kwangaGear'>
               <div class="slide-img">
-                <p>SoHo Jeans</p>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
-              </div>
-            </ion-slide>
-            <ion-slide>
-              <div class="slide-img">
-                <p>SoHo Jeans</p>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
-              </div>
-            </ion-slide>
-            <ion-slide>
-              <div class="slide-img">
-                <p>SoHo Jeans</p>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
-              </div>
-            </ion-slide>
-            <ion-slide>
-              <div class="slide-img">
-                <p>SoHo Jeans</p>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
-              </div>
-            </ion-slide>
-            <ion-slide>
-              <div class="slide-img">
-                <p>SoHo Jeans</p>
-                <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt="">
+                <p>{{item.data.name}}</p>
+                <!-- <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt=""> -->
+                <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+                <img class="slide-img" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
               </div>
             </ion-slide>
           </ion-slides>
