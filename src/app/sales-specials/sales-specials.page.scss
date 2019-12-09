@@ -62,7 +62,7 @@
   z-index: 100;
   width: 65%;
   background: white;
-  overflow-y: hidden;
+  overflow-y: scroll;
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -422,16 +422,16 @@ ion-searchbar {
       padding: 0;
       font-weight: bold;
     }
+    // .options > div:nth-child(1) {
+    //   background: green;
+    // }
     .options > div:nth-child(1) {
-      background: green;
-    }
-    .options > div:nth-child(2) {
       background: #7c0000;
     }
-    .options > div:nth-child(3) {
+    .options > div:nth-child(2) {
       background: grey;
     }
-    .options > div:nth-child(4) {
+    .options > div:nth-child(3) {
       background: red;
     }
   }

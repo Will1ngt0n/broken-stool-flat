@@ -119,24 +119,81 @@
           </div>
         </div> -->
         <div *ngFor="let item of allProducts">
-            <div *ngIf="brandName === 'All'">
-  
-              <div *ngIf="item.brand === 'Kwanga' || item.brand === 'Dankie Jesu'">
-                {{item.data.name}}
+          <div *ngIf="brandName === 'All'">
+
+            <div *ngIf="item.brand === 'Kwanga' || item.brand === 'Dankie Jesu'">
+              <div class="SubCat">
+                <div class="gridder">
+                  <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
+                  <div id="info">
+                    <h5>{{item.data.name}}</h5>
+                    <p>{{item.data.description}}.</p>
+                    <p><b>R {{item.data.price}}</b></p>
+                    <div class="options">
+                      <!-- <div
+                        (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                        Promote</div> -->
+                      <div
+                        (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                        Update</div>
+                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                      <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div *ngIf="brandName === 'Dankie Jesu'">
-  
-              <div *ngIf="item.brand === 'Dankie Jesu'">
-                  {{item.data.name}}
+          </div>
+          <div *ngIf="brandName === 'Dankie Jesu'">
+
+            <div *ngIf="item.brand === 'Dankie Jesu'">
+              <div class="SubCat">
+                <div class="gridder">
+                  <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
+                  <div id="info">
+                    <h5>{{item.data.name}}</h5>
+                    <p>{{item.data.description}}.</p>
+                    <p><b>R {{item.data.price}}</b></p>
+                    <div class="options">
+                      <!-- <div
+                        (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                        Promote</div> -->
+                      <div
+                        (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                        Update</div>
+                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                      <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div *ngIf="brandName === 'Kwanga Apparel'">
-  
-              <div *ngIf="item.brand === 'Kwanga'">
-                  {{item.data.name}}
+          </div>
+          <div *ngIf="brandName === 'Kwanga Apparel'">
+
+            <div *ngIf="item.brand === 'Kwanga'">
+              <div class="SubCat">
+                <div class="gridder">
+                  <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
+                  <div id="info">
+                    <h5>{{item.data.name}}</h5>
+                    <p>{{item.data.description}}.</p>
+                    <p><b>R {{item.data.price}}</b></p>
+                    <div class="options">
+                      <!-- <div
+                        (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                        Promote</div> -->
+                      <div
+                        (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                        Update</div>
+                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                      <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
       <div id="right">
@@ -172,7 +229,8 @@
             <input type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
             <input type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
           </div>
-          <input #fileInput width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png" (change)='addPicture($event)' >
+          <input #fileInput width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png"
+            (change)='addPicture($event)'>
           <!-- Div for colors, checkboxes work but currently can't add pictures -->
           <div class='colors'>
             <h5>Available colors</h5>
