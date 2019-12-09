@@ -128,6 +128,7 @@ ion-searchbar {
     height: 40px;
     width: 100%;
     border-bottom: 2px solid grey;
+    cursor: pointer;
   }
   ion-note {
     color: #7c0000;
@@ -185,11 +186,7 @@ ion-searchbar {
     height: 40px;
     width: 100%;
     border-bottom: 2px solid grey;
-  }
-  ion-item {
-    height: 40px;
-    width: 100%;
-    border-bottom: 2px solid grey;
+    cursor: pointer;
   }
   ion-note {
     color: #7c0000;
@@ -225,6 +222,8 @@ ion-searchbar {
       right: 10px;
       // transform: translateX(-50%);
       bottom: 5px;
+      text-align: right;
+      text-transform: capitalize;
     }
     #item-label1 {
       position: absolute;

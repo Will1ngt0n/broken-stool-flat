@@ -2,6 +2,7 @@
   width: 100%;
   height: 100%;
   background: grey;
+  overflow: hidden;
 }
 .del-upd-del {
   width: 100%;
@@ -477,7 +478,6 @@ ion-searchbar {
 .SubCat {
   width: 98%;
   height: 150px;
-  cursor: pointer;
   margin: 10px auto;
   border-radius: 10px;
   overflow: hidden;
@@ -498,6 +498,7 @@ ion-searchbar {
     .options {
       width: 45%;
       height: 40px;
+      cursor: pointer;
       // background: red;
       position: absolute;
       bottom: 5px;

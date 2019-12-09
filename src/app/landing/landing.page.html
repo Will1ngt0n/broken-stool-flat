@@ -2,7 +2,7 @@
     <div class="searchResults" *ngIf="searchInput">
       Search Results
         <ion-list>
-            <ion-item *ngFor="let item of searchArray">{{item.data.name}}</ion-item>
+            <ion-item *ngFor="let item of searchArray" (click)="showSearchDetails()">{{item.data.name}}</ion-item>
         </ion-list>
       </div>
     <div class="content-container">
