@@ -5,25 +5,24 @@ import { ProductsService } from '../services/products-services/products.service'
 import * as moment from 'moment';
 import { NavController, AlertController } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
-
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.scss'],
 })
 export class LandingPage implements OnInit {
-  sales: Array<any> = []
-  brands: Array<any> = []
-  allSales: Array<any> = []
-  allProducts: Array<any> = []
-  inventory: Array<any> = []
-  history: Array<any> = []
-  readyOrders: Array<any> = []
-  pendingOrders: Array<any> = []
-  addForm: boolean
-  formHasValues: boolean
-  department: any
-  picture: File
+  sales : Array<any> = []
+  brands : Array<any> = []
+  allSales : Array<any> = []
+  allProducts : Array<any> = []
+  inventory : Array<any> = []
+  history : Array<any> = []
+  readyOrders : Array<any> = []
+  pendingOrders : Array<any> = []
+  addForm : boolean 
+  formHasValues : boolean 
+  department : any 
+  picture : File
   searchArray
   pictures: Array<any> = []
   departmentOptions: Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
@@ -64,12 +63,25 @@ export class LandingPage implements OnInit {
   miniSearchBarState: boolean = false;
   @ViewChild('sliderRef', { static: false }) slides: IonSlides;
   @ViewChild('sliderRefSmall', { static: true }) mySlides: IonSlides;
-  @ViewChild('fileInput', { static: true }) fileInput: ElementRef
-  @ViewChild('departmentCombo', { static: true }) departmentCombo: ElementRef
-
-
-
-
+  @ViewChild('fileInput', {static:true}) fileInput : ElementRef
+  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
+  @ViewChild('nativeCategory', {static : true}) nativeCategory : ElementRef
+  @ViewChild('checkboxXS', {static : true}) checkboxXS : ElementRef
+  @ViewChild('checkboxS', {static : true}) checkboxS : ElementRef
+  @ViewChild('checkboxM', {static : true}) checkboxM : ElementRef
+  @ViewChild('checkboxL', {static : true}) checkboxL : ElementRef
+  @ViewChild('checkboxXL', {static : true}) checkboxXL : ElementRef
+  @ViewChild('checkboxXXL', {static : true}) checkboxXXL : ElementRef
+  @ViewChild('checkboxXXXL', {static : true}) checkboxXXXL : ElementRef
+  @ViewChild('checkboxBlack', {static : true}) checkboxBlack : ElementRef
+  @ViewChild('checkboxBrown', {static : true}) checkboxBrown : ElementRef
+  @ViewChild('checkboxOrange', {static : true}) checkboxOrange : ElementRef
+  @ViewChild('checkboxYellow', {static : true}) checkboxYellow : ElementRef
+  @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
+  @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
+  kwangaSpecialsPicture
+  dankieJesuSpecialsPicture
+  allSpecialsPicture
 
   sliderConfig = {
     pagination: '.swiper-pagination',
@@ -97,6 +109,9 @@ export class LandingPage implements OnInit {
   }
   constructor(private alertController: AlertController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
+    this.kwangaSpecialsPicture = undefined
+    this.dankieJesuSpecialsPicture = undefined
+    this.allSpecialsPicture = undefined
     //this.productService.getCategories()
     this.loadDankieJesuItems()
     this.loadKwangaItems()
@@ -104,8 +119,15 @@ export class LandingPage implements OnInit {
     this.accessory = false;
     this.summer = false;
     this.department = undefined
+    this.selectedCategory = undefined
     this.addForm = false
     this.formHasValues = false
+    this.itemName = ''
+    this.price = ''
+    this.description = ''
+    this.size = []
+    this.color = []
+    this.picture = undefined
     let date = moment(new Date()).format('LLLL');
     let tee = moment(new Date('10/12/2019')).format('LLLL')
     console.log(date);
@@ -173,8 +195,20 @@ export class LandingPage implements OnInit {
   //     return this.route.navigate(['/login'])
   //   })
   // }
+  ngOnInit() { ////copy
+    this.nativeCategory.nativeElement.disabled = true
 
+    return this.authService.checkingAuthState().then( result => {
+      if(result === null){
+        this.route.navigate(['/login'])
+      }else{
+        return this.loadPictures()
 
+      }
+    })
+
+  }
+  
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
 
@@ -188,48 +222,38 @@ export class LandingPage implements OnInit {
     }
     if (this.department === 'Select Department') {
       this.department = undefined
+      this.nativeCategory.nativeElement.disabled = true   ////
+      this.nativeCategory.nativeElement.value = 'Select Category'   ///
+    }else{
+      this.nativeCategory.nativeElement.disabled = false   ////
     }
     this.checkValidity()
   }
-  isSummer(data) {
-    if (data.target.checked === true) {
-      this.summer = true;
-    } else {
-      this.summer = false;
-    }
-  }
+
   changeCategory() {
     console.log(event.target['value']);
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {
       this.selectedCategory = undefined
     }
+    if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps ' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
+      this.summer = true
+    }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies', 'Bags')
+    if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Winter Hats' || this.selectedCategory === 'Beanies'){
+      this.summer = false
+    }
+    
+    if(this.selectedCategory === 'Bags'){
+      this.accessory = true   ///, 'Bags'))
+    }else{
+      this.accessory = false
+    }
     this.checkValidity()
   }
-  ngOnInit() {
-    return this.authService.checkingAuthState().then(result => {
-      if (result == null) {
-        this.route.navigate(['/login'])
-      } else {
-        this.loadPictures()
-      }
-    })
-
-  }
-
   ionViewDidEnter() {
 
   }
-  isAccessory(data) {
-    //console.log('My data ', data.target.checked);
-    if (data.target.checked === true) {
-      // console.log('Accessory');
-      this.accessory = true;
-    } else {
-      this.accessory = false;
-    }
 
-  }
   check(event, size) {
 
     console.log(size);
@@ -250,16 +274,16 @@ export class LandingPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
-  checkValidity() {
-    console.log(this.department);
-    console.log(this.selectedCategory);
-    console.log(this.itemName);
-    console.log(this.description);
-    console.log(this.price);
-    console.log(this.size);
-    console.log(this.color);
 
-    if (this.selectedCategory === undefined || this.department === undefined || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '') {
+  changePrice(){
+    if(Number(this.price) < 0){
+      this.price = '0'
+    }else if(Number(this.price) > 10000){
+      this.price = '10000'
+    }
+  }
+  checkValidity() {
+    if (this.selectedCategory === undefined || this.selectedCategory === 'Select Category' || this.department === undefined || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
       this.addForm = false
       console.log(this.addForm);
 
@@ -267,14 +291,16 @@ export class LandingPage implements OnInit {
       this.addForm = true
       console.log(this.addForm);
     }
-    if (this.department !== undefined || this.selectedCategory !== undefined || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '') {
+    if (this.department !== undefined || this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.selectedCategory !== undefined || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined) {
       this.formHasValues = true
-      console.log(this.formHasValues);
-
-    } else {
-      this.formHasValues = false
-      console.log(this.formHasValues);
-    }
+      console.log(this.formHasValues, 'form has values');
+     // this.btnClearForm.nativeElement.disabled = false
+    } 
+    // else {
+    //   this.formHasValues = false
+    //   console.log(this.formHasValues, 'form has values');
+    //   //this.btnClearForm.nativeElement.disabled = true
+    // }
   }
   checkColor(event, color) {
     this.checkValidity()
@@ -285,17 +311,6 @@ export class LandingPage implements OnInit {
       if (event.target.checked === true) {
         this.color.push(color)
         console.log(this.color);
-        // if(color === 'Black'){
-        //   this.blackAvailable = true
-        // }else if(color === 'Brown'){
-        //   this.brownAvailable = true
-        // }else if(color === 'Orange'){
-        //   this.orangeAvailable = true
-        // }else if(color === 'Yellow'){
-        //   this.yellowAvailable = true
-        // }else{
-        //   this.whiteAvailable = true
-        // }
       } else if (event.target.checked === false) {
         let index = this.color.indexOf(color)
         console.log(index);
@@ -307,58 +322,26 @@ export class LandingPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
-
-  addItem() {
-    this.route.navigate(['/'])
+  addPicture(event){
+    this.picture = <File>event.target.files[0]
+    // let name = event.target.name
+    // let pictureName = name
+    // this.itemName = pictureName.replace('-', ' ')
+    // this.description = this.itemName
   }
+  // addItem() {
+  //   this.route.navigate(['/'])
+  // }
   addProduct() {
-    console.log(this.department);
-    console.log(this.selectedCategory);
-    console.log(this.itemName);
-    console.log(this.description);
-    console.log(this.price);
-    console.log(this.size);
-    let date = moment(new Date()).format('LLLL');
-    console.log(date);
-    console.log(this.picture);
-
-    //   let fullPath = this.picture
-    //   let format 
-    //  // let split = this.picture.split('\\')
-    //   console.log(split);
-    //   let imageData = split[split.length -1]
-    //   let split2 = imageData.split('.')
-    //   let imageFormat = split2[1]
-    //   console.log(split2);
-    //   let imageName = split2[0]
-    //   console.log(imageFormat);
-    //   console.log(imageName);
-
-
-    //   new File(['fijRKjhudDjiokDhg1524164151'],
-    //                    '../img/Products/fijRKjhudDjiokDhg1524164151.jpg', 
-    //                    {type:'image/jpg'});
-
-
-    //   new File([imageName], fullPath, {type:'image/' + imageFormat});
-    //   let parts = [
-    //     new Blob([this.picture], {type: 'image/' + imageFormat})
-    //   ];
-    //   let picture = new File(parts, imageName, {
-    //     lastModified: Number(new Date()), // optional - default = now
-    //     type: '"image/jpeg"' // optional - default = ''
-    // })
-    //console.log(picture);
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
       this.clearForm();
+      console.log('added to first firebase')
+    }).then(result => {
     })
-
-
   }
 
   //Clearing all form variables and form inputs respectively
   clearForm() {
-    this.departmentOptions = ['Select Department']
     this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
@@ -370,14 +353,17 @@ export class LandingPage implements OnInit {
     document.getElementById('accessory')['checked'] = false;
     document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
-    // this.departmentCombo.nativeElement ='Select Category'
+    this.departmentCombo.nativeElement.value ='Select Department'
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
+    let checkboxesNative : Array<any> = [this.checkboxXS, this.checkboxS, this.checkboxM, this.checkboxL, this.checkboxXL, this.checkboxXXL, this.checkboxXXXL, this.checkboxBlack, this.checkboxBrown, this.checkboxOrange, this.checkboxYellow, this.checkboxWhite]
     for (let i = 0; i < checkboxes.length; i++) {
       document.getElementsByName(checkboxes[i])[0]['checked'] = false
+      checkboxesNative[i].nativeElement.checked = false
     }
     this.formHasValues = false
-    this.department = undefined
-    this.selectedCategory = undefined
+    this.addForm = false
+    this.department = 'Select Department'
+    this.selectedCategory = 'Select Category'
   }
 
   //Routing to sales page
@@ -411,45 +397,44 @@ export class LandingPage implements OnInit {
   loadViewedCategory() {
 
   }
-  loadItems(category, brand) {
-    let data: Array<any> = []
+  loadItems(category, brand){
+    let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
-      if (result !== undefined) {
-        for (let key in result) {
-          if (brand === 'Kwanga') {
-            this.kwangaProducts.push(result[key])
-            this.allProducts.push(result[key])
-            console.log(this.allProducts);
-            if (this.kwangaGear.length < 4) {
-              this.kwangaGear.push(result[key])
+      if(result !== undefined){
+        for(let key in result){
+        if(brand === 'Kwanga'){
+          this.kwangaProducts.push(result[key])
+          this.allProducts.push(result[key])
+          console.log(this.allProducts);
+          if(this.kwangaGear.length < 3){
+            this.kwangaGear.push(result[key])
+          }
+        }else if(brand === 'Dankie Jesu'){
+          this.dankieJesuProducts.push(result[key])
+          this.allProducts.push(result[key])
+          if(result[key].data.isSummer === true){
+            this.summerProducts.push(result[key])
+            if(this.summerGear.length < 5){
+              this.summerGear.push(result[key])
             }
-          } else if (brand === 'Dankie Jesu') {
-            this.dankieJesuProducts.push(result[key])
-            this.allProducts.push(result[key])
-            if (result[key].data.isSummer === true) {
-              this.summerProducts.push(result[key])
-              if (this.summerGear.length < 5) {
-                this.summerGear.push(result[key])
-              }
-            } else if (result[key].data.isSummer === false) {
-              this.winterProducts.push(result[key])
-              if (this.winterGear.length < 5) {
-                this.winterGear.push(result[key])
-              }
+          } else if (result[key].data.isSummer === false) {
+            this.winterProducts.push(result[key])
+            if(this.winterGear.length < 5){
+              this.winterGear.push(result[key])
             }
           }
         }
       }
-
-      if (this.summerProducts.length > 0) {
-      } else if (this.winterProducts.length > 0) {
+      }
+      if(this.summerProducts.length > 0 ){
+      }else if(this.winterProducts.length > 0){   
       }
       console.log(this.kwangaGear, this.summerGear, this.winterGear)
-      this.summerGear.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
-      this.winterGear.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
-      this.kwangaGear.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
-      console.log(this.kwangaGear, this.summerGear, this.winterGear)
-    })
+        this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+        console.log(this.kwangaGear, this.summerGear, this.winterGear)
+      })
   }
   orderItems() {
     // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
@@ -510,28 +495,34 @@ export class LandingPage implements OnInit {
   }
 
   // get orders that are closed, history, status == closed
-  getOrderHistory() {
-    // return this.productService.getOrderHistory().then(result => {
-    //   this.history = result
-    //   let totalPrice : Number = 0
-    //   let numberOfItems : Number = 0
-    //   console.log(this.history);
-    //   for(let key in this.history){
-    //     totalPrice = 0
-    //     numberOfItems = 0
-    //     for(let i in this.history[key].details.orders){
-    //       console.log(this.history[key].details.orders[i]);
-    //       totalPrice = +totalPrice + +this.history[key].details.orders[i].cost * +this.history[key].details.orders[i].quantity
-    //       numberOfItems = +numberOfItems + +this.history[key].details.orders[i].quantity
-    //       console.log(totalPrice);
-    //       console.log(numberOfItems);
-    //     }
-    //     this.history[key].details.totalPrice = totalPrice
-    //     this.history[key].details.numberOfItems = numberOfItems
-    //     console.log(this.history[key]);
+  getOrderHistory(){
+    return this.productService.getOrderHistory().then(result => {
+      if(result !== null){
+        this.history = result
+        let totalPrice : Number = 0
+        let numberOfItems : Number = 0
+        console.log(this.history);
+        if(this.history.length !== 0){
+          for(let key in this.history){
+            totalPrice = 0
+            numberOfItems = 0
+            for(let i in this.history[key].details.orders){
+              console.log(this.history[key].details.orders[i]);
+              totalPrice = +totalPrice + +this.history[key].details.orders[i].cost * +this.history[key].details.orders[i].quantity
+              numberOfItems = +numberOfItems + +this.history[key].details.orders[i].quantity
+              console.log(totalPrice);
+              console.log(numberOfItems);
+            }
+            this.history[key].details.totalPrice = totalPrice
+            this.history[key].details.numberOfItems = numberOfItems
+            console.log(this.history[key]);
+            
+          }
+        }
+      }
 
-    //   }
-    // })
+
+    })
   }
   viewOrderHistory(item) {
     console.log(item);
@@ -569,28 +560,41 @@ export class LandingPage implements OnInit {
   }
   subtract(item) {
     console.log(item.productID);
-    for (let key in this.allProducts) {
-      if (this.allProducts[key].productID === item.productID) {
-        this.allProducts[key].data.quantity = +this.allProducts[key].data.quantity - 1
+    for(let key in this.allProducts){
+      if(this.allProducts[key].productID === item.productID){
+        if(this.allProducts[key].data.quantity !== 0){
+          this.allProducts[key].data.quantity = +this.allProducts[key].data.quantity - 1
+        }
       }
     }
   }
   add(item) {
     console.log(item);
-    for (let key in this.allProducts) {
-      if (this.allProducts[key].productID === item.productID) {
-        this.allProducts[key].data.quantity = +this.allProducts[key].data.quantity + 1
+    for(let key in this.allProducts){
+      if(this.allProducts[key].productID === item.productID){
+        if(this.allProducts[key].data.quantity < 10000){
+          this.allProducts[key].data.quantity = +this.allProducts[key].data.quantity + 1
+        }
+
       }
     }
   }
-  changePrice(event, item) {
+  changeQuantity(event, item){
     console.log(item);
     //console.log(event);
     let number: number = document.getElementById(item.productID)['value']
     console.log(number)
-    for (let key in this.allProducts) {
-      if (this.allProducts[key].productID === item.productID) {
-        this.allProducts[key].data.quantity = +number
+    for(let key in this.allProducts){
+      if(this.allProducts[key].productID === item.productID){
+        if(number < 0){
+          number = 0
+          this.allProducts[key].data.quantity = 1
+        }else if(number > 10000){
+          number = 10000
+          this.allProducts[key].data.quantity = 10000
+        }else{
+          this.allProducts[key].data.quantity = +number
+        }
       }
     }
 
@@ -609,13 +613,8 @@ export class LandingPage implements OnInit {
     let parameter: NavigationExtras = { queryParams: { refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing' } }
     this.navCtrl.navigateForward(['pending-order'], parameter);
   }
+ 
 
-  addPicture(event) {
-    this.picture = <File>event.target.files[0]
-    console.log(<File>event.target.files)
-    console.log(this.picture);
-
-  }
 
   //Search functionality
   searchInput
@@ -627,7 +626,7 @@ export class LandingPage implements OnInit {
     let queryFormatted = this.searchInput.toLowerCase();
     console.log(queryFormatted);
     console.log(array);
-    if (queryFormatted !== '') {
+    if(queryFormatted !== '' && queryFormatted !== '*'){
       let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
       let addBrand: boolean
       let addCategory: boolean
@@ -639,8 +638,8 @@ export class LandingPage implements OnInit {
       //console.log(categoryResult);
       console.log(nameResult);
       this.searchArray = nameResult
-    } else if (queryFormatted === '') {
-      // this.searchArray = []
+    }else if(queryFormatted === '*'){
+    this.searchArray = this.allProducts
     }
   }
 
@@ -658,9 +657,10 @@ export class LandingPage implements OnInit {
           this.pictures.push({ link: link, productID: pictureID })
           console.log(this.pictures);
           this.insertPictures()
-        });
-        return result
-      }
+         })
+
+         //return result
+        }
     })
   }
 
@@ -672,8 +672,12 @@ export class LandingPage implements OnInit {
 
     for (let i in this.pictures) {
       //Adding pictures to products arrays
-      for (let key in this.allProducts) {
-        if (this.pictures[i].productID === this.allProducts[key].productID) {
+      console.log(this.pictures);
+      
+      for(let key in this.allProducts){
+        console.log(this.allProducts, 'Here are all the products');
+        
+        if(this.pictures[i].productID === this.allProducts[key].productID){
           console.log('ddsfds');
           this.allProducts[key].pictures = { link: this.pictures[i].link }
           console.log(this.allProducts[key])
@@ -685,6 +689,10 @@ export class LandingPage implements OnInit {
           console.log('ddsfds');
           this.kwangaProducts[key].pictures = { link: this.pictures[i].link }
           console.log(this.kwangaProducts[key])
+          if(this.kwangaSpecialsPicture === undefined){
+            this.kwangaSpecialsPicture = this.pictures[i].link
+          }
+
         }
         this.kwangaPic = this.kwangaProducts[0]
       }
@@ -693,6 +701,10 @@ export class LandingPage implements OnInit {
           console.log('ddsfds');
           this.summerGear[key].pictures = { link: this.pictures[i].link }
           console.log(this.summerGear[key])
+          if(this.dankieJesuSpecialsPicture === undefined){
+            this.dankieJesuSpecialsPicture = this.pictures[i].link
+          }
+
         }
         this.dankieJesuPic = this.summerProducts[0]
       }
@@ -701,6 +713,10 @@ export class LandingPage implements OnInit {
           console.log('ddsfds');
           this.winterGear[key].pictures = { link: this.pictures[i].link }
           console.log(this.winterGear[key])
+          if(this.allSpecialsPicture === undefined){
+            this.allSpecialsPicture = this.pictures[i].link
+          }
+
         }
         this.AllCatpic = this.winterProducts[0]
       }
