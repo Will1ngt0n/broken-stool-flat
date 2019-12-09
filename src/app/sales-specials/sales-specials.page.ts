@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
@@ -34,7 +34,7 @@ export class SalesSpecialsPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
-  picture
+  picture : File
   pictures : Array<any> = []
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   categoryOptions: Array<any> = ['Select Category']
@@ -68,6 +68,23 @@ export class SalesSpecialsPage implements OnInit {
   newPrice; newPricePercentage; newStartDate; newEndDate
   promoUpdate
   miniSearchBarState : boolean = false
+
+  @ViewChild('fileInput', {static:true}) fileInput : ElementRef
+  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
+  @ViewChild('nativeCategory', {static : true}) nativeCategory : ElementRef
+  @ViewChild('checkboxXS', {static : true}) checkboxXS : ElementRef
+  @ViewChild('checkboxS', {static : true}) checkboxS : ElementRef
+  @ViewChild('checkboxM', {static : true}) checkboxM : ElementRef
+  @ViewChild('checkboxL', {static : true}) checkboxL : ElementRef
+  @ViewChild('checkboxXL', {static : true}) checkboxXL : ElementRef
+  @ViewChild('checkboxXXL', {static : true}) checkboxXXL : ElementRef
+  @ViewChild('checkboxXXXL', {static : true}) checkboxXXXL : ElementRef
+  @ViewChild('checkboxBlack', {static : true}) checkboxBlack : ElementRef
+  @ViewChild('checkboxBrown', {static : true}) checkboxBrown : ElementRef
+  @ViewChild('checkboxOrange', {static : true}) checkboxOrange : ElementRef
+  @ViewChild('checkboxYellow', {static : true}) checkboxYellow : ElementRef
+  @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
+  @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
   constructor(private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
 
     //this.getDankieJesuSales('Dankie Jesu')
@@ -194,7 +211,6 @@ export class SalesSpecialsPage implements OnInit {
           console.log(this.pictures);
           this.insertPictures()
          });
-         return result
         }
     })
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
 import { NavigationExtras, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
@@ -20,7 +20,7 @@ export class WinterGearPage implements OnInit {
   addForm : boolean 
   formHasValues : boolean 
   department : any
-  picture
+  picture : File
   searchArray
   searchInput
   departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
@@ -56,6 +56,23 @@ export class WinterGearPage implements OnInit {
   yellowAvailable;  yellowPic
   whiteAvailable; whitePic
   miniSearchBarState: boolean = false;
+
+  @ViewChild('fileInput', {static:true}) fileInput : ElementRef
+  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
+  @ViewChild('nativeCategory', {static : true}) nativeCategory : ElementRef
+  @ViewChild('checkboxXS', {static : true}) checkboxXS : ElementRef
+  @ViewChild('checkboxS', {static : true}) checkboxS : ElementRef
+  @ViewChild('checkboxM', {static : true}) checkboxM : ElementRef
+  @ViewChild('checkboxL', {static : true}) checkboxL : ElementRef
+  @ViewChild('checkboxXL', {static : true}) checkboxXL : ElementRef
+  @ViewChild('checkboxXXL', {static : true}) checkboxXXL : ElementRef
+  @ViewChild('checkboxXXXL', {static : true}) checkboxXXXL : ElementRef
+  @ViewChild('checkboxBlack', {static : true}) checkboxBlack : ElementRef
+  @ViewChild('checkboxBrown', {static : true}) checkboxBrown : ElementRef
+  @ViewChild('checkboxOrange', {static : true}) checkboxOrange : ElementRef
+  @ViewChild('checkboxYellow', {static : true}) checkboxYellow : ElementRef
+  @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
+  @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
   constructor(private alertController : AlertController, private authService : AuthService, private navCtrl : NavController, public route : Router, public productsService : ProductsService ) {
     console.log(this.department);
     //this.productsService.getCategories()
@@ -83,6 +100,15 @@ export class WinterGearPage implements OnInit {
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
+  }
+  ngOnInit() {
+    return this.authService.checkingAuthState().then( result => {
+      if(result == null){
+        this.route.navigate(['/login'])
+      }else{
+        //this.loadPictures()
+      }
+    })
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()
@@ -127,8 +153,11 @@ export class WinterGearPage implements OnInit {
     if (this.department === 'Kwanga') {
       this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports wear']
     }
-    if(this.department === 'Select Department'){
+    if (this.department === 'Select Department') {
       this.department = undefined
+      this.nativeCategory.nativeElement.disabled = true
+    }else{
+      this.nativeCategory.nativeElement.disabled = false
     }
     this.checkValidity()
   }
@@ -142,21 +171,11 @@ export class WinterGearPage implements OnInit {
   changeCategory() {
     console.log(event.target['value']);
     this.selectedCategory = event.target['value']
-    if(this.selectedCategory === 'Select Category'){
+    if (this.selectedCategory === 'Select Category') {
       this.selectedCategory = undefined
     }
     this.checkValidity()
   }
-  ngOnInit() {
-    return this.authService.checkingAuthState().then( result => {
-      if(result == null){
-        this.route.navigate(['/login'])
-      }else{
-        //this.loadPictures()
-      }
-    })
-  }
-
   ionViewDidEnter() {
 
   }
@@ -190,33 +209,27 @@ export class WinterGearPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
-  checkValidity(){
-    console.log(this.department);
-    console.log(this.selectedCategory);
-    console.log(this.itemName);
-    console.log(this.description);
-    console.log(this.price);
-    console.log(this.size);
-    console.log(this.color);
-
-    if(this.selectedCategory === undefined || this.department === undefined || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === ''){
+  checkValidity() {
+    if (this.selectedCategory === undefined || this.selectedCategory === 'Select Category' || this.department === undefined || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
       this.addForm = false
       console.log(this.addForm);
-      
-    }else{
+
+    } else {
       this.addForm = true
       console.log(this.addForm);
     }
-    if(this.department !== undefined || this.selectedCategory !== undefined||  this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== ''){
+    if (this.department !== undefined || this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.selectedCategory !== undefined || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined) {
       this.formHasValues = true
-      console.log(this.formHasValues);
-      
-    }else{
-      this.formHasValues = false
-      console.log(this.formHasValues);
-    }
+      console.log(this.formHasValues, 'form has values');
+     // this.btnClearForm.nativeElement.disabled = false
+    } 
+    // else {
+    //   this.formHasValues = false
+    //   console.log(this.formHasValues, 'form has values');
+    //   //this.btnClearForm.nativeElement.disabled = true
+    // }
   }
-  checkColor(event, color){
+  checkColor(event, color) {
     this.checkValidity()
     console.log(color);
     console.log(this.size);
@@ -225,17 +238,6 @@ export class WinterGearPage implements OnInit {
       if (event.target.checked === true) {
         this.color.push(color)
         console.log(this.color);
-        // if(color === 'Black'){
-        //   this.blackAvailable = true
-        // }else if(color === 'Brown'){
-        //   this.brownAvailable = true
-        // }else if(color === 'Orange'){
-        //   this.orangeAvailable = true
-        // }else if(color === 'Yellow'){
-        //   this.yellowAvailable = true
-        // }else{
-        //   this.whiteAvailable = true
-        // }
       } else if (event.target.checked === false) {
         let index = this.color.indexOf(color)
         console.log(index);
@@ -247,30 +249,26 @@ export class WinterGearPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
-
+  addPicture(event){
+    this.picture = <File>event.target.files[0]
+    // let name = event.target.name
+    // let pictureName = name
+    // this.itemName = pictureName.replace('-', ' ')
+    // this.description = this.itemName
+  }
   // addItem() {
   //   this.route.navigate(['/'])
   // }
   addProduct() {
-    console.log(this.department);
-    console.log(this.selectedCategory);
-    console.log(this.itemName);
-    console.log(this.description);
-    console.log(this.price);
-    console.log(this.size);
-    //let date = moment(new Date()).format('LLLL');
-    //console.log(date);
-
-      return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
-        this.clearForm();
-      })
-    
-
+    return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
+      this.clearForm();
+      console.log('added to first firebase')
+    }).then(result => {
+    })
   }
 
   //Clearing all form variables and form inputs respectively
   clearForm() {
-    this.departmentOptions = ['Select Department']
     this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
@@ -278,15 +276,21 @@ export class WinterGearPage implements OnInit {
     this.price = ''
     this.description = ''
     this.size = [];
+    this.picture = undefined
     document.getElementById('accessory')['checked'] = false;
     document.getElementById('summer')['checked'] = false;
-    let checkboxes : Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
-    for(let i = 0; i < checkboxes.length; i++){
+    this.fileInput.nativeElement.value = ''
+    this.departmentCombo.nativeElement.value ='Select Department'
+    let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
+    let checkboxesNative : Array<any> = [this.checkboxXS, this.checkboxS, this.checkboxM, this.checkboxL, this.checkboxXL, this.checkboxXXL, this.checkboxXXXL, this.checkboxBlack, this.checkboxBrown, this.checkboxOrange, this.checkboxYellow, this.checkboxWhite]
+    for (let i = 0; i < checkboxes.length; i++) {
       document.getElementsByName(checkboxes[i])[0]['checked'] = false
+      checkboxesNative[i].nativeElement.checked = false
     }
     this.formHasValues = false
-    this.department = undefined
-    this.selectedCategory = undefined
+    this.addForm = false
+    this.department = 'Select Department'
+    this.selectedCategory = 'Select Category'
   }
 
   //Routing to sales page
@@ -419,26 +423,20 @@ export class WinterGearPage implements OnInit {
     //Search functionality
     search(query){
       this.filterItems(query, this.allProducts)
-      this.searchArray = []
+      //this.searchArray = []
     }
     filterItems(query, array){
-      let queryFormatted = query.toLowerCase();
-      console.log(queryFormatted);
-      console.log(array);
-      if(queryFormatted !== ''){
+      let queryFormatted = this.searchInput.toLowerCase()
+      if(queryFormatted !== '' && queryFormatted !== '*'){
         let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
-        let addBrand : boolean
-        let addCategory : boolean
-        let addName : boolean
-        addName = false
-        addCategory = false
-        addBrand = false
-        //console.log(brandResult);
-        //console.log(categoryResult);
         console.log(nameResult);
         this.searchArray = nameResult
-      }else if(queryFormatted === ''){
-        this.searchArray = []
+        console.log(this.searchArray);
+        
+      }else if(queryFormatted === '*'){
+      this.searchArray = this.allProducts
+      console.log(this.searchArray);
+      
       }
     }
 
