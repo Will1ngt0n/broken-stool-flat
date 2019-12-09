@@ -12,28 +12,28 @@ import { IonSlides } from '@ionic/angular';
   styleUrls: ['./landing.page.scss'],
 })
 export class LandingPage implements OnInit {
-  sales : Array<any> = []
-  brands : Array<any> = []
-  allSales : Array<any> = []
-  allProducts : Array<any> = []
-  inventory : Array<any> = []
-  history : Array<any> = []
-  readyOrders : Array<any> = []
-  pendingOrders : Array<any> = []
-  addForm : boolean 
-  formHasValues : boolean 
-  department : any
-  picture : File
+  sales: Array<any> = []
+  brands: Array<any> = []
+  allSales: Array<any> = []
+  allProducts: Array<any> = []
+  inventory: Array<any> = []
+  history: Array<any> = []
+  readyOrders: Array<any> = []
+  pendingOrders: Array<any> = []
+  addForm: boolean
+  formHasValues: boolean
+  department: any
+  picture: File
   searchArray
-  pictures : Array<any> = []
-  departmentOptions : Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
-  kwangaCategories : Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
-  dankieJesuCategories : Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
+  pictures: Array<any> = []
+  departmentOptions: Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
+  kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
+  dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
   categoryOptions: Array<any> = ['Select Category']
-  inventoryItems :  Array<any> = []
-  summer : boolean;
-  winter : boolean = false
-  kwanga : boolean = false
+  inventoryItems: Array<any> = []
+  summer: boolean;
+  winter: boolean = false
+  kwanga: boolean = false
   selectedCategory: any
   itemName: String
   price: String
@@ -58,14 +58,14 @@ export class LandingPage implements OnInit {
   orangeAvailable; orangePic
   yellowAvailable; yellowPic
   whiteAvailable; whitePic
-  dankieJesuPic : object = {}
-  kwangaPic  : object = {}
-  AllCatpic : object = {}
+  dankieJesuPic: object = {}
+  kwangaPic: object = {}
+  AllCatpic: object = {}
   miniSearchBarState: boolean = false;
   @ViewChild('sliderRef', { static: false }) slides: IonSlides;
   @ViewChild('sliderRefSmall', { static: true }) mySlides: IonSlides;
-  @ViewChild('fileInput', {static:true}) fileInput : ElementRef
-  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
+  @ViewChild('fileInput', { static: true }) fileInput: ElementRef
+  @ViewChild('departmentCombo', { static: true }) departmentCombo: ElementRef
 
 
 
@@ -95,7 +95,7 @@ export class LandingPage implements OnInit {
     roundLengths: false,
     effect: 'fade'
   }
-  constructor(private alertController : AlertController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
+  constructor(private alertController: AlertController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
     //this.productService.getCategories()
     this.loadDankieJesuItems()
@@ -115,19 +115,19 @@ export class LandingPage implements OnInit {
 
     }
 
-    for(let key = 0; key < this.status.length; key++){
+    for (let key = 0; key < this.status.length; key++) {
       this.getPendingOrders(this.status[key])
-      if(key === this.status.length -1){
+      if (key === this.status.length - 1) {
         this.orderItems()
       }
     }
- 
+
     this.getReadyOrders()
     this.getOrderHistory()
     this.getInventory()
 
   }
-  signOutPopup(){
+  signOutPopup() {
     this.presentLogoutConfirmAlert()
   }
   async presentLogoutConfirmAlert() {
@@ -154,7 +154,7 @@ export class LandingPage implements OnInit {
 
     await alert.present();
   }
-  signOut(){
+  signOut() {
     return this.authService.signOut().then(result => {
       console.log(result);
       this.route.navigate(['/login'])
@@ -174,7 +174,7 @@ export class LandingPage implements OnInit {
   //   })
   // }
 
-  
+
   changeDepartment(event) {
     console.log('Accessory ', this.accessory);
 
@@ -207,10 +207,10 @@ export class LandingPage implements OnInit {
     this.checkValidity()
   }
   ngOnInit() {
-    return this.authService.checkingAuthState().then( result => {
-      if(result == null){
+    return this.authService.checkingAuthState().then(result => {
+      if (result == null) {
         this.route.navigate(['/login'])
-      }else{
+      } else {
         this.loadPictures()
       }
     })
@@ -322,33 +322,33 @@ export class LandingPage implements OnInit {
     console.log(date);
     console.log(this.picture);
 
-  //   let fullPath = this.picture
-  //   let format 
-  //  // let split = this.picture.split('\\')
-  //   console.log(split);
-  //   let imageData = split[split.length -1]
-  //   let split2 = imageData.split('.')
-  //   let imageFormat = split2[1]
-  //   console.log(split2);
-  //   let imageName = split2[0]
-  //   console.log(imageFormat);
-  //   console.log(imageName);
-    
-    
-  //   new File(['fijRKjhudDjiokDhg1524164151'],
-  //                    '../img/Products/fijRKjhudDjiokDhg1524164151.jpg', 
-  //                    {type:'image/jpg'});
+    //   let fullPath = this.picture
+    //   let format 
+    //  // let split = this.picture.split('\\')
+    //   console.log(split);
+    //   let imageData = split[split.length -1]
+    //   let split2 = imageData.split('.')
+    //   let imageFormat = split2[1]
+    //   console.log(split2);
+    //   let imageName = split2[0]
+    //   console.log(imageFormat);
+    //   console.log(imageName);
 
 
-  //   new File([imageName], fullPath, {type:'image/' + imageFormat});
-  //   let parts = [
-  //     new Blob([this.picture], {type: 'image/' + imageFormat})
-  //   ];
-  //   let picture = new File(parts, imageName, {
-  //     lastModified: Number(new Date()), // optional - default = now
-  //     type: '"image/jpeg"' // optional - default = ''
-  // })
-  //console.log(picture);
+    //   new File(['fijRKjhudDjiokDhg1524164151'],
+    //                    '../img/Products/fijRKjhudDjiokDhg1524164151.jpg', 
+    //                    {type:'image/jpg'});
+
+
+    //   new File([imageName], fullPath, {type:'image/' + imageFormat});
+    //   let parts = [
+    //     new Blob([this.picture], {type: 'image/' + imageFormat})
+    //   ];
+    //   let picture = new File(parts, imageName, {
+    //     lastModified: Number(new Date()), // optional - default = now
+    //     type: '"image/jpeg"' // optional - default = ''
+    // })
+    //console.log(picture);
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
       this.clearForm();
     })
@@ -389,16 +389,16 @@ export class LandingPage implements OnInit {
     this.navCtrl.navigateForward(['sales-specials'], navOptions)
   }
 
-  viewMore(query){
-    this.route.navigate(['/'+ query])
+  viewMore(query) {
+    this.route.navigate(['/' + query])
   }
-  
-  loadKwangaItems(){
-    let category : String
-    for(let key in this.kwangaCategories){
-      category  = this.kwangaCategories[key]
+
+  loadKwangaItems() {
+    let category: String
+    for (let key in this.kwangaCategories) {
+      category = this.kwangaCategories[key]
       this.loadItems(category, 'Kwanga')
-      
+
     }
   }
   loadDankieJesuItems() {
@@ -411,106 +411,106 @@ export class LandingPage implements OnInit {
   loadViewedCategory() {
 
   }
-  loadItems(category, brand){
-    let data : Array<any> = []
+  loadItems(category, brand) {
+    let data: Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
-      if(result !== undefined){
-        for(let key in result){
-        if(brand === 'Kwanga'){
-          this.kwangaProducts.push(result[key])
-          this.allProducts.push(result[key])
-          console.log(this.allProducts);
-          if(this.kwangaGear.length < 4){
-            this.kwangaGear.push(result[key])
-          }
-        }else if(brand === 'Dankie Jesu'){
-          this.dankieJesuProducts.push(result[key])
-          this.allProducts.push(result[key])
-          if(result[key].data.isSummer === true){
-            this.summerProducts.push(result[key])
-            if(this.summerGear.length < 5){
-              this.summerGear.push(result[key])
+      if (result !== undefined) {
+        for (let key in result) {
+          if (brand === 'Kwanga') {
+            this.kwangaProducts.push(result[key])
+            this.allProducts.push(result[key])
+            console.log(this.allProducts);
+            if (this.kwangaGear.length < 4) {
+              this.kwangaGear.push(result[key])
             }
-          } else if (result[key].data.isSummer === false) {
-            this.winterProducts.push(result[key])
-            if(this.winterGear.length < 5){
-              this.winterGear.push(result[key])
+          } else if (brand === 'Dankie Jesu') {
+            this.dankieJesuProducts.push(result[key])
+            this.allProducts.push(result[key])
+            if (result[key].data.isSummer === true) {
+              this.summerProducts.push(result[key])
+              if (this.summerGear.length < 5) {
+                this.summerGear.push(result[key])
+              }
+            } else if (result[key].data.isSummer === false) {
+              this.winterProducts.push(result[key])
+              if (this.winterGear.length < 5) {
+                this.winterGear.push(result[key])
+              }
             }
           }
         }
       }
-      }
 
-      if(this.summerProducts.length > 0 ){
-      }else if(this.winterProducts.length > 0){   
+      if (this.summerProducts.length > 0) {
+      } else if (this.winterProducts.length > 0) {
       }
       console.log(this.kwangaGear, this.summerGear, this.winterGear)
-        this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        console.log(this.kwangaGear, this.summerGear, this.winterGear)
-      })
-      }
-      orderItems(){
-        // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        // console.log(this.summerProducts);
-        
-        // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
-        // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
-        // console.log(this.summerGear);
-        // console.log(this.winterGear);
-        
-        
-      }
-  getInventory(){
-    console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
-    
+      this.summerGear.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
+      this.winterGear.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
+      this.kwangaGear.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
+      console.log(this.kwangaGear, this.summerGear, this.winterGear)
+    })
   }
-  getPendingOrders(status){
+  orderItems() {
+    // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+    // this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+    // console.log(this.summerProducts);
+
+    // for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
+    // for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
+    // console.log(this.summerGear);
+    // console.log(this.winterGear);
+
+
+  }
+  getInventory() {
+    console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
+
+  }
+  getPendingOrders(status) {
     return this.productService.getPendingOrders(status).then(result => {
       console.log(result);
       let array = result
-      if(result.length !== 0){
-        for(let key in result){
+      if (result.length !== 0) {
+        for (let key in result) {
           this.pendingOrders.push(result[key])
           console.log(this.pendingOrders);
         }
-        for(let key in this.pendingOrders){
+        for (let key in this.pendingOrders) {
           this.loadUserName(this.pendingOrders[key].details.userID)
         }
       }
     })
   }
-  loadUserName(data){
+  loadUserName(data) {
 
-      // return this.productService.loadUser(ID).then(result => {
-      //   this.pendingOrders[key].name = result
-      //   console.log(this.pendingOrders);
-      // })
+    // return this.productService.loadUser(ID).then(result => {
+    //   this.pendingOrders[key].name = result
+    //   console.log(this.pendingOrders);
+    // })
     return this.productService.loadUser(data).then(result => {
       console.log(result);
-      for(let key in this.pendingOrders){
-        if(this.pendingOrders[key].details.userID === result.userID){
+      for (let key in this.pendingOrders) {
+        if (this.pendingOrders[key].details.userID === result.userID) {
           this.pendingOrders[key].details.name = result.name
           this.pendingOrders[key].details.cell = result.cell
         }
       }
       console.log(this.pendingOrders);
-      
+
     })
     //thisgffdsg
 
-    
+
   }
-  getReadyOrders(){
+  getReadyOrders() {
     return this.productService.getReadyOrders().then(result => {
       this.readyOrders = result
     })
   }
 
   // get orders that are closed, history, status == closed
-  getOrderHistory(){
+  getOrderHistory() {
     // return this.productService.getOrderHistory().then(result => {
     //   this.history = result
     //   let totalPrice : Number = 0
@@ -529,18 +529,18 @@ export class LandingPage implements OnInit {
     //     this.history[key].details.totalPrice = totalPrice
     //     this.history[key].details.numberOfItems = numberOfItems
     //     console.log(this.history[key]);
-        
+
     //   }
     // })
   }
-  viewOrderHistory(item){
+  viewOrderHistory(item) {
     console.log(item);
-    let parameter : NavigationExtras = {queryParams : {category: item, link: '/landing', refNo: item.refNo, userID: item.details.uid}}
+    let parameter: NavigationExtras = { queryParams: { category: item, link: '/landing', refNo: item.refNo, userID: item.details.uid } }
     this.navCtrl.navigateForward(['order-receipt'], parameter);
   }
-  closeOrder(docID){
+  closeOrder(docID) {
     return this.productService.closedOrder(docID).then(result => {
-      
+
     })
   }
 
@@ -567,71 +567,71 @@ export class LandingPage implements OnInit {
     inventoryItems[0].style.display = "none"
 
   }
-  subtract(item){
+  subtract(item) {
     console.log(item.productID);
-    for(let key in this.allProducts){
-      if(this.allProducts[key].productID === item.productID){
+    for (let key in this.allProducts) {
+      if (this.allProducts[key].productID === item.productID) {
         this.allProducts[key].data.quantity = +this.allProducts[key].data.quantity - 1
       }
     }
   }
-  add(item){
+  add(item) {
     console.log(item);
-    for(let key in this.allProducts){
-      if(this.allProducts[key].productID === item.productID){
+    for (let key in this.allProducts) {
+      if (this.allProducts[key].productID === item.productID) {
         this.allProducts[key].data.quantity = +this.allProducts[key].data.quantity + 1
       }
     }
   }
-  changePrice(event, item){
+  changePrice(event, item) {
     console.log(item);
     //console.log(event);
-    let number : number = document.getElementById(item.productID)['value']
+    let number: number = document.getElementById(item.productID)['value']
     console.log(number)
-    for(let key in this.allProducts){
-      if(this.allProducts[key].productID === item.productID){
+    for (let key in this.allProducts) {
+      if (this.allProducts[key].productID === item.productID) {
         this.allProducts[key].data.quantity = +number
       }
     }
-    
+
   }
-  saveQuantity(brand, category, productID, quantity){
+  saveQuantity(brand, category, productID, quantity) {
     console.log(brand, category, productID, quantity);
-    if(quantity === ''){
+    if (quantity === '') {
       quantity = 0
     }
     return this.productService.updateQuantity(brand, category, productID, quantity).then(result => {
       console.log(result);
     })
   }
-  viewPendingOrder(item){
+  viewPendingOrder(item) {
     console.log(item);
-    let parameter : NavigationExtras = {queryParams : {refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing'}}
+    let parameter: NavigationExtras = { queryParams: { refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing' } }
     this.navCtrl.navigateForward(['pending-order'], parameter);
   }
- 
-  addPicture(event){
+
+  addPicture(event) {
     this.picture = <File>event.target.files[0]
     console.log(<File>event.target.files)
     console.log(this.picture);
-    
+
   }
 
   //Search functionality
   searchInput
-  search(){
-    this.filterItems( this.allProducts)
+  search() {
+    this.filterItems(this.allProducts)
     // this.searchArray = []
   }
-  filterItems(array){
+  filterItems(array) {
     let queryFormatted = this.searchInput.toLowerCase();
     console.log(queryFormatted);
     console.log(array);
-    if(queryFormatted !== ''){
+    if (queryFormatted !== '') {
       let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
-      let addBrand : boolean
-      let addCategory : boolean
-      let addName : boolean
+      let addBrand: boolean
+      let addCategory: boolean
+      let addName: boolean
       addName = false
       addCategory = false
       addBrand = false
@@ -639,67 +639,67 @@ export class LandingPage implements OnInit {
       //console.log(categoryResult);
       console.log(nameResult);
       this.searchArray = nameResult
-    }else if(queryFormatted === ''){
+    } else if (queryFormatted === '') {
       // this.searchArray = []
     }
   }
 
-  async loadPictures(){
+  async loadPictures() {
     return this.productService.getPictures().then(result => {
       console.log(result);
-      let pictures : Array<any> = []
-      for(let key in result.items){
+      let pictures: Array<any> = []
+      for (let key in result.items) {
         result.items[key].getDownloadURL().then(link => {
           let path = result.items[key].fullPath
           let splitPath = path.split('/')
-          let pictureID = splitPath[splitPath.length -1]
+          let pictureID = splitPath[splitPath.length - 1]
           // picture['link'] = link
           // picture['productID'] = pictureID
-          this.pictures.push({link : link, productID : pictureID})
+          this.pictures.push({ link: link, productID: pictureID })
           console.log(this.pictures);
           this.insertPictures()
-         });
-         return result
-        }
+        });
+        return result
+      }
     })
   }
-  
-  insertPictures(){
+
+  insertPictures() {
     console.log(this.pictures);
     console.log(this.winterGear);
     console.log(this.summerGear);
-    
-    
-    for(let i in this.pictures){
+
+
+    for (let i in this.pictures) {
       //Adding pictures to products arrays
-      for(let key in this.allProducts){
-        if(this.pictures[i].productID === this.allProducts[key].productID){
+      for (let key in this.allProducts) {
+        if (this.pictures[i].productID === this.allProducts[key].productID) {
           console.log('ddsfds');
-          this.allProducts[key].pictures = {link: this.pictures[i].link}
+          this.allProducts[key].pictures = { link: this.pictures[i].link }
           console.log(this.allProducts[key])
         }
 
       }
-      for(let key in this.kwangaProducts){
-        if(this.pictures[i].productID === this.kwangaProducts[key].productID){
+      for (let key in this.kwangaProducts) {
+        if (this.pictures[i].productID === this.kwangaProducts[key].productID) {
           console.log('ddsfds');
-          this.kwangaProducts[key].pictures = {link: this.pictures[i].link}
+          this.kwangaProducts[key].pictures = { link: this.pictures[i].link }
           console.log(this.kwangaProducts[key])
         }
         this.kwangaPic = this.kwangaProducts[0]
       }
-      for(let key in this.summerGear){
-        if(this.pictures[i].productID === this.summerGear[key].productID){
+      for (let key in this.summerGear) {
+        if (this.pictures[i].productID === this.summerGear[key].productID) {
           console.log('ddsfds');
-          this.summerGear[key].pictures = {link: this.pictures[i].link}
+          this.summerGear[key].pictures = { link: this.pictures[i].link }
           console.log(this.summerGear[key])
         }
         this.dankieJesuPic = this.summerProducts[0]
       }
-      for(let key in this.winterGear){
-        if(this.pictures[i].productID === this.winterGear[key].productID){
+      for (let key in this.winterGear) {
+        if (this.pictures[i].productID === this.winterGear[key].productID) {
           console.log('ddsfds');
-          this.winterGear[key].pictures = {link: this.pictures[i].link}
+          this.winterGear[key].pictures = { link: this.pictures[i].link }
           console.log(this.winterGear[key])
         }
         this.AllCatpic = this.winterProducts[0]
@@ -711,7 +711,7 @@ export class LandingPage implements OnInit {
     document.getElementById("left-items-list").style.left = "0"
 
   }
-  searchButtonState:string = "search"
+  searchButtonState: string = "search"
   showSearchBar() {
     console.log("Showing searchbar");
     if (this.miniSearchBarState == true) {
@@ -738,20 +738,35 @@ export class LandingPage implements OnInit {
     document.getElementById("right-items-list").style.right = "-100%"
   }
   listOfItems: number = 0
-  showPendingListSmall(){
+  showPendingListSmall() {
     this.sideMenuButtons = false;
     this.listOfItems = 1;
   }
-  showHistoryListSmall(){
+  showHistoryListSmall() {
     this.sideMenuButtons = false;
     this.listOfItems = 2;
   }
-  showInventoryListSmall(){
+  showInventoryListSmall() {
     this.sideMenuButtons = false;
     this.listOfItems = 3;
   }
-  stepBackToBtns(){
+  stepBackToBtns() {
     this.sideMenuButtons = true;
     this.listOfItems = 0;
   }
+  clickedSearchItem: string = "item hidden"
+  showHideSearchDetails() {
+    if (this.clickedSearchItem == "hideItem") {
+      this.clickedSearchItem = "showItem"
+      setTimeout(() => {
+        this.searchInput = ''
+      }, 100);
+    }
+    else {
+      this.clickedSearchItem = "hideItem"
+    }
+  }
+
+
+
 }
