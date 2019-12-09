@@ -24,6 +24,7 @@ export class PendingOrderPage implements OnInit {
   constructor(private alertController : AlertController, private authService : AuthService, private route : Router, private activatedRoute : ActivatedRoute, private productsService: ProductsService) { }
 ​
   ngOnInit() {
+    
     return this.authService.checkingAuthState().then( result => {
       if(result == null){
         this.route.navigate(['/login'])
@@ -33,6 +34,7 @@ export class PendingOrderPage implements OnInit {
           //console.log(this.item);
           console.log(result);
           this.refNo = result.refNo
+          this.status = 'quit'
           let name = result.user
           this.userID = result.userID
           console.log(name);
@@ -42,6 +44,7 @@ export class PendingOrderPage implements OnInit {
           console.log(this.routingPage);
           
           this.getOrder(this.refNo, name)
+          this.refreshPendingOrder()
           this.loadPictures().then(result => {
             console.log(result);
             
@@ -49,7 +52,7 @@ export class PendingOrderPage implements OnInit {
         })
       }
     })
-​
+​ 
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()
@@ -139,7 +142,7 @@ insertPictures(){
     }
   }
 }
-​
+​status : string;
 cancelOrder(){
   let status = 'cancelled'
   return this.productsService.cancelOrder(this.refNo, status, this.userID, this.products).then(result => {
@@ -153,6 +156,7 @@ processOrder(){
   // }
   return this.productsService.processOrder(this.refNo, status).then(result => {
     window.location.reload()
+    this.refreshPendingOrder()
   })
 ​
 }
@@ -166,6 +170,14 @@ orderCollected(){
   let status = 'collected'
   return this.productsService.closedOrders(this.refNo, status, this.userID, this.products).then(result => {
     this.route.navigate([this.routingPage])
+  })
+}
+refreshPendingOrder(){
+  return this.productsService.refreshPendingOrder(this.refNo).then(result => {
+
+    this.status = result
+    console.log(result);
+    
   })
 }
 }

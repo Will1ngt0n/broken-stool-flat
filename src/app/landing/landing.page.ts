@@ -202,7 +202,7 @@ export class LandingPage implements OnInit {
       if(result === null){
         this.route.navigate(['/login'])
       }else{
-        return this.loadPictures()
+        //return this.loadPictures()
 
       }
     })
@@ -405,13 +405,24 @@ export class LandingPage implements OnInit {
         if(brand === 'Kwanga'){
           this.kwangaProducts.push(result[key])
           this.allProducts.push(result[key])
+          if(this.kwangaSpecialsPicture !== undefined){
+            this.kwangaSpecialsPicture = this.kwangaProducts[0].data.pictureLink
+          }
           console.log(this.allProducts);
           if(this.kwangaGear.length < 3){
             this.kwangaGear.push(result[key])
+            console.log(this.kwangaGear);
+            
           }
         }else if(brand === 'Dankie Jesu'){
           this.dankieJesuProducts.push(result[key])
           this.allProducts.push(result[key])
+          if(this.dankieJesuSpecialsPicture !== undefined){
+            this.dankieJesuSpecialsPicture = this.dankieJesuProducts[0].data.pictureLink
+          }
+          if(this.allSpecialsPicture!== undefined){
+            this.allSpecialsPicture = this.dankieJesuProducts[0].data.pictureLink
+          }
           if(result[key].data.isSummer === true){
             this.summerProducts.push(result[key])
             if(this.summerGear.length < 5){
@@ -610,7 +621,7 @@ export class LandingPage implements OnInit {
   }
   viewPendingOrder(item) {
     console.log(item);
-    let parameter: NavigationExtras = { queryParams: { refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing' } }
+    let parameter: NavigationExtras = { queryParams: { status: item.details.status, refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing' } }
     this.navCtrl.navigateForward(['pending-order'], parameter);
   }
  
@@ -781,6 +792,10 @@ export class LandingPage implements OnInit {
     else {
       this.clickedSearchItem = "hideItem"
     }
+  }
+
+  reloadPage(){
+    window.location.reload()
   }
 
 
