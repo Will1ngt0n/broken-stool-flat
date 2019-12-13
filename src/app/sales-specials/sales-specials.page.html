@@ -1,5 +1,13 @@
 <ion-content>
 
+    <div class="searchResults" *ngIf="searchInput">
+        Search Results
+        <ion-list *ngFor="let item of searchArray">
+          <ion-item (click)="showHideSearchDetails(name)">{{item.data.name}}</ion-item>
+        </ion-list>
+          
+            <!-- <div id="oops" *ngIf="searchArray.length === 0"><p><ion-icon name="sad"></ion-icon> There are no matches for this search</p></div> -->
+      </div>
   <div class="content-container">
     <div class="nav-bar">
       <div class="nav-content">
@@ -17,66 +25,6 @@
     </div>
     <div class="body-content">
       <div id="left" padding>
-        <div class="history-items">
-          <div class="title-top">
-            <h5>History</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
-          </div>
-          <div class="items-list" *ngFor='let item of history'>
-            <ion-card>
-              <p class="floating">Paid</p>
-              <p class="floating" id="bottom-right">Items (8)</p>
-              <p><b>{{item.customerName}}</b></p>
-              <p>R {{item.details.totalPrice}}</p>
-              <p>REF: {{item.refNo}}</p>
-
-            </ion-card>
-          </div>
-        </div>
-        <div class="pending-items">
-          <div class="title-top">
-            <h5>Pending Orders</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
-          </div>
-          <div class="items-list" *ngFor='let item of pendingOrders'>
-            <ion-card>
-              <p class="floating" id="bottom-right">Items (8)</p>
-              <p><b>{{item.customerName}}</b></p>
-              <p>R {{item.details.totalPrice}}</p>
-              <p>REF: {{item.refNo}}</p>
-
-            </ion-card>
-          </div>
-        </div>
-        <div class="inventory-items">
-          <div class="title-top">
-            <h5>Inventory</h5>
-            <ion-icon name="close" id="closer"></ion-icon>
-          </div>
-          <div class="items-list" *ngFor='let item of inventory'>
-            <ion-card>
-              <img src="../../assets/imgs/images.jpg" alt="">
-              <p><b>John Doe</b></p>
-              <p>R 799.90</p>
-
-              <div class="quantities">
-                <div>
-                  <ion-icon name="remove"></ion-icon>
-                </div>
-                <div><input type="text" value="78"></div>
-                <div>
-                  <ion-icon name="add"></ion-icon>
-                </div>
-                <div>Save</div>
-              </div>
-
-            </ion-card>
-          </div>
-        </div>
-        <h3>Hello Lunga</h3>
-        <div class="side-buttons">Pending Orders</div>
-        <div class="side-buttons">History</div>
-        <div class="side-buttons">Inventory</div>
       </div>
       <div id="mid">
         <div class="top-bar">
@@ -98,20 +46,13 @@
             <div *ngIf="item.brand === 'Kwanga' || item.brand === 'Dankie Jesu'">
               <div class="SubCat">
                 <div class="gridder">
-                  <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-                  <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+                  <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+                  <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
                   <div id="info">
                     <h5>{{item.data.name}}</h5>
                     <p>{{item.data.description}}.</p>
                     <p><b>R {{item.data.price}}</b></p>
                     <div class="options">
-                      <!-- <div
-                        (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
-                        Promote</div> -->
-                      <!-- <div
-                        (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">
-                        Update</div> -->
-                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
                       <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
                     </div>
                   </div>
@@ -124,8 +65,8 @@
             <div *ngIf="item.brand === 'Dankie Jesu'">
               <div class="SubCat">
                 <div class="gridder">
-                  <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-                  <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+                  <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+                  <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
                   <div id="info">
                     <h5>{{item.data.name}}</h5>
                     <p>{{item.data.description}}.</p>
@@ -134,10 +75,10 @@
                       <!-- <div
                         (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
                         Promote</div> -->
-                      <div
+                      <!-- <div
                         (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
                         Update</div>
-                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div> -->
                       <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
                     </div>
                   </div>
@@ -150,8 +91,8 @@
             <div *ngIf="item.brand === 'Kwanga'">
               <div class="SubCat">
                 <div class="gridder">
-                  <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-                  <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+                  <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+                  <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
                   <div id="info">
                     <h5>{{item.data.name}}</h5>
                     <p>{{item.data.description}}.</p>
@@ -160,10 +101,10 @@
                       <!-- <div
                         (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
                         Promote</div> -->
-                      <div
+                      <!-- <div
                         (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
                         Update</div>
-                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                      <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div> -->
                       <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
                     </div>
                   </div>
@@ -174,7 +115,7 @@
         </div>
       </div>
       <div id="right">
-
+<!-- 
         <div class="adding">
           <h4>Add Item</h4>
 
@@ -208,7 +149,6 @@
           </div>
           <input #fileInput width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png"
             (change)='addPicture($event)'>
-          <!-- Div for colors, checkboxes work but currently can't add pictures -->
           <div class='colors'>
             <h5>Available colors</h5>
             <input type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px'
@@ -226,7 +166,7 @@
           </ion-button>
           <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form
           </ion-button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -249,10 +189,13 @@
         </ion-button>
         <div class="page-title">
           <div class="btn-top" id="allSubs" (click)="toggleAll()">Show All</div>
-          <div class="btn-top" id="dankie" (click)="toggleDankie()">Dankie Jesu</div>
-          <div class="btn-top" id="kwanga" (click)="toggleKwanga()">Kwanga Apparel</div>
+          <div class="btn-top" id="dankieSub" (click)="toggleDankie()">Dankie Jesu</div>
+          <div class="btn-top" id="kwangaSub" (click)="toggleKwanga()">Kwanga Apparel</div>
         </div>
       </div>
+      <p class="location">
+        {{brandName}}
+      </p>
       <div *ngFor="let item of allProducts">
       <div class="list" *ngIf="brandName === 'All'">
 
@@ -266,16 +209,6 @@
             <!-- <p>{{item.data.description}}</p> -->
             <p>R {{item.data.price}} price</p>
             <div class="opts">
-              <div>
-                <button icon-only (click)="toggleUpdate()">
-                  <ion-icon ios="ios-create" md="md-create"></ion-icon>
-                </button>
-              </div>
-              <div>
-                <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
-                  <ion-icon name="eye-off"></ion-icon>
-                </button>
-              </div>
               <div>
                 <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
@@ -298,16 +231,6 @@
               <p>R {{item.data.price}}</p>
             <div class="opts">
               <div>
-                <button icon-only (click)='updateItem(item.productID)'>
-                  <ion-icon ios="ios-create" md="md-create"></ion-icon>
-                </button>
-              </div>
-              <div>
-                <button icon-only (click)='hideItem(item.productID)'>
-                  <ion-icon name="eye-off"></ion-icon>
-                </button>
-              </div>
-              <div>
                 <button icon-only (click)='deleteItem(item.productID)'>
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
                 </button>
@@ -324,21 +247,10 @@
                 <img src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
             </div>
             <div>
-              <h5>{{item.data.name}}</h5>
+              <p id="item-name-small">{{item.data.name}}</p>
               <!-- <p>{{item.data.description}}</p> -->
               <p>R {{item.data.price}}</p>
             <div class="opts">
-              <div>
-                <button icon-only
-                  (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price)">
-                  <ion-icon ios="ios-create" md="md-create"></ion-icon>
-                </button>
-              </div>
-              <div>
-                <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
-                  <ion-icon name="eye-off"></ion-icon>
-                </button>
-              </div>
               <div>
                 <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>

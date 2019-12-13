@@ -408,7 +408,7 @@ ion-searchbar {
   #info {
     padding-left: 10px;
     .options {
-      width: 30%;
+      width: 10%;
       height: 40px;
       // background: pink;
       // position: absolute;
@@ -418,7 +418,7 @@ ion-searchbar {
       
     }
     .options > div {
-      width: 33.33333333333333333333333333333333%;
+      width: 100%;
       height: 100%;
       color: white;
       text-align: center;
@@ -432,7 +432,7 @@ ion-searchbar {
     //   background: green;
     // }
     .options > div:nth-child(1) {
-      background: #7c0000;
+      background: red;
     }
     .options > div:nth-child(2) {
       background: grey;
@@ -499,6 +499,11 @@ ion-searchbar {
   }
 }
 
+#allSubs, #dankieSub, #kwangaSub{
+  color: #7c0000 !important;
+  background: white;
+}
+
 .mobile-view {
   animation: 700ms faderIn;
   width: 100%;
@@ -506,7 +511,8 @@ ion-searchbar {
   background: red;
   overflow: hidden;
   #item-name-small{
-    font-size: 12px !important;
+    font-size: 16px !important;
+    margin-top: 10px;
   }
   .small-nav {
     width: 100%;
@@ -799,6 +805,7 @@ ion-searchbar {
   }
   .SubCats > div:nth-child(2) {
     width: calc(100% - 100px);
+    position: relative;
     h5 {
       margin-top: 10px;
       margin-left: 10px;
@@ -813,6 +820,8 @@ ion-searchbar {
       height: 42px;
       // border: 2px solid red;
       display: flex;
+      position: absolute;
+      bottom: 0;
     }
     .opts > div {
       text-align: center;
@@ -833,7 +842,7 @@ ion-searchbar {
       }
     }
     .opts > div:nth-child(1) {
-      background: green;
+      background: red;
     }
     .opts > div:nth-child(2) {
       background: #7c0000;
@@ -845,4 +854,9 @@ ion-searchbar {
       background: red;
     }
   }
+}
+.location{
+  color: grey;
+  font-size: 12px;
+  text-align: center;
 }

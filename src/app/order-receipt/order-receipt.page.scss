@@ -21,7 +21,7 @@
 .body-content {
   width: 100%;
   height: calc(100% - 60px);
-  background: green;
+  background: white;
   display: flex;
 }
 #title,
@@ -68,7 +68,7 @@
     height: 90%;
     background: white;
     border-radius: 10px;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
     display: flex;
   }
   .box-card > div {
@@ -165,6 +165,7 @@
 }
 #mid{
     width: 100%;
+    transition: 700ms;;
 }
 .box-card {
     width: 100%;

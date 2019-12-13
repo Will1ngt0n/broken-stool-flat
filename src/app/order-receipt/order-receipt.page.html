@@ -25,7 +25,7 @@
             <p class="nums">{{cell}}</p>
             <p class="refNum"><b>REF</b> {{refNo}}</p>
             <div id="note">
-              <i>Use this reference number to compare against the reference number provided by your back provider.</i>
+              <i>Use this reference number to compare against the reference number provided by your bank provider.</i>
             </div>
             <div class="toFlex">
               <p id="SubHeader">Date of Purchase</p>
@@ -62,7 +62,7 @@
               Items Ordered
             </p>
             <ion-card *ngFor='let item of products'>
-              <img [src]="item.pictures.link" *ngIf='item.pictures'  alt="">
+              <img [src]="item.picture" *ngIf='item.picture' alt="">
               <div class="cont-container">
                 <h4>{{item.product_name}}</h4>
                 <p>R {{item.cost}}</p>
@@ -79,7 +79,7 @@
 
   <div class="mobile-view">
     <div class="top">
-      <ion-button icon-only id="bckBtn" fill="clear" color="dark">
+      <ion-button icon-only id="bckBtn" fill="clear" color="dark" (click)='goBack()'>
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
       Order Details
@@ -89,101 +89,53 @@
         <p class="titleName">
           Items Ordered
         </p>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
+        <ion-card *ngFor='let item of products'>
+          <img [src]="item.picture" *ngIf='item.picture' alt="">
+          <img src="../../assets/imgs/images.jpg" *ngIf='!item.picture' alt="">
           <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
+            <h4>{{item.product_name}}</h4>
+            <p>R {{item.cost}}</p>
+            <p><b>QTY</b> {{item.quantity}}</p>
           </div>
         </ion-card>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-          <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
-          </div>
-        </ion-card>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-          <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
-          </div>
-        </ion-card>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-          <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
-          </div>
-        </ion-card>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-          <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
-          </div>
-        </ion-card>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-          <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
-          </div>
-        </ion-card>
-        <ion-card>
-          <img src="../../assets/imgs/3d2acdaf95ed9e473ddbb3bd433fed9f.jpg" alt="">
-          <div class="cont-container">
-            <h4>SOHO Ts</h4>
-            <p>R 210.00</p>
-            <p><b>QTY</b> 2</p>
-          </div>
-        </ion-card></div>
+      </div>
       <div id="receipt">
-        
-          <h4>Order Receipt</h4>
-          <h5>John Doe</h5>
-          <p class="nums">0813917127</p>
-          <p class="refNum"><b>REF</b> JFV21245664688656456</p>
-          <div id="note">
-            <i>Use this reference number to compare against the reference number provided by your back provider.</i>
-          </div>
-          <div class="toFlex">
-            <p id="SubHeader">Date of Purchase</p>
-            <p id="dayDate">20/11/2019</p>
-          </div>
-          <p id="subHeader">
-            Items
-          </p>
-          <div class="items">
-            <div class="subtitle">
-              <p class="item">SOHO Ts</p>
-              <p class="item">SOHO Sweater</p>
 
-              <p class="item"><b>Total Quantity</b></p>
-              <p class="item"><b>Grand Total</b></p>
-              <p><b>Order Type</b></p>
-            </div>
-            <div class="subtitle">
-              <p>2</p>
-              <p>1</p>
+        <h4>Order Receipt</h4>
+        <h5>Client Name: <b>{{name}}</b></h5>
+        <p class="nums">Phone <b>{{cell}}</b></p>
+        <p class="refNum">REF <b>{{refNo}}</b></p>
+        <div id="note">
+          <i>Use this reference number to compare against the reference number provided by your bank provider.</i>
+        </div>
+        <div class="toFlex">
+          <p id="SubHeader">Date of Purchase</p>
+          <p id="dayDate">20/11/2019</p>
+        </div>
+        <p id="subHeader">
+          Items
+        </p>
+        <div class="items">
+          <div class="subtitle">
+            <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
 
-              <p><b>3</b></p>
-              <p><b>R 899.20</b></p>
-              <p>Collection</p>
-            </div>
+            <p class="item"><b>Total Quantity</b></p>
+            <p class="item"><b>Grand Total</b></p>
+            <p><b>Order Type</b></p>
           </div>
-          <p id="subHeader">
-            Order Address
-          </p>
-          <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
-          <p id="Notifier">Order has been closed.</p>
+          <div class="subtitle">
+            <p *ngFor='let item of products'>{{item.quantity}}</p>
+
+            <p><b>{{totalQuantity}}</b></p>
+            <p><b>R {{totalPrice}}</b></p>
+            <p>Collection</p>
+          </div>
+        </div>
+        <p id="subHeader">
+          Order Address
+        </p>
+        <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
+        <p id="Notifier">Order has been closed.</p>
       </div>
     </div>
   </div>

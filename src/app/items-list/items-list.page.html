@@ -1,226 +1,162 @@
 <ion-content>
-    <div class="del-upd-del">
-      <div class="inner-cont-opt" *ngIf="promoUdpate === 'Promote item'">
-        <p id="topic-item"><b>{{promoUdpate}}</b></p>
-        <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
-        <div class="item-data">
-          <h3>{{itemName}}</h3>
-          <p class="item-detail">
-            R {{itemPrice}}
-          </p>
-          <p class="item-detail">Description</p>
-          <p class="description">
-            {{itemDescription}}
-          </p>
-          <input type="text" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'>
-          <div class="gridded-inputs">
-            <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate'/><input type="date" placeholder="End Date" [(ngModel)]='editEndDate'/>
-          </div>
-          <div class="gridded-inputs">
-            <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-            <ion-button color="success"  (click)='promoteItem()'>Promote</ion-button>
-          </div>
+  <div class="del-upd-del">
+    <div class="inner-cont-opt" *ngIf="promoUdpate === 'Promote item'">
+      <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
+      <img *ngIf='!itemImageLink' src="../../assets/imgs/images.jpg" alt="" id="item-image">
+      <div class="item-data">
+        <h3>{{itemName}}</h3>
+        <p class="item-detail">
+          R {{itemPrice}}
+        </p>
+        <p class="item-detail">Description</p>
+        <p class="description">
+          {{itemDescription}}
+        </p>
+        <input type="text" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'>
+        <div class="gridded-inputs">
+          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' /><input type="date"
+            placeholder="End Date" [(ngModel)]='editEndDate' />
         </div>
-      </div>
-      <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
-        <p id="topic-item"><b>{{promoUdpate}}</b></p>
-        <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
-        <div class="item-data">
-          <h3>Wu-Tang Hoodie</h3>
-          <p class="item-detail">
-            R 399.90
-          </p>
-          <p class="item-detail">Choose Avalable Sizes</p>
-          <div class="sizes-colours-item">
-            <ion-checkbox color="primary" name='checkboxXS' (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'></ion-checkbox>
-            <p id="text-size">XS</p>
-            <ion-checkbox color="primary" name='checkboxS' (ionChange)='checkSizeUpdateCheckboxes($event, "S")'></ion-checkbox>
-            <p id="text-size">S</p>
-            <ion-checkbox color="primary" name='checkboxM' (ionChange)='checkSizeUpdateCheckboxes($event, "M")'></ion-checkbox>
-            <p id="text-size">M</p>
-            <ion-checkbox color="primary" name='checkboxL' (ionChange)='checkSizeUpdateCheckboxes($event, "L")'></ion-checkbox>
-            <p id="text-size">L</p>
-            <ion-checkbox color="primary" name='checkboxXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'></ion-checkbox>
-            <p id="text-size">XL</p>
-            <ion-checkbox color="primary" name='checkboxXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'></ion-checkbox>
-            <p id="text-size">XXL</p>
-            <ion-checkbox color="primary" name='checkboxXXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'></ion-checkbox>
-            <p id="text-size">XXXL</p>
-          </div>
-          <p class="item-detail">Choose Available Colours</p>
-          <div class="sizes-colours-item">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <input type="text" placeholder="Item Name" [(ngModel)]='updateName'/><br/>
-  ​
-          <input type="number" placeholder="Price" [(ngModel)]='updatePrice'/>
-          <br/>
-          <textarea placeholder="Item Description" rows="3" [(ngModel)]='updateDescription'></textarea>
-          <div class="gridded-inputs">
-            <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-            <ion-button color="success" (click)='updateItem()'>Update</ion-button>
-          </div>
+        <div class="gridded-inputs">
+          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+          <ion-button color="success" (click)='promoteItem()'>Promote</ion-button>
         </div>
       </div>
     </div>
-    <div class="content-container"> 
-      <div class="nav-bar">
-        <div class="nav-content">
-          <div id="title">
-            <h4>DankieJesu</h4>
+    <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
+      <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
+      <div class="item-data">
+        <h3>{{updateName}}</h3>
+        <p class="item-detail">
+          R {{updatePrice}}
+        </p>
+        <p class="item-detail">Choose Avalable Sizes</p>
+        <div class="sizes-colours-item">
+          <ion-checkbox color="primary" name='checkboxXS' (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'>
+          </ion-checkbox>
+          <p id="text-size">XS</p>
+          <ion-checkbox color="primary" name='checkboxS' (ionChange)='checkSizeUpdateCheckboxes($event, "S")'>
+          </ion-checkbox>
+          <p id="text-size">S</p>
+          <ion-checkbox color="primary" name='checkboxM' (ionChange)='checkSizeUpdateCheckboxes($event, "M")'>
+          </ion-checkbox>
+          <p id="text-size">M</p>
+          <ion-checkbox color="primary" name='checkboxL' (ionChange)='checkSizeUpdateCheckboxes($event, "L")'>
+          </ion-checkbox>
+          <p id="text-size">L</p>
+          <ion-checkbox color="primary" name='checkboxXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'>
+          </ion-checkbox>
+          <p id="text-size">XL</p>
+          <ion-checkbox color="primary" name='checkboxXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'>
+          </ion-checkbox>
+          <p id="text-size">XXL</p>
+          <ion-checkbox color="primary" name='checkboxXXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'>
+          </ion-checkbox>
+          <p id="text-size">XXXL</p>
+        </div>
+        <p class="item-detail">Choose Available Colours</p>
+        <div class="sizes-colours-item">
+          <div>
+            <ion-checkbox class="color-checkbox" color="primary" name='red'>
+            </ion-checkbox>
           </div>
-          <div id="searchbar">
-            <ion-searchbar  (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
+          <div>
+
+            <ion-checkbox class="color-checkbox" color="primary" name='blue'>
+            </ion-checkbox>
           </div>
-          <div id="admin" (click)='signOutPopup()'>
-            <p>Sign out</p>
-            <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
+          <div>
+
+            <ion-checkbox class="color-checkbox" color="primary" name='green'>
+            </ion-checkbox>
           </div>
+          <div>
+
+            <ion-checkbox class="color-checkbox" color="primary" name='orange'>
+            </ion-checkbox>
+          </div>
+          <div>
+
+            <ion-checkbox class="color-checkbox" color="primary" name='pink'>
+            </ion-checkbox>
+          </div>
+          <div>
+
+            <ion-checkbox class="color-checkbox" color="primary" name='white'>
+            </ion-checkbox>
+          </div>
+        </div>
+        <input type="text" placeholder="Item Name" [(ngModel)]='updateName' /><br />
+        ​
+        <input type="number" placeholder="Price" [(ngModel)]='updatePrice' />
+        <br />
+        <textarea placeholder="Item Description" rows="3" [(ngModel)]='updateDescription'></textarea>
+        <div class="gridded-inputs">
+          <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
+          <ion-button color="success" (click)='updateItem()'>Update</ion-button>
         </div>
       </div>
-      <div class="body-content">
-        <div id="left" padding>
-          <div class="history-items">
-            <div class="title-top">
-              <h5>History</h5>
-              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
-            </div>
-            <div class="items-list" *ngFor='let item of history'>
-              <ion-card>
-                <p class="floating">Paid</p>
-                <p class="floating" id="bottom-right">Items (8)</p>
-                <p><b>{{item.details.name}}</b></p>
-                <p>R {{item.details.totalPrice}}</p>
-                <p>REF: {{item.refNo}}</p>
-              </ion-card>
-            </div>
-          </div>
-          <div class="pending-items">
-            <div class="title-top">
-              <h5>Pending Orders</h5>
-              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
-            </div>
-            <div class="items-list" *ngFor='let item of pendingOrders'>
-              <ion-card>
-                <p class="floating" id="bottom-right">Items (8)</p>
-                <p><b>{{item.details.name}}</b></p>
-                <p>R {{item.details.totalPrice}}</p>
-                <p>REF: {{item.refNo}}</p>
-              </ion-card>
-            </div>
-          </div>
-          <div class="inventory-items">
-            <div class="title-top">
-              <h5>Inventory</h5>
-              <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
-            </div>
-            <div class="items-list">
-              <ion-card>
-                <img src="../../assets/imgs/images.jpg" alt="">
-                <p><b>John Doe</b></p>
-                <p>R 799.90</p>
-  ​
-                <div class="quantities">
-                  <div>
-                    <ion-icon name="remove"></ion-icon>
-                  </div>
-                  <div><input type="text" value="78"></div>
-                  <div>
-                    <ion-icon name="add"></ion-icon>
-                  </div>
-                  <div>Save</div>
-                </div>
-  ​
-              </ion-card>
-            </div>
-          </div>
-          <h3>Hello Lunga</h3>
-          <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
-          <div class="side-buttons" (click)="showHistoryList()">History</div>
-          <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
+    </div>
+  </div>
+  <div class="content-container">
+    <div class="nav-bar">
+      <div class="nav-content">
+        <div id="title">
+          <h4>DankieJesu</h4>
         </div>
-        <div id="mid">
-          <div class="top-bar">
-            <ion-button color="dark" fill="outline" (click)='back()'>
-              <ion-icon name="arrow-back"></ion-icon>
-            </ion-button>
-            <div class="page-title">
-              <!-- Use this section to change views by use of *ngIf, replace directory label and content according to the specific page -->
-              <a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
-            </div>
+        <div id="searchbar">
+          <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
+        </div>
+        <div id="admin" (click)='signOutPopup()'>
+          <p>Sign out</p>
+          <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="body-content">
+      <div id="left" padding>
+      </div>
+      <div id="mid">
+        <div class="top-bar">
+          <ion-button color="dark" fill="outline" (click)='back()'>
+            <ion-icon name="arrow-back"></ion-icon>
+          </ion-button>
+          <div class="page-title">
+            <!-- Use this section to change views by use of *ngIf, replace directory label and content according to the specific page -->
+            <a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
           </div>
-          <div class="SubCat"  *ngFor = 'let item of currentViewedItems'>
-            <div class="gridder">
-              <img defer [src]="item.pictures.link" *ngIf ='item.pictures' alt="">
-              <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
-              <div id="info">
-                <h5>{{item.data.name}}</h5>
-                <p>{{item.data.description}}.</p>
-                <p><b>R {{item.data.price}}</b></p>
-                <div class="options">
-                  <div (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">Promote</div>
-                  <div (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">Update</div>
-                  <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
-                  <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
-                </div>
+        </div>
+        <div class="SubCat" *ngFor='let item of currentViewedItems'>
+          <div class="gridder">
+            <img defer [src]="item.pictures.link" *ngIf='item.pictures' alt="">
+            <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.pictures" alt="">
+            <div id="info">
+              <h5>{{item.data.name}}</h5>
+              <p>{{item.data.description}}.</p>
+              <p><b>R {{item.data.price}}</b></p>
+              <div class="options">
+                <div
+                  (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                  Promote</div>
+                <div
+                  (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                  Update</div>
+                <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div>
+                <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
               </div>
+            </div>
           </div>
         </div>
-        </div>
-        <div id="right">
-          
-          <div class="adding">
-            <h4>Add Item</h4>
-          
-         <label>is Accessory? </label> <input type='checkbox' name='accessoryCheck' id="accessory" (click)='isAccessory($event)'>
-         <label>for Summer? </label> <input type='checkbox' name='accessoryCheck' id="summer" (click)='isSummer($event)'>
-          <select (click)="changeDepartment($event);">
-          <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
-      
-        </select><br>
-      
-        <select [disabled]='!department' (click)="changeCategory($event);" >
-            <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
-        </select><br>
-      
-        <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='productName' (keyup)='checkValidity()'>
-        <input type="number" class="user-input" placeholder = "Price" [(ngModel)]='price'  (keyup)='checkValidity()'>
-        <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'  (keyup)='checkValidity()'></textarea>
-        <div class="sizes">
-          
-      <input type='checkbox' name='checkboxXS'  (change)='check($event, "XS")'> XS
-      <input type='checkbox' name='checkboxS'  (change)='check($event, "S")'> S 
-      <input type='checkbox' name='checkboxM'  (change)='check($event, "M")'> M
-      <input type='checkbox' name='checkboxL'  (change)='check($event, "L")'> L
-      <input type='checkbox' name='checkboxXL'  (change)='check($event, "XL")'> XL
-      <input type='checkbox' name='checkboxXXL'  (change)='check($event, "XXL")'> XXL
-      <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
-        </div>
-        <!-- <input width='100px' type="file" value='Insert black picture' [(ngModel)]='picture'/> -->
-        <!-- Div for colors, checkboxes work but currently can't add pictures -->
-        <div class='colors' >
-          <h5>Available colors</h5>
-          <input type='checkbox' name='checkboxBlack'  (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type='checkbox' name='checkboxBrown'  (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type='checkbox' name='checkboxOrange'  (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type='checkbox' name='checkboxYellow'  (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type='checkbox' name='checkboxWhite'  (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
-        <ion-button [disabled]='!addForm' (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
-        <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
-          </div>
-      
+      </div>
+      <div id="right">
       </div>
     </div>
-    </div>
+  </div>
 
 
-    
+
 
 
 
@@ -231,21 +167,21 @@
 
 
   <div class="mobile-view">
-      <div class="cont-small">
-        <div class="top-bar">
-          <ion-button color="dark" fill="outline" (click)='back()'>
-            <ion-icon name="arrow-back"></ion-icon>
-          </ion-button>
-          <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
-          </div>
+    <div class="cont-small">
+      <div class="top-bar">
+        <ion-button color="dark" fill="outline" (click)='back()'>
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
         </div>
-        <div *ngFor="let item of allProducts">
+      </div>
+      <div *ngFor="let item of currentViewedItems">
         <div>
-  
+
           <div class="SubCats">
             <div>
-                <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
-                <img src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
+              <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+              <img src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
             </div>
             <div>
               <h5>{{item.data.name}}</h5>
@@ -253,19 +189,21 @@
               <p>R {{item.data.price}}</p>
               <div class="opts">
                 <div>
-                  <button icon-only (click)="toggleUpdate()">
-                      <ion-icon name="flash"></ion-icon>
+                  <button icon-only
+                    (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                    <ion-icon name="flash"></ion-icon>
                   </button>
                 </div>
                 <div>
-                    <button icon-only (click)="toggleUpdate()">
-                      <ion-icon ios="ios-create" md="md-create"></ion-icon>
-                    </button>
+                  <button icon-only
+                    (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
+                    <ion-icon ios="ios-create" md="md-create"></ion-icon>
+                  </button>
                 </div>
                 <div>
-                    <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
-                      <ion-icon name="eye-off"></ion-icon>
-                    </button>
+                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
+                    <ion-icon name="eye-off"></ion-icon>
+                  </button>
                 </div>
                 <div>
                   <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
@@ -276,10 +214,10 @@
             </div>
           </div>
         </div>
-  
-        </div>
-  
-  
+
       </div>
+
+
     </div>
-  </ion-content>
+  </div>
+</ion-content>

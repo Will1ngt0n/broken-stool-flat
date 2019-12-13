@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-sales-specials',
@@ -378,12 +379,37 @@ export class SalesSpecialsPage implements OnInit {
   }
 
 deleteItem(item, productID){
-  console.log(productID);
-  console.log(item);
+  console.log("logging deletion");
   
-  return this.productsService.deleteSpecialsItem(productID, item).then(result => {
-    console.log(result);
-  })
+  const alert = document.createElement('ion-alert');
+  alert.header = 'Confirm Deletion';
+  alert.message = 'Are you sure you want to remove this item from specials?';
+  alert.buttons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      cssClass: 'secondary',
+      handler: (blah) => {
+        console.log('User canceled');
+      }
+    }, {
+      text: 'Remove',
+      handler: () => {
+        console.log('Confirm Okay')
+  
+        console.log(productID);
+        console.log(item);
+        
+        return this.productsService.deleteSpecialsItem(productID, item).then(result => {
+          console.log(result);
+        })
+      }
+    }
+  ];
+
+  document.body.appendChild(alert);
+  return alert.present();
+  
 }
 
 hideItem(item, productID){
@@ -763,4 +789,5 @@ stepBackToBtns(){
   this.sideMenuButtons = true;
   this.listOfItems = 0;
 }
+
 }
