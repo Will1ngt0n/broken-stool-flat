@@ -162,12 +162,12 @@ export class LandingPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            console.log('User clicked "cancel"');
           }
         }, {
           text: 'Okay',
           handler: (okay) => {
-            console.log('Confirm Okay');
+            console.log('User clicked "okay"');
             return this.signOut()
           }
         }
@@ -511,14 +511,14 @@ export class LandingPage implements OnInit {
       if(result !== null){
         this.history = result
         let totalPrice : Number = 0
-        let numberOfItems : Number = 0
+        let numberOfItems : Number = 0;
         console.log(this.history);
         if(this.history.length !== 0){
           for(let key in this.history){
             totalPrice = 0
             numberOfItems = 0
             for(let i in this.history[key].details.orders){
-              console.log(this.history[key].details.orders[i]);
+              console.log(this.history[key].details);
               totalPrice = +totalPrice + +this.history[key].details.orders[i].cost * +this.history[key].details.orders[i].quantity
               numberOfItems = +numberOfItems + +this.history[key].details.orders[i].quantity
               console.log(totalPrice);
@@ -744,7 +744,8 @@ export class LandingPage implements OnInit {
     if (this.miniSearchBarState == true) {
       this.miniSearchBarState = false;
       console.log(this.miniSearchBarState);
-      this.searchButtonState = "search"
+      this.searchButtonState = "search";
+      this.searchInput = ''
     }
     else {
       this.miniSearchBarState = true;
@@ -781,8 +782,10 @@ export class LandingPage implements OnInit {
     this.sideMenuButtons = true;
     this.listOfItems = 0;
   }
-  clickedSearchItem: string = "item hidden"
-  showHideSearchDetails() {
+  updateName: string;
+  clickedSearchItem: string = "hideItem"
+  showHideSearchDetails(name) {
+    this.updateName = name
     if (this.clickedSearchItem == "hideItem") {
       this.clickedSearchItem = "showItem"
       setTimeout(() => {

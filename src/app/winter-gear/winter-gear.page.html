@@ -1,22 +1,22 @@
 <ion-content>
-    <div class="content-container">
-      <div class="nav-bar">
-        <div class="nav-content">
-          <div id="title">
-            <h4>DankieJesu</h4>
-          </div>
-          <div id="searchbar">
-            <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
-          </div>
-          <div id="admin" (click)='signOutPopup()'>
-            <p>Sign out</p>
-            <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
-          </div>
+  <div class="content-container">
+    <div class="nav-bar">
+      <div class="nav-content">
+        <div id="title">
+          <h4>DankieJesu</h4>
+        </div>
+        <div id="searchbar">
+          <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar>
+        </div>
+        <div id="admin" (click)='signOutPopup()'>
+          <p>Sign out</p>
+          <img src="../../assets/imgs/person-icon-svg.jpg" alt="">
         </div>
       </div>
-      <div class="body-content">
-        <div id="left" padding>
-          <div class="history-items">
+    </div>
+    <div class="body-content">
+      <div id="left" padding>
+        <!-- <div class="history-items">
             <div class="title-top">
               <h5>History</h5>
               <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
@@ -73,41 +73,41 @@
           <h3>Hello Lunga</h3>
           <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
           <div class="side-buttons" (click)="showHistoryList()">History</div>
-          <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
+          <div class="side-buttons" (click)="showInventoryList()">Inventory</div> -->
+      </div>
+      <div id="mid">
+        <div class="top-bar">
+          <ion-button color="dark" fill="outline" (click)='back()'>
+            <ion-icon name="arrow-back"></ion-icon>
+          </ion-button>
+          <div class="page-title">
+            Winter Gear
+          </div>
         </div>
-        <div id="mid">
-          <div class="top-bar">
-            <ion-button color="dark" fill="outline" (click)='back()'>
-              <ion-icon name="arrow-back"></ion-icon>
-            </ion-button>
-            <div class="page-title">
-              Winter Gear
-            </div>
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Hoodies")'>
-            <h3>Hoodies</h3>
-            <img src="../../assets/imgs/images (2).jpg" alt="">
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Sweaters")'>
-            <h3>Sweaters</h3>
-            <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Track Suits")'>
-            <h3>Track Suits</h3>
-            <img src="../../assets/imgs/3-Pic.jpg" alt="">
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Winter Hats")'>
-            <h3>Winter Hats</h3>
-            <img src="../../assets/imgs/images (9).jpg" alt="">
-          </div>
-          <div class="SubCat" (click)='navigateForward("Bags")'>
-            <h3>Bags</h3>
-            <img src="../../assets/imgs/images (4).jpg" alt="">
-          </div>
-  
+        <div class="SubCat" (click)='navigateForward("Hoodies")'>
+          <h3>Hoodies</h3>
+          <img src="../../assets/imgs/images (2).jpg" alt="">
         </div>
-        <div id="right">
-        
+        <div class="SubCat" (click)='navigateForward("Sweaters")'>
+          <h3>Sweaters</h3>
+          <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
+        </div>
+        <div class="SubCat" (click)='navigateForward("Track Suits")'>
+          <h3>Track Suits</h3>
+          <img src="../../assets/imgs/3-Pic.jpg" alt="">
+        </div>
+        <div class="SubCat" (click)='navigateForward("Winter Hats")'>
+          <h3>Winter Hats</h3>
+          <img src="../../assets/imgs/images (9).jpg" alt="">
+        </div>
+        <div class="SubCat" (click)='navigateForward("Bags")'>
+          <h3>Bags</h3>
+          <img src="../../assets/imgs/images (4).jpg" alt="">
+        </div>
+
+      </div>
+      <div id="right">
+        <!--         
           <div class="adding">
             <h4>Add Item</h4>
           
@@ -136,7 +136,6 @@
       <input type='checkbox' name='checkboxXXXL'  (change)='check($event, "XXXL")'> XXXL
         </div>
         <input width='100px' type="file" value='Insert black picture' [(ngModel)]='picture'/>
-        <!-- Div for colors, checkboxes work but currently can't add pictures -->
         <div class='colors' >
           <h5>Available colors</h5>
           <input type='checkbox' name='checkboxBlack'  (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -147,45 +146,44 @@
         </div>
         <ion-button [disabled]='!addForm' (click) = 'addProduct()' expand="full" color="success">Add to Stall</ion-button>
         <ion-button [disabled]='!formHasValues' (click)='clearForm()' expand="full" color="danger">Clear Form</ion-button>
-          </div>
+          </div> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="mobile-view">
+    <div class="cont-small">
+      <div class="top-bar">
+        <ion-button color="dark" fill="outline" (click)='back()'>
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <div class="page-title">
+          Winter Gear
         </div>
       </div>
-    </div>
-   
-    
-  <div class="mobile-view">
-      <div class="cont-small">
-          <div class="top-bar">
-            <ion-button color="dark" fill="outline" (click)='back()'>
-              <ion-icon name="arrow-back"></ion-icon>
-            </ion-button>
-            <div class="page-title">
-              Winter Gear
-            </div>
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Hoodies")'>
-            <h3>Hoodies</h3>
-            <img src="../../assets/imgs/images (2).jpg" alt="">
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Sweaters")'>
-            <h3>Sweaters</h3>
-            <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Track Suits")'>
-            <h3>Track Suits</h3>
-            <img src="../../assets/imgs/3-Pic.jpg" alt="">
-          </div>
-          <div class="SubCat"  (click)='navigateForward("Winter Hats")'>
-            <h3>Winter Hats</h3>
-            <img src="../../assets/imgs/images (9).jpg" alt="">
-          </div>
-          <div class="SubCat" (click)='navigateForward("Bags")'>
-            <h3>Bags</h3>
-            <img src="../../assets/imgs/images (4).jpg" alt="">
-          </div>
-  
-  
+      <div class="SubCat" (click)='navigateForward("Hoodies")'>
+        <h3>Hoodies</h3>
+        <img src="../../assets/imgs/images (2).jpg" alt="">
       </div>
+      <div class="SubCat" (click)='navigateForward("Sweaters")'>
+        <h3>Sweaters</h3>
+        <img src="../../assets/imgs/Sportswear-International-by-Alex-Wagner-MaleModelSceneNet-04a.jpg" alt="">
+      </div>
+      <div class="SubCat" (click)='navigateForward("Track Suits")'>
+        <h3>Track Suits</h3>
+        <img src="../../assets/imgs/3-Pic.jpg" alt="">
+      </div>
+      <div class="SubCat" (click)='navigateForward("Winter Hats")'>
+        <h3>Winter Hats</h3>
+        <img src="../../assets/imgs/images (9).jpg" alt="">
+      </div>
+      <div class="SubCat" (click)='navigateForward("Bags")'>
+        <h3>Bags</h3>
+        <img src="../../assets/imgs/images (4).jpg" alt="">
+      </div>
+
+
     </div>
-  </ion-content>
-  
+  </div>
+</ion-content>

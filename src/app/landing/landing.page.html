@@ -2,8 +2,10 @@
   <div class="searchResults" *ngIf="searchInput">
     Search Results
     <ion-list *ngFor="let item of searchArray">
-      <ion-item (click)="showHideSearchDetails()">{{item.data.name}}</ion-item>
+      <ion-item (click)="showHideSearchDetails(name)">{{item.data.name}}</ion-item>
     </ion-list>
+      
+        <div id="oops" *ngIf="searchArray.length === 0"><p><ion-icon name="sad"></ion-icon> There are no matches for this search</p></div>
   </div>
   <div class="clicked-from-search" *ngIf="clickedSearchItem === 'showItem'">
     <div>
@@ -12,7 +14,7 @@
       </button>
       <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
       <div class="product-information-search">
-        <input type="text" placeholder="Item Name">
+        <input type="text" placeholder="Item Name" [value]="name">
         <input type="text" placeholder="Price (R)">
         <textarea rows="4" type="text" placeholder="Description"></textarea>
         <ion-button color="dark">Update</ion-button>
@@ -116,17 +118,17 @@
           <div class="items">
             <div class="box-item" (click)='viewSales("viewAll")'>
               <p id="item-label1">View All Specials</p>
-              <img class="bg" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F08hGnhI4XSIwbQ9qY2Wb?alt=media&token=166fe9d6-30d2-4512-ac0f-af8e7f9e7aa6" *ngIf='!allSpecialsPicture' alt="">
+              <img class="bg"  src="../../assets/imgs/All.png" *ngIf='!allSpecialsPicture' alt="">
               <img class="bg" [src]="allSpecialsPicture" *ngIf='allSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Dankie Jesu")'>
               <p id="item-label">Dankie Jesu Clothing</p>
-              <img class="bg" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F6qqPZbeyylRdNnkxyJ2K?alt=media&token=976dbe35-5ee2-4dbb-ba85-5330fbbd8a17" *ngIf='!dankieJesuSpecialsPicture' alt="">
+              <img class="bg" src="../../assets/imgs/Dankie.png" *ngIf='!dankieJesuSpecialsPicture' alt="">
               <img class="bg" [src]="dankieJesuSpecialsPicture" *ngIf='dankieJesuSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Kwanga")'>
               <p id="item-label">Kwanga Apparel</p>
-              <img class="bg" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2FbmaQWCCKXVTCF0KLvThX?alt=media&token=ca79efc9-e56a-4356-b129-e562fcf0ae67" *ngIf='!kwangaSpecialsPicture' alt="">
+              <img class="bg"  src="../../assets/imgs/Kwanga.png" *ngIf='!kwangaSpecialsPicture' alt="">
               <img class="bg" [src]="kwangaSpecialsPicture" *ngIf='kwangaSpecialsPicture' alt="">
             </div>
           </div>
@@ -250,20 +252,29 @@
     </div>
   </div>
   <div class="mobile-view">
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button (click)='signOutPopup()'>
+              <ion-icon name="log-out"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
     <div class="small-nav">
-      <div (click)="showLeftSide()">
+      <div (click)="showLeftSide()" *ngIf="!miniSearchBarState">
         <ion-icon name="menu"></ion-icon>
+      </div>
+      <div *ngIf="miniSearchBarState">
+        <!-- this is the empty placehodler -->
       </div>
       <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
       <div *ngIf="miniSearchBarState">
-        <ion-searchbar></ion-searchbar>
+        <ion-searchbar [(ngModel)]='searchInput' (ionChange)='search()' show-cancel-button="never"></ion-searchbar>
       </div>
       <div (click)="showSearchBar()">
         <ion-icon name="{{searchButtonState}}"></ion-icon>
       </div>
-      <div (click)="showRightSide()">
+      <div (click)="showRightSide()" *ngIf="!miniSearchBarState">
         <ion-icon name="add-circle"></ion-icon>
       </div>
+      <div *ngIf="miniSearchBarState"></div>
     </div>
     <div id="left-items-list">
       <div class="top-bar">
@@ -287,11 +298,14 @@
             <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
             <h5>Pending Orders</h5>
           </div>
-          <div class="myItems">
-            <p><b>John Doe</b></p>
-            <p>R 799.90</p>
-            <p>REF: NGH2345678987654</p>
-            <p>Items (8)</p>
+          <div *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
+
+          <div class="myItems" *ngIf="status === 'collected'">
+            <p><b>{{item.details.name}}</b></p>
+            <p>R {{item.details.totalPrice}}</p>
+            <p>REF: {{item.refNo}}</p>
+            <p>Items ({{item.noOfItems}})</p>
+          </div>
           </div>
         </div>
         <div class="forHistory" *ngIf="listOfItems === 2">
@@ -301,12 +315,12 @@
             <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
             <h5>History</h5>
           </div>
-          <div class="myItems">
-            <p>Paid</p>
-            <p><b>John Doe</b></p>
-            <p>R 799.90</p>
-            <p>REF: NGH2345678987654</p>
-            <p>Items (8)</p>
+          <div class="myItems" *ngFor='let item of history' (click)='viewOrderHistory(item)'>
+
+            <p><b>{{item.details.userID}}</b></p>
+            <p>R {{item.details.totalPrice}}</p>
+            <p>REF: {{item.refNo}}</p>
+            <p>Items ({{item.details.numberOfItems}})</p>
           </div>
         </div>
         <div class="forInventory" *ngIf="listOfItems === 3">
@@ -315,12 +329,23 @@
             <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
             <h5>Inventory</h5>
           </div>
-          <div class="myItems">
-            <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
-            <p id="nameOfItem">SoHo Jersey</p>
+          <div class="myItems" *ngFor='let item of allProducts '>
+            <img  [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+            <p id="nameOfItem">{{item.data.name}}</p>
             <p id="item-price">R799.90</p>
-            QTY:
-            <input type="number" id="qtyInput" value="30">
+
+            <div class="quantities">
+              <div>
+                <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
+              </div>
+              <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
+                  (keyup)='changePrice(value, item)'></div>
+              <div>
+                <ion-icon name="add" (click)='add(item)'></ion-icon>
+              </div>
+              <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -339,7 +364,7 @@
       </div>
       <div class="butuh">
 
-        <ion-button expand="full" class="outerBtns" color="transparent">
+        <ion-button expand="full" class="outerBtns" color="transparent" (click)='viewSales("viewAll")'>
           <span>Sales &amp; Specials <ion-icon slot="end" name="arrow-forward"></ion-icon></span>
         </ion-button>
         <div class="slide-section">
@@ -347,21 +372,21 @@
             <ion-slide>
               <div class="slide-img" (click)='viewSales("viewAll")'>
                 <h4>View All</h4>
-                <img class="slide-img" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F08hGnhI4XSIwbQ9qY2Wb?alt=media&token=166fe9d6-30d2-4512-ac0f-af8e7f9e7aa6" *ngIf='!allSpecialsPicture' alt="">
+                <img class="slide-img" src="../../assets/imgs/All.png" *ngIf='!allSpecialsPicture' alt="">
                 <img class="slide-img" [src]="allSpecialsPicture" *ngIf='allSpecialsPicture' alt="">
               </div>
             </ion-slide>
             <ion-slide>
               <div class="slide-img" (click)='viewSales("Dankie Jesu")'>
                 <h4>Dankie Jesu</h4>
-                <img class="slide-img" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2F6qqPZbeyylRdNnkxyJ2K?alt=media&token=976dbe35-5ee2-4dbb-ba85-5330fbbd8a17" *ngIf='!dankieJesuSpecialsPicture' alt="">
+                <img class="slide-img" src="../../assets/imgs/Dankie.png" *ngIf='!dankieJesuSpecialsPicture' alt="">
                 <img class="slide-img" [src]="dankieJesuSpecialsPicture" *ngIf='dankieJesuSpecialsPicture' alt="">
               </div>
             </ion-slide>
             <ion-slide>
               <div class="slide-img" (click)='viewSales("Kwanga")'>
                 <h4>Kwanga Apparel</h4>
-                <img class="slide-img" src="https://firebasestorage.googleapis.com/v0/b/broken-stool.appspot.com/o/clothes%2FbmaQWCCKXVTCF0KLvThX?alt=media&token=ca79efc9-e56a-4356-b129-e562fcf0ae67" *ngIf='!kwangaSpecialsPicture' alt="">
+                <img class="slide-img" src="../../assets/imgs/Kwanga.png" *ngIf='!kwangaSpecialsPicture' alt="">
                 <img class="slide-img" [src]="kwangaSpecialsPicture" *ngIf='kwangaSpecialsPicture' alt="">
               </div>
             </ion-slide>
@@ -382,8 +407,8 @@
               <div class="slide-img">
                 <p>{{item.data.name}}</p>
                 <!-- <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt=""> -->
-                <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
-                <img class="slide-img" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
+                <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+                <img class="slide-img" src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
               </div>
             </ion-slide>
           </ion-slides>

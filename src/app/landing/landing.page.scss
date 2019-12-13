@@ -3,6 +3,16 @@
   height: 100%;
   background: grey;
 }
+#oops {
+  width: 100%;
+  height: calc(100% - 50px);
+  // border: 2px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  color: grey;
+}
 .clicked-from-search {
   width: 100%;
   height: 100%;
@@ -12,10 +22,10 @@
   justify-content: center;
   position: absolute;
   z-index: 1000000000000000000000000000000000000000000000000;
-  #dismisser{
+  #dismisser {
     font-size: 20px;
     position: absolute;
-    background: rgba(0, 0, 0, 0.493)
+    background: rgba(0, 0, 0, 0.493);
   }
   div > img {
     width: 100%;
@@ -49,7 +59,7 @@
     }
   }
 }
-ion-list > ion-item{
+ion-list > ion-item {
   cursor: pointer;
 }
 .clicked-from-search > div {
@@ -304,7 +314,6 @@ ion-searchbar {
   left: 0;
   animation: faderIn 300ms;
   .title-top {
-    padding-top: 10px;
     border-bottom: 1px solid black;
     height: 30px;
   }
@@ -540,11 +549,16 @@ ion-searchbar {
     width: 70%;
     height: 90%;
   }
+  .searchResults {
+    width: 100%;
+    height: calc(100% - 55px);
+    animation: faderIn 300ms;
+  }
   @media screen and (max-width: 600px) {
     .clicked-from-search > div {
       width: 100%;
       height: 100%;
-    }    
+    }
   }
 }
 @media screen and (min-width: 1331px) {
