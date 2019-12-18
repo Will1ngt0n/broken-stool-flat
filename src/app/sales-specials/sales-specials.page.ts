@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
-import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-sales-specials',
