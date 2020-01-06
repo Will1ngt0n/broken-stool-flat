@@ -2,19 +2,21 @@
   <div class="searchResults" *ngIf="searchInput">
     Search Results
     <ion-list *ngFor="let item of searchArray">
-      <ion-item (click)="showHideSearchDetails(name)">{{item.data.name}}</ion-item>
+      <div *ngIf='searchArray.length > 0'> //line 5
+        <ion-item (click)="showHideSearchDetails(item.data.name)">{{item.data.name}}</ion-item>
+      </div>
     </ion-list>
       
         <div id="oops" *ngIf="searchArray.length === 0"><p><ion-icon name="sad"></ion-icon> There are no matches for this search</p></div>
   </div>
   <div class="clicked-from-search" *ngIf="clickedSearchItem === 'showItem'">
     <div>
-      <button id="dismisser" (click)="showHideSearchDetails()">
+      <button id="dismisser" (click)="showHideSearchDetails('close')">
         <ion-icon name="close"></ion-icon>
       </button>
       <img src="../../assets/imgs/331249_1_800.jpeg" alt="">
       <div class="product-information-search">
-        <input type="text" placeholder="Item Name" [value]="name">
+        <input type="text" placeholder="Item Name" [(ngModel)]="itemName">
         <input type="text" placeholder="Price (R)">
         <textarea rows="4" type="text" placeholder="Description"></textarea>
         <ion-button color="dark">Update</ion-button>
@@ -88,7 +90,7 @@
                   <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
                 <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
-                    (keyup)='changePrice(value, item)'></div>
+                    (keyup)='changePrice()'></div>
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>
@@ -349,7 +351,7 @@
                 <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
               </div>
               <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
-                  (keyup)='changePrice(value, item)'></div>
+                  (keyup)='changePrice()'></div>
               <div>
                 <ion-icon name="add" (click)='add(item)'></ion-icon>
               </div>

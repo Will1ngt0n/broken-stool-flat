@@ -75,8 +75,8 @@ export class KwangaSubCategoriesPage implements OnInit {
   constructor(private alertController : AlertController, private authService : AuthService, private navCtrl : NavController, public route : Router, public productsService : ProductsService ) {
     console.log(this.department);
     //this.productsService.getCategories()
-    this.loadDankieJesuItems()
-    this.loadKwangaItems()
+    //this.loadDankieJesuItems()
+    //this.loadKwangaItems()
     this.colors = { red: '' }
     this.accessory = false;
     this.summer = false;
@@ -142,9 +142,9 @@ export class KwangaSubCategoriesPage implements OnInit {
     })
   }
   changeDepartment(event) {
-    console.log('Accessory ', this.accessory);
+    // console.log('Accessory ', this.accessory);
 
-    console.log(event.target['value']);
+    // console.log(event.target['value']);
     this.department = event.target['value']
     if (this.department === 'Dankie Jesu') {
       this.categoryOptions = ['Select Category', 'Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies', 'Bags']
@@ -168,7 +168,7 @@ export class KwangaSubCategoriesPage implements OnInit {
     }
   }
   changeCategory() {
-    console.log(event.target['value']);
+    // console.log(event.target['value']);
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {
       this.selectedCategory = undefined
@@ -179,9 +179,9 @@ export class KwangaSubCategoriesPage implements OnInit {
 
   }
   isAccessory(data) {
-    //console.log('My data ', data.target.checked);
+    console.log('My data ', data.target.checked);
     if (data.target.checked === true) {
-      // console.log('Accessory');
+      console.log('Accessory');
       this.accessory = true;
     } else {
       this.accessory = false;
@@ -190,18 +190,18 @@ export class KwangaSubCategoriesPage implements OnInit {
   }
   check(event, size) {
 
-    console.log(size);
-    console.log(this.size);
+    // console.log(size);
+    // console.log(this.size);
     let checkbox = event.target['name']
     if (checkbox) {
       if (event.target.checked === true) {
         this.size.push(size)
-        console.log(this.size);
+        // console.log(this.size);
       } else if (event.target.checked === false) {
         let index = this.size.indexOf(size)
-        console.log(index);
+        // console.log(index);
         this.size.splice(index, 1)
-        console.log(this.size);
+        // console.log(this.size);
       }
     }
     console.log(event.target.checked);
@@ -300,25 +300,25 @@ export class KwangaSubCategoriesPage implements OnInit {
     }
     this.navCtrl.navigateForward(['sales-specials'], navOptions)    
   }
-​
-  loadKwangaItems(){
-    let category : String
-    for(let key in this.kwangaCategories){
-      category  = this.kwangaCategories[key]
-      this.loadItems(category, 'Kwanga')
+// ​
+//   loadKwangaItems(){
+//     let category : String
+//     for(let key in this.kwangaCategories){
+//       category  = this.kwangaCategories[key]
+//       this.loadItems(category, 'Kwanga')
       
-    }
-  }
-  loadDankieJesuItems(){
-    let category : String
-    for(let key in this.dankieJesuCategories){
-      category = this.dankieJesuCategories[key]
-      this.loadItems(category, 'Dankie Jesu')
-    }
-  }
-  loadViewedCategory(){
+//     }
+//   }
+//   loadDankieJesuItems(){
+//     let category : String
+//     for(let key in this.dankieJesuCategories){
+//       category = this.dankieJesuCategories[key]
+//       this.loadItems(category, 'Dankie Jesu')
+//     }
+//   }
+//   loadViewedCategory(){
     
-  }
+//   }
   loadItems(category, brand){
     let data : Array<any> = []
     return this.productsService.loadCategoryItems(category, brand).then(result => {
@@ -343,12 +343,6 @@ export class KwangaSubCategoriesPage implements OnInit {
       }
 ​
       })
-      }
-      orderItems(){
-        this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        this.winterProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        for(let i = 0; i < 5; i++){this.summerGear.push(this.summerProducts[i])}
-        for(let i = 0; i < 5; i++){this.winterGear.push(this.winterProducts[i])}
       }
   getInventory(){
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');

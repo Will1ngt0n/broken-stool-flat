@@ -147,4 +147,7 @@ googleSignIn(){
 
     await alert.present();
   }
+  change(){
+    
+  }
 }

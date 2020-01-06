@@ -745,6 +745,22 @@ showLeftSide() {
   document.getElementById("left-items-list").style.left = "0"
 
 }
+
+updateName: string;
+clickedSearchItem: string = "hideItem"
+showHideSearchDetails(name) {
+  this.updateName = name
+  if (this.clickedSearchItem == "hideItem") {
+    this.clickedSearchItem = "showItem"
+    setTimeout(() => {
+      this.searchInput = ''
+    }, 100);
+  }
+  else {
+    this.clickedSearchItem = "hideItem"
+  }
+}
+
 searchButtonState:string = "search"
 showSearchBar() {
   console.log("Showing searchbar");

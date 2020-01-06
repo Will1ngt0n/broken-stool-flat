@@ -10,7 +10,7 @@ declare var window
   styleUrls: ['./pending-order.page.scss'],
 })
 export class PendingOrderPage implements OnInit {
-  item : Object = {}
+  item : object = {}
   refNo : String = ''
   name : String = ''
   products : Array<any> = []
@@ -45,10 +45,10 @@ export class PendingOrderPage implements OnInit {
           
           this.getOrder(this.refNo, name)
           this.refreshPendingOrder()
-          this.loadPictures().then(result => {
-            console.log(result);
+          // this.loadPictures().then(result => {
+          //   console.log(result);
             
-          })
+          // })
         })
       }
     })
@@ -93,6 +93,8 @@ getOrder(refNo, name){
     console.log(this.item);
     this.products = this.item['details']['product']
     this.quantity = this.products.length
+    console.log(this.products);
+    
     this.totalPrice = this.item['details']['totalPrice']
     console.log(this.products);
     this.countQuantity()
@@ -110,38 +112,38 @@ goBack(){
   this.route.navigate([this.routingPage])
 }
 ​
-async loadPictures(){
-  return this.productsService.getPictures().then(result => {
-    console.log(result);
-    let pictures : Array<any> = []
-    for(let key in result.items){
-      result.items[key].getDownloadURL().then(link => {
-        let path = result.items[key].fullPath
-        let splitPath = path.split('/')
-        let pictureID = splitPath[splitPath.length -1]
-        // picture['link'] = link
-        // picture['productID'] = pictureID
-        this.pictures.push({link : link, productID : pictureID})
-        console.log(this.pictures);
-        this.insertPictures()
-       });
-       return result
-      }
-  })
-}
-​
-insertPictures(){
-  for(let i in this.pictures){
-    //Adding pictures to products arrays
-    for(let key in this.products){
-      if(this.pictures[i].productID === this.products[key].productID){
-        console.log('ddsfds');
-        this.products[key].pictures = {link: this.pictures[i].link}
-        console.log(this.products[key])
-      }
-    }
-  }
-}
+// async loadPictures(){
+//   return this.productsService.getPictures().then(result => {
+//     console.log(result);
+//     let pictures : Array<any> = []
+//     for(let key in result.items){
+//       result.items[key].getDownloadURL().then(link => {
+//         let path = result.items[key].fullPath
+//         let splitPath = path.split('/')
+//         let pictureID = splitPath[splitPath.length -1]
+//         // picture['link'] = link
+//         // picture['productID'] = pictureID
+//         this.pictures.push({link : link, productID : pictureID})
+//         console.log(this.pictures);
+//         this.insertPictures()
+//        });
+//        return result
+//       }
+//   })
+// }
+// ​
+// insertPictures(){
+//   for(let i in this.pictures){
+//     //Adding pictures to products arrays
+//     for(let key in this.products){
+//       if(this.pictures[i].productID === this.products[key].productID){
+//         console.log('ddsfds');
+//         this.products[key].pictures = {link: this.pictures[i].link}
+//         console.log(this.products[key])
+//       }
+//     }
+//   }
+// }
 ​status : string;
 cancelOrder(){
   let status = 'cancelled'

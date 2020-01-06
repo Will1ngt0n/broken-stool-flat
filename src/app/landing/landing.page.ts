@@ -35,6 +35,7 @@ export class LandingPage implements OnInit {
   kwanga: boolean = false
   selectedCategory: any
   itemName: String
+  
   price: String
   description: String
   size: Array<any> = []
@@ -230,7 +231,7 @@ export class LandingPage implements OnInit {
     this.checkValidity()
   }
 
-  changeCategory() {
+  changeCategory(event) {
     console.log(event.target['value']);
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {

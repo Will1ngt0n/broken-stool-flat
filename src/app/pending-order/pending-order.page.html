@@ -23,7 +23,7 @@
             <h4>Order Details</h4>
             <!-- <h5>{{item.details.name}}</h5> -->
             <p class="nums">{{cell}}</p>
-            <p class="refNum"><b>REF</b> {{item.refNo}}</p>
+            <p class="refNum"><b>REF</b> {{refNo}}</p>
             <div id="note">
               <i>Use this reference number to compare against the reference number provided by your back provider.</i>
             </div>
@@ -62,9 +62,9 @@
             <p class="titleName">
               Items Ordered
             </p>
-            <ion-card>
-              <img [src]="item.pictures.link" *ngIf='item.pictures' alt="">
-              <div class="cont-container"  *ngFor='let item of products'>
+            <ion-card *ngFor='let item of products'>
+              <img [src]="item.picture" alt="">
+              <div class="cont-container">
                 <h4>{{item.product_name}}</h4>
                 <p>R {{item.unitCost}}</p>
                 <p><b>QTY</b> {{item.quantity}}</p>
@@ -115,7 +115,8 @@
           <h4>Order Details</h4>
           <!-- <h5>{{item.details.name}}</h5> -->
           <p class="nums">{{cell}}</p>
-          <p class="refNum"><b>REF</b> {{item.refNo}}</p>
+          <div *ngIf='refNo'></div>
+          <p class="refNum" ><b>REF</b> {{refNo}}</p>
           <div id="note">
             <i>Use this reference number to compare against the reference number provided by your back provider.</i>
           </div>

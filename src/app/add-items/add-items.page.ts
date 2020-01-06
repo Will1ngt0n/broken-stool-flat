@@ -48,7 +48,7 @@ export class AddItemsPage implements OnInit {
       this.summer = false;
     }
   }
-  changeCategory() {
+  changeCategory(event) {
     this.selectedCategory = event.target['value']
   }
   ngOnInit() {

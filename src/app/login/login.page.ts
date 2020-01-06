@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
     this.loadingCtrl.create({
       message: "Logging In..."
     }).then((loading)=>{
-      loading.present()
+      //loading.present()
 
       const alert = document.createElement('ion-alert');
       alert.header = 'Error';
@@ -70,10 +70,11 @@ export class LoginPage implements OnInit {
           if(result && result.operationType){
             if(result.operationType === "signIn"){
             loading.dismiss()
-            setTimeout(() => {
-            this.route.navigate(['landing'])
+            // setTimeout(() => {
+            this.route.navigate(['landing']);
+            location.reload()
               
-            }, 100);
+            // }, 100);
           }  
           }else if (result === undefined){
             loading.dismiss()

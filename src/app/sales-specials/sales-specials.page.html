@@ -3,7 +3,7 @@
     <div class="searchResults" *ngIf="searchInput">
         Search Results
         <ion-list *ngFor="let item of searchArray">
-          <ion-item (click)="showHideSearchDetails(name)">{{item.data.name}}</ion-item>
+          <ion-item (click)="showHideSearchDetails(item.data.name)">{{item.data.name}}</ion-item>
         </ion-list>
           
             <!-- <div id="oops" *ngIf="searchArray.length === 0"><p><ion-icon name="sad"></ion-icon> There are no matches for this search</p></div> -->
@@ -53,7 +53,7 @@
                     <p>{{item.data.description}}.</p>
                     <p><b>R {{item.data.price}}</b></p>
                     <div class="options">
-                      <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
+                      <div (click)='deleteItem(item, item.productID)'>Delete</div>
                     </div>
                   </div>
                 </div>
@@ -79,7 +79,7 @@
                         (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
                         Update</div>
                       <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div> -->
-                      <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
+                      <div (click)='deleteItem(item, item.productID)'>Delete</div>
                     </div>
                   </div>
                 </div>
@@ -105,7 +105,7 @@
                         (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.pictures.link)">
                         Update</div>
                       <div (click)='hideItem(item.productID, item.brand, item.category)'>Hide</div> -->
-                      <div (click)='deleteItem(item.productID, item.brand, item.category)'>Delete</div>
+                      <div (click)='deleteItem(item, item.productID)'>Delete</div>
                     </div>
                   </div>
                 </div>
@@ -210,7 +210,7 @@
             <p>R {{item.data.price}} price</p>
             <div class="opts">
               <div>
-                <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
+                <button icon-only (click)='deleteItem(item, item.productID)'>
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
                 </button>
               </div>
@@ -231,7 +231,7 @@
               <p>R {{item.data.price}}</p>
             <div class="opts">
               <div>
-                <button icon-only (click)='deleteItem(item.productID)'>
+                <button icon-only (click)='deleteItem(item, item.productID)'>
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
                 </button>
               </div>
@@ -252,7 +252,7 @@
               <p>R {{item.data.price}}</p>
             <div class="opts">
               <div>
-                <button icon-only (click)='deleteItem(item.productID, item.brand, item.category)'>
+                <button icon-only (click)='deleteItem(item, item.productID)'>
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
                 </button>
               </div>
