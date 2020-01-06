@@ -68,7 +68,12 @@ export class AuthService {
           return firebase.auth().signInWithEmailAndPassword(email, password).then(result => {
             console.log(result);
             return result
+          }).catch(error => {
+            console.log(error);
+            return error
           })
+        }else if (docEmail !== email){
+          return 
         }
       }
     })
@@ -83,7 +88,7 @@ export class AuthService {
     }).catch((error) => {
       // An error happened.
       console.log(error)
-      return 'Error'
+      return error
     });
   }
   //Function : Routing logged out users to the login page

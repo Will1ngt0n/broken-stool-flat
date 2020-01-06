@@ -1,6 +1,7 @@
 import { Injectable, Query } from '@angular/core';
 import * as firebase from 'firebase'
 import * as moment from 'moment';
+import { LoadingController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,7 +9,7 @@ export class ProductsService {
   productsRef
   new
   products : Array<any> = []
-  constructor() {
+  constructor(public loadingCtrl: LoadingController) {
     this.products = []
   }
 
@@ -304,10 +305,10 @@ export class ProductsService {
     })
   }
 
+
   loadCategoryItems(category, brand){
    // console.log(brand);
    // console.log(category);
-    
     
     return firebase.firestore().collection('Products').doc(brand).collection(category).get().then(result => {
       //console.log(result.docs);
@@ -325,6 +326,7 @@ export class ProductsService {
         return data
       }
     })
+    
   }
   deleteItemFromInventory(productID, brand, category){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {

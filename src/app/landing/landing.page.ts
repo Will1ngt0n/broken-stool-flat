@@ -3,7 +3,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { AuthService } from '../services/auth-services/auth.service';
 import { ProductsService } from '../services/products-services/products.service';
 import * as moment from 'moment';
-import { NavController, AlertController } from '@ionic/angular';
+import { NavController, AlertController, LoadingController } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
 @Component({
   selector: 'app-landing',
@@ -51,7 +51,7 @@ export class LandingPage implements OnInit {
   orderedWinterProducts: Array<any> = []
   orderedSummerProducts: Array<any> = []
   seasonalWear: Array<any> = []
-  status = ['ready', 'recieved', 'collected', 'processed', 'cancelled']
+  status = ['ready', 'received', 'processed', 'cancelled']
   blackAvailable; blackPic
   brownAvailable; brownPic
   orangeAvailable; orangePic
@@ -107,7 +107,7 @@ export class LandingPage implements OnInit {
     roundLengths: false,
     effect: 'fade'
   }
-  constructor(private alertController: AlertController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
+  constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
@@ -322,12 +322,23 @@ export class LandingPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
+  myUpload = "../../assets/imgs/default.png";
   addPicture(event){
     this.picture = <File>event.target.files[0]
-    // let name = event.target.name
-    // let pictureName = name
-    // this.itemName = pictureName.replace('-', ' ')
-    // this.description = this.itemName
+        let reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.myUpload = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        console.log(event.target.files[0]);
+        
+        var uploaderImage = document.getElementsByClassName("adder") as HTMLCollectionOf <HTMLElement>;
+        var uploadedImage = document.getElementsByClassName("imageChanged") as HTMLCollectionOf <HTMLElement>;
+        if(event.target.files[0]){
+          uploaderImage[0].style.display = "none"
+          uploadedImage[0].style.display = "block"
+        }
+        
   }
   // addItem() {
   //   this.route.navigate(['/'])
@@ -398,6 +409,9 @@ export class LandingPage implements OnInit {
 
   }
   loadItems(category, brand){
+
+
+    
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
@@ -635,8 +649,8 @@ export class LandingPage implements OnInit {
   }
   filterItems(array) {
     let queryFormatted = this.searchInput.toLowerCase();
-    console.log(queryFormatted);
-    console.log(array);
+    // console.log(queryFormatted);
+    // console.log(array);
     if(queryFormatted !== '' && queryFormatted !== '*'){
       let nameResult = array.filter(item => item.data.name.toLowerCase().indexOf(queryFormatted) >= 0)
       let addBrand: boolean
@@ -645,9 +659,9 @@ export class LandingPage implements OnInit {
       addName = false
       addCategory = false
       addBrand = false
-      //console.log(brandResult);
-      //console.log(categoryResult);
-      console.log(nameResult);
+      //// console.log(brandResult);
+      //// console.log(categoryResult);
+      // console.log(nameResult);
       this.searchArray = nameResult
     }else if(queryFormatted === '*'){
     this.searchArray = this.allProducts
@@ -656,7 +670,7 @@ export class LandingPage implements OnInit {
 
   async loadPictures() {
     return this.productService.getPictures().then(result => {
-      console.log(result);
+      // console.log(result);
       let pictures: Array<any> = []
       for (let key in result.items) {
         result.items[key].getDownloadURL().then(link => {
@@ -666,7 +680,7 @@ export class LandingPage implements OnInit {
           // picture['link'] = link
           // picture['productID'] = pictureID
           this.pictures.push({ link: link, productID: pictureID })
-          console.log(this.pictures);
+          // console.log(this.pictures);
           this.insertPictures()
          })
 
@@ -676,30 +690,30 @@ export class LandingPage implements OnInit {
   }
 
   insertPictures() {
-    console.log(this.pictures);
-    console.log(this.winterGear);
-    console.log(this.summerGear);
+    // console.log(this.pictures);
+    // console.log(this.winterGear);
+    // console.log(this.summerGear);
 
 
     for (let i in this.pictures) {
       //Adding pictures to products arrays
-      console.log(this.pictures);
+      // console.log(this.pictures);
       
       for(let key in this.allProducts){
-        console.log(this.allProducts, 'Here are all the products');
+        // console.log(this.allProducts, 'Here are all the products');
         
         if(this.pictures[i].productID === this.allProducts[key].productID){
-          console.log('ddsfds');
+          // console.log('ddsfds');
           this.allProducts[key].pictures = { link: this.pictures[i].link }
-          console.log(this.allProducts[key])
+          // console.log(this.allProducts[key])
         }
 
       }
       for (let key in this.kwangaProducts) {
         if (this.pictures[i].productID === this.kwangaProducts[key].productID) {
-          console.log('ddsfds');
+          // console.log('ddsfds');
           this.kwangaProducts[key].pictures = { link: this.pictures[i].link }
-          console.log(this.kwangaProducts[key])
+          // console.log(this.kwangaProducts[key])
           if(this.kwangaSpecialsPicture === undefined){
             this.kwangaSpecialsPicture = this.pictures[i].link
           }
@@ -709,9 +723,9 @@ export class LandingPage implements OnInit {
       }
       for (let key in this.summerGear) {
         if (this.pictures[i].productID === this.summerGear[key].productID) {
-          console.log('ddsfds');
+          // console.log('ddsfds');
           this.summerGear[key].pictures = { link: this.pictures[i].link }
-          console.log(this.summerGear[key])
+          // console.log(this.summerGear[key])
           if(this.dankieJesuSpecialsPicture === undefined){
             this.dankieJesuSpecialsPicture = this.pictures[i].link
           }
@@ -721,9 +735,9 @@ export class LandingPage implements OnInit {
       }
       for (let key in this.winterGear) {
         if (this.pictures[i].productID === this.winterGear[key].productID) {
-          console.log('ddsfds');
+          // console.log('ddsfds');
           this.winterGear[key].pictures = { link: this.pictures[i].link }
-          console.log(this.winterGear[key])
+          // console.log(this.winterGear[key])
           if(this.allSpecialsPicture === undefined){
             this.allSpecialsPicture = this.pictures[i].link
           }
@@ -734,27 +748,27 @@ export class LandingPage implements OnInit {
     }
   }
   showLeftSide() {
-    console.log("Showing left side menu");
+    // console.log("Showing left side menu");
     document.getElementById("left-items-list").style.left = "0"
 
   }
   searchButtonState: string = "search"
   showSearchBar() {
-    console.log("Showing searchbar");
+    // console.log("Showing searchbar");
     if (this.miniSearchBarState == true) {
       this.miniSearchBarState = false;
-      console.log(this.miniSearchBarState);
+      // console.log(this.miniSearchBarState);
       this.searchButtonState = "search";
       this.searchInput = ''
     }
     else {
       this.miniSearchBarState = true;
-      console.log(this.miniSearchBarState);
+      // console.log(this.miniSearchBarState);
       this.searchButtonState = "close"
     }
   }
   showRightSide() {
-    console.log("Showing right side menu");
+    // console.log("Showing right side menu");
     document.getElementById("right-items-list").style.right = "0"
 
   }
@@ -801,6 +815,18 @@ export class LandingPage implements OnInit {
     window.location.reload()
   }
 
+
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Hellooo',
+      duration:3000
+    });
+    await loading.present();
+
+    // const { role, data } = await loading.onDidDismiss();
+
+    // console.log('Loading dismissed!');
+  }
 
 
 }
