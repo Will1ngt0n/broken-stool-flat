@@ -36,11 +36,12 @@
             </p>
             <div class="items">
               <div class="subtitle">
-                <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
+                <p class="item" *ngFor='let item of products'>{{item.product_name}} you are here</p>
 
                 <p class="item"><b>Total Quantity</b></p>
                 <p class="item"><b>Grand Total</b></p>
                 <p><b>Order Type</b></p>
+                <p><b>Date of receipt</b></p>
               </div>
               <div class="subtitle">
                 <p *ngFor='let item of products'>{{item.quantity}}</p>
@@ -48,6 +49,7 @@
                 <p><b>{{totalQuantity}}</b></p>
                 <p><b>R {{totalPrice}}</b></p>
                 <p>Collection</p>
+                <p>06/01/2020</p>
               </div>
             </div>
             <p id="subHeader">

@@ -442,6 +442,7 @@ ion-searchbar {
     height: 100%;
     background: white;
     color: black;
+    cursor: pointer;
   }
   .quantities > div:nth-child(2) {
     width: 35px;
@@ -466,12 +467,14 @@ ion-searchbar {
     height: 100%;
     background: white;
     color: black;
+    cursor: pointer;
   }
   .quantities > div:nth-child(4) {
     width: 40px;
     height: 100%;
     background: green;
     color: white;
+    cursor: pointer;
   }
   .items-list {
     width: 100%;
