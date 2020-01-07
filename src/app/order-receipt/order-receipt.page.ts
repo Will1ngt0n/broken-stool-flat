@@ -75,17 +75,6 @@ export class OrderReceiptPage implements OnInit {
       if(this.deliveryType === 'Delivery'){
         this.deliveryAddress = this.userAddress
         this.deliveryFee = this.item['details']['deliveryCost']
-        console.log(this.deliveryFee);
-        
-        this.grandTotal = this.totalPrice + this.deliveryFee
-      }else if(this.deliveryType === 'Collection'){
-        console.log(this.deliveryType);
-        console.log(this.totalPrice);
-        
-        this.deliveryFee = 0
-        this.grandTotal = +this.totalPrice
-        console.log(this.grandTotal);
-        
       }
       console.log(this.deliveryType);
       this.datePurchased = this.item['details']['purchaseDate']

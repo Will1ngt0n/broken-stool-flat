@@ -402,6 +402,7 @@ deleteItem(item, productID){
         
         return this.productsService.deleteSpecialsItem(productID, item).then(result => {
           console.log(result);
+          location.reload()
         })
       }
     }

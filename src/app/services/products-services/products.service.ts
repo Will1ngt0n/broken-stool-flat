@@ -248,8 +248,8 @@ export class ProductsService {
   }
 
   deleteSpecialsItem(productID, item){
-    return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).delete().then(result => {
-    //  console.log(result);
+    return firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
+      console.log(result);
       return result
     }).catch(error => {
       return 'Not deleted'
@@ -345,7 +345,7 @@ export class ProductsService {
      // console.log(result);
     })
   }
-  updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture){
+  updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture, colors){
     console.log(picture,' I am pictrue');
     
     if(picture !== undefined){
@@ -362,7 +362,8 @@ export class ProductsService {
       price : itemPrice,
       description : itemDescription,
       name : itemName,
-      size: sizes
+      size: sizes,
+      color: colors
     }).then(result => {
 
       return 'success'
@@ -415,6 +416,7 @@ export class ProductsService {
       color: selectedItem.data.color,
       quantity: selectedItem.data.quantity,
       size: selectedItem.data.size,
+      normalPrice: selectedItem.data.price,
       // hideItem: false,
       timestamp : firebase.firestore.FieldValue.serverTimestamp(),
     }).then(result => {
@@ -503,7 +505,6 @@ export class ProductsService {
   closedOrders(refNo, status, userID, products, deliveryType, purchaseDate){
     return firebase.firestore().collection('orderHistory').doc(refNo).set({
       status: status,
-      reciept: 'N/A',
       timestamp: new Date().getTime(),
       refNo: refNo,
       uid: userID,

@@ -114,9 +114,10 @@ export class ItemsListPage implements OnInit {
     // }
     this.orderItems()
 
-    for (let key in this.status) {
-      this.getPendingOrders(this.status[key])
-    }
+    // for (let key in this.status) {
+    //   this.getPendingOrders(this.status[key])
+    // }
+    this.getPendingOrders()
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
@@ -435,8 +436,8 @@ export class ItemsListPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
 
   }
-  getPendingOrders(status) {
-    return this.productsService.getPendingOrders(status).then(result => {
+  getPendingOrders() {
+    return this.productsService.getPendingOrders().then(result => {
       console.log(result);
       let array = result
       if (result.length !== 0) {
@@ -628,7 +629,7 @@ export class ItemsListPage implements OnInit {
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.updateSizes);
     //console.log(this.updateName);
 
-    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate).then(result => {
+    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate, this.updateColors).then(result => {
       console.log(result);
         setTimeout(() => {
           this.reloadPage()
@@ -719,6 +720,19 @@ export class ItemsListPage implements OnInit {
     }
     // console.log(event.target.checked);
     // console.log(event.target['name']);
+  }
+  checkColorUpdate(event, color){
+    let checkbox = event.target['name']
+    if(checkbox){
+      if(event.target.checked === true){
+        this.updateColors.push(color)
+        console.log(this.updateColors);
+      }else if(event.target.checked === false){
+        let index = this.updateColors.indexOf(color)
+        this.updateColors.splice(index, 1)
+        console.log(this.updateColors);
+      }
+    }
   }
   //Search functionality
   search(query) {
