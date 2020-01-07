@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
+​​import * as moment from 'moment'
 declare var window
 @Component({
   selector: 'app-pending-order',
@@ -17,6 +18,10 @@ export class PendingOrderPage implements OnInit {
   userID
   totalPrice
   quantity
+  deliveryType
+  deliveryAddress
+  purchaseDate
+  userAddress
   pictures : Array<any> = []
   cell
   totalQuantity : Number
@@ -39,6 +44,7 @@ export class PendingOrderPage implements OnInit {
           this.userID = result.userID
           console.log(name);
           this.cell = result.cell
+          this.getUser(this.userID)
           console.log(this.cell);
           this.routingPage = result.currentPage
           console.log(this.routingPage);
@@ -86,6 +92,14 @@ export class PendingOrderPage implements OnInit {
       console.log(result);
     })
   }
+  getUser(userID){
+    return this.productsService.loadUser(userID).then(result => {
+      console.log(result);
+      this.cell = result.cell
+      this.name = result.name
+      this.userAddress = result.address
+    })
+  }
 getOrder(refNo, name){
  return this.productsService.getOrderDetails(refNo).then(result => {
     this.item = result[0]
@@ -94,6 +108,15 @@ getOrder(refNo, name){
     this.products = this.item['details']['product']
     this.quantity = this.products.length
     console.log(this.products);
+    this.deliveryType = this.item['details']['deliveryType']
+    if(this.deliveryType === 'Delivery'){
+      this.deliveryAddress = this.userAddress
+      console.log(this.deliveryAddress);
+      
+    }
+    console.log(this.deliveryType);
+    this.purchaseDate = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
+    console.log(this.purchaseDate);
     
     this.totalPrice = this.item['details']['totalPrice']
     console.log(this.products);
@@ -170,7 +193,7 @@ orderReady(){
 }
 orderCollected(){
   let status = 'collected'
-  return this.productsService.closedOrders(this.refNo, status, this.userID, this.products).then(result => {
+  return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType).then(result => {
     this.route.navigate([this.routingPage])
   })
 }

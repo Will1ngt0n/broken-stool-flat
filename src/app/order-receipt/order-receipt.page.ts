@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
-​
+​​import * as moment from 'moment'
 @Component({
   selector: 'app-order-receipt',
   templateUrl: './order-receipt.page.html',
@@ -64,7 +64,11 @@ export class OrderReceiptPage implements OnInit {
        //this.item['details'].name = name
        console.log(this.item);
       this.products = this.item['details']['orders']
-      this.dateClosed = this.item['details']['order']
+      //this.dateClosed = this.item['details']['timestamp']
+
+      this.dateClosed = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
+      console.log(this.dateClosed);
+      
       //  this.quantity = this.products.length
       //this.totalPrice = this.item['details']['totalPrice']
        console.log(this.products);

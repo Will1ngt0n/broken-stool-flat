@@ -452,8 +452,9 @@ export class ProductsService {
       let userName = data.data().name
       let number = data.data().cellPhone
       let userID = data.id
+      let address = data.data().address
       console.log(userName, userID);
-      user = {name: userName, userID: userID, cell: number}
+      user = {name: userName, userID: userID, cell: number, address: address}
       return user
     })
   }
@@ -499,14 +500,15 @@ export class ProductsService {
       //status: 'collected' ?
     })
   }
-  closedOrders(refNo, status, userID, products){
+  closedOrders(refNo, status, userID, products, deliveryType){
     return firebase.firestore().collection('orderHistory').doc(refNo).set({
       status: status,
       reciept: 'N/A',
-      closeOrderTimeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp: new Date().getTime(),
       refNo: refNo,
       uid: userID,
-      orders: products
+      orders: products,
+      deliveryType: deliveryType
     }).then( result => {
       return firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
         console.log('deleted');
@@ -561,7 +563,7 @@ export class ProductsService {
     return firebase.firestore().collection('orderHistory').doc(refNo).set({
       status: status,
       reciept: 'N/A',
-      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp: new Date().getTime(),
       refNo: refNo,
       uid: userID,
       orders: products
