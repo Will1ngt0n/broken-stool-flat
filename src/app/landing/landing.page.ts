@@ -839,15 +839,17 @@ export class LandingPage implements OnInit {
       this.searchButtonState = "close"
     }
   }
+  adding:boolean = false;
   showRightSide() {
     // console.log("Showing right side menu");
     document.getElementById("right-items-list").style.right = "0"
-
+    this.adding = true
   }
 
   sideMenuButtons: boolean = true;
   hideSideMenu() {
-    this.sideMenuButtons = true
+    this.adding = false;
+    this.sideMenuButtons = true;
     document.getElementById("left-items-list").style.left = "-100%"
     document.getElementById("right-items-list").style.right = "-100%"
   }
