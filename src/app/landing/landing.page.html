@@ -48,7 +48,7 @@
       <div id="left" padding>
         <div class="history-items">
           <div class="title-top">
-            <h5>History</h5>
+            <h5>History (50)</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
@@ -64,7 +64,7 @@
         </div>
         <div class="pending-items">
           <div class="title-top">
-            <h5>Pending Orders</h5>
+            <h5>Pending Orders (30)</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
@@ -79,7 +79,7 @@
         </div>
         <div class="inventory-items">
           <div class="title-top">
-            <h5>Inventory</h5>
+            <h5>Inventory (3000)</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
@@ -96,15 +96,15 @@
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>
-                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
               </div>
 
             </ion-card>
           </div>
         </div>
-        <div class="side-buttons" (click)="showPendingList()">Pending Orders</div>
-        <div class="side-buttons" (click)="showHistoryList()">History</div>
-        <div class="side-buttons" (click)="showInventoryList()">Inventory</div>
+        <div class="side-buttons" (click)="showPendingList()">Pending Orders (30)</div>
+        <div class="side-buttons" (click)="showHistoryList()">History (50)</div>
+        <div class="side-buttons" (click)="showInventoryList()">Inventory (3000)</div>
       </div>
       <div id="mid">
         <div class="top-bar">
@@ -295,11 +295,11 @@
       </div>
       <div class="small-side-items" *ngIf="sideMenuButtons">
         <!-- showPendingList() -->
-        <div id="smallOne" (click)="showPendingListSmall()">Pending Orders</div>
+        <div id="smallOne" (click)="showPendingListSmall()">Pending Orders (30)</div>
         <!-- showHistoryList() -->
-        <div id="smallTwo" (click)="showHistoryListSmall()">History</div>
+        <div id="smallTwo" (click)="showHistoryListSmall()">History (50)</div>
         <!-- showInventoryList() -->
-        <div id="smallThree" (click)="showInventoryListSmall()">Inventory</div>
+        <div id="smallThree" (click)="showInventoryListSmall()">Inventory (3000)</div>
       </div>
       <!-- *ngIf="!sideMenuButtons" -->
       <div class="small-side-items" *ngIf="!sideMenuButtons">

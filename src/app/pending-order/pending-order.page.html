@@ -75,7 +75,7 @@
           <div id="buttons">
             <div class="to-buttons">
               <div (click)='cancelOrder()' *ngIf="status !== 'collected'">Cancel Order</div>
-              <div (click)='processOrder()' *ngIf="status === 'recieved'">Process Order</div>
+              <div (click)='processOrder()' *ngIf="status === 'received'">Process Order</div>
               <div (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection</div>
               <div (click)='orderCollected()' *ngIf="status === 'ready'">Collected</div>
             </div>
