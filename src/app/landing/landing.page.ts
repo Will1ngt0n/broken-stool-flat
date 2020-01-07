@@ -848,7 +848,9 @@ export class LandingPage implements OnInit {
 
   sideMenuButtons: boolean = true;
   hideSideMenu() {
+  setTimeout(() => {
     this.adding = false;
+  }, 200);
     this.sideMenuButtons = true;
     document.getElementById("left-items-list").style.left = "-100%"
     document.getElementById("right-items-list").style.right = "-100%"
