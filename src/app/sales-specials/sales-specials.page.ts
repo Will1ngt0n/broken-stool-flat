@@ -120,6 +120,7 @@ export class SalesSpecialsPage implements OnInit {
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
+    this.loadSales()
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()
@@ -170,10 +171,10 @@ export class SalesSpecialsPage implements OnInit {
           }else{
             this.toggleKwanga()
           }
-          this.loadPictures().then(result => {
-            console.log(result);
+          // this.loadPictures().then(result => {
+          //   console.log(result);
             
-          })
+          // })
         })
       }
     })
@@ -629,7 +630,7 @@ loadItems(category, brand){
         //console.log('I belong to Dankie Jesu');
         this.dankieJesuProducts.push(result[key])
         this.allProducts.push(result[key])
-        console.log(this.allProducts, 'I think i am running perfectly');
+        //console.log(this.allProducts, 'I think i am running perfectly');
         }
       }
     })
@@ -653,24 +654,24 @@ getPendingOrders(){
   // })
 }
 getReadyOrders(){
-  return this.productsService.getReadyOrders().then(result => {
-    this.readyOrders = result
-    console.log(this.readyOrders, 'ready orders');
-  })
+  // return this.productsService.getReadyOrders().then(result => {
+  //   this.readyOrders = result
+  //   console.log(this.readyOrders, 'ready orders');
+  // })
 }
 getClosedOrders(){
-  return this.productsService.getOrderHistory().then(result => {
-    if(result.length !== 0){
-      this.history = result
-      console.log(this.history, 'closed orders');
-    }
-  })
+  // return this.productsService.getOrderHistory().then(result => {
+  //   if(result.length !== 0){
+  //     this.history = result
+  //     console.log(this.history, 'closed orders');
+  //   }
+  // })
 }
 closeOrder(docID){
-  return this.productsService.closedOrder(docID).then(result => {
-    console.log(result);
+  // return this.productsService.closedOrder(docID).then(result => {
+  //   console.log(result);
     
-  })
+  // })
 }
 //Search functionality
 search(query){

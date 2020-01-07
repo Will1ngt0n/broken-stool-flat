@@ -160,7 +160,7 @@ export class ProductsService {
   getBrandSales(){
     return firebase.firestore().collection('Specials').get().then(result => {
       let sales : Array<any> = []
-  ;
+      console.log(result);
       
       for(let key in result.docs){
           let productID = result.docs[key].id
