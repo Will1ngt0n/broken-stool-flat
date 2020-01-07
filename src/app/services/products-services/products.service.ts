@@ -347,6 +347,29 @@ export class ProductsService {
      // console.log(result);
     })
   }
+  updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture){
+    console.log(picture,' I am pictrue');
+    
+    if(picture !== undefined){
+      console.log(picture);
+      
+      firebase.storage().ref('clothes/' + itemID).put(picture).then(result => {
+
+      })
+    }else{
+      console.log('Picture is undefined');
+      
+    }
+    return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+      price : itemPrice,
+      description : itemDescription,
+      name : itemName,
+      size: sizes
+    }).then(result => {
+
+      return 'success'
+    })
+  }
   updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes){
     return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
       price : itemPrice,
@@ -356,6 +379,23 @@ export class ProductsService {
     }).then(result => {
 
       return 'success'
+    })
+  }
+  updateProduct(productID, brand, category, itemName, itemDescription, itemPrice, picture){
+    if(picture !== undefined){
+      firebase.storage().ref('clothes/' + productID).put(picture).then(result => {
+
+      })
+    }
+    return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
+      price : itemPrice,
+      description : itemDescription,
+      name : itemName
+    }).then(result => {
+
+      return 'Successfully updated product'
+    }).catch(result => {
+      return 'Product could not be updated'
     })
   }
   promoteItem(price, percentage, startDate, endDate, itemBrand, itemCategory, itemID){

@@ -597,11 +597,12 @@ export class ItemsListPage implements OnInit {
     window.location.reload()
 
   }
+  pictureUpdate : File
   updateItem() {
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.updateSizes);
     //console.log(this.updateName);
 
-    return this.productsService.updateItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes).then(result => {
+    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate).then(result => {
       console.log(result);
         setTimeout(() => {
           this.reloadPage()
@@ -611,6 +612,9 @@ export class ItemsListPage implements OnInit {
         return this.dismissPromo()
       }
     })
+  }
+  addPictureUpdate(event){
+    this.pictureUpdate = <File>event.target.files[0]
   }
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 

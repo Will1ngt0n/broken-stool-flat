@@ -27,7 +27,7 @@ export class LandingPage implements OnInit {
   pictures: Array<any> = []
   departmentOptions: Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
-  dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
+  dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies']
   categoryOptions: Array<any> = ['Select Category']
   inventoryItems: Array<any> = []
   summer: boolean;
@@ -216,7 +216,7 @@ export class LandingPage implements OnInit {
     console.log(event.target['value']);
     this.department = event.target['value']
     if (this.department === 'Dankie Jesu') {
-      this.categoryOptions = ['Select Category', 'Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies', 'Bags']
+      this.categoryOptions = ['Select Category', 'Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
     }
     if (this.department === 'Kwanga') {
       this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports wear']
@@ -230,21 +230,34 @@ export class LandingPage implements OnInit {
     }
     this.checkValidity()
   }
-
-  changeCategory(event) {
-    console.log(event.target['value']);
+  checkItemName(){
+    console.log(this.itemName);
+    
+    this.checkValidity()
+  }
+  checkItemDescription(){
+    console.log(this.description);
+    //
+    this.checkValidity()
+  }
+  changeCategory() {
+    //console.log(event.target['value']);
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {
-      this.selectedCategory = undefined
+      this.selectedCategory = 'Select Category'
     }
-    if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps ' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
+    if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
       this.summer = true
-    }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies', 'Bags')
-    if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Winter Hats' || this.selectedCategory === 'Beanies'){
+      //console.log(this.summer);
+      
+    }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
+    if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
       this.summer = false
+      //console.log(this.summer);
+      
     }
     
-    if(this.selectedCategory === 'Bags'){
+    if(this.selectedCategory === 'Bags' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Beanies'){
       this.accessory = true   ///, 'Bags'))
     }else{
       this.accessory = false
@@ -278,12 +291,24 @@ export class LandingPage implements OnInit {
 
   changePrice(){
     if(Number(this.price) < 0){
-      this.price = '0'
+      this.price = ''
     }else if(Number(this.price) > 10000){
       this.price = '10000'
     }
+    console.log(this.price);
+    if(this.price === null){
+      this.price = ''
+    }
+    console.log(this.price);
+    
+    this.checkValidity()
   }
   checkValidity() {
+    console.log('running');
+    
+    if(this.nativeCategory.nativeElement.disabled === true){
+      this.selectedCategory = 'Select Category'
+    }
     if (this.selectedCategory === undefined || this.selectedCategory === 'Select Category' || this.department === undefined || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
       this.addForm = false
       console.log(this.addForm);
@@ -292,16 +317,13 @@ export class LandingPage implements OnInit {
       this.addForm = true
       console.log(this.addForm);
     }
-    if (this.department !== undefined || this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.selectedCategory !== undefined || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined) {
+    if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined) {
       this.formHasValues = true
       console.log(this.formHasValues, 'form has values');
      // this.btnClearForm.nativeElement.disabled = false
-    } 
-    // else {
-    //   this.formHasValues = false
-    //   console.log(this.formHasValues, 'form has values');
-    //   //this.btnClearForm.nativeElement.disabled = true
-    // }
+    }else{
+      this.formHasValues = false
+    }
   }
   checkColor(event, color) {
     this.checkValidity()
@@ -324,6 +346,8 @@ export class LandingPage implements OnInit {
     this.checkValidity()
   }
   myUpload = "../../assets/imgs/default.png";
+  uploaderImage = document.getElementsByClassName("adder") as HTMLCollectionOf <HTMLElement>;
+  uploadedImage = document.getElementsByClassName("imageChanged") as HTMLCollectionOf <HTMLElement>;
   addPicture(event){
     this.picture = <File>event.target.files[0]
         let reader = new FileReader();
@@ -333,13 +357,11 @@ export class LandingPage implements OnInit {
         reader.readAsDataURL(event.target.files[0]);
         console.log(event.target.files[0]);
         
-        var uploaderImage = document.getElementsByClassName("adder") as HTMLCollectionOf <HTMLElement>;
-        var uploadedImage = document.getElementsByClassName("imageChanged") as HTMLCollectionOf <HTMLElement>;
         if(event.target.files[0]){
-          uploaderImage[0].style.display = "none"
-          uploadedImage[0].style.display = "block"
+          this.uploaderImage[0].style.display = "none"
+          this.uploadedImage[0].style.display = "block"
         }
-        
+        this.checkValidity()
   }
   // addItem() {
   //   this.route.navigate(['/'])
@@ -354,6 +376,9 @@ export class LandingPage implements OnInit {
 
   //Clearing all form variables and form inputs respectively
   clearForm() {
+    
+    this.uploaderImage[0].style.display = "block"
+    this.uploadedImage[0].style.display = "none"
     this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
@@ -362,8 +387,9 @@ export class LandingPage implements OnInit {
     this.description = ''
     this.size = [];
     this.picture = undefined
-    document.getElementById('accessory')['checked'] = false;
-    document.getElementById('summer')['checked'] = false;
+    this.myUpload = "../../assets/imgs/default.png"
+    //document.getElementById('accessory')['checked'] = false;
+    //document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
     this.departmentCombo.nativeElement.value ='Select Department'
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
@@ -748,10 +774,34 @@ export class LandingPage implements OnInit {
       }
     }
   }
+  addUpdatePicture(event){
+    this.updateSearchPic =  <File>event.target.files[0]
+    //this.updatePic = this.updateSearchPic
+  }
+  updateItem(){
+    return this.productService.updateProduct(this.updateProductID, this.updateBrand, this.updateCategory, this.updateName, this.updateDescription, this.updatePrice, this.updateSearchPic).then(result => {
+        console.log(result);
+    })
+  }
+  hideItem(){
+    return this.productService.hideProduct(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
+
+    })
+  }
+  deleteSearchItem(){
+    return this.productService.deleteItemFromInventory(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
+      // if(result === 'Deleted'){
+        
+      // }
+    })
+  }
   showLeftSide() {
     // console.log("Showing left side menu");
     document.getElementById("left-items-list").style.left = "0"
 
+  }
+  hideSearchItem(){
+    
   }
   searchButtonState: string = "search"
   showSearchBar() {
@@ -798,10 +848,43 @@ export class LandingPage implements OnInit {
     this.listOfItems = 0;
   }
   updateName: string;
+  updatePrice
+  updateDescription
+  updatePic : File
+  //searchName
+  //searchPic
+  //searchDescription
+  //searchPrice
+  updateProductID
+  updateBrand
+  updateCategory
+  updateSearchPic : File
   clickedSearchItem: string = "hideItem"
-  showHideSearchDetails(name) {
-    this.updateName = name
+  showHideSearchDetails(item) {
+    // this.updateName = item.data.name
+    // this.updatePrice = item.data.price
+    // this.updateDescription = item.data.description
+    // this.updatePic = item.data.pictureLink
+    // this.updateSearchPic = item.data.pictureLink
+    // this.updateBrand = item.brand
+    // this.updateCategory = item.category
+    // this.updateProductID = item.productID
+    // console.log(this.updatePic);
+    
+    // console.log(item);
+    
     if (this.clickedSearchItem == "hideItem") {
+      this.updateName = item.data.name
+      this.updatePrice = item.data.price
+      this.updateDescription = item.data.description
+      this.updatePic = item.data.pictureLink
+      this.updateSearchPic = item.data.pictureLink
+      this.updateBrand = item.brand
+      this.updateCategory = item.category
+      this.updateProductID = item.productID
+      console.log(this.updatePic);
+      
+      console.log(item);
       this.clickedSearchItem = "showItem"
       setTimeout(() => {
         this.searchInput = ''
