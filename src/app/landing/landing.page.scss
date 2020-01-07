@@ -737,7 +737,7 @@ ion-searchbar {
     width: 100%;
     height: calc(100% - 35px);
     background: white;
-    padding-top: 20px;
+    // padding-top: 20px;
     animation: 300ms faderIn;
     overflow-y: scroll;
     #smallOne,
@@ -762,7 +762,7 @@ ion-searchbar {
     .forHistory,
     .forInventory {
       width: 100%;
-      height: 90%;
+      height: calc(100% - 10px);
       overflow-y: scroll;
     }
   }
