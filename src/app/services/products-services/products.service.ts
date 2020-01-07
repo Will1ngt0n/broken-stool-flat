@@ -503,7 +503,7 @@ export class ProductsService {
     return firebase.firestore().collection('orderHistory').doc(refNo).set({
       status: status,
       reciept: 'N/A',
-      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      closeOrderTimeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       refNo: refNo,
       uid: userID,
       orders: products

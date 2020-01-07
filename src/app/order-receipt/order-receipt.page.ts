@@ -56,7 +56,7 @@ export class OrderReceiptPage implements OnInit {
       console.log(result);
     })
   }
-​
+​   dateClosed
   getOrderHistory(refNo, name){
     return this.productsService.getOrderHistoryDetails(refNo).then(result => {
       console.log(result)
@@ -64,6 +64,7 @@ export class OrderReceiptPage implements OnInit {
        //this.item['details'].name = name
        console.log(this.item);
       this.products = this.item['details']['orders']
+      this.dateClosed = this.item['details']['order']
       //  this.quantity = this.products.length
       //this.totalPrice = this.item['details']['totalPrice']
        console.log(this.products);
