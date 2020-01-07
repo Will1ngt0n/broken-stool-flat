@@ -604,6 +604,16 @@ loadDankieJesuItems(){
 loadViewedCategory(){
   
 }
+loadSales(){
+  return this.productsService.getBrandSales().then(result => {
+    console.log(result);
+    if(result  !== undefined && result !== null && result.length !== 0){
+      this.allBrandSales = result
+      console.log(this.allBrandSales[0].data.saleprice);
+      
+    }
+  })
+}
 loadItems(category, brand){
   let data : Array<any> = []
   return this.productsService.loadCategoryItems(category, brand).then(result => {

@@ -24,6 +24,7 @@ export class ProductsService {
       price : price,
       size : size,
       name : itemName,
+      hideItem : false,
       description : description,
       isAccessory: accessory,
       isSummer: summer,
@@ -156,25 +157,22 @@ export class ProductsService {
       return sales
     })
   }
-  getBrandSales(query){
-    //console.log(que);
-    
-    return firebase.firestore().collection('Specials').doc(query).collection('Bucket Hats').doc('Items').collection('Product').get().then(result => {
+  getBrandSales(){
+    return firebase.firestore().collection('Specials').get().then(result => {
       let sales : Array<any> = []
-    //  console.log(result);
+  ;
       
       for(let key in result.docs){
-      //  console.log(key);
-        let productID = result.docs[key].id
-      //  console.log(productID);
-     // console.log(result.docs[key].data());
-      let data = result.docs[key].data()
-      sales.push({productID: productID, category : data['category'], brand : data['brand'], currentPrice : data['currentPrice'], startDate : data['startDate'], endDate : data['endDate']})
-      }
-     // console.log(sales);
-      return sales
-    })
-
+          let productID = result.docs[key].id
+          let docData = result.docs[key].data()
+          console.log(docData);
+          
+          sales.push({productID: productID, data: docData, category: docData.category, brand: docData.brand, link: docData.pictureLink})
+        }
+        if(sales.length !== 0){
+          return sales
+        }
+      })
   }
   // getSales(query){
   //   console.log(query);
@@ -398,13 +396,27 @@ export class ProductsService {
       return 'Product could not be updated'
     })
   }
-  promoteItem(price, percentage, startDate, endDate, itemBrand, itemCategory, itemID){
-    return firebase.firestore().collection('Specials').doc(itemBrand).collection(itemCategory).doc(itemID).set({
+  promoteItem(price, percentage, startDate, endDate, itemBrand, itemCategory, itemID, itemName, itemImageLink, description, selectedItem){
+    console.log(selectedItem);
+    
+    return firebase.firestore().collection('Specials').doc(itemID).set({
       saleprice : price,
       discount: percentage,
       startDate : startDate,
       endDate : endDate,
-      hideItem : false
+      hideItem : false,
+      brand: itemBrand,
+      category: itemCategory,
+      pictureLink: itemImageLink,
+      name: itemName,
+      description: description,
+      isAccessory: selectedItem.data.isAccessory,
+      isSummer: selectedItem.data.isSummer,
+      color: selectedItem.data.color,
+      quantity: selectedItem.data.quantity,
+      size: selectedItem.data.size,
+      // hideItem: false,
+      timestamp : firebase.firestore.FieldValue.serverTimestamp(),
     }).then(result => {
      // console.log(result);
       return 'success'

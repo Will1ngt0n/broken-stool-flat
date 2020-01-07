@@ -92,8 +92,7 @@
                 <div>
                   <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
-                <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
-                    (keyup)='changePrice()'></div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>

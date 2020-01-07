@@ -240,7 +240,7 @@ export class LandingPage implements OnInit {
     //
     this.checkValidity()
   }
-  changeCategory() {
+  changeCategory(event) {
     //console.log(event.target['value']);
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {
@@ -288,7 +288,12 @@ export class LandingPage implements OnInit {
     console.log(event.target['name']);
     this.checkValidity()
   }
-
+  invprice : number
+  changeInventoryPrice(){
+    if(this.invprice < 0){
+      this.price
+    }
+  }
   changePrice(){
     if(Number(this.price) < 0){
       this.price = ''
@@ -631,6 +636,15 @@ export class LandingPage implements OnInit {
       }
     }
   }
+  changeSearchPrice(){
+    console.log('changing price');
+    
+    if(Number(this.updatePrice) < 0){
+      this.updatePrice = ''
+    }else if(Number(this.updatePrice) > 10000){
+      this.updatePrice = '10000'
+    }
+  }
   changeQuantity(event, item){
     console.log(item);
     //console.log(event);
@@ -641,9 +655,9 @@ export class LandingPage implements OnInit {
         if(number < 0){
           number = 0
           this.allProducts[key].data.quantity = 1
-        }else if(number > 10000){
-          number = 10000
-          this.allProducts[key].data.quantity = 10000
+        }else if(number > 100000){
+          number = 100000
+          this.allProducts[key].data.quantity = 100000
         }else{
           this.allProducts[key].data.quantity = +number
         }
@@ -658,6 +672,7 @@ export class LandingPage implements OnInit {
     }
     return this.productService.updateQuantity(brand, category, productID, quantity).then(result => {
       console.log(result);
+      alert('Quantity has been saved')
     })
   }
   viewPendingOrder(item) {
@@ -788,7 +803,7 @@ export class LandingPage implements OnInit {
 
     })
   }
-  deleteSearchItem(){
+  deleteItem(){
     return this.productService.deleteItemFromInventory(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
       // if(result === 'Deleted'){
         

@@ -570,17 +570,43 @@ export class ItemsListPage implements OnInit {
     console.log(price);
 
 
-    return this.productsService.promoteItem(price, this.editPercentage, this.editStartDate, this.editEndDate, this.itemBrand, this.itemCategory, this.itemID).then(result => {
+    return this.productsService.promoteItem(price, this.editPercentage, this.editStartDate, this.editEndDate, this.itemBrand, this.itemCategory, this.itemID, this.itemName, this.itemImageLink, this.itemDescription, this.selectedItem).then(result => {
       console.log(result);
-      if (result === 'success') {
+      if(result === 'success'){
         console.log(result);
         return this.dismissPromo()
       }
     })
   }
-  deleteItem(productID, brand, category) {
+  async deleteItem(productID, brand, category) {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'Are you sure you want to delete this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('User clicked "cancel"');
+          }
+        }, {
+          text: 'Delete',
+          handler: (okay) => {
+            console.log('User clicked "okay"');
+            return this.deleteItemConfirmed(productID, brand, category)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  deleteItemConfirmed(productID, brand, category) {
+    
     return this.productsService.deleteItemFromInventory(productID, brand, category).then(result => {
       console.log(result);
+      location.reload()
     })
   }
   hideItem(productID, brand, category) {
@@ -619,7 +645,7 @@ export class ItemsListPage implements OnInit {
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 
   }
-  toggleUpdate(productID, brand, category, name, description, price, imageLink) {
+  toggleUpdate(productID, brand, category, name, description, price, imageLink,item) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
@@ -631,8 +657,10 @@ export class ItemsListPage implements OnInit {
     this.itemCategory = category
     this.itemID = productID
     this.itemImageLink = imageLink
+  
   }
-  togglePromo(productID, brand, category, name, description, price, imageLink) {
+  selectedItem
+  togglePromo(productID, brand, category, name, description, price, imageLink, item) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
@@ -644,6 +672,7 @@ export class ItemsListPage implements OnInit {
     this.itemCategory = category
     this.itemID = productID
     this.itemImageLink = imageLink
+    this.selectedItem = item
   }
   dismissPromo() {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
