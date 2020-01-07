@@ -6,22 +6,29 @@
         <ion-item (click)="showHideSearchDetails(item)">{{item.data.name}}</ion-item>
       </div>
     </ion-list>
-      
-        <div id="oops" *ngIf="searchArray.length === 0"><p><ion-icon name="sad"></ion-icon> There are no matches for this search</p></div>
+
+    <div id="oops" *ngIf="searchArray.length === 0">
+      <p>
+        <ion-icon name="sad"></ion-icon> There are no matches for this search
+      </p>
+    </div>
   </div>
   <div class="clicked-from-search" *ngIf="clickedSearchItem === 'showItem'">
     <div>
       <button id="dismisser" (click)="showHideSearchDetails('close')">
-        <ion-icon name="close" ></ion-icon>
+        <ion-icon name="close"></ion-icon>
       </button>
-      <img src="../../assets/imgs/331249_1_800.jpeg" *ngIf='!updatePic' alt="">
-      <img [src]="updatePic" *ngIf='updatePic' alt="">
+      <label for="uploaderBtn" id="imageToupdate">
+        <img src="../../assets/imgs/331249_1_800.jpeg" *ngIf='!updatePic' alt="">
+        <img [src]="updatePic" *ngIf='updatePic' alt="">
+      </label>
       <div class="product-information-search">
         <input type="text" placeholder="Item Name" maxlength="25" [(ngModel)]='updateName'>
-        <input type="text" placeholder="Price (R)"  (keyup)='changeSearchPrice();' [(ngModel)]='updatePrice'>
-        <textarea rows="4" type="text" placeholder="Description" maxlength="150" [(ngModel)]='updateDescription'></textarea>
-        <input #updateSearchPic width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png"
-        (change)='addUpdatePicture($event)'>
+        <input type="text" placeholder="Price (R)" (keyup)='changeSearchPrice();' [(ngModel)]='updatePrice'>
+        <textarea rows="4" type="text" placeholder="Description" maxlength="150"
+          [(ngModel)]='updateDescription'></textarea>
+        <input #updateSearchPic width='100px' id="uploaderBtn" class='pictureInput' type="file"
+          accept="image/jpeg, jpg, tif, png" (change)='addUpdatePicture($event)'>
         <ion-button color="dark" (click)='updateItem()'>Update</ion-button>
         <ion-button color="medium" (click)='hideItem()'>Hide</ion-button>
         <ion-button color="danger" (click)='deleteItem()'>Delete</ion-button>
@@ -92,11 +99,13 @@
                 <div>
                   <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
-                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity"
+                    (keyup)='changeQuantity($event, item)'></div>
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>
-                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">
+                  Save</div>
               </div>
 
             </ion-card>
@@ -122,7 +131,7 @@
           <div class="items">
             <div class="box-item" (click)='viewSales("viewAll")'>
               <p id="item-label1">View All Specials</p>
-              <img class="bg"  src="../../assets/imgs/All.png" *ngIf='!allSpecialsPicture' alt="">
+              <img class="bg" src="../../assets/imgs/All.png" *ngIf='!allSpecialsPicture' alt="">
               <img class="bg" [src]="allSpecialsPicture" *ngIf='allSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Dankie Jesu")'>
@@ -132,7 +141,7 @@
             </div>
             <div class="box-item" (click)='viewSales("Kwanga")'>
               <p id="item-label">Kwanga Apparel</p>
-              <img class="bg"  src="../../assets/imgs/Kwanga.png" *ngIf='!kwangaSpecialsPicture' alt="">
+              <img class="bg" src="../../assets/imgs/Kwanga.png" *ngIf='!kwangaSpecialsPicture' alt="">
               <img class="bg" [src]="kwangaSpecialsPicture" *ngIf='kwangaSpecialsPicture' alt="">
             </div>
           </div>
@@ -198,7 +207,7 @@
 
         <div class="adding">
           <h4>Add Item</h4>
-          <select #departmentCombo (change)="changeDepartment($event); checkValidity()" >
+          <select #departmentCombo (change)="changeDepartment($event); checkValidity()">
             <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
 
           </select><br>
@@ -207,9 +216,12 @@
             <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
           </select><br>
 
-          <input type="text" maxlength='25' class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkItemName();' >
-          <input #itemPrice type="number" class="user-input" placeholder="Price" [(ngModel)]='price' (keyup)='changePrice()'>
-            <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description' (keyup)='checkItemDescription();' ></textarea>
+          <input type="text" maxlength='25' class="user-input" placeholder="Item name" [(ngModel)]='itemName'
+            (keyup)='checkItemName();'>
+          <input #itemPrice type="number" class="user-input" placeholder="Price" [(ngModel)]='price'
+            (keyup)='changePrice()'>
+          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item"
+            [(ngModel)]='description' (keyup)='checkItemDescription();'></textarea>
           <div class="sizes">
 
             <input #checkboxXS type='checkbox' name='checkboxXS' (change)='check($event, "XS")'> XS
@@ -222,17 +234,17 @@
           </div>
 
           <!-- <button value='Insert picture'> -->
-          <input #fileInput width='100px' id="image-uploader" class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png"
-            (change)='addPicture($event)'>
-            <label for="image-uploader">
-              <div class="adder">
-                <ion-icon name="add"></ion-icon>
-              </div>
-              <div class="imageChanged">
-                Change Image
-              </div>
-            <img src="{{myUpload}}" id="myUpload-Image" alt="">              
-            </label>
+          <input #fileInput width='100px' id="image-uploader" class='pictureInput' type="file"
+            accept="image/jpeg, jpg, tif, png" (change)='addPicture($event)'>
+          <label for="image-uploader">
+            <div class="adder">
+              <ion-icon name="add"></ion-icon>
+            </div>
+            <div class="imageChanged">
+              Change Image
+            </div>
+            <img src="{{myUpload}}" id="myUpload-Image" alt="">
+          </label>
           <!-- </button> -->
           <!-- Div for colors, checkboxes work but currently can't add pictures -->
           <div class='colors'>
@@ -262,11 +274,11 @@
     </div>
   </div>
   <div class="mobile-view">
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button (click)='signOutPopup()'>
-              <ion-icon name="log-out"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)='signOutPopup()'>
+        <ion-icon name="log-out"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
     <div class="small-nav">
       <div (click)="showLeftSide()" *ngIf="!miniSearchBarState">
         <ion-icon name="menu"></ion-icon>
@@ -309,15 +321,15 @@
             <h5>Pending Orders</h5>
           </div>
           <div *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
- <!-- *ngIf="status === 'collected'" -->
-          <div class="myItems">
-            <p><b>{{item.details.name}}</b></p>
-            <p>R {{item.details.totalPrice}}</p>
-            <p>REF: {{item.refNo}}</p>
-            <p>Items ({{item.noOfItems}})</p>
+            <!-- *ngIf="status === 'collected'" -->
+            <div class="myItems">
+              <p><b>{{item.details.name}}</b></p>
+              <p>R {{item.details.totalPrice}}</p>
+              <p>REF: {{item.refNo}}</p>
+              <p>Items ({{item.noOfItems}})</p>
+            </div>
           </div>
-          </div>
-          
+
         </div>
         <div class="forHistory" *ngIf="listOfItems === 2">
 
@@ -341,7 +353,7 @@
             <h5>Inventory</h5>
           </div>
           <div class="myItems" *ngFor='let item of allProducts '>
-            <img  [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+            <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
             <p id="nameOfItem">{{item.data.name}}</p>
             <p id="item-price">R799.90</p>
 
@@ -349,8 +361,8 @@
               <div>
                 <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
               </div>
-              <div><input type="number" [id]='item.productID' [value]="item.data.quantity"
-                  (keyup)='changePrice()'></div>
+              <div><input type="number" [id]='item.productID' [value]="item.data.quantity" (keyup)='changePrice()'>
+              </div>
               <div>
                 <ion-icon name="add" (click)='add(item)'></ion-icon>
               </div>
@@ -368,7 +380,6 @@
           <ion-icon name="close"></ion-icon>
         </ion-button>
       </div>
-      
       <div class="adding">
         <h4>Add Item</h4>
         <select #departmentCombo (click)="changeDepartment($event);">
@@ -380,8 +391,7 @@
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
-        <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName'
-          (keyup)='checkValidity()'>
+        <input type="text" class="user-input" placeholder="Item name" [(ngModel)]='itemName' (keyup)='checkValidity()'>
         <input #itemPrice type="number" class="user-input" placeholder="Price" [(ngModel)]='price'
           (keyup)='checkValidity(); changePrice()'>
         <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'
@@ -398,17 +408,17 @@
         </div>
 
         <!-- <button value='Insert picture'> -->
-        <input #fileInput width='100px' id="image-uploader" class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png"
-          (change)='addPicture($event)'>
-          <label for="image-uploader">
-            <div class="adder">
-              <ion-icon name="add"></ion-icon>
-            </div>
-            <div class="imageChanged">
-              Change Image
-            </div>
-          <img src="{{myUpload}}" id="myUpload-Image" alt="">              
-          </label>
+        <input #fileInput width='100px' id="image-uploader" class='pictureInput' type="file"
+          accept="image/jpeg, jpg, tif, png" (change)='addPicture($event)'>
+        <label for="image-uploader">
+          <div class="adder">
+            <ion-icon name="add"></ion-icon>
+          </div>
+          <div class="imageChanged">
+            Change Image
+          </div>
+          <img src="{{myUpload}}" id="myUpload-Image" alt="">
+        </label>
         <!-- </button> -->
         <!-- Div for colors, checkboxes work but currently can't add pictures -->
         <div class='colors'>
