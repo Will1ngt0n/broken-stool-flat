@@ -29,7 +29,7 @@
             </div>
             <div class="toFlex">
               <p id="SubHeader">Date of Purchase</p>
-              <p id="dayDate">20/11/2019</p>
+              <p id="dayDate">{{purchaseDate}}</p>
             </div>
             <p id="subHeader">
               Items
@@ -48,14 +48,14 @@
 
                 <p><b>{{totalQuantity}}</b></p>
                 <p><b>R {{totalPrice}}</b></p>
-                <p>Collection</p>
+                <p>{{deliveryType}}</p>
                 <p>{{dateClosed}}</p>
               </div>
             </div>
-            <p id="subHeader">
+            <p *ngIf='deliveryAddress' id="subHeader">
               Order Address
             </p>
-            <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
+            <p *ngIf='deliveryAddress' id="address">{{deliveryAddress}}</p>
             <p id="Notifier">Order has been closed.</p>
             <ion-button color="dark" (click)='goBack()'>Go Back</ion-button>
           </div>

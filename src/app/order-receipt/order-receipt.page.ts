@@ -20,6 +20,10 @@ export class OrderReceiptPage implements OnInit {
   quantity
   cell
   totalQuantity : Number
+  deliveryType
+  deliveryAddress
+  userAddress
+  datePurchased
   routingPage
   constructor(private alertController : AlertController, private authService : AuthService, private activatedRoute : ActivatedRoute, private productsService : ProductsService, private route : Router) {
 ​
@@ -65,7 +69,12 @@ export class OrderReceiptPage implements OnInit {
        console.log(this.item);
       this.products = this.item['details']['orders']
       //this.dateClosed = this.item['details']['timestamp']
-
+      this.deliveryType = this.item['details']['deliveryType']
+      if(this.deliveryType === 'Delivery'){
+        this.deliveryAddress = this.userAddress
+      }
+      console.log(this.deliveryType);
+      this.datePurchased = moment(new Date(this.item['details']['purchaseDate'])).format('DD/MM/YYYY')
       this.dateClosed = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
       console.log(this.dateClosed);
       
@@ -133,6 +142,7 @@ export class OrderReceiptPage implements OnInit {
   getUser(userID){
     return this.productsService.loadUser(userID).then(result => {
       console.log(result);
+      this.userAddress = result.address
       this.cell = result.cell
       this.name = result.name
     })

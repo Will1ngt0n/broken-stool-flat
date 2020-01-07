@@ -19,6 +19,9 @@ export class LandingPage implements OnInit {
   history : Array<any> = []
   readyOrders : Array<any> = []
   pendingOrders : Array<any> = []
+  pendingOrdersLength
+  orderHistoryLength
+  inventoryLength
   addForm : boolean 
   formHasValues : boolean 
   department : any 
@@ -52,7 +55,7 @@ export class LandingPage implements OnInit {
   orderedWinterProducts: Array<any> = []
   orderedSummerProducts: Array<any> = []
   seasonalWear: Array<any> = []
-  status = ['ready', 'received', 'processed', 'cancelled']
+  //status = ['ready', 'received', 'processed', 'cancelled']
   blackAvailable; blackPic
   brownAvailable; brownPic
   orangeAvailable; orangePic
@@ -138,13 +141,13 @@ export class LandingPage implements OnInit {
 
     }
 
-    for (let key = 0; key < this.status.length; key++) {
-      this.getPendingOrders(this.status[key])
-      if (key === this.status.length - 1) {
-        this.orderItems()
-      }
-    }
-
+    // for (let key = 0; key < this.status.length; key++) {
+    //   this.getPendingOrders(this.status[key])
+    //   if (key === this.status.length - 1) {
+    //     this.orderItems()
+    //   }
+    // }
+    this.getPendingOrders()
     this.getReadyOrders()
     this.getOrderHistory()
     this.getInventory()
@@ -482,6 +485,7 @@ export class LandingPage implements OnInit {
           }
         }
       }
+      this.inventoryLength = this.allProducts.length
       }
       if(this.summerProducts.length > 0 ){
       }else if(this.winterProducts.length > 0){   
@@ -509,13 +513,14 @@ export class LandingPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
 
   }
-  getPendingOrders(status) {
-    return this.productService.getPendingOrders(status).then(result => {
+  getPendingOrders() {
+    return this.productService.getPendingOrders().then(result => {
       console.log(result);
       let array = result
       if (result.length !== 0) {
         for (let key in result) {
           this.pendingOrders.push(result[key])
+          this.pendingOrdersLength = this.pendingOrders.length
           console.log(this.pendingOrders);
         }
         for (let key in this.pendingOrders) {
@@ -556,6 +561,7 @@ export class LandingPage implements OnInit {
     return this.productService.getOrderHistory().then(result => {
       if(result !== null){
         this.history = result
+        this.orderHistoryLength = this.history.length
         let totalPrice : Number = 0
         let numberOfItems : Number = 0;
         console.log(this.history);

@@ -427,8 +427,8 @@ export class ProductsService {
     
   }
   
-  getPendingOrders(status){
-    return firebase.firestore().collection('Order').where('status', '==', status).get().then(result => {
+  getPendingOrders(){
+    return firebase.firestore().collection('Order').get().then(result => {
       let pendingOrder = []
      // console.log(result);
       
@@ -500,7 +500,7 @@ export class ProductsService {
       //status: 'collected' ?
     })
   }
-  closedOrders(refNo, status, userID, products, deliveryType){
+  closedOrders(refNo, status, userID, products, deliveryType, purchaseDate){
     return firebase.firestore().collection('orderHistory').doc(refNo).set({
       status: status,
       reciept: 'N/A',
@@ -508,7 +508,8 @@ export class ProductsService {
       refNo: refNo,
       uid: userID,
       orders: products,
-      deliveryType: deliveryType
+      deliveryType: deliveryType,
+      purchaseDate: purchaseDate
     }).then( result => {
       return firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
         console.log('deleted');
@@ -559,14 +560,15 @@ export class ProductsService {
       status: 'collected'
     })
   }
-  cancelOrder(refNo, status, userID, products){
+  cancelOrder(refNo, status, userID, products, purchaseDate){
     return firebase.firestore().collection('orderHistory').doc(refNo).set({
       status: status,
       reciept: 'N/A',
       timestamp: new Date().getTime(),
       refNo: refNo,
       uid: userID,
-      orders: products
+      orders: products,
+      purchaseDate: purchaseDate
     }).then( result => {
       return firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
         console.log('deleted');

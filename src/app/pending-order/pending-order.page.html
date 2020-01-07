@@ -39,6 +39,8 @@
                 <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
 
                 <p class="item"><b>Total Quantity</b></p>
+                <p class="item"><b>Total</b></p>
+                <p class="item"><b>Delivery Fee</b></p>
                 <p class="item"><b>Grand Total</b></p>
                 <p><b>Order Type</b></p>
               </div>
@@ -48,6 +50,8 @@
 
                 <p><b>{{totalQuantity}}</b></p>
                 <p><b>R {{totalPrice}}</b></p>
+                <p><b>R {{deliveryFee}}</b></p>
+                <p><b>R {{grandTotal}}</b></p>
                 <p>{{deliveryType}}</p>
               </div>
             </div>

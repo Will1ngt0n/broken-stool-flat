@@ -20,6 +20,8 @@ export class PendingOrderPage implements OnInit {
   quantity
   deliveryType
   deliveryAddress
+  deliveryFee
+  grandTotal
   purchaseDate
   userAddress
   pictures : Array<any> = []
@@ -109,16 +111,23 @@ getOrder(refNo, name){
     this.quantity = this.products.length
     console.log(this.products);
     this.deliveryType = this.item['details']['deliveryType']
+    this.totalPrice = this.item['details']['totalPrice']
+
     if(this.deliveryType === 'Delivery'){
       this.deliveryAddress = this.userAddress
       console.log(this.deliveryAddress);
-      
+      this.deliveryFee = this.item['details']['deliveryFee']
+      this.grandTotal = this.totalPrice + this.deliveryFee
+    }else if(this.deliveryType === 'Collection'){
+      this.deliveryFee = 0
+      this.grandTotal = this.totalPrice
     }
+
     console.log(this.deliveryType);
     this.purchaseDate = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
     console.log(this.purchaseDate);
     
-    this.totalPrice = this.item['details']['totalPrice']
+
     console.log(this.products);
     this.countQuantity()
   })
@@ -170,7 +179,7 @@ goBack(){
 ​status : string;
 cancelOrder(){
   let status = 'cancelled'
-  return this.productsService.cancelOrder(this.refNo, status, this.userID, this.products).then(result => {
+  return this.productsService.cancelOrder(this.refNo, status, this.userID, this.products,  this.purchaseDate).then(result => {
     this.route.navigate([this.routingPage])
   })
 }
@@ -192,8 +201,13 @@ orderReady(){
   })
 }
 orderCollected(){
-  let status = 'collected'
-  return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType).then(result => {
+  if(this.deliveryType === 'Collection'){
+    let status = 'Collected'
+  }else if(this.deliveryType === 'Delivery'){
+    let status = 'Delivered'
+  }
+
+  return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType, this.purchaseDate).then(result => {
     this.route.navigate([this.routingPage])
   })
 }
