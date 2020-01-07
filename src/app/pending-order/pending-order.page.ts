@@ -20,7 +20,7 @@ export class PendingOrderPage implements OnInit {
   quantity
   deliveryType
   deliveryAddress
-  deliveryFee
+  deliveryFee : number
   grandTotal
   purchaseDate
   userAddress
@@ -116,7 +116,9 @@ getOrder(refNo, name){
     if(this.deliveryType === 'Delivery'){
       this.deliveryAddress = this.userAddress
       console.log(this.deliveryAddress);
-      this.deliveryFee = this.item['details']['deliveryFee']
+      this.deliveryFee = this.item['details']['deliveryCost']
+      console.log(this.deliveryFee);
+      
       this.grandTotal = this.totalPrice + this.deliveryFee
     }else if(this.deliveryType === 'Collection'){
       this.deliveryFee = 0
