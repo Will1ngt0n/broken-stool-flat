@@ -654,13 +654,13 @@ export class ItemsListPage implements OnInit {
   }
   pictureUpdate : File
   updateItem() {
-    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.updateSizes);
+    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
     //console.log(this.updateName);
 
-    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate, this.updateColors).then(result => {
+    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
       console.log(result);
         setTimeout(() => {
-          this.reloadPage()
+          //this.reloadPage()
         }, 30);
       if (result === 'success') {
         console.log(result);
@@ -785,17 +785,17 @@ export class ItemsListPage implements OnInit {
 
   checkSizeUpdateCheckboxes(event, size) {
     console.log(size);
-    console.log(this.updateSizes);
+    console.log(this.itemSizes);
     let checkbox = event.target['name']
     if (checkbox) {
       if (event.target.checked === true) {
-        this.updateSizes.push(size)
-        console.log(this.updateSizes);
+        this.itemSizes.push(size)
+        console.log(this.itemSizes);
       } else if (event.target.checked === false) {
-        let index = this.updateSizes.indexOf(size)
+        let index = this.itemSizes.indexOf(size)
         console.log(index);
-        this.updateSizes.splice(index, 1)
-        console.log(this.updateSizes);
+        this.itemSizes.splice(index, 1)
+        console.log(this.itemSizes);
       }
     }
     // console.log(event.target.checked);
@@ -805,12 +805,12 @@ export class ItemsListPage implements OnInit {
     let checkbox = event.target['name']
     if(checkbox){
       if(event.target.checked === true){
-        this.updateColors.push(color)
-        console.log(this.updateColors);
+        this.itemColors.push(color)
+        console.log(this.itemColors);
       }else if(event.target.checked === false){
-        let index = this.updateColors.indexOf(color)
-        this.updateColors.splice(index, 1)
-        console.log(this.updateColors);
+        let index = this.itemColors.indexOf(color)
+        this.itemColors.splice(index, 1)
+        console.log(this.itemColors);
       }
     }
   }
