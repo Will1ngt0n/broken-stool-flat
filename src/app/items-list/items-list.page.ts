@@ -604,7 +604,7 @@ export class ItemsListPage implements OnInit {
       )
     })
   }
-  async deleteItem(productID, brand, category, item) {
+  async deleteItem(productID, brand, category) {
     const alert = await this.alertController.create({
       header: 'Confirm!',
       message: 'Are you sure you want to delete this item?',
@@ -620,7 +620,7 @@ export class ItemsListPage implements OnInit {
           text: 'Delete',
           handler: (okay) => {
             console.log('User clicked "okay"');
-            return this.deleteItemConfirmed(productID, brand, category, item)
+            return this.deleteItemConfirmed(productID, brand, category, this.selectedItem)
           }
         }
       ]
