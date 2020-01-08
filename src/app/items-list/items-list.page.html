@@ -69,7 +69,7 @@
           </div>
           <div>
 
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkOrange' color="primary" name='orange' (ionChange)='checkColorUpdate($event, "Orange")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkYellow' color="primary" name='orange' (ionChange)='checkColorUpdate($event, "Orange")'>
             </ion-checkbox>
           </div>
           <div>
@@ -133,7 +133,7 @@
               <p><b>R {{item.data.price}}</b></p>
               <div class="options">
                 <div
-                  (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item)">
+                  (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item.data.size, item.data.color)">
                   Promote</div>
                 <div
                   (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item.data.size, item.data.color)">
@@ -185,7 +185,7 @@
               <div class="opts">
                 <div>
                   <button icon-only
-                    (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item)">
+                    (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item.data.size, item.data.color)">
                     <ion-icon name="flash"></ion-icon>
                   </button>
                 </div>

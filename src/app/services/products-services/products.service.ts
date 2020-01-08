@@ -50,6 +50,12 @@ export class ProductsService {
       console.log(picture);
       
       storageRef.put(picture).then((data) => {
+        console.log(data);
+        data.ref.getDownloadURL().then(url => {
+          firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc(result.id).update({
+            pictureLink: url
+          })
+        })
         console.log('Saved');
       })
     })
