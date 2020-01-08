@@ -94,9 +94,9 @@ export class SummerGearPage implements OnInit {
     // }
     this.orderItems()
 
-    for(let key in this.status){
-      this.getPendingOrders(this.status[key])
-    }
+    // for(let key in this.status){
+    //   this.getPendingOrders(this.status[key])
+    // }
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
@@ -359,8 +359,8 @@ export class SummerGearPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
     
   }
-  getPendingOrders(status){
-    return this.productService.getPendingOrders(status).then(result => {
+  getPendingOrders(){
+    return this.productService.getPendingOrders().then(result => {
       console.log(result);
       let array = result
       if(result.length !== 0){

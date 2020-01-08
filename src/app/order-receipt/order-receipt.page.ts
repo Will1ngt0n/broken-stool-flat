@@ -16,12 +16,14 @@ export class OrderReceiptPage implements OnInit {
   products : Array<any> = []
   pictures : Array<any> = []
   userID
-  totalPrice
+  totalPrice : number
   quantity
   cell
   totalQuantity : Number
   deliveryType
   deliveryAddress
+  deliveryFee : number
+  grandTotal : number
   userAddress
   datePurchased
   routingPage
@@ -72,9 +74,10 @@ export class OrderReceiptPage implements OnInit {
       this.deliveryType = this.item['details']['deliveryType']
       if(this.deliveryType === 'Delivery'){
         this.deliveryAddress = this.userAddress
+        this.deliveryFee = this.item['details']['deliveryCost']
       }
       console.log(this.deliveryType);
-      this.datePurchased = moment(new Date(this.item['details']['purchaseDate'])).format('DD/MM/YYYY')
+      this.datePurchased = this.item['details']['purchaseDate']
       this.dateClosed = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
       console.log(this.dateClosed);
       
@@ -87,12 +90,21 @@ export class OrderReceiptPage implements OnInit {
    }
    countTotalPrice(){
     this.totalPrice = 0
+    console.log(this.item);
+    
     for(let key in this.products){
       this.totalPrice = this.totalPrice + this.products[key].quantity * this.products[key].cost
       
     }
     console.log(this.totalPrice);
-    
+    if(this.deliveryType === 'Delivery'){
+      this.deliveryFee = this.item['details']['deliveryCost']
+      this.grandTotal = this.totalPrice + this.deliveryFee
+    }else if(this.deliveryType === 'Collection'){
+      this.deliveryFee = 0
+      this.grandTotal = +this.totalPrice
+      console.log(this.grandTotal);
+    }
    }
    countQuantity(){
      this.totalQuantity = 0

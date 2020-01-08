@@ -114,11 +114,12 @@ export class ItemsListPage implements OnInit {
     // }
     this.orderItems()
 
-    for (let key in this.status) {
-      this.getPendingOrders(this.status[key])
-    }
-    this.getReadyOrders()
-    this.getClosedOrders()
+    // for (let key in this.status) {
+    //   this.getPendingOrders(this.status[key])
+    // }
+    //this.getPendingOrders()
+    //this.getReadyOrders()
+    //this.getClosedOrders()
     this.getInventory()
   }
   signOutPopup() {
@@ -339,24 +340,46 @@ export class ItemsListPage implements OnInit {
   //Loading items from the category and brand the user just clicked on in the previous pages
   loadCategoryItems(category, brand) {
     let data: Array<any> = []
-    return this.productsService.loadCategoryItems(category, brand).then(result => {
-      if (result !== undefined) {
+    // return this.productsService.loadCategoryItems(category, brand).then(result => {
+    //   if (result !== undefined) {
+    //   }
+    //   console.log(result);
+
+    //   for (let key in result) {
+    //     console.log(result[key]);
+    //     this.currentViewedItems.push(result[key])
+    //   }
+    //   //this.loadPictures()
+    //   console.log('mine');
+
+    // }).then(result => {
+    //   console.log(result);
+
+    //   //this.loadPictures()
+    // })
+
+  }
+  loadCategoryItemsSnap(category, brand){
+    return firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
+      //console.log(result.docs);
+      //console.log(result);
+      let data : Array<any> = []
+      for(let key in result.docs){
+      //  console.log('sdfdsfs');
+      //  console.log(result.docs[key].data());
+        let productID = result.docs[key].id
+        let docData = result.docs[key].data()
+        console.log(docData);
+        
+        data.push({productID: productID, data: docData, category: category, brand: brand})
       }
-      console.log(result);
-
-      for (let key in result) {
-        console.log(result[key]);
-        this.currentViewedItems.push(result[key])
+      console.log(data);
+      this.currentViewedItems = data
+      //console.log(data);
+      if(data.length !== 0){
+        return data
       }
-      //this.loadPictures()
-      console.log('mine');
-
-    }).then(result => {
-      console.log(result);
-
-      //this.loadPictures()
     })
-
   }
   async loadPictures() {
     return this.productsService.getPictures().then(result => {
@@ -403,7 +426,7 @@ export class ItemsListPage implements OnInit {
     return this.productsService.loadCategoryItems(category, brand).then(result => {
       if (result !== undefined) {
       }
-      console.log(result);
+      //console.log(result);
 
       for (let key in result) {
         if (brand === 'Kwanga') {
@@ -435,8 +458,8 @@ export class ItemsListPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
 
   }
-  getPendingOrders(status) {
-    return this.productsService.getPendingOrders(status).then(result => {
+  getPendingOrders() {
+    return this.productsService.getPendingOrders().then(result => {
       console.log(result);
       let array = result
       if (result.length !== 0) {
@@ -452,40 +475,40 @@ export class ItemsListPage implements OnInit {
   }
   loadUserName(data) {
 
-    // return this.productService.loadUser(ID).then(result => {
-    //   this.pendingOrders[key].name = result
+    // // return this.productService.loadUser(ID).then(result => {
+    // //   this.pendingOrders[key].name = result
+    // //   console.log(this.pendingOrders);
+    // // })
+    // return this.productsService.loadUser(data).then(result => {
+    //   console.log(result);
+    //   for (let key in this.pendingOrders) {
+    //     if (this.pendingOrders[key].details.userID === result.userID) {
+    //       this.pendingOrders[key].details.name = result.name
+    //       this.pendingOrders[key].details.cell = result.cell
+    //     }
+    //   }
     //   console.log(this.pendingOrders);
-    // })
-    return this.productsService.loadUser(data).then(result => {
-      console.log(result);
-      for (let key in this.pendingOrders) {
-        if (this.pendingOrders[key].details.userID === result.userID) {
-          this.pendingOrders[key].details.name = result.name
-          this.pendingOrders[key].details.cell = result.cell
-        }
-      }
-      console.log(this.pendingOrders);
 
-    })
-    //thisgffdsg
+    // })
+    // //thisgffdsg
 
 
   }
   getReadyOrders() {
-    return this.productsService.getReadyOrders().then(result => {
-    })
+    // return this.productsService.getReadyOrders().then(result => {
+    // })
   }
 
   // get orders that are closed, history, status == closed
   getClosedOrders() {
-    return this.productsService.getOrderHistory().then(result => {
+    // return this.productsService.getOrderHistory().then(result => {
 
-    })
+    // })
   }
   closeOrder(docID) {
-    return this.productsService.closedOrder(docID).then(result => {
+    // return this.productsService.closedOrder(docID).then(result => {
 
-    })
+    // })
   }
 
 
@@ -512,10 +535,11 @@ export class ItemsListPage implements OnInit {
           console.log(this.currentCategory);
           console.log(this.currentCategory);
           this.loadCategoryItems(this.currentCategory, brand)
-          this.loadPictures().then(result => {
-            console.log(result);
+          this.loadCategoryItemsSnap(this.currentCategory, brand)
+          // this.loadPictures().then(result => {
+          //   console.log(result);
 
-          })
+          // })
         })
       }
     })
@@ -575,10 +599,12 @@ export class ItemsListPage implements OnInit {
       if(result === 'success'){
         console.log(result);
         return this.dismissPromo()
-      }
+      }else(
+        alert('An error occurred, please retry')
+      )
     })
   }
-  async deleteItem(productID, brand, category) {
+  async deleteItem(productID, brand, category, item) {
     const alert = await this.alertController.create({
       header: 'Confirm!',
       message: 'Are you sure you want to delete this item?',
@@ -594,7 +620,7 @@ export class ItemsListPage implements OnInit {
           text: 'Delete',
           handler: (okay) => {
             console.log('User clicked "okay"');
-            return this.deleteItemConfirmed(productID, brand, category)
+            return this.deleteItemConfirmed(productID, brand, category, item)
           }
         }
       ]
@@ -602,11 +628,11 @@ export class ItemsListPage implements OnInit {
 
     await alert.present();
   }
-  deleteItemConfirmed(productID, brand, category) {
+  deleteItemConfirmed(productID, brand, category,item) {
     
-    return this.productsService.deleteItemFromInventory(productID, brand, category).then(result => {
+    return this.productsService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
-      location.reload()
+      //location.reload()
     })
   }
   hideItem(productID, brand, category) {
@@ -628,7 +654,7 @@ export class ItemsListPage implements OnInit {
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.updateSizes);
     //console.log(this.updateName);
 
-    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate).then(result => {
+    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate, this.updateColors).then(result => {
       console.log(result);
         setTimeout(() => {
           this.reloadPage()
@@ -719,6 +745,19 @@ export class ItemsListPage implements OnInit {
     }
     // console.log(event.target.checked);
     // console.log(event.target['name']);
+  }
+  checkColorUpdate(event, color){
+    let checkbox = event.target['name']
+    if(checkbox){
+      if(event.target.checked === true){
+        this.updateColors.push(color)
+        console.log(this.updateColors);
+      }else if(event.target.checked === false){
+        let index = this.updateColors.indexOf(color)
+        this.updateColors.splice(index, 1)
+        console.log(this.updateColors);
+      }
+    }
   }
   //Search functionality
   search(query) {
