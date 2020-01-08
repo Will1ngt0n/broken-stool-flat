@@ -288,7 +288,7 @@
       </div>
       <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
       <div *ngIf="miniSearchBarState">
-        <ion-searchbar [(ngModel)]='searchInput' (ionChange)='search()' show-cancel-button="never"></ion-searchbar>
+        <ion-searchbar [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' show-cancel-button="never"></ion-searchbar>
       </div>
       <div (click)="showSearchBar()">
         <ion-icon name="{{searchButtonState}}"></ion-icon>
@@ -357,17 +357,19 @@
             <p id="nameOfItem">{{item.data.name}}</p>
             <p id="item-price">R799.90</p>
 
-            <div class="quantities">
-              <div>
-                <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
+            
+              <div class="quantities">
+                <div>
+                  <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
+                </div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity"
+                    (keyup)='changeQuantity($event, item)'></div>
+                <div>
+                  <ion-icon name="add" (click)='add(item)'></ion-icon>
+                </div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">
+                  Save</div>
               </div>
-              <div><input type="number" [id]='item.productID' [value]="item.data.quantity" (keyup)='changePrice()'>
-              </div>
-              <div>
-                <ion-icon name="add" (click)='add(item)'></ion-icon>
-              </div>
-              <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</div>
-            </div>
 
           </div>
         </div>

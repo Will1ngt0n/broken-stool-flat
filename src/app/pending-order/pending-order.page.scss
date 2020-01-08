@@ -87,9 +87,9 @@
             width: 85%;
             height: 40px;
             background: white;
-            margin: 0 auto;
+            margin: 0;
             display: flex;
-            div{
+            button{
                 cursor: pointer;
                 width: 24.5%;
                 text-align: center;
@@ -99,21 +99,6 @@
                 border: 1px solid black;
                 font-size: 12px;
                 border-radius: 5px;
-            }
-            div:nth-child(1){
-                background: red;
-            }
-            div:nth-child(2){
-                background: Orange;
-                // display: none;
-            }
-            div:nth-child(3){
-                background: green;
-                // display: none;
-            }
-            div:nth-child(4){
-                background: green;
-                // display: none;
             }
         }
     }

@@ -79,10 +79,10 @@
 
           <div id="buttons">
             <div class="to-buttons">
-              <div (click)='cancelOrder()' *ngIf="status !== 'collected'">Cancel Order</div>
-              <div (click)='processOrder()' *ngIf="status === 'received'">Process Order</div>
-              <div (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection</div>
-              <div (click)='orderCollected()' *ngIf="status === 'ready'">Collected</div>
+              <ion-button color="danger" (click)='cancelOrder()' *ngIf="status === 'received'">Cancel Order</ion-button>
+              <ion-button color="warning" (click)='processOrder()' *ngIf="status === 'received'">Process Order</ion-button>
+              <ion-button color="success" (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection</ion-button>
+              <ion-button color="success" (click)='orderCollected()' *ngIf="status === 'ready'">Collected</ion-button>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
           Items Ordered
         </p>
         <ion-card *ngFor='let item of products'>
-          <img [src]="item.pictures.link" *ngIf='item.pictures'  alt="">
+          <img [src]="item.picture" *ngIf='item.picture'  alt="">
           <div class="cont-container">
             <h4>{{item.product_name}}</h4>
             <p>R {{item.cost}}</p>
@@ -134,6 +134,7 @@
           </p>
           <div class="items">
             <div class="subtitle">
+              
               <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
 
               <p class="item"><b>Total Quantity</b></p>
@@ -154,11 +155,11 @@
           </p>
           <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
           <p id="Notifier" *ngIf="status === 'collected'">Order has been closed.</p>
-          <div *ngIf='status'>
-              <ion-button color="danger" (click)="cancelOrder()" *ngIf="status !== 'collected'">Cancel</ion-button>
-              <ion-button color="warning" (click)="processOrder()" *ngIf="status === 'recieved'"> Process Order</ion-button>
-              <ion-button color="success" (click)="orderReady()" *ngIf="status === 'processed'">Ready for Collection</ion-button>
-              <ion-button color="success" (click)="orderCollected()" *ngIf="status === 'ready'">Collected</ion-button>
+          <div>
+              <ion-button color="danger" (click)='cancelOrder()' *ngIf="status === 'received'">Cancel Order</ion-button>
+              <ion-button color="warning" (click)='processOrder()' *ngIf="status === 'received'">Process Order</ion-button>
+              <ion-button color="success" (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection</ion-button>
+              <ion-button color="success" (click)='orderCollected()' *ngIf="status === 'ready'">Collected</ion-button>
           </div>
 
       </div>
