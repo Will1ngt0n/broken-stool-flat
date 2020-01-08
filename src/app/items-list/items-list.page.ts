@@ -27,8 +27,11 @@ export class ItemsListPage implements OnInit {
   pictures: Array<any> = []
   //promos and updates
   //promos
-  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink
+  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink; itemSizes; itemColors
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
+  
+  checkXS : boolean; checkS : boolean; checkM : boolean; checkL : boolean; checkXL : boolean; checkXXL : boolean; checkXXXL : boolean;
+  checkRed: boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
   //updates
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
 
@@ -671,7 +674,7 @@ export class ItemsListPage implements OnInit {
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 
   }
-  toggleUpdate(productID, brand, category, name, description, price, imageLink,item) {
+  toggleUpdate(productID, brand, category, name, description, price, imageLink,sizes, colors) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
@@ -683,7 +686,59 @@ export class ItemsListPage implements OnInit {
     this.itemCategory = category
     this.itemID = productID
     this.itemImageLink = imageLink
-  
+    this.itemSizes = sizes
+    this.itemColors = colors
+    console.log(this.itemSizes);
+    console.log(this.itemColors);
+    
+    console.log(this.checkboxXS);
+    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
+    this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+    for(let key in this.itemSizes){
+      if(this.itemSizes[key] === 'XS'){
+        this.checkXS = true
+        this.updateSizes.push('XS')
+      }else if(this.itemSizes[key] === 'S'){
+        this.checkS = true
+        this.updateSizes.push('S')
+      }else if(this.itemSizes[key] === 'M'){
+        this.checkM = true
+        this.updateSizes.push('M')
+      }else if(this.itemSizes[key] === 'L'){
+        this.checkL = true
+        this.updateSizes.push('XL')
+      }else if(this.itemSizes[key] === 'XL'){
+        this.checkXL = true
+        this.updateSizes.push('XXL')
+      }else if(this.itemSizes[key] === 'XXL'){
+        this.checkXXL = true
+        this.updateSizes.push('XXL')
+      }else if(this.itemSizes[key] === 'XXXL'){
+        this.checkXXXL = true
+        this.updateSizes.push('XXXL')
+      }
+    }
+    for(let key in this.itemColors){
+      if(this.itemColors[key] === 'Red'){
+        this.checkRed = true
+        this.updateSizes.push('XS')
+      }else if(this.itemColors[key] === 'Blue'){
+        this.checkBlue = true
+        this.updateSizes.push('S')
+      }else if(this.itemColors[key] === 'Green'){
+        this.checkGreen = true
+        this.updateSizes.push('M')
+      }else if(this.itemColors[key] === 'Yellow'){
+        this.checkYellow = true
+        this.updateSizes.push('XL')
+      }else if(this.itemColors[key] === 'Pink'){
+        this.checkPink = true
+        this.updateSizes.push('XXL')
+      }else if(this.itemColors[key] === 'White'){
+        this.checkWhite = true
+        this.updateSizes.push('XXL')
+      }
+    }
   }
   selectedItem
   togglePromo(productID, brand, category, name, description, price, imageLink, item) {

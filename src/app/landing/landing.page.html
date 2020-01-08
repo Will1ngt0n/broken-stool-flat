@@ -99,13 +99,11 @@
                 <div>
                   <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
-                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity"
-                    (keyup)='changeQuantity($event, item)'></div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>
-                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">
-                  Save</div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
               </div>
 
             </ion-card>
@@ -355,13 +353,33 @@
           <div class="myItems" *ngFor='let item of allProducts '>
             <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
             <p id="nameOfItem">{{item.data.name}}</p>
-            <p id="item-price">R799.90</p>
+            <p id="item-price">{{item.data.quantity}}</p>
 
+
+
+
+
+            <!-- 
+
+             -->              
+             <!-- <div class="quantities">
+                <div>
+                  <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
+                </div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
+                <div>
+                  <ion-icon name="add" (click)='add(item)'></ion-icon>
+                </div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
+              </div> -->
+
+
+              <!--  -->
             <div class="quantities">
               <div>
                 <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
               </div>
-              <div><input type="number" [id]='item.productID' [value]="item.data.quantity" (keyup)='changePrice()'>
+              <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'>
               </div>
               <div>
                 <ion-icon name="add" (click)='add(item)'></ion-icon>
@@ -382,7 +400,7 @@
       </div>
       <div *ngIf="adding === true" class="adding">
         <h4>Add Item</h4>
-        <select #departmentCombo (click)="changeDepartment($event);">
+        <select #mbdepartmentCombo (change)="changeDepartment($event);">
           <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
 
         </select><br>
@@ -398,13 +416,13 @@
           (keyup)='checkValidity()'></textarea>
         <div class="sizes">
 
-          <input #checkboxXS type='checkbox' name='checkboxXS' (change)='check($event, "XS")'> XS
-          <input #checkboxS type='checkbox' name='checkboxS' (change)='check($event, "S")'> S
-          <input #checkboxM type='checkbox' name='checkboxM' (change)='check($event, "M")'> M
-          <input #checkboxL type='checkbox' name='checkboxL' (change)='check($event, "L")'> L
-          <input #checkboxXL type='checkbox' name='checkboxXL' (change)='check($event, "XL")'> XL
-          <input #checkboxXXL type='checkbox' name='checkboxXXL' (change)='check($event, "XXL")'> XXL
-          <input #checkboxXXXL type='checkbox' name='checkboxXXXL' (change)='check($event, "XXXL")'> XXXL
+          <input #mbcheckboxXS type='checkbox' name='mbcheckboxXS' (change)='check($event, "XS")'> XS
+          <input #mbcheckboxS type='checkbox' name='mbcheckboxS' (change)='check($event, "S")'> S
+          <input #mbcheckboxM type='checkbox' name='mbcheckboxM' (change)='check($event, "M")'> M
+          <input #mbcheckboxL type='checkbox' name='mbcheckboxL' (change)='check($event, "L")'> L
+          <input #mbcheckboxXL type='checkbox' name='mbcheckboxXL' (change)='check($event, "XL")'> XL
+          <input #mbcheckboxXXL type='checkbox' name='mbcheckboxXXL' (change)='check($event, "XXL")'> XXL
+          <input #mbcheckboxXXXL type='checkbox' name='mbcheckboxXXXL' (change)='check($event, "XXXL")'> XXXL
         </div>
 
         <!-- <button value='Insert picture'> -->
@@ -423,21 +441,11 @@
         <!-- Div for colors, checkboxes work but currently can't add pictures -->
         <div class='colors'>
           <h5>Available colors</h5>
-          <input #checkboxBlack type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img
-            width='15px' style='border: 1px solid rgb(0,0,0)'
-            src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #checkboxBrown type='checkbox' name='checkboxBrown' (change)='checkColor($event, "Brown")'>&nbsp;<img
-            width='15px' style='border: 1px solid rgb(0,0,0)'
-            src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #checkboxOrange type='checkbox' name='checkboxOrange'
-            (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
-            src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #checkboxYellow type='checkbox' name='checkboxYellow'
-            (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
-            src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #checkboxWhite type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img
-            width='15px' style='border: 1px solid rgb(0,0,0)'
-            src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxBlack type='checkbox' name='mbcheckboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxBrown type='checkbox' name='mbcheckboxBrown' (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxOrange type='checkbox' name='mbcheckboxOrange' (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxYellow type='checkbox' name='mbcheckboxYellow' (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxWhite type='checkbox' name='mbcheckboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
         </ion-button>
