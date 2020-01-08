@@ -5,6 +5,7 @@ import { ProductsService } from '../services/products-services/products.service'
 import * as moment from 'moment';
 import { NavController, AlertController, LoadingController } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
+import * as firebase from 'firebase'
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -147,6 +148,7 @@ export class LandingPage implements OnInit {
     //     this.orderItems()
     //   }
     // }
+    this.getPendingOrdersSnap()
     this.getPendingOrders()
     this.getReadyOrders()
     this.getOrderHistory()
@@ -219,7 +221,7 @@ export class LandingPage implements OnInit {
     console.log(event.target['value']);
     this.department = event.target['value']
     if (this.department === 'Dankie Jesu') {
-      this.categoryOptions = ['Select Category', 'Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
+      this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
     }
     if (this.department === 'Kwanga') {
       this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports wear']
@@ -444,9 +446,7 @@ export class LandingPage implements OnInit {
 
   }
   loadItems(category, brand){
-
-
-    
+ 
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
@@ -513,21 +513,49 @@ export class LandingPage implements OnInit {
     console.log(this.allProducts, 'yugfg7g76gyg6gt7677');
 
   }
-  getPendingOrders() {
-    return this.productService.getPendingOrders().then(result => {
-      console.log(result);
-      let array = result
-      if (result.length !== 0) {
-        for (let key in result) {
-          this.pendingOrders.push(result[key])
-          this.pendingOrdersLength = this.pendingOrders.length
-          console.log(this.pendingOrders);
-        }
-        for (let key in this.pendingOrders) {
-          this.loadUserName(this.pendingOrders[key].details.userID)
-        }
+  getPendingOrdersSnap() {
+    return firebase.firestore().collection('Order').onSnapshot(result => {
+      let pendingOrder = []
+     // console.log(result);
+      
+      for(let key in result.docs){
+      //  console.log(result.docs[key].id);
+        let refNo = result.docs[key].id
+       // console.log(result.docs[key].data());
+        let data = result.docs[key].data()
+        let userID = data.userID
+        console.log(userID);
+        //this.loadUser(userID)
+
+        pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
+      };
+      console.log('Snapped', pendingOrder);
+      for (let key in pendingOrder) {
+        this.loadUserName(pendingOrder[key].details.userID)
       }
-    })
+        this.pendingOrders = pendingOrder
+        this.pendingOrdersLength = this.pendingOrders.length
+        console.log(this.pendingOrders);
+      
+
+      return pendingOrder
+      })
+  }
+  getPendingOrders() {
+    // return this.productService.getPendingOrders().then(result => {
+    //   console.log(result);
+    //   let array = result
+    //   if (result.length !== 0) {
+    //     for (let key in result) {
+    //       this.pendingOrders.push(result[key])
+    //       this.pendingOrdersLength = this.pendingOrders.length
+    //       console.log(this.pendingOrders);
+    //     }
+    //     for (let key in this.pendingOrders) {
+    //       this.loadUserName(this.pendingOrders[key].details.userID)
+    //     }
+    //   }
+    // })
   }
   loadUserName(data) {
 
@@ -810,7 +838,7 @@ export class LandingPage implements OnInit {
     })
   }
   deleteItem(){
-    return this.productService.deleteItemFromInventory(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
+    return this.productService.deleteItemFromInventory(this.updateProductID, this.updateBrand, this.updateCategory, this.item).then(result => {
       // if(result === 'Deleted'){
         
       // }
@@ -873,6 +901,7 @@ export class LandingPage implements OnInit {
     this.listOfItems = 0;
   }
   updateName: string;
+  item
   updatePrice
   updateDescription
   updatePic : File
@@ -907,6 +936,7 @@ export class LandingPage implements OnInit {
       this.updateBrand = item.brand
       this.updateCategory = item.category
       this.updateProductID = item.productID
+      this.item = item
       console.log(this.updatePic);
       
       console.log(item);

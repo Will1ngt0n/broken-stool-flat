@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
-
+import * as firebase from 'firebase'
 @Component({
   selector: 'app-sales-specials',
   templateUrl: './sales-specials.page.html',
@@ -121,6 +121,7 @@ export class SalesSpecialsPage implements OnInit {
     this.getClosedOrders()
     this.getInventory()
     this.loadSales()
+    this.loadSalesSnap()
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()
@@ -402,7 +403,7 @@ deleteItem(item, productID){
         
         return this.productsService.deleteSpecialsItem(productID, item).then(result => {
           console.log(result);
-          location.reload()
+          //location.reload()
         })
       }
     }
@@ -606,15 +607,34 @@ loadDankieJesuItems(){
 loadViewedCategory(){
   
 }
-loadSales(){
-  return this.productsService.getBrandSales().then(result => {
+loadSalesSnap(){
+  return firebase.firestore().collection('Specials').onSnapshot(result => {
+    let sales : Array<any> = []
     console.log(result);
-    if(result  !== undefined && result !== null && result.length !== 0){
-      this.allBrandSales = result
-      console.log(this.allBrandSales[0].data.saleprice);
+    
+    for(let key in result.docs){
+        let productID = result.docs[key].id
+        let docData = result.docs[key].data()
+        console.log(docData);
+        
+        sales.push({productID: productID, data: docData, category: docData.category, brand: docData.brand, link: docData.pictureLink})
+      }
+      console.log(sales);
+      this.allBrandSales = sales
+      if(sales.length !== 0){
+        return sales
+      }
+    })
+}
+loadSales(){
+  // return this.productsService.getBrandSales().then(result => {
+  //   console.log(result);
+  //   if(result  !== undefined && result !== null && result.length !== 0){
+  //     this.allBrandSales = result
+  //     console.log(this.allBrandSales[0].data.saleprice);
       
-    }
-  })
+  //   }
+  // })
 }
 loadItems(category, brand){
   let data : Array<any> = []

@@ -28,6 +28,7 @@ export class ProductsService {
       description : description,
       isAccessory: accessory,
       isSummer: summer,
+      onSale: false,
       timestamp : firebase.firestore.FieldValue.serverTimestamp(),
       dateAdded : moment(new Date()).format('LLLL')
     }).then(result => {
@@ -317,6 +318,8 @@ export class ProductsService {
       //  console.log(result.docs[key].data());
         let productID = result.docs[key].id
         let docData = result.docs[key].data()
+        //console.log(docData);
+        
         data.push({productID: productID, data: docData, category: category, brand: brand})
       }
       //console.log(data);
@@ -326,9 +329,17 @@ export class ProductsService {
     })
     
   }
-  deleteItemFromInventory(productID, brand, category){
+  deleteItemFromInventory(productID, brand, category, item){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {
-     // console.log(result);
+      if(item.data.onSale){
+        if(item.data.onSale === true){
+          console.log(item.data.onSale);
+          firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
+            return 'Successfully deleted'
+          })
+        }
+      }
+
     })
   }
   hideProduct(productID, brand, category){
@@ -421,7 +432,13 @@ export class ProductsService {
       timestamp : firebase.firestore.FieldValue.serverTimestamp(),
     }).then(result => {
      // console.log(result);
-      return 'success'
+        return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+          onSale: true,
+          saleprice: price,
+          discount: percentage
+        }).then(status => {
+          return 'success'
+        })
     })
   }
 
@@ -429,6 +446,27 @@ export class ProductsService {
     
   }
   
+  getPendingOrdersSnap(){
+    return firebase.firestore().collection('Order').onSnapshot(result => {
+      let pendingOrder = []
+     // console.log(result);
+      
+      for(let key in result.docs){
+      //  console.log(result.docs[key].id);
+        let refNo = result.docs[key].id
+       // console.log(result.docs[key].data());
+        let data = result.docs[key].data()
+        let userID = data.userID
+        console.log(userID);
+        //this.loadUser(userID)
+
+        pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
+      };
+      console.log('Snapped', pendingOrder);
+      
+      return pendingOrder
+      })
+  }
   getPendingOrders(){
     return firebase.firestore().collection('Order').get().then(result => {
       let pendingOrder = []
