@@ -70,7 +70,7 @@ export class LoginPage implements OnInit {
               loading.dismiss()
               setTimeout(() => {
                 
-              location.reload()
+              // location.reload()
               }, 100);
               this.route.navigate(['landing']);
             }  

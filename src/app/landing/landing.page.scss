@@ -847,9 +847,10 @@ label {
 #imageToupdate{
   height: 300px;
   width: 100%;
-  img{
+  img {
   height: 300px;
   width: 100%;
+  object-fit: cover;
   }
 }
 .adder{

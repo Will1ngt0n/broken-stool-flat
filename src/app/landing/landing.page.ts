@@ -883,7 +883,7 @@ export class LandingPage implements OnInit {
     
   // }, timeout);
   showSearchBar() {
-    document.getElementById("mySearchBar").focus();
+    // document.getElementById("mySearchBar").focus();
     
     // console.log("Showing searchbar");
     if (this.miniSearchBarState == true) {
