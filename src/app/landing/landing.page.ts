@@ -69,7 +69,9 @@ export class LandingPage implements OnInit {
   @ViewChild('sliderRef', { static: false }) slides: IonSlides;
   @ViewChild('sliderRefSmall', { static: true }) mySlides: IonSlides;
   @ViewChild('fileInput', {static:true}) fileInput : ElementRef
-  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
+  @ViewChild('departmentCombo', {static : false}) departmentCombo : ElementRef
+  
+  @ViewChild('mbdepartmentCombo', {static : false}) mbdepartmentCombo : ElementRef
   @ViewChild('nativeCategory', {static : true}) nativeCategory : ElementRef
   @ViewChild('checkboxXS', {static : true}) checkboxXS : ElementRef
   @ViewChild('checkboxS', {static : true}) checkboxS : ElementRef
@@ -84,6 +86,20 @@ export class LandingPage implements OnInit {
   @ViewChild('checkboxYellow', {static : true}) checkboxYellow : ElementRef
   @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
   @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
+
+  //mobile view
+  @ViewChild('mbcheckboxXS', {static : true}) mbcheckboxXS : ElementRef
+  @ViewChild('mbcheckboxS', {static : true}) mbcheckboxS : ElementRef
+  @ViewChild('mbcheckboxM', {static : true}) mbcheckboxM : ElementRef
+  @ViewChild('mbcheckboxL', {static : true}) mbcheckboxL : ElementRef
+  @ViewChild('mbcheckboxXL', {static : true}) mbcheckboxXL : ElementRef
+  @ViewChild('mbcheckboxXXL', {static : true}) mbcheckboxXXL : ElementRef
+  @ViewChild('mbcheckboxXXXL', {static : true}) mbcheckboxXXXL : ElementRef
+  @ViewChild('mbcheckboxBlack', {static : true}) mbcheckboxBlack : ElementRef
+  @ViewChild('mbcheckboxBrown', {static : true}) mbcheckboxBrown : ElementRef
+  @ViewChild('mbcheckboxOrange', {static : true}) mbcheckboxOrange : ElementRef
+  @ViewChild('mbcheckboxYellow', {static : true}) mbcheckboxYellow : ElementRef
+  @ViewChild('mbcheckboxWhite', {static : true}) mbcheckboxWhite : ElementRef
   kwangaSpecialsPicture
   dankieJesuSpecialsPicture
   allSpecialsPicture
@@ -253,12 +269,12 @@ export class LandingPage implements OnInit {
     }
     if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
       this.summer = true
-      //console.log(this.summer);
+      console.log('isSummer = ', this.summer);
       
     }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
     if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
       this.summer = false
-      //console.log(this.summer);
+      console.log('isSummer = ', this.summer);
       
     }
     
@@ -402,11 +418,17 @@ export class LandingPage implements OnInit {
     //document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
     this.departmentCombo.nativeElement.value ='Select Department'
+    this.mbdepartmentCombo.nativeElement.value ='Select Department'
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
+    let mbcheckboxes: Array<any> = ['mbcheckboxXS', 'mbcheckboxS', 'mbcheckboxM', 'mbcheckboxL', 'mbcheckboxXL', 'mbcheckboxXXL', 'mbcheckboxXXXL', 'mbcheckboxBlack', 'mbcheckboxBrown', 'mbcheckboxOrange', 'mbcheckboxYellow', 'mbcheckboxWhite']
+    
     let checkboxesNative : Array<any> = [this.checkboxXS, this.checkboxS, this.checkboxM, this.checkboxL, this.checkboxXL, this.checkboxXXL, this.checkboxXXXL, this.checkboxBlack, this.checkboxBrown, this.checkboxOrange, this.checkboxYellow, this.checkboxWhite]
+    let mbcheckboxesNative : Array<any> = [this.mbcheckboxXS, this.mbcheckboxS, this.mbcheckboxM, this.mbcheckboxL, this.mbcheckboxXL, this.mbcheckboxXXL, this.mbcheckboxXXXL, this.mbcheckboxBlack, this.mbcheckboxBrown, this.mbcheckboxOrange, this.mbcheckboxYellow, this.mbcheckboxWhite]    
     for (let i = 0; i < checkboxes.length; i++) {
       document.getElementsByName(checkboxes[i])[0]['checked'] = false
-      checkboxesNative[i].nativeElement.checked = false
+      document.getElementsByName(mbcheckboxes[i])[0]['checked'] = false
+      //checkboxesNative[i].nativeElement.checked = false
+      //mbcheckboxesNative[i].nativeElement.checked = false
     }
     this.formHasValues = false
     this.addForm = false
@@ -682,7 +704,9 @@ export class LandingPage implements OnInit {
   changeQuantity(event, item){
     console.log(item);
     //console.log(event);
-    let number: number = document.getElementById(item.productID)['value']
+    console.log(event.target.value);
+    
+    let number: number = event.target.value
     console.log(number)
     for(let key in this.allProducts){
       if(this.allProducts[key].productID === item.productID){
@@ -692,11 +716,13 @@ export class LandingPage implements OnInit {
         }else if(number > 100000){
           number = 100000
           this.allProducts[key].data.quantity = 100000
+          event.target.value = 100000
         }else{
           this.allProducts[key].data.quantity = +number
         }
       }
     }
+    console.log(number)
 
   }
   saveQuantity(brand, category, productID, quantity) {

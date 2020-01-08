@@ -121,6 +121,7 @@ getOrder(refNo, name){
       
       this.grandTotal = this.totalPrice + this.deliveryFee
     }else if(this.deliveryType === 'Collection'){
+      this.deliveryAddress = ''
       this.deliveryFee = 0
       this.grandTotal = this.totalPrice
     }

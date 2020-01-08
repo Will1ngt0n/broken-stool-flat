@@ -27,8 +27,11 @@ export class ItemsListPage implements OnInit {
   pictures: Array<any> = []
   //promos and updates
   //promos
-  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink
+  itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink; itemSizes; itemColors
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
+  
+  checkXS : boolean; checkS : boolean; checkM : boolean; checkL : boolean; checkXL : boolean; checkXXL : boolean; checkXXXL : boolean;
+  checkRed: boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
   //updates
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
 
@@ -604,7 +607,7 @@ export class ItemsListPage implements OnInit {
       )
     })
   }
-  async deleteItem(productID, brand, category, item) {
+  async deleteItem(productID, brand, category) {
     const alert = await this.alertController.create({
       header: 'Confirm!',
       message: 'Are you sure you want to delete this item?',
@@ -620,7 +623,7 @@ export class ItemsListPage implements OnInit {
           text: 'Delete',
           handler: (okay) => {
             console.log('User clicked "okay"');
-            return this.deleteItemConfirmed(productID, brand, category, item)
+            return this.deleteItemConfirmed(productID, brand, category, this.selectedItem)
           }
         }
       ]
@@ -651,13 +654,13 @@ export class ItemsListPage implements OnInit {
   }
   pictureUpdate : File
   updateItem() {
-    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.updateSizes);
+    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
     //console.log(this.updateName);
 
-    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.updateSizes, this.pictureUpdate, this.updateColors).then(result => {
+    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
       console.log(result);
         setTimeout(() => {
-          this.reloadPage()
+          //this.reloadPage()
         }, 30);
       if (result === 'success') {
         console.log(result);
@@ -671,7 +674,7 @@ export class ItemsListPage implements OnInit {
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 
   }
-  toggleUpdate(productID, brand, category, name, description, price, imageLink,item) {
+  toggleUpdate(productID, brand, category, name, description, price, imageLink,sizes, colors) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";
@@ -683,7 +686,59 @@ export class ItemsListPage implements OnInit {
     this.itemCategory = category
     this.itemID = productID
     this.itemImageLink = imageLink
-  
+    this.itemSizes = sizes
+    this.itemColors = colors
+    console.log(this.itemSizes);
+    console.log(this.itemColors);
+    
+    console.log(this.checkboxXS);
+    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
+    this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+    for(let key in this.itemSizes){
+      if(this.itemSizes[key] === 'XS'){
+        this.checkXS = true
+        this.updateSizes.push('XS')
+      }else if(this.itemSizes[key] === 'S'){
+        this.checkS = true
+        this.updateSizes.push('S')
+      }else if(this.itemSizes[key] === 'M'){
+        this.checkM = true
+        this.updateSizes.push('M')
+      }else if(this.itemSizes[key] === 'L'){
+        this.checkL = true
+        this.updateSizes.push('XL')
+      }else if(this.itemSizes[key] === 'XL'){
+        this.checkXL = true
+        this.updateSizes.push('XXL')
+      }else if(this.itemSizes[key] === 'XXL'){
+        this.checkXXL = true
+        this.updateSizes.push('XXL')
+      }else if(this.itemSizes[key] === 'XXXL'){
+        this.checkXXXL = true
+        this.updateSizes.push('XXXL')
+      }
+    }
+    for(let key in this.itemColors){
+      if(this.itemColors[key] === 'Red'){
+        this.checkRed = true
+        this.updateSizes.push('XS')
+      }else if(this.itemColors[key] === 'Blue'){
+        this.checkBlue = true
+        this.updateSizes.push('S')
+      }else if(this.itemColors[key] === 'Green'){
+        this.checkGreen = true
+        this.updateSizes.push('M')
+      }else if(this.itemColors[key] === 'Yellow'){
+        this.checkYellow = true
+        this.updateSizes.push('XL')
+      }else if(this.itemColors[key] === 'Pink'){
+        this.checkPink = true
+        this.updateSizes.push('XXL')
+      }else if(this.itemColors[key] === 'White'){
+        this.checkWhite = true
+        this.updateSizes.push('XXL')
+      }
+    }
   }
   selectedItem
   togglePromo(productID, brand, category, name, description, price, imageLink, item) {
@@ -730,17 +785,17 @@ export class ItemsListPage implements OnInit {
 
   checkSizeUpdateCheckboxes(event, size) {
     console.log(size);
-    console.log(this.updateSizes);
+    console.log(this.itemSizes);
     let checkbox = event.target['name']
     if (checkbox) {
       if (event.target.checked === true) {
-        this.updateSizes.push(size)
-        console.log(this.updateSizes);
+        this.itemSizes.push(size)
+        console.log(this.itemSizes);
       } else if (event.target.checked === false) {
-        let index = this.updateSizes.indexOf(size)
+        let index = this.itemSizes.indexOf(size)
         console.log(index);
-        this.updateSizes.splice(index, 1)
-        console.log(this.updateSizes);
+        this.itemSizes.splice(index, 1)
+        console.log(this.itemSizes);
       }
     }
     // console.log(event.target.checked);
@@ -750,12 +805,12 @@ export class ItemsListPage implements OnInit {
     let checkbox = event.target['name']
     if(checkbox){
       if(event.target.checked === true){
-        this.updateColors.push(color)
-        console.log(this.updateColors);
+        this.itemColors.push(color)
+        console.log(this.itemColors);
       }else if(event.target.checked === false){
-        let index = this.updateColors.indexOf(color)
-        this.updateColors.splice(index, 1)
-        console.log(this.updateColors);
+        let index = this.itemColors.indexOf(color)
+        this.itemColors.splice(index, 1)
+        console.log(this.itemColors);
       }
     }
   }
