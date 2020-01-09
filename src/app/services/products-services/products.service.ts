@@ -349,6 +349,11 @@ export class ProductsService {
   }
   deleteItemFromInventory(productID, brand, category, item){
     console.log(item);
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
+    
     
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {
       this.updateNumberOfItems()

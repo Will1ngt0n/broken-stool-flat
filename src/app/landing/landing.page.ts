@@ -1178,7 +1178,7 @@ export class LandingPage implements OnInit {
     // this.updateProductID = item.productID
     // console.log(this.updatePic);
     
-    // console.log(item);
+    console.log("closing");
     
     if (this.clickedSearchItem == "hideItem") {
       this.updateName = item.data.name
@@ -1190,6 +1190,8 @@ export class LandingPage implements OnInit {
       this.updateBrand = item.brand
       this.updateCategory = item.category
       this.updateProductID = item.productID
+      this.itemSizes = item.data.size
+      this.itemColors = item.data.color
       this.item = item
       console.log(this.updatePic);
       
@@ -1257,7 +1259,7 @@ export class LandingPage implements OnInit {
   }
 
   updateItem() {
-    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
+    console.log(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors);
     //console.log(this.updateName);
 
     return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
@@ -1267,6 +1269,7 @@ export class LandingPage implements OnInit {
         }, 30);
       if (result === 'success') {
         console.log(result);
+        this.showHideSearchDetails('close')
         //return this.dismissPromo()
       }
     })
