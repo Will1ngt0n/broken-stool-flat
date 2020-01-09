@@ -20,9 +20,9 @@ export class LandingPage implements OnInit {
   history : Array<any> = []
   readyOrders : Array<any> = []
   pendingOrders : Array<any> = []
-  pendingOrdersLength
-  orderHistoryLength
-  inventoryLength
+  pendingOrdersLength = 0;
+  orderHistoryLength = 0;
+  inventoryLength = 0;
   addForm : boolean 
   formHasValues : boolean 
   department : any 
