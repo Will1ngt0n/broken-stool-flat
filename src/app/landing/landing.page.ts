@@ -30,7 +30,7 @@ export class LandingPage implements OnInit {
   searchArray
   pictures: Array<any> = []
   departmentOptions: Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
-  kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
+  kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports']
   dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies']
   newNumberOfProducts : number
   currentNumberOfProducts : number
@@ -173,10 +173,10 @@ export class LandingPage implements OnInit {
     this.picture = undefined
     let date = moment(new Date()).format('LLLL');
     let tee = moment(new Date('10/12/2019')).format('LLLL')
-    console.log(date);
-    console.log(tee);
+    //console.log(date);
+    //console.log(tee);
     if (date > tee) {
-      console.log(date);
+      //console.log(date);
 
     }
 
@@ -191,7 +191,7 @@ export class LandingPage implements OnInit {
     this.getReadyOrders()
     this.getOrderHistory()
     this.getInventory()
-
+    this.loader()
   }
   signOutPopup() {
     this.presentLogoutConfirmAlert()
@@ -222,7 +222,7 @@ export class LandingPage implements OnInit {
   }
   signOut() {
     return this.authService.signOut().then(result => {
-      console.log(result);
+      //console.log(result);
       this.route.navigate(['/login'])
     })
   }
@@ -239,6 +239,9 @@ export class LandingPage implements OnInit {
   //     return this.route.navigate(['/login'])
   //   })
   // }
+  loader(){
+    
+  }
   ngOnInit() { ////copy
     this.nativeCategory.nativeElement.disabled = true
     this.refreshOrderHistory()
@@ -253,15 +256,15 @@ export class LandingPage implements OnInit {
   }
   
   changeDepartment(event) {
-    console.log('Accessory ', this.accessory);
+    //console.log('Accessory ', this.accessory);
 
-    console.log(event.target['value']);
+    //console.log(event.target['value']);
     this.department = event.target['value']
     if (this.department === 'Dankie Jesu') {
       this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
     }
     if (this.department === 'Kwanga') {
-      this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports wear']
+      this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports']
     }
     if (this.department === 'Select Department') {
       this.department = undefined
@@ -413,8 +416,15 @@ export class LandingPage implements OnInit {
   // addItem() {
   //   this.route.navigate(['/'])
   // }
-  addProduct() {
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, this.newNumberOfProducts).then(result => {
+  addProduct(){
+    let number : string = String(Number(this.currentNumberOfProducts) + 1)
+    console.log(number);
+    
+    this.addProducts(number)
+        
+  }
+  addProducts(numberOfProducts) {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then(result => {
 
       console.log('added to first firebase')
     }).then(result => {
@@ -561,14 +571,19 @@ export class LandingPage implements OnInit {
     let category: String
     for (let key in this.kwangaCategories) {
       category = this.kwangaCategories[key]
+      console.log(category);
       this.loadItems(category, 'Kwanga')
 
     }
   }
   loadDankieJesuItems() {
     let category: String
+    
     for (let key in this.dankieJesuCategories) {
+
+      
       category = this.dankieJesuCategories[key]
+      console.log(category);
       this.loadItems(category, 'Dankie Jesu')
     }
   }
@@ -626,14 +641,14 @@ export class LandingPage implements OnInit {
       this.inventoryLength = this.allProducts.length
       this.sortProducts()
       }
-      if(this.summerProducts.length > 0 ){
-      }else if(this.winterProducts.length > 0){   
-      }
-      console.log(this.kwangaGear, this.summerGear, this.winterGear)
-      this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-      console.log(this.kwangaGear, this.summerGear, this.winterGear)
+      // if(this.summerProducts.length > 0 ){
+      // }else if(this.winterProducts.length > 0){   
+      // }
+      // console.log(this.kwangaGear, this.summerGear, this.winterGear)
+      // this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+      // this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+      // this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+      // console.log(this.kwangaGear, this.summerGear, this.winterGear)
     })
   }
   sortProducts(){
@@ -764,11 +779,15 @@ export class LandingPage implements OnInit {
     })
   }
   refreshOrderHistory(){
-    return firebase.firestore().collection('Order').onSnapshot(result => {
-      let closedOrder
+    return firebase.firestore().collection('orderHistory').onSnapshot(result => {
+      let closedOrder : object = {}
+      console.log(result);
+      
       for(let key in result.docChanges()){
         let change = result.docChanges()[key]
-        if(change.type === 'modified'){
+        console.log(change);
+        
+        if(change.type === 'added'){
           console.log('New item was added');
           console.log(result.docChanges()[key]);
           console.log(change.doc.data());
@@ -777,9 +796,10 @@ export class LandingPage implements OnInit {
           let docData = change.doc.data()
           let refNo = result.docs[key].id
           let data = result.docs[key].data()
-            closedOrder.push({refNo : refNo, details : data})
+            closedOrder = ({refNo : refNo, details : data})
             console.log(closedOrder);
             this.history.unshift(closedOrder)
+            this.orderHistoryLength = this.history.length
             };
           
       }
@@ -794,21 +814,21 @@ export class LandingPage implements OnInit {
         this.orderHistoryLength = this.history.length
         let totalPrice : Number = 0
         let numberOfItems : Number = 0;
-        console.log(this.history);
+        //console.log(this.history);
         if(this.history.length !== 0){
           for(let key in this.history){
             totalPrice = 0
             numberOfItems = 0
             for(let i in this.history[key].details.orders){
-              console.log(this.history[key].details);
+              //console.log(this.history[key].details);
               totalPrice = +totalPrice + +this.history[key].details.orders[i].cost * +this.history[key].details.orders[i].quantity
               numberOfItems = +numberOfItems + +this.history[key].details.orders[i].quantity
-              console.log(totalPrice);
-              console.log(numberOfItems);
+              //console.log(totalPrice);
+              //console.log(numberOfItems);
             }
             this.history[key].details.totalPrice = totalPrice
             this.history[key].details.numberOfItems = numberOfItems
-            console.log(this.history[key]);
+            //console.log(this.history[key]);
             
           }
         }
@@ -818,7 +838,7 @@ export class LandingPage implements OnInit {
     })
   }
   viewOrderHistory(item) {
-    console.log(item);
+    //console.log(item);
     let parameter: NavigationExtras = { queryParams: { category: item, link: '/landing', refNo: item.refNo, userID: item.details.uid } }
     this.navCtrl.navigateForward(['order-receipt'], parameter);
   }
@@ -916,7 +936,7 @@ export class LandingPage implements OnInit {
     })
   }
   viewPendingOrder(item) {
-    console.log(item);
+    //console.log(item);
     let parameter: NavigationExtras = { queryParams: { status: item.details.status, refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing' } }
     this.navCtrl.navigateForward(['pending-order'], parameter);
   }

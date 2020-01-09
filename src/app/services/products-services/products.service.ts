@@ -348,7 +348,10 @@ export class ProductsService {
     
   }
   deleteItemFromInventory(productID, brand, category, item){
+    console.log(item);
+    
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {
+      this.updateNumberOfItems()
       if(item.data.onSale){
         if(item.data.onSale === true){
           console.log(item.data.onSale);
@@ -360,11 +363,21 @@ export class ProductsService {
 
     })
   }
+  updateNumberOfItems(){  //Cloud Function?
+    return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+      let numberOfProducts = result.data().numberOfProducts - 1
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+        numberOfProducts: numberOfProducts
+      })
+    })
+
+  }
   hideProduct(productID, brand, category){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       hideItem : true
     }).then(result => {
      // console.log(result);
+     return 'success'
     })
   }
   showProduct(productID, brand, category){
@@ -372,6 +385,7 @@ export class ProductsService {
       hideItem : false
     }).then(result => {
      // console.log(result);
+     return 'success'
     })
   }
   updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture, colors){
@@ -637,7 +651,10 @@ export class ProductsService {
     console.log(status);
     return firebase.firestore().collection('Order').doc(refNo).update({
       status: status
-    }) 
+    }).then( result => {
+      return 'success'
+      
+    })
   }
   getPictures(){
     return firebase.storage().ref('clothes').listAll().then(result => {
