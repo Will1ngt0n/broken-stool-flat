@@ -93,11 +93,11 @@ export class AddItemsPage implements OnInit {
   addItem() {
     this.route.navigate(['/'])
   }
-  addProduct() {
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.colors, this.picture).then(result => {
-      this.clearForm();
-    })
-  }
+  // addProduct() {
+  //   return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.colors, this.picture).then(result => {
+  //     this.clearForm();
+  //   })
+  // }
 
   //Clearing all form variables and form inputs respectively
   clearForm() {

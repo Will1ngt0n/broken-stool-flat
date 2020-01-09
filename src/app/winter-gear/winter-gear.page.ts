@@ -259,13 +259,13 @@ export class WinterGearPage implements OnInit {
   // addItem() {
   //   this.route.navigate(['/'])
   // }
-  addProduct() {
-    return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
-      this.clearForm();
-      console.log('added to first firebase')
-    }).then(result => {
-    })
-  }
+  // addProduct() {
+  //   return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
+  //     this.clearForm();
+  //     console.log('added to first firebase')
+  //   }).then(result => {
+  //   })
+  // }
 
   //Clearing all form variables and form inputs respectively
   clearForm() {

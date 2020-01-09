@@ -32,6 +32,8 @@ export class LandingPage implements OnInit {
   departmentOptions: Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
   kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies']
+  newNumberOfProducts : number
+  currentNumberOfProducts : number
   categoryOptions: Array<any> = ['Select Category']
   inventoryItems: Array<any> = []
   summer: boolean;
@@ -128,12 +130,32 @@ export class LandingPage implements OnInit {
     roundLengths: false,
     effect: 'fade'
   }
+
+  //trials
+  formalArray
+  traditionalArray
+  smartCasualArray
+  sportsWearArray
+  vestsArray
+  capsArray
+  bucketHatsArray
+  shortsArray
+  cropTopsArray
+  tshirtsArray
+  bagsArray
+  sweatersArray
+  hoodiesArray
+  trackSuitsArray
+  beaniesArray
+
+
   constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
     this.allSpecialsPicture = undefined
     //this.productService.getCategories()
+    this.loadTotalNumberOfProducts()
     this.loadDankieJesuItems()
     this.loadKwangaItems()
     this.colors = { red: '' }
@@ -219,7 +241,7 @@ export class LandingPage implements OnInit {
   // }
   ngOnInit() { ////copy
     this.nativeCategory.nativeElement.disabled = true
-
+    this.refreshOrderHistory()
     return this.authService.checkingAuthState().then( result => {
       if(result === null){
         this.route.navigate(['/login'])
@@ -228,7 +250,6 @@ export class LandingPage implements OnInit {
 
       }
     })
-
   }
   
   changeDepartment(event) {
@@ -393,7 +414,7 @@ export class LandingPage implements OnInit {
   //   this.route.navigate(['/'])
   // }
   addProduct() {
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, this.newNumberOfProducts).then(result => {
 
       console.log('added to first firebase')
     }).then(result => {
@@ -421,7 +442,18 @@ export class LandingPage implements OnInit {
             this.inventoryLength = this.allProducts.length
             console.log(this.allProducts.length);
             console.log(this.inventoryLength);
-            
+            if(this.department === 'Dankie Jesu'){
+              if(this.summer === true){
+                this.summerGear.unshift(data)
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }else if(this.summer === false){
+                this.winterGear.unshift(data)
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
+            }else if(this.department === 'Kwanga'){
+              this.kwangaGear.unshift(data)
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
             
           }
         }
@@ -543,57 +575,106 @@ export class LandingPage implements OnInit {
   loadViewedCategory() {
 
   }
+
+  loadTotalNumberOfProducts(){
+    return this.productService.getNumberOfProducts().then( (result : number) => {
+      this.currentNumberOfProducts = result
+      console.log(this.currentNumberOfProducts);
+      
+    })
+  }
   loadItems(category, brand){
  
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
+        console.log(result);
+        
         for(let key in result){
-        if(brand === 'Kwanga'){
-          this.kwangaProducts.push(result[key])
-          this.allProducts.push(result[key])
-          if(this.kwangaSpecialsPicture !== undefined){
-            this.kwangaSpecialsPicture = this.kwangaProducts[0].data.pictureLink
-          }
-          console.log(this.allProducts);
-          if(this.kwangaGear.length < 3){
-            this.kwangaGear.push(result[key])
-            console.log(this.kwangaGear);
-            
-          }
-        }else if(brand === 'Dankie Jesu'){
-          this.dankieJesuProducts.push(result[key])
-          this.allProducts.push(result[key])
-          if(this.dankieJesuSpecialsPicture !== undefined){
-            this.dankieJesuSpecialsPicture = this.dankieJesuProducts[0].data.pictureLink
-          }
-          if(this.allSpecialsPicture!== undefined){
-            this.allSpecialsPicture = this.dankieJesuProducts[0].data.pictureLink
-          }
-          if(result[key].data.isSummer === true){
-            this.summerProducts.push(result[key])
-            if(this.summerGear.length < 5){
-              this.summerGear.push(result[key])
+          if(brand === 'Kwanga'){
+            this.kwangaProducts.push(result[key])
+            this.allProducts.push(result[key])
+
+            if(this.kwangaSpecialsPicture !== undefined){
+              this.kwangaSpecialsPicture = this.kwangaProducts[0].data.pictureLink
             }
-          } else if (result[key].data.isSummer === false) {
-            this.winterProducts.push(result[key])
-            if(this.winterGear.length < 5){
-              this.winterGear.push(result[key])
+            console.log(this.allProducts);
+
+
+          }else if(brand === 'Dankie Jesu'){
+            this.dankieJesuProducts.push(result[key])
+            this.allProducts.push(result[key])
+            if(this.dankieJesuSpecialsPicture !== undefined){
+              this.dankieJesuSpecialsPicture = this.dankieJesuProducts[0].data.pictureLink
             }
+            if(this.allSpecialsPicture!== undefined){
+              this.allSpecialsPicture = this.dankieJesuProducts[0].data.pictureLink
+            }
+
           }
+        
+        //category tries
+        if(category === 'Formal'){
+          this.formalArray.push('')
         }
       }
+
+      //sorting allProducts array
+
+      console.log(this.allProducts);
+      
       this.inventoryLength = this.allProducts.length
+      this.sortProducts()
       }
       if(this.summerProducts.length > 0 ){
       }else if(this.winterProducts.length > 0){   
       }
       console.log(this.kwangaGear, this.summerGear, this.winterGear)
-        this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
-        console.log(this.kwangaGear, this.summerGear, this.winterGear)
-      })
+      this.summerGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+      this.winterGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+      this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
+      console.log(this.kwangaGear, this.summerGear, this.winterGear)
+    })
+  }
+  sortProducts(){
+    this.allProducts.sort( (a,b) => {
+      let data = (a.data.name) - (b.data.name)
+      let c : any = new Date(a.data.dateAdded)
+      let d : any = new Date(b.data.dateAdded)
+      console.log(data);
+      console.log(c - d);
+      
+      return d - c
+    });
+    console.log(this.inventoryLength);
+    console.log(this.currentNumberOfProducts);
+    
+    if(this.inventoryLength === +this.currentNumberOfProducts){
+      for(let key in this.allProducts){
+
+        if(this.allProducts[key].brand === 'Kwanga'){
+          if(this.kwangaGear.length < 3){
+            this.kwangaGear.push(this.allProducts[key])
+            console.log(this.kwangaGear);
+          
+          }
+        }else if(this.allProducts[key].brand === 'Dankie Jesu') {
+          if(this.allProducts[key].data.isSummer === true){
+            this.summerProducts.push(this.allProducts[key])
+            if(this.summerGear.length < 5){
+              this.summerGear.push(this.allProducts[key])
+            }
+          } else if (this.allProducts[key].data.isSummer === false) {
+            this.winterProducts.push(this.allProducts[key])
+            if(this.winterGear.length < 5){
+              this.winterGear.push(this.allProducts[key])
+            }
+          }
+        }
+        
+      }
+
+    }
   }
   orderItems() {
     // this.summerProducts.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
@@ -625,7 +706,7 @@ export class LandingPage implements OnInit {
         console.log(userID);
         //this.loadUser(userID)
 
-        pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
+        pendingOrder.unshift({refNo : refNo, details : data, noOfItems: data.product.length})
       };
       console.log('Snapped', pendingOrder);
       for (let key in pendingOrder) {
@@ -639,6 +720,7 @@ export class LandingPage implements OnInit {
       return pendingOrder
       })
   }
+  
   getPendingOrders() {
     // return this.productService.getPendingOrders().then(result => {
     //   console.log(result);
@@ -679,6 +761,28 @@ export class LandingPage implements OnInit {
   getReadyOrders() {
     return this.productService.getReadyOrders().then(result => {
       this.readyOrders = result
+    })
+  }
+  refreshOrderHistory(){
+    return firebase.firestore().collection('Order').onSnapshot(result => {
+      let closedOrder
+      for(let key in result.docChanges()){
+        let change = result.docChanges()[key]
+        if(change.type === 'modified'){
+          console.log('New item was added');
+          console.log(result.docChanges()[key]);
+          console.log(change.doc.data());
+          //let data : object = {}
+          let productID = change.doc.id
+          let docData = change.doc.data()
+          let refNo = result.docs[key].id
+          let data = result.docs[key].data()
+            closedOrder.push({refNo : refNo, details : data})
+            console.log(closedOrder);
+            this.history.unshift(closedOrder)
+            };
+          
+      }
     })
   }
 
