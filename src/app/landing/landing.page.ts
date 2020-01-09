@@ -394,14 +394,45 @@ export class LandingPage implements OnInit {
   // }
   addProduct() {
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
-      this.clearForm();
+
       console.log('added to first firebase')
     }).then(result => {
+      firebase.firestore().collection('Products').doc(this.department).collection(this.selectedCategory).onSnapshot(result => {
+        result.docChanges()
+        console.log(result);
+        console.log(result.docChanges());
+        
+        for(let key in result.docChanges()){
+          let change = result.docChanges()[key]
+          if(change.type === 'modified'){
+            console.log('New item was added');
+            console.log(result.docChanges()[key]);
+            console.log(change.doc.data());
+            let data : object = {}
+            let productID = change.doc.id
+            let docData = change.doc.data()
+            data = {productID: productID, data: docData, category: this.selectedCategory, brand: this.department}
+            console.log(data);
+            //this.allProducts.unshift(data)
+            console.log('');
+            console.log(this.inventory);
+            
+            this.allProducts.unshift(data)
+            this.inventoryLength = this.allProducts.length
+            console.log(this.allProducts.length);
+            console.log(this.inventoryLength);
+            
+            
+          }
+        }
+      })
+
+      this.clearForm();
     })
   }
 
   //Clearing all form variables and form inputs respectively
-  clearForm() {
+  clearForm() { //clearform for bigger screens
     
     this.uploaderImage[0].style.display = "block"
     this.uploadedImage[0].style.display = "none"
@@ -417,8 +448,14 @@ export class LandingPage implements OnInit {
     //document.getElementById('accessory')['checked'] = false;
     //document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
+
+    if(this.departmentCombo){
     this.departmentCombo.nativeElement.value ='Select Department'
-    this.mbdepartmentCombo.nativeElement.value ='Select Department'
+    }
+    if(this.mbdepartmentCombo){
+      this.mbdepartmentCombo.nativeElement.value ='Select Department'
+    }
+
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
     let mbcheckboxes: Array<any> = ['mbcheckboxXS', 'mbcheckboxS', 'mbcheckboxM', 'mbcheckboxL', 'mbcheckboxXL', 'mbcheckboxXXL', 'mbcheckboxXXXL', 'mbcheckboxBlack', 'mbcheckboxBrown', 'mbcheckboxOrange', 'mbcheckboxYellow', 'mbcheckboxWhite']
     
@@ -426,6 +463,46 @@ export class LandingPage implements OnInit {
     let mbcheckboxesNative : Array<any> = [this.mbcheckboxXS, this.mbcheckboxS, this.mbcheckboxM, this.mbcheckboxL, this.mbcheckboxXL, this.mbcheckboxXXL, this.mbcheckboxXXXL, this.mbcheckboxBlack, this.mbcheckboxBrown, this.mbcheckboxOrange, this.mbcheckboxYellow, this.mbcheckboxWhite]    
     for (let i = 0; i < checkboxes.length; i++) {
       document.getElementsByName(checkboxes[i])[0]['checked'] = false
+      //document.getElementsByName(mbcheckboxes[i])[0]['checked'] = false
+      //checkboxesNative[i].nativeElement.checked = false
+      //mbcheckboxesNative[i].nativeElement.checked = false
+    }
+    this.formHasValues = false
+    this.addForm = false
+    this.department = 'Select Department'
+    this.selectedCategory = 'Select Category'
+  }
+  mbclearForm() { //clearform for small screens
+    
+    this.uploaderImage[0].style.display = "block"
+    this.uploadedImage[0].style.display = "none"
+    this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
+    this.categoryOptions = ['Select Category']
+    this.selectedCategory = ''
+    this.itemName = ''
+    this.price = ''
+    this.description = ''
+    this.size = [];
+    this.picture = undefined
+    this.myUpload = "../../assets/imgs/default.png"
+    //document.getElementById('accessory')['checked'] = false;
+    //document.getElementById('summer')['checked'] = false;
+    this.fileInput.nativeElement.value = ''
+
+    if(this.departmentCombo){
+    this.departmentCombo.nativeElement.value ='Select Department'
+    }
+    if(this.mbdepartmentCombo){
+      this.mbdepartmentCombo.nativeElement.value ='Select Department'
+    }
+
+    let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
+    let mbcheckboxes: Array<any> = ['mbcheckboxXS', 'mbcheckboxS', 'mbcheckboxM', 'mbcheckboxL', 'mbcheckboxXL', 'mbcheckboxXXL', 'mbcheckboxXXXL', 'mbcheckboxBlack', 'mbcheckboxBrown', 'mbcheckboxOrange', 'mbcheckboxYellow', 'mbcheckboxWhite']
+    
+    let checkboxesNative : Array<any> = [this.checkboxXS, this.checkboxS, this.checkboxM, this.checkboxL, this.checkboxXL, this.checkboxXXL, this.checkboxXXXL, this.checkboxBlack, this.checkboxBrown, this.checkboxOrange, this.checkboxYellow, this.checkboxWhite]
+    let mbcheckboxesNative : Array<any> = [this.mbcheckboxXS, this.mbcheckboxS, this.mbcheckboxM, this.mbcheckboxL, this.mbcheckboxXL, this.mbcheckboxXXL, this.mbcheckboxXXXL, this.mbcheckboxBlack, this.mbcheckboxBrown, this.mbcheckboxOrange, this.mbcheckboxYellow, this.mbcheckboxWhite]    
+    for (let i = 0; i < checkboxes.length; i++) {
+      //document.getElementsByName(checkboxes[i])[0]['checked'] = false
       document.getElementsByName(mbcheckboxes[i])[0]['checked'] = false
       //checkboxesNative[i].nativeElement.checked = false
       //mbcheckboxesNative[i].nativeElement.checked = false
@@ -435,7 +512,6 @@ export class LandingPage implements OnInit {
     this.department = 'Select Department'
     this.selectedCategory = 'Select Category'
   }
-
   //Routing to sales page
   viewSales(query) {
     console.log(query);
