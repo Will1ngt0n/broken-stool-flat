@@ -59,7 +59,7 @@
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
-            <ion-card *ngFor='let item of history' (click)='viewOrderHistory(item)'>
+            <ion-card *ngFor='let item of history' class="item-card-list" (click)='viewOrderHistory(item)'>
               <p class="floating">Paid</p>
               <p><b>{{item.details.userID}}</b></p>
               <p>R {{item.details.totalPrice}}</p>
@@ -75,10 +75,14 @@
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
           <div class="items-list">
-            <ion-card *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
+            <ion-card class="item-card-list " *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
               <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
+              <p *ngIf="!item.details.name"><b>Please wait...</b></p>
               <p><b>{{item.details.name}}</b></p>
+              <p *ngIf="!item.details.totalPrice">Loading</p>
               <p>R {{item.details.totalPrice}}</p>
+              <p *ngIf="!item.refNo">Loading</p>
+              
               <p>REF: {{item.refNo}}</p>
 
             </ion-card>
