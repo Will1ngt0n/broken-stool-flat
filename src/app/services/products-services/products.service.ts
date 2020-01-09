@@ -13,7 +13,7 @@ export class ProductsService {
     this.products = []
   }
 
-  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture){
+  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
    // console.log(department);
   //  console.log(selectedCategory);
     return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
@@ -46,6 +46,9 @@ export class ProductsService {
         }
       }
 
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+        numberOfProducts: numberOfProducts
+      })
       let storageRef = firebase.storage().ref('clothes/' + result.id)
       console.log(picture);
       
@@ -310,12 +313,21 @@ export class ProductsService {
     })
   }
 
-
+  getNumberOfProducts(){
+    return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+      console.log(result.data());
+      let number : number = 0
+      number = result.data().numberOfProducts
+      console.log(number);
+      
+      return number
+    })
+  }
   loadCategoryItems(category, brand){
    // console.log(brand);
    // console.log(category);
     
-    return firebase.firestore().collection('Products').doc(brand).collection(category).get().then(result => {
+    return firebase.firestore().collection('Products').doc(brand).collection(category).orderBy('timestamp', 'desc').get().then(result => {
       //console.log(result.docs);
       //console.log(result);
       let data : Array<any> = []
@@ -336,7 +348,10 @@ export class ProductsService {
     
   }
   deleteItemFromInventory(productID, brand, category, item){
+    console.log(item);
+    
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {
+      this.updateNumberOfItems()
       if(item.data.onSale){
         if(item.data.onSale === true){
           console.log(item.data.onSale);
@@ -348,11 +363,21 @@ export class ProductsService {
 
     })
   }
+  updateNumberOfItems(){  //Cloud Function?
+    return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+      let numberOfProducts = result.data().numberOfProducts - 1
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+        numberOfProducts: numberOfProducts
+      })
+    })
+
+  }
   hideProduct(productID, brand, category){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       hideItem : true
     }).then(result => {
      // console.log(result);
+     return 'success'
     })
   }
   showProduct(productID, brand, category){
@@ -360,6 +385,7 @@ export class ProductsService {
       hideItem : false
     }).then(result => {
      // console.log(result);
+     return 'success'
     })
   }
   updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture, colors){
@@ -453,7 +479,7 @@ export class ProductsService {
   }
   
   getPendingOrdersSnap(){
-    return firebase.firestore().collection('Order').onSnapshot(result => {
+    return firebase.firestore().collection('Order').orderBy('timestamp', 'desc').onSnapshot(result => {
       let pendingOrder = []
      // console.log(result);
       
@@ -522,7 +548,7 @@ export class ProductsService {
   //getClosedOrders()
   //retrieving all order history
   getOrderHistory(){
-    return firebase.firestore().collection('orderHistory').get().then(result => {
+    return firebase.firestore().collection('orderHistory').orderBy('timestamp', 'desc').get().then(result => {
       let closedOrder = []
       //console.log(result);
       
@@ -625,7 +651,10 @@ export class ProductsService {
     console.log(status);
     return firebase.firestore().collection('Order').doc(refNo).update({
       status: status
-    }) 
+    }).then( result => {
+      return 'success'
+      
+    })
   }
   getPictures(){
     return firebase.storage().ref('clothes').listAll().then(result => {

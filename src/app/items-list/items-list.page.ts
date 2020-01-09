@@ -88,6 +88,7 @@ export class ItemsListPage implements OnInit {
   @ViewChild('checkboxXL', { static: true }) checkboxXL: ElementRef
   @ViewChild('checkboxXXL', { static: true }) checkboxXXL: ElementRef
   @ViewChild('checkboxXXXL', { static: true }) checkboxXXXL: ElementRef
+  
   @ViewChild('checkboxBlack', { static: true }) checkboxBlack: ElementRef
   @ViewChild('checkboxBrown', { static: true }) checkboxBrown: ElementRef
   @ViewChild('checkboxOrange', { static: true }) checkboxOrange: ElementRef
@@ -275,13 +276,13 @@ export class ItemsListPage implements OnInit {
   // addItem() {
   //   this.route.navigate(['/'])
   // }
-  addProduct() {
-    return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
-      this.clearForm();
-      console.log('added to first firebase')
-    }).then(result => {
-    })
-  }
+  // addProduct() {
+  //   return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
+  //     this.clearForm();
+  //     console.log('added to first firebase')
+  //   }).then(result => {
+  //   })
+  // }
 
   //Clearing all form variables and form inputs respectively
   clearForm() {
@@ -607,7 +608,7 @@ export class ItemsListPage implements OnInit {
       )
     })
   }
-  async deleteItem(productID, brand, category) {
+  async deleteItem(productID, brand, category, item) {
     const alert = await this.alertController.create({
       header: 'Confirm!',
       message: 'Are you sure you want to delete this item?',
@@ -623,7 +624,7 @@ export class ItemsListPage implements OnInit {
           text: 'Delete',
           handler: (okay) => {
             console.log('User clicked "okay"');
-            return this.deleteItemConfirmed(productID, brand, category, this.selectedItem)
+            return this.deleteItemConfirmed(productID, brand, category, item)
           }
         }
       ]
@@ -631,7 +632,7 @@ export class ItemsListPage implements OnInit {
 
     await alert.present();
   }
-  deleteItemConfirmed(productID, brand, category,item) {
+  deleteItemConfirmed(productID, brand, category, item) {
     
     return this.productsService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
@@ -646,6 +647,10 @@ export class ItemsListPage implements OnInit {
   showItem(productID, brand, category) {
     return this.productsService.showProduct(productID, brand, category).then(result => {
       console.log(result);
+      // firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).onSnapshot( result => {
+      //   let hideItem = result.data().hideItem
+        
+      // })
     })
   }
   reloadPage(){
@@ -674,7 +679,7 @@ export class ItemsListPage implements OnInit {
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 
   }
-  toggleUpdate(productID, brand, category, name, description, price, imageLink,sizes, colors) {
+  toggleUpdate(productID, brand, category, name, description, price, imageLink, sizes, colors) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
     promoUpd[0].style.display = "flex";

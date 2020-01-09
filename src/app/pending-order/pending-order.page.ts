@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
+import * as firebase from 'firebase'
 ​​import * as moment from 'moment'
 declare var window
 @Component({
@@ -12,8 +13,8 @@ declare var window
 })
 export class PendingOrderPage implements OnInit {
   item : object = {}
-  refNo : String = ''
-  name : String = ''
+  refNo : string = ''
+  name : string = ''
   products : Array<any> = []
   userID
   totalPrice
@@ -26,7 +27,7 @@ export class PendingOrderPage implements OnInit {
   userAddress
   pictures : Array<any> = []
   cell
-  totalQuantity : Number
+  totalQuantity : number
   routingPage
   constructor(private alertController : AlertController, private authService : AuthService, private route : Router, private activatedRoute : ActivatedRoute, private productsService: ProductsService) { }
 ​
@@ -192,15 +193,43 @@ processOrder(){
     status = 'processed'
   // }
   return this.productsService.processOrder(this.refNo, status).then(result => {
-    window.location.reload()
-    this.refreshPendingOrder()
+    //window.location.reload()
+    //this.refreshPendingOrder()
+    if(result === 'success'){
+      firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
+        console.log(result.metadata);
+        let status = result.data().status
+        this.status = status
+        // for(let key in result.docChanges()){
+        //   let change = result.docChanges()[key]
+        //   console.log(change);
+          
+        //   if(change.type === 'added'){
+        //     console.log('New item was added');
+        //     console.log(result.docChanges()[key]);
+        //     console.log(change.doc.data());
+        //     let data : object = {}
+        //     data = change.doc.data().status
+        //     console.log(status);
+        //     this.status = status
+        //   }
+        // }
+      })
+    }
   })
 ​
 }
 orderReady(){
   let status = 'ready'
   return this.productsService.processOrder(this.refNo, status).then(result => {
-    window.location.reload()
+    //window.location.reload()
+    if(result === 'success'){
+      firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
+        console.log(result.metadata);
+        let status = result.data().status
+        this.status = status
+      })
+    }
   })
 }
 orderCollected(){

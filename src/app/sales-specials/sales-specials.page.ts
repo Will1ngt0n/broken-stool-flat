@@ -549,11 +549,11 @@ checkColor(event, color){
 addItem() {
   this.route.navigate(['/'])
 }
-addProduct() {
-    return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
-      this.clearForm();
-    })
-}
+// addProduct() {
+//     return this.productsService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture).then(result => {
+//       this.clearForm();
+//     })
+// }
 addPicture(event){
   this.picture = <File>event.target.files[0]
   console.log(<File>event.target.files)
