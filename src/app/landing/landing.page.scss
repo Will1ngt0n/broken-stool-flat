@@ -66,6 +66,62 @@
       width: 100%;
       margin: 5px 0;
     }
+    .instruction {
+      color: grey;
+      font-size: 12px;
+    }
+    .opts-search {
+      width: 100%;
+      height: 40px;
+      border: 0.5px solid red;
+      display: flex;
+      line-height: 10px;
+    }
+    .opts-sizes-search {
+      width: 100%;
+      height: 40px;
+      border: 0.5px solid red;
+      display: flex;
+      line-height: 10px;
+      text-align: center;
+    }
+
+    .opts-sizes-search > .size-checkbox {
+      width: 40px;
+      height: 40px;
+      margin-right: 2.5px;
+      margin-left: 2.5px;
+      margin: 0 auto;
+    }
+    .opts-search > div:nth-child(1) {
+      background: red;
+    }
+    .opts-search > div:nth-child(2) {
+      background: blue;
+    }
+    .opts-search > div:nth-child(3) {
+      background: green;
+    }
+    .opts-search > div:nth-child(4) {
+      background: rgb(255, 102, 0);
+    }
+    .opts-search > div:nth-child(5) {
+      background: pink;
+    }
+    .opts-search > div:nth-child(6) {
+      background: white;
+    }
+
+    .myBox {
+      width: 16.6666666666666%;
+      height: 39px;
+      background: red;
+      .myCheck {
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+      }
+    }
   }
 }
 ion-list > div {
@@ -77,6 +133,8 @@ ion-list > div {
   background: white;
   margin: 0 auto;
   transition: 300ms;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .searchResults {
   position: absolute;

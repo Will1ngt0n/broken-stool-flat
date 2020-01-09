@@ -25,6 +25,44 @@
       <div class="product-information-search">
         <input type="text" placeholder="Item Name" maxlength="25" [(ngModel)]='updateName'>
         <input type="text" placeholder="Price (R)" (keyup)='changeSearchPrice();' [(ngModel)]='updatePrice'>
+        <p class="instruction">Choose available sizes</p>
+        <div class="opts-sizes-search">
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkXS' name='popCheckboxXS' (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'></ion-checkbox>
+          <p id="text-size">XS</p>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkS' name='popCheckboxS' (ionChange)='checkSizeUpdateCheckboxes($event, "S")'></ion-checkbox>
+          <p id="text-size">S</p>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkM' name='popCheckboxM' (ionChange)='checkSizeUpdateCheckboxes($event, "M")'></ion-checkbox>
+          <p id="text-size">M</p>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkL' name='popCheckboxL' (ionChange)='checkSizeUpdateCheckboxes($event, "L")'></ion-checkbox>
+          <p id="text-size">L</p>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkXL' name='popCheckboxXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'></ion-checkbox>
+          <p id="text-size">XL</p>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkXXL' name='popCheckboxXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'></ion-checkbox>
+          <p id="text-size">2XL</p>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='checkXXXL' name='popCheckboxXXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'></ion-checkbox>
+          <p id="text-size">3XL</p>
+        </div>
+        <p class="instruction">Choose available colours</p>
+        <div class="opts-search">
+          <div class="myBox">
+            <ion-checkbox class="myCheck"></ion-checkbox>
+          </div>
+          <div class="myBox">
+            <ion-checkbox class="myCheck"></ion-checkbox>
+          </div>
+          <div class="myBox">
+            <ion-checkbox class="myCheck"></ion-checkbox>
+          </div>
+          <div class="myBox">
+            <ion-checkbox class="myCheck"></ion-checkbox>
+          </div>
+          <div class="myBox">
+            <ion-checkbox class="myCheck"></ion-checkbox>
+          </div>
+          <div class="myBox">
+            <ion-checkbox class="myCheck"></ion-checkbox>
+          </div>
+        </div>
         <textarea rows="4" type="text" placeholder="Description" maxlength="150"
           [(ngModel)]='updateDescription'></textarea>
         <input #updateSearchPic width='100px' id="uploaderBtn" class='pictureInput' type="file"
@@ -35,7 +73,6 @@
       </div>
     </div>
   </div>
-  
   <div class="content-container">
     <div class="nav-bar">
       <div class="nav-content">
@@ -400,7 +437,7 @@
           (keyup)='checkValidity()'></textarea>
         <div class="sizes">
 
-          <input #mbcheckboxXS type='checkbox' name='mbcheckboxXS' (change)='check($event, "XS")'> XS popCheckboxXS
+          <input #mbcheckboxXS type='checkbox' name='mbcheckboxXS' (change)='check($event, "XS")'> XS
           <input #mbcheckboxS type='checkbox' name='mbcheckboxS' (change)='check($event, "S")'> S
           <input #mbcheckboxM type='checkbox' name='mbcheckboxM' (change)='check($event, "M")'> M
           <input #mbcheckboxL type='checkbox' name='mbcheckboxL' (change)='check($event, "L")'> L
