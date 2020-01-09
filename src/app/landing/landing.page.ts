@@ -408,7 +408,7 @@ export class LandingPage implements OnInit {
   addProduct(){
     let number : string = String(Number(this.currentNumberOfProducts) + 1)
     console.log(number);
-    
+
     this.addProducts(number)
         
   }
@@ -417,6 +417,7 @@ export class LandingPage implements OnInit {
 
       console.log('added to first firebase')
     }).then(result => {
+      this.loadTotalNumberOfProducts()
       firebase.firestore().collection('Products').doc(this.department).collection(this.selectedCategory).onSnapshot(result => {
         result.docChanges()
         console.log(result);
@@ -1044,18 +1045,18 @@ export class LandingPage implements OnInit {
   //       console.log(result);
   //   })
   // }
-  hideItem(){
-    return this.productService.hideProduct(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
+  // hideItem(){
+  //   return this.productService.hideProduct(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
 
-    })
-  }
-  deleteItem(){
-    return this.productService.deleteItemFromInventory(this.updateProductID, this.updateBrand, this.updateCategory, this.item).then(result => {
-      // if(result === 'Deleted'){
+  //   })
+  // }
+  // deleteItem(){
+  //   return this.productService.deleteItemFromInventory(this.updateProductID, this.updateBrand, this.updateCategory, this.item).then(result => {
+  //     // if(result === 'Deleted'){
         
-      // }
-    })
-  }
+  //     // }
+  //   })
+  // }
 
   //updating items
   checkColorUpdate(event, color){
@@ -1271,6 +1272,67 @@ export class LandingPage implements OnInit {
     })
   }
 
+  async deleteItem(productID, brand, category, item) {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'Are you sure you want to delete this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('User clicked "cancel"');
+          }
+        }, {
+          text: 'Delete',
+          handler: (okay) => {
+            console.log('User clicked "okay"');
+            return this.deleteItemConfirmed(productID, brand, category, item)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  deleteItemConfirmed(productID, brand, category, item) {
+    
+    return this.productService.deleteItemFromInventory(productID, brand, category, item).then(result => {
+      console.log(result);
+      if(result = 'Deleted'){
+        for(let key in this.allProducts){
+          if(productID === this.allProducts[key].productID){
+            let index = this.allProducts.indexOf(this.allProducts[key])
+            this.allProducts.splice(index, 1)
+            this.inventoryLength = this.allProducts.length
+            this.loadTotalNumberOfProducts()
+          }
+        }
+        // firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
+        //   for(let key in result.docChanges()){
+        //     let change = result.docChanges()[key]
+        //     if(change.type === 'removed'){
+        //       console.log('An item was removed');
+        //       console.log(result.docChanges()[key]);
+        //       console.log(change.doc.data());
+        //       let data : object = {}
+        //       let productID = change.doc.id
+        //       let docData = change.doc.data()
+        //       data = {productID: productID, data: docData, category: this.selectedCategory, brand: this.department}
+        //     } 
+        //   }
+        // })
+      }
+      //location.reload()
+    })
+  }
+
+  hideItem(productID, brand, category) {
+    return this.productService.hideProduct(productID, brand, category).then(result => {
+      console.log(result);
+    })
+  }
   reloadPage(){
     window.location.reload()
   }

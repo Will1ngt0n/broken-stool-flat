@@ -356,11 +356,11 @@ export class ProductsService {
         if(item.data.onSale === true){
           console.log(item.data.onSale);
           firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
-            return 'Successfully deleted'
+
           })
         }
       }
-
+      return 'Deleted'
     })
   }
   updateNumberOfItems(){  //Cloud Function?
