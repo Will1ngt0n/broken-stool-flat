@@ -130,24 +130,13 @@ export class LandingPage implements OnInit {
     roundLengths: false,
     effect: 'fade'
   }
+  itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink; itemSizes; itemColors
+  editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
 
-  //trials
-  formalArray
-  traditionalArray
-  smartCasualArray
-  sportsWearArray
-  vestsArray
-  capsArray
-  bucketHatsArray
-  shortsArray
-  cropTopsArray
-  tshirtsArray
-  bagsArray
-  sweatersArray
-  hoodiesArray
-  trackSuitsArray
-  beaniesArray
-
+  popCheckboxXS : boolean; popCheckboxS : boolean; popCheckboxM : boolean; popCheckboxL : boolean; popCheckboxXL : boolean; popCheckboxXXL : boolean; popCheckboxXXXL : boolean ;
+  checkRed : boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
+  updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
+  pictureUpdate : File
 
   constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     console.log(this.department);
@@ -627,11 +616,6 @@ export class LandingPage implements OnInit {
             }
 
           }
-        
-        //category tries
-        if(category === 'Formal'){
-          this.formalArray.push('')
-        }
       }
 
       //sorting allProducts array
@@ -1053,11 +1037,13 @@ export class LandingPage implements OnInit {
     this.updateSearchPic =  <File>event.target.files[0]
     //this.updatePic = this.updateSearchPic
   }
-  updateItem(){
-    return this.productService.updateProduct(this.updateProductID, this.updateBrand, this.updateCategory, this.updateName, this.updateDescription, this.updatePrice, this.updateSearchPic).then(result => {
-        console.log(result);
-    })
-  }
+  // updateItem(){
+  //   console.log('update');
+    
+  //   return this.productService.updateProduct(this.updateProductID, this.updateBrand, this.updateCategory, this.updateName, this.updateDescription, this.updatePrice, this.updateSearchPic).then(result => {
+  //       console.log(result);
+  //   })
+  // }
   hideItem(){
     return this.productService.hideProduct(this.updateProductID, this.updateBrand, this.updateCategory).then(result => {
 
@@ -1070,6 +1056,41 @@ export class LandingPage implements OnInit {
       // }
     })
   }
+
+  //updating items
+  checkColorUpdate(event, color){
+    let checkbox = event.target['name']
+    if(checkbox){
+      if(event.target.checked === true){
+        this.itemColors.push(color)
+        console.log(this.itemColors);
+      }else if(event.target.checked === false){
+        let index = this.itemColors.indexOf(color)
+        this.itemColors.splice(index, 1)
+        console.log(this.itemColors);
+      }
+    }
+  }
+
+  checkSizeUpdateCheckboxes(event, size) {
+    console.log(size);
+    console.log(this.itemSizes);
+    let checkbox = event.target['name']
+    if (checkbox) {
+      if (event.target.checked === true) {
+        this.itemSizes.push(size)
+        console.log(this.itemSizes);
+      } else if (event.target.checked === false) {
+        let index = this.itemSizes.indexOf(size)
+        console.log(index);
+        this.itemSizes.splice(index, 1)
+        console.log(this.itemSizes);
+      }
+    }
+    // console.log(event.target.checked);
+    // console.log(event.target['name']);
+  }
+
   showLeftSide() {
     // console.log("Showing left side menu");
     document.getElementById("left-items-list").style.left = "0"
@@ -1131,10 +1152,10 @@ export class LandingPage implements OnInit {
     this.sideMenuButtons = true;
     this.listOfItems = 0;
   }
-  updateName: string;
+  //updateName: string;
   item
-  updatePrice
-  updateDescription
+  //updatePrice
+  //updateDescription
   updatePic : File
   //searchName
   //searchPic
@@ -1163,6 +1184,7 @@ export class LandingPage implements OnInit {
       this.updatePrice = item.data.price
       this.updateDescription = item.data.description
       this.updatePic = item.data.pictureLink
+      this.pictureUpdate
       this.updateSearchPic = item.data.pictureLink
       this.updateBrand = item.brand
       this.updateCategory = item.category
@@ -1172,6 +1194,54 @@ export class LandingPage implements OnInit {
       
       console.log(item);
       this.clickedSearchItem = "showItem"
+
+      this.popCheckboxXS = false ;this.popCheckboxS = false ;this.popCheckboxM = false ;this.popCheckboxL = false ;this.popCheckboxXL = false ;this.popCheckboxXXL = false ;this.popCheckboxXXXL = false ;
+      this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+      for(let key in this.itemSizes){
+        if(this.itemSizes[key] === 'XS'){
+          this.popCheckboxXS = true
+          this.updateSizes.push('XS')
+        }else if(this.itemSizes[key] === 'S'){
+          this.popCheckboxS = true
+          this.updateSizes.push('S')
+        }else if(this.itemSizes[key] === 'M'){
+          this.popCheckboxM = true
+          this.updateSizes.push('M')
+        }else if(this.itemSizes[key] === 'L'){
+          this.popCheckboxL = true
+          this.updateSizes.push('XL')
+        }else if(this.itemSizes[key] === 'XL'){
+          this.popCheckboxXL = true
+          this.updateSizes.push('XXL')
+        }else if(this.itemSizes[key] === 'XXL'){
+          this.popCheckboxXXL = true
+          this.updateSizes.push('XXL')
+        }else if(this.itemSizes[key] === 'XXXL'){
+          this.popCheckboxXXXL = true
+          this.updateSizes.push('XXXL')
+        }
+      }
+      for(let key in this.itemColors){
+        if(this.itemColors[key] === 'Red'){
+          this.checkRed = true
+          this.updateSizes.push('XS')
+        }else if(this.itemColors[key] === 'Blue'){
+          this.checkBlue = true
+          this.updateSizes.push('S')
+        }else if(this.itemColors[key] === 'Green'){
+          this.checkGreen = true
+          this.updateSizes.push('M')
+        }else if(this.itemColors[key] === 'Yellow'){
+          this.checkYellow = true
+          this.updateSizes.push('XL')
+        }else if(this.itemColors[key] === 'Pink'){
+          this.checkPink = true
+          this.updateSizes.push('XXL')
+        }else if(this.itemColors[key] === 'White'){
+          this.checkWhite = true
+          this.updateSizes.push('XXL')
+        }
+      }
       setTimeout(() => {
         this.searchInput = ''
       }, 100);
@@ -1179,6 +1249,26 @@ export class LandingPage implements OnInit {
     else {
       this.clickedSearchItem = "hideItem"
     }
+  }
+
+  addPictureUpdate(event){
+    this.pictureUpdate = <File>event.target.files[0]
+  }
+
+  updateItem() {
+    console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
+    //console.log(this.updateName);
+
+    return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
+      console.log(result);
+        setTimeout(() => {
+          //this.reloadPage()
+        }, 30);
+      if (result === 'success') {
+        console.log(result);
+        //return this.dismissPromo()
+      }
+    })
   }
 
   reloadPage(){

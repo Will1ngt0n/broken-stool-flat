@@ -366,6 +366,8 @@ export class ProductsService {
   updateNumberOfItems(){  //Cloud Function?
     return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
       let numberOfProducts = result.data().numberOfProducts - 1
+      console.log(numberOfProducts);
+      
       firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
         numberOfProducts: numberOfProducts
       })

@@ -726,22 +726,22 @@ export class ItemsListPage implements OnInit {
     for(let key in this.itemColors){
       if(this.itemColors[key] === 'Red'){
         this.checkRed = true
-        this.updateSizes.push('XS')
+        this.updateColors.push('XS')
       }else if(this.itemColors[key] === 'Blue'){
         this.checkBlue = true
-        this.updateSizes.push('S')
+        this.updateColors.push('S')
       }else if(this.itemColors[key] === 'Green'){
         this.checkGreen = true
-        this.updateSizes.push('M')
+        this.updateColors.push('M')
       }else if(this.itemColors[key] === 'Yellow'){
         this.checkYellow = true
-        this.updateSizes.push('XL')
+        this.updateColors.push('XL')
       }else if(this.itemColors[key] === 'Pink'){
         this.checkPink = true
-        this.updateSizes.push('XXL')
+        this.updateColors.push('XXL')
       }else if(this.itemColors[key] === 'White'){
         this.checkWhite = true
-        this.updateSizes.push('XXL')
+        this.updateColors.push('XXL')
       }
     }
   }
