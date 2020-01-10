@@ -756,10 +756,18 @@ export class LandingPage implements OnInit {
           console.log(data);
           console.log(userID);
           pendingOrder = {refNo : refNo, details : data, noOfItems: data.product.length}
+          for(let key in this.pendingOrders){
+            if(this.pendingOrders[key].refNo === refNo){
+              let index = Number(key)
+              this.pendingOrders.splice(index, 1)
+            }else if(this.pendingOrders[key].refNo !== refNo){
+              //add = true
+            }
+          }
           let index = this.pendingOrders.indexOf(pendingOrder)
           console.log(index);
           
-          this.pendingOrders.splice(index, 1)
+
 
         }
       }
@@ -832,12 +840,15 @@ export class LandingPage implements OnInit {
   refreshOrderHistory(){
     return firebase.firestore().collection('orderHistory').onSnapshot(result => {
       let closedOrder : object = {}
+      let addHistory : boolean
+
       console.log(result);
+      console.log(this.history);
       
       for(let key in result.docChanges()){
         let change = result.docChanges()[key]
         console.log(change);
-        
+        addHistory = false
         if(change.type === 'added'){
           console.log('New item was added');
           console.log(result.docChanges()[key]);
@@ -845,15 +856,24 @@ export class LandingPage implements OnInit {
           //let data : object = {}
           let productID = change.doc.id
           let docData = change.doc.data()
-          let refNo = result.docs[key].id
-          let data = result.docs[key].data()
-            closedOrder = ({refNo : refNo, details : data})
+          let refNo = change.doc.id
+          let data = change.doc.data()
+            closedOrder = {refNo : refNo, details : data}
             console.log(closedOrder);
             ///
             let totalPrice : Number = 0
             let numberOfItems : Number = 0;
             //console.log(this.history);
             if(closedOrder){
+
+              for(let key in this.history){
+                if(this.history[key].refNo !== refNo){
+                  addHistory = true
+                }else if(this.history[key].refNo === refNo){
+                  addHistory = false
+                }
+              }
+              if(addHistory === true){
                 totalPrice = 0
                 numberOfItems = 0
                 for(let i in closedOrder['details'].orders){
@@ -866,12 +886,12 @@ export class LandingPage implements OnInit {
                 closedOrder['details'].totalPrice = totalPrice
                 closedOrder['details'].numberOfItems = numberOfItems
 
-
-
             ////
             this.history.unshift(closedOrder)
             this.orderHistoryLength = this.history.length
-            
+            }else if(addHistory === false){
+
+            }
           }
         }
       }
