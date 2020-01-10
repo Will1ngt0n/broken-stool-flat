@@ -33,6 +33,9 @@
 #admin {
   width: 20%;
   height: 100%;
+  p{
+    cursor: pointer;
+  }
 }
 #admin {
   display: flex;
@@ -40,8 +43,8 @@
 #admin {
   text-align: right;
   p {
-    margin-left: 70px;
     line-height: 30px;
+    width: 100%;
   }
   img {
     margin-left: 10px;
@@ -55,7 +58,6 @@
 #searchbar {
   width: 60%;
   height: 100%;
-  //   background: red;
   margin: 0 auto;
 }
 #mid {
@@ -116,7 +118,6 @@ ion-searchbar {
   }
   .page-title {
     height: 100%;
-    // background: red;
     padding-left: 10px;
     line-height: 37px;
     display: flex;
@@ -130,7 +131,6 @@ ion-searchbar {
       cursor: pointer;
       font-weight: bold;
       transition: 1s;
-      //   border-radius: 5px;
     }
     @media screen and (max-width: 500px) {
       div {
@@ -140,8 +140,6 @@ ion-searchbar {
     }
     div:nth-child(1) {
       margin-left: -10px;
-    }
-    div:nth-child(2) {
     }
   }
 }
@@ -164,14 +162,12 @@ ion-searchbar {
 }
 #all {
   background: white;
-  // color: #7c0000;
 }
 .history-items {
   display: none;
   width: 100%;
   height: 100%;
   position: absolute;
-  // border: 2px solid red;
   background: #f2f2f2;
   top: 0;
   left: 0;
@@ -193,7 +189,6 @@ ion-searchbar {
   .items-list {
     width: 100%;
     height: calc(100% - 50px);
-    // background: red
     overflow-y: scroll;
   }
   ion-card {
@@ -218,7 +213,6 @@ ion-searchbar {
   width: 100%;
   height: 100%;
   position: absolute;
-  // border: 2px solid red;
   background: #f2f2f2;
   top: 0;
   left: 0;
@@ -240,7 +234,6 @@ ion-searchbar {
   .items-list {
     width: 100%;
     height: calc(100% - 50px);
-    // background: red
     overflow-y: scroll;
   }
   ion-card {
@@ -265,7 +258,6 @@ ion-searchbar {
   width: 100%;
   height: 100%;
   position: absolute;
-  // border: 2px solid red;
   background: #f2f2f2;
   top: 0;
   left: 0;
@@ -287,10 +279,8 @@ ion-searchbar {
   .quantities {
     width: 130px;
     height: 20px;
-    // border: 1px solid black;
     display: flex;
     text-align: center;
-    // position: absolute;
     right: 80px;
     bottom: 5px;
   }
@@ -307,13 +297,11 @@ ion-searchbar {
     width: 35px;
     height: 100%;
     background: white;
-    // border: 2px solid red;
     color: grey;
     input {
       width: 100%;
       height: 100%;
       margin-top: -5px;
-      // ty
     }
   }
   .quantities > div:nth-child(3) {
@@ -331,7 +319,6 @@ ion-searchbar {
   .items-list {
     width: 100%;
     height: calc(100% - 50px);
-    // background: red
     overflow-y: scroll;
   }
   ion-card {
@@ -394,7 +381,6 @@ ion-searchbar {
   overflow: hidden;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.28);
   position: relative;
-  // border: 2px solid red;
 
   .gridder {
     width: 100%;
@@ -410,8 +396,6 @@ ion-searchbar {
     .options {
       width: 10%;
       height: 40px;
-      // background: pink;
-      // position: absolute;
       cursor: pointer;
       bottom: 5px;
       display: flex;
@@ -428,9 +412,6 @@ ion-searchbar {
       font-weight: bold;
       margin: 0 auto;
     }
-    // .options > div:nth-child(1) {
-    //   background: green;
-    // }
     .options > div:nth-child(1) {
       background: red;
     }
@@ -444,7 +425,6 @@ ion-searchbar {
   div {
     width: calc(100% - 150px);
     height: 150px;
-    // padding-left: 10px;
     padding-right: 10px;
     h5 {
       font-weight: bold;
@@ -818,7 +798,6 @@ ion-searchbar {
     .opts {
       width: 100%;
       height: 42px;
-      // border: 2px solid red;
       display: flex;
       position: absolute;
       bottom: 0;
