@@ -45,10 +45,13 @@ export class ProductsService {
           })
         }
       }
-
-      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
-        numberOfProducts: numberOfProducts
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+        let number : string = String(Number(result.data().numberOfProducts) + 1)
+        firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+          numberOfProducts: number
+        })
       })
+
       let storageRef = firebase.storage().ref('clothes/' + result.id)
       console.log(picture);
       
@@ -260,6 +263,9 @@ export class ProductsService {
   deleteSpecialsItem(productID, item){
     return firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
       console.log(result);
+      firebase.firestore().collection('Products').doc(item.brand).collection(item.category).doc(productID).update({
+        onSale : false
+      })
       return result
     }).catch(error => {
       return 'Not deleted'

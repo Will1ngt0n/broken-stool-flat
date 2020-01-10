@@ -414,7 +414,7 @@ deleteItem(item, productID){
   
 }
 
-hideItem(item, productID){
+hideItem(productID, item){
   return this.productsService.hideItem(productID, item).then(result => {
     console.log(result);
   })
