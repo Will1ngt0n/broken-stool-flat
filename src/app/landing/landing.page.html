@@ -100,7 +100,7 @@
             <ion-card *ngFor='let item of history' class="item-card-list" (click)='viewOrderHistory(item)'>
               <p class="floating">Paid</p>
               <p><b>{{item.details.userID}}</b></p>
-              <p>R {{item.details.totalPrice}}</p>
+              <p>R {{item.details.grandTotal}}</p>
               <p>REF: {{item.refNo}}</p>
               <p>Items ({{item.details.numberOfItems}})</p>
 

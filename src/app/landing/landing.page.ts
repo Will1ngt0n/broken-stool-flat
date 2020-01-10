@@ -406,6 +406,7 @@ export class LandingPage implements OnInit {
   //   this.route.navigate(['/'])
   // }
   addProduct(){
+    this.currentNumberOfProducts = this.inventoryLength
     let number : string = String(Number(this.currentNumberOfProducts) + 1)
     console.log(number);
 
@@ -475,6 +476,7 @@ export class LandingPage implements OnInit {
     this.price = ''
     this.description = ''
     this.size = [];
+    this.color = []
     this.picture = undefined
     this.myUpload = "../../assets/imgs/default.png"
     //document.getElementById('accessory')['checked'] = false;
@@ -697,24 +699,88 @@ export class LandingPage implements OnInit {
       let pendingOrder = []
      // console.log(result);
       
-      for(let key in result.docs){
-      //  console.log(result.docs[key].id);
-        let refNo = result.docs[key].id
-       // console.log(result.docs[key].data());
-        let data = result.docs[key].data()
-        let userID = data.userID
-        console.log(userID);
-        //this.loadUser(userID)
+      for(let key in result.docChanges()){
 
-        pendingOrder.unshift({refNo : refNo, details : data, noOfItems: data.product.length})
-      };
-      console.log('Snapped', pendingOrder);
-      for (let key in pendingOrder) {
-        this.loadUserName(pendingOrder[key].details.userID)
+        let change = result.docChanges()[key]
+        if(change.type === 'added'){
+          console.log(change);
+          let pendingOrder : object = {}
+          let refNo = change.doc.id
+          let data = change.doc.data()
+          let userID = data.userID
+          console.log(refNo);
+          console.log(data);
+          console.log(userID);
+          
+          
+          
+          pendingOrder = {refNo : refNo, details : data, noOfItems: data.product.length}
+          this.loadUserName(userID)
+          let add : boolean
+          add = false
+          for(let key in this.pendingOrders){
+            if(this.pendingOrders[key].refNo === refNo){
+              add = false
+              let index = Number(key)
+              //this.pendingOrders.splice(index, 1)
+            }else if(this.pendingOrders[key].refNo !== refNo){
+              add = true
+            }
+          }
+
+          if(add === false){
+
+          }else if(add === true){
+            this.pendingOrders.unshift(pendingOrder)
+          }
+
+
+
+
+        }
+        if(change.type === 'modified' ){
+          console.log(change);
+          let pendingOrder : object = {}
+          let refNo = change.doc.id
+          let data = change.doc.data()
+          let userID = data.userID
+          pendingOrder = {refNo : refNo, details : data, noOfItems: data.product.length}
+        }
+        if(change.type === 'removed'){
+          console.log(change);
+          let pendingOrder : object = {}
+          let refNo = change.doc.id
+          let data = change.doc.data()
+          let userID = data.userID
+          console.log(refNo);
+          console.log(data);
+          console.log(userID);
+          pendingOrder = {refNo : refNo, details : data, noOfItems: data.product.length}
+          let index = this.pendingOrders.indexOf(pendingOrder)
+          console.log(index);
+          
+          this.pendingOrders.splice(index, 1)
+
+        }
       }
-        this.pendingOrders = pendingOrder
-        this.pendingOrdersLength = this.pendingOrders.length
-        console.log(this.pendingOrders);
+      //   for(let key in result.docs){
+      // //  console.log(result.docs[key].id);
+      //   let refNo = result.docs[key].id
+      //  // console.log(result.docs[key].data());
+      //   let data = result.docs[key].data()
+      //   let userID = data.userID
+      //   console.log(userID);
+      //   //this.loadUser(userID)
+
+      //   pendingOrder.unshift({refNo : refNo, details : data, noOfItems: data.product.length})
+      // };
+      // console.log('Snapped', pendingOrder);
+      // for (let key in pendingOrder) {
+      //   this.loadUserName(pendingOrder[key].details.userID)
+      // }
+      //   this.pendingOrders = pendingOrder
+      this.pendingOrdersLength = this.pendingOrders.length
+      console.log(this.pendingOrders);
       
 
       return pendingOrder
@@ -722,20 +788,20 @@ export class LandingPage implements OnInit {
   }
   
   getPendingOrders() {
-    // return this.productService.getPendingOrders().then(result => {
-    //   console.log(result);
-    //   let array = result
-    //   if (result.length !== 0) {
-    //     for (let key in result) {
-    //       this.pendingOrders.push(result[key])
-    //       this.pendingOrdersLength = this.pendingOrders.length
-    //       console.log(this.pendingOrders);
-    //     }
-    //     for (let key in this.pendingOrders) {
-    //       this.loadUserName(this.pendingOrders[key].details.userID)
-    //     }
-    //   }
-    // })
+    return this.productService.getPendingOrders().then(result => {
+      console.log(result);
+      let array = result
+      if (result.length !== 0) {
+        for (let key in result) {
+          this.pendingOrders.push(result[key])
+          this.pendingOrdersLength = this.pendingOrders.length
+          console.log(this.pendingOrders);
+        }
+        for (let key in this.pendingOrders) {
+          this.loadUserName(this.pendingOrders[key].details.userID)
+        }
+      }
+    })
   }
   loadUserName(data) {
 
@@ -783,10 +849,31 @@ export class LandingPage implements OnInit {
           let data = result.docs[key].data()
             closedOrder = ({refNo : refNo, details : data})
             console.log(closedOrder);
+            ///
+            let totalPrice : Number = 0
+            let numberOfItems : Number = 0;
+            //console.log(this.history);
+            if(closedOrder){
+                totalPrice = 0
+                numberOfItems = 0
+                for(let i in closedOrder['details'].orders){
+                  //console.log(closedOrder['details'].details);
+                  totalPrice = +totalPrice + +closedOrder['details'].orders[i].cost * +closedOrder['details'].orders[i].quantity
+                  numberOfItems = +numberOfItems + +closedOrder['details'].orders[i].quantity
+                  //console.log(totalPrice);
+                  //console.log(numberOfItems);
+                }
+                closedOrder['details'].totalPrice = totalPrice
+                closedOrder['details'].numberOfItems = numberOfItems
+
+
+
+            ////
             this.history.unshift(closedOrder)
             this.orderHistoryLength = this.history.length
-            };
-          
+            
+          }
+        }
       }
     })
   }
@@ -799,20 +886,30 @@ export class LandingPage implements OnInit {
         this.orderHistoryLength = this.history.length
         let totalPrice : Number = 0
         let numberOfItems : Number = 0;
+        let  grandTotal : Number = 0
         //console.log(this.history);
         if(this.history.length !== 0){
           for(let key in this.history){
             totalPrice = 0
             numberOfItems = 0
+            grandTotal = 0
             for(let i in this.history[key].details.orders){
               //console.log(this.history[key].details);
               totalPrice = +totalPrice + +this.history[key].details.orders[i].cost * +this.history[key].details.orders[i].quantity
               numberOfItems = +numberOfItems + +this.history[key].details.orders[i].quantity
+              if(this.history[key].details.deliveryType === 'Delivery'){
+                grandTotal = Number(totalPrice) + 100
+              }else if(this.history[key].details.deliveryType === 'Collection'){
+                grandTotal = Number(totalPrice)
+              }
               //console.log(totalPrice);
               //console.log(numberOfItems);
             }
             this.history[key].details.totalPrice = totalPrice
             this.history[key].details.numberOfItems = numberOfItems
+            this.history[key].details.grandTotal = grandTotal
+            console.log(grandTotal);
+            
             //console.log(this.history[key]);
             
           }
