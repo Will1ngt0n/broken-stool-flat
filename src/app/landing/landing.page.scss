@@ -309,6 +309,7 @@ ion-searchbar {
       left: 50%;
       transform: translateX(-50%);
       bottom: 5px;
+      text-align: center;
     }
   }
 }
@@ -616,6 +617,9 @@ ion-searchbar {
 }
 
 @media screen and (max-width: 1330px) {
+  #myFab{
+    display: block;
+  }
   .content-container {
     display: none;
   }
@@ -637,6 +641,10 @@ ion-searchbar {
 }
 @media screen and (min-width: 1331px) {
   .mobile-view {
+    display: none;
+  }
+  
+  #myFab{
     display: none;
   }
 }
