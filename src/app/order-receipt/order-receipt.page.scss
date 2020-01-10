@@ -28,6 +28,9 @@
 #admin {
   width: 20%;
   height: 100%;
+  p{
+    cursor: pointer;
+  }
 }
 #admin {
   display: flex;
@@ -35,8 +38,8 @@
 #admin {
   text-align: right;
   p {
-    margin-left: 70px;
     line-height: 30px;
+    width: 100%;
   }
   img {
     margin-left: 10px;
@@ -50,7 +53,6 @@
 #searchbar {
   width: 60%;
   height: 100%;
-  //   background: red;
   margin: 0 auto;
 }
 #mid {
@@ -131,11 +133,9 @@
     padding: 0;
   }
   .subtitle:nth-child(1) {
-    // border: 1px solid red;
     width: 70%;
   }
   .subtitle:nth-child(2) {
-    // border: 1px solid red;
     width: 30%;
   }
 }
