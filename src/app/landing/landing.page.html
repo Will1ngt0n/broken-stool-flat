@@ -24,6 +24,9 @@
         <ion-icon name="close"></ion-icon>
       </button>
       <label for="uploaderBtn" id="imageToupdate">
+        <div id="upload-label">
+          Update Photo
+        </div>
         <img src="../../assets/imgs/331249_1_800.jpeg" *ngIf='!updatePic' alt="">
         <img [src]="updatePic" *ngIf='updatePic' alt="">
       </label>
