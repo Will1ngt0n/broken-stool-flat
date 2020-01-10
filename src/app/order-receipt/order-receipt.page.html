@@ -36,7 +36,7 @@
             </p>
             <div class="items">
               <div class="subtitle">
-                <p class="item" *ngFor='let item of products'>{{item.product_name}} you are here</p>
+                <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
 
                 <p class="item"><b>Total Quantity</b></p>
                 <p class="item"><b>Total</b></p>
@@ -112,7 +112,7 @@
         <p class="nums">Phone <b>{{cell}}</b></p>
         <p class="refNum">REF <b>{{refNo}}</b></p>
         <div id="note">
-          <i>Use this reference number to compare against the reference number provided by your bank provider.</i>
+          <i id="note">Use this reference number to compare against the reference number provided by your bank provider.</i>
         </div>
         <div class="toFlex">
           <p id="SubHeader">Date of Purchase</p>
@@ -126,21 +126,27 @@
             <p class="item" *ngFor='let item of products'>{{item.product_name}}</p>
 
             <p class="item"><b>Total Quantity</b></p>
+            <p class="item"><b>Total</b></p>
+            <p class="item"><b>Delivery Fee</b></p>
             <p class="item"><b>Grand Total</b></p>
             <p><b>Order Type</b></p>
+            <p><b>Date of receipt</b></p>
           </div>
           <div class="subtitle">
             <p *ngFor='let item of products'>{{item.quantity}}</p>
 
             <p><b>{{totalQuantity}}</b></p>
             <p><b>R {{totalPrice}}</b></p>
-            <p>Collection</p>
+            <p><b>R {{deliveryFee}}</b></p>
+            <p><b>R {{grandTotal}}</b></p>
+            <p>{{deliveryType}}</p>
+            <p>{{dateClosed}}</p>
           </div>
         </div>
         <p id="subHeader">
           Order Address
         </p>
-        <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
+        <p id="address">{{deliveryAddress}}</p>
         <p id="Notifier">Order has been closed.</p>
       </div>
     </div>
