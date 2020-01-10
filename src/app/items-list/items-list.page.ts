@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import * as firebase from 'firebase'
+
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
 @Component({
@@ -72,6 +73,7 @@ export class ItemsListPage implements OnInit {
   orderedSummerProducts: Array<any> = []
   seasonalWear: Array<any> = []
   status = ['ready', 'recieved', 'collected', 'processed', 'cancelled']
+  salePrice
   blackAvailable; blackPic
   brownAvailable; brownPic
   orangeAvailable; orangePic
@@ -108,6 +110,7 @@ export class ItemsListPage implements OnInit {
     this.department = undefined
     this.addForm = false
     this.formHasValues = false
+    //moment().format('YYYY MM DD')
     // let date = moment(new Date()).format('LLLL');
     // let tee = moment(new Date('10/12/2019')).format('LLLL')
     // console.log(date);
@@ -656,6 +659,36 @@ export class ItemsListPage implements OnInit {
   reloadPage(){
     window.location.reload()
 
+  }
+  calculateSalePrice(event){
+    console.log(event.target.value);
+    if(event.target.value === ''){
+
+    }else if(event.target.value === ' '){
+      event.target.value = ''
+    }else if(event.target.value !== ''){
+      if(event.target.value > 100){
+        event.target.value = 99
+        this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
+        console.log(this.salePrice);
+        
+      }else if(event.target.value < 1){
+        event.target.value = 1
+        this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
+        console.log(this.salePrice);
+        
+      }else{
+        this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
+        console.log(this.salePrice);
+      }
+    }
+
+    //this.salePrice = this.itemPrice - this.itemPrice * this.editPercentage / 100
+    //console.log(this.salePrice);
+    //let price = this.itemPrice - this.itemPrice * this.editPercentage / 100
+    //console.log(price);
+    //console.log(this.salePrice);
+    
   }
   pictureUpdate : File
   updateItem() {

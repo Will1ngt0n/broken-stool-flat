@@ -867,7 +867,12 @@ export class LandingPage implements OnInit {
             if(closedOrder){
 
               for(let key in this.history){
+                addHistory = false
                 if(this.history[key].refNo !== refNo){
+                  console.log('history Ref = ', this.history[key].refNo);
+                  console.log('new item refNo');
+                  
+                  
                   addHistory = true
                 }else if(this.history[key].refNo === refNo){
                   addHistory = false
