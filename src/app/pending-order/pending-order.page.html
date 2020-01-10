@@ -159,10 +159,10 @@
           <p id="address">4877 Ugago Street Protea Glen Ext 3 Johannesburg 1819</p>
           <p id="Notifier" *ngIf="status === 'collected'">Order has been closed.</p>
           <div>
-              <ion-button color="danger" (click)='cancelOrder()' *ngIf="status === 'received'">Cancel Order</ion-button>
-              <ion-button color="warning" (click)='processOrder()' *ngIf="status === 'received'">Process Order</ion-button>
-              <ion-button color="success" (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection</ion-button>
-              <ion-button color="success" (click)='orderCollected()' *ngIf="status === 'ready'">Collected</ion-button>
+            <ion-button color="danger" (click)='cancelOrder()' *ngIf="status === 'received'">Cancel Order</ion-button>
+            <ion-button color="warning" (click)='processOrder()' *ngIf="status === 'received'">Process Order</ion-button>
+            <ion-button color="success" (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection</ion-button>
+            <ion-button color="success" (click)='orderCollected()' *ngIf="status === 'ready'">Collected</ion-button>
           </div>
 
       </div>
