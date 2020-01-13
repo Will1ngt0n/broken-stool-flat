@@ -15,7 +15,7 @@
         </p>
         <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage' (keyup)='calculateSalePrice($event);'>
         <div class="gridded-inputs">
-          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' /><input type="date"
+          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' min='2020-01-13'/><input type="date"
             placeholder="End Date" [(ngModel)]='editEndDate' />
         </div>
         <div class="gridded-inputs">
