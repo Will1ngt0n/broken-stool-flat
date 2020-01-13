@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 ​​import * as moment from 'moment'
 @Component({
   selector: 'app-order-receipt',
@@ -27,8 +27,18 @@ export class OrderReceiptPage implements OnInit {
   userAddress
   datePurchased
   routingPage
-  constructor(private alertController : AlertController, private authService : AuthService, private activatedRoute : ActivatedRoute, private productsService : ProductsService, private route : Router) {
+  constructor(public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, private activatedRoute : ActivatedRoute, private productsService : ProductsService, private route : Router) {
 ​
+  }
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Loading...',
+    });
+    await loading.present();
+  
+    // const { role, data } = await loading.onDidDismiss();
+  
+    // console.log('Loading dismissed!');
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()
@@ -64,6 +74,7 @@ export class OrderReceiptPage implements OnInit {
   }
 ​   dateClosed
   getOrderHistory(refNo, name){
+    this.presentLoading()
     return this.productsService.getOrderHistoryDetails(refNo).then(result => {
       console.log(result)
        this.item = result[0]
@@ -105,6 +116,7 @@ export class OrderReceiptPage implements OnInit {
       this.grandTotal = +this.totalPrice
       console.log(this.grandTotal);
     }
+    this.loadingCtrl.dismiss()
    }
    countQuantity(){
      this.totalQuantity = 0
@@ -139,7 +151,7 @@ export class OrderReceiptPage implements OnInit {
           console.log(this.cell);
           this.routingPage = result.link
           console.log(this.routingPage);
-          
+          //this.presentLoading()
           this.getOrderHistory(this.refNo, name)
           this.loadPictures().then(result => {
             console.log(result);
