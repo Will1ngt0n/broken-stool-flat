@@ -1583,7 +1583,7 @@ export class LandingPage implements OnInit {
       message: message,
       buttons: [
         {
-          text: 'Delete',
+          text: 'Okay',
           handler: (okay) => {
             console.log('User clicked "okay"');
 

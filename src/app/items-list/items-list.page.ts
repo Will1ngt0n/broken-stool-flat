@@ -143,7 +143,7 @@ export class ItemsListPage implements OnInit {
       message: message,
       buttons: [
         {
-          text: 'Delete',
+          text: 'Okay',
           handler: (okay) => {
             console.log('User clicked "okay"');
 
@@ -154,7 +154,7 @@ export class ItemsListPage implements OnInit {
 
     await alert.present();
   }
-  
+
   signOutPopup() {
     this.presentLogoutConfirmAlert()
   }
@@ -685,6 +685,7 @@ export class ItemsListPage implements OnInit {
       console.log(result);
       if(result === 'Deleted'){
         this.loadingCtrl.dismiss()
+        
       }
       //location.reload()
     })
@@ -761,7 +762,9 @@ export class ItemsListPage implements OnInit {
       if (result === 'success') {
         console.log(result);
         this.loadingCtrl.dismiss()
+        this.productAlert('Product was successfully updated')
         return this.dismissPromo()
+
 
       }
     })
