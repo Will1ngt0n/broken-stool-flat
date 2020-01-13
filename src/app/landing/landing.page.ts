@@ -549,6 +549,7 @@ export class LandingPage implements OnInit {
     }).then(result => {
       this.loadTotalNumberOfProducts()
       this.loadingCtrl.dismiss()
+      this.productAlert('Product was successfully added')
       firebase.firestore().collection('Products').doc(this.department).collection(this.selectedCategory).onSnapshot(result => {
         result.docChanges()
         console.log(result);
@@ -1576,7 +1577,23 @@ export class LandingPage implements OnInit {
       }
     })
   }
+  async productAlert(message) {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      message: message,
+      buttons: [
+        {
+          text: 'Delete',
+          handler: (okay) => {
+            console.log('User clicked "okay"');
 
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
   async deleteItem(productID, brand, category, item) {
     const alert = await this.alertController.create({
       header: 'Confirm!',
@@ -1613,6 +1630,7 @@ export class LandingPage implements OnInit {
             this.inventoryLength = this.allProducts.length
             this.loadTotalNumberOfProducts()
             this.loadingCtrl.dismiss()
+            this.productAlert('Product was successfully deleted')
           }
         }
         // firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {

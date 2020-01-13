@@ -136,6 +136,25 @@ export class ItemsListPage implements OnInit {
     //this.getClosedOrders()
     this.getInventory()
   }
+
+  async productAlert(message) {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      message: message,
+      buttons: [
+        {
+          text: 'Delete',
+          handler: (okay) => {
+            console.log('User clicked "okay"');
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  
   signOutPopup() {
     this.presentLogoutConfirmAlert()
   }
