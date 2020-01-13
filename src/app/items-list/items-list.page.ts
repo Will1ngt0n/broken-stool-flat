@@ -35,7 +35,7 @@ export class ItemsListPage implements OnInit {
   //promos
   itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink; itemSizes; itemColors
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
-  
+  promoButtonEnabled : boolean
   checkXS : boolean; checkS : boolean; checkM : boolean; checkL : boolean; checkXL : boolean; checkXXL : boolean; checkXXXL : boolean;
   checkRed: boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
   //updates
@@ -124,6 +124,8 @@ export class ItemsListPage implements OnInit {
     //   console.log(date);
 
     // }
+
+    this.promoButtonEnabled = false
     this.orderItems()
 
     // for (let key in this.status) {
@@ -606,6 +608,7 @@ export class ItemsListPage implements OnInit {
       console.log(date);
       this.endDateLimit = moment(this.editStartDate).format('YYYY-MM-'+ date)
     }
+    this.checkPromoValidity()
   }
   promoteItem() {
     console.log(this.editPercentage);
@@ -625,6 +628,10 @@ export class ItemsListPage implements OnInit {
         alert('An error occurred, please retry')
       )
     })
+  }
+
+  runCheck(){
+    this.checkPromoValidity()
   }
   async deleteItem(productID, brand, category, item) {
     const alert = await this.alertController.create({
@@ -678,7 +685,7 @@ export class ItemsListPage implements OnInit {
   calculateSalePrice(event){
     console.log(event.target.value);
     if(event.target.value === ''){
-
+      
     }else if(event.target.value === ' '){
       event.target.value = ''
     }else if(event.target.value !== ''){
@@ -687,8 +694,8 @@ export class ItemsListPage implements OnInit {
         this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
         console.log(this.salePrice);
         
-      }else if(event.target.value < 1){
-        event.target.value = 1
+      }else if(event.target.value < 0){
+        event.target.value = 0
         this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
         console.log(this.salePrice);
         
@@ -697,7 +704,7 @@ export class ItemsListPage implements OnInit {
         console.log(this.salePrice);
       }
     }
-
+    this.checkPromoValidity()
     //this.salePrice = this.itemPrice - this.itemPrice * this.editPercentage / 100
     //console.log(this.salePrice);
     //let price = this.itemPrice - this.itemPrice * this.editPercentage / 100
@@ -723,6 +730,23 @@ export class ItemsListPage implements OnInit {
   }
   addPictureUpdate(event){
     this.pictureUpdate = <File>event.target.files[0]
+  }
+
+  checkPromoValidity(){
+    if(this.editStartDate === undefined || this.editStartDate === '' || this.editEndDate === undefined || this.editEndDate === '' || this.editPercentage === 0 || this.editPercentage === undefined || this.editPercentage === null){
+      this.promoButtonEnabled = false
+      console.log(this.editPercentage);
+      console.log(this.editStartDate);
+      console.log(this.editEndDate);
+      
+      
+      
+    }else if(this.editEndDate !== undefined && this.editEndDate !== '' && this.editStartDate !== undefined &&  this.editStartDate !== '' && this.editPercentage !== 0 && this.editPercentage !== undefined && this.editPercentage !== null){
+      this.promoButtonEnabled = true
+      console.log(this.editPercentage);
+      console.log(this.editStartDate);
+      console.log(this.editEndDate);
+    }
   }
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 

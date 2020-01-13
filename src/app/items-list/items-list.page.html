@@ -16,11 +16,11 @@
         <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage' (keyup)='calculateSalePrice($event);'>
         <div class="gridded-inputs">
           <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' [min]='today' (change)='enableEndDateInput()'/><input  [disabled]='!editStartDate' type="date"
-            placeholder="End Date" [(ngModel)]='editEndDate' [min]='endDateLimit'/>
+            placeholder="End Date" [(ngModel)]='editEndDate' [min]='endDateLimit' (change)='runCheck()'/>
         </div>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success" (click)='promoteItem()'>Promote</ion-button>
+          <ion-button color="success" (click)='promoteItem()' [disabled]='!promoButtonEnabled'>Promote</ion-button>
         </div>
       </div>
     </div>
