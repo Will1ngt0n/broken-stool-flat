@@ -1126,6 +1126,9 @@ export class LandingPage implements OnInit {
     //console.log(item);
     let parameter: NavigationExtras = { queryParams: { category: item, link: '/landing', refNo: item.refNo, userID: item.details.uid } }
     this.navCtrl.navigateForward(['order-receipt'], parameter);
+    this.hideSideMenu()
+    console.log(item.details);
+    
   }
   closeOrder(docID) {
     return this.productService.closedOrder(docID).then(result => {
@@ -1212,18 +1215,27 @@ export class LandingPage implements OnInit {
   }
   saveQuantity(brand, category, productID, quantity) {
     console.log(brand, category, productID, quantity);
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Your settings have been saved.';
+    toast.duration = 2000;
+  
+    document.body.appendChild(toast);
+    
     if (quantity === '') {
       quantity = 0
     }
     return this.productService.updateQuantity(brand, category, productID, quantity).then(result => {
       console.log(result);
-      alert('Quantity has been saved')
+      // alert('Quantity has been saved');
+      this.hideSideMenu();
+      return toast.present();
     })
   }
   viewPendingOrder(item) {
     //console.log(item);
     let parameter: NavigationExtras = { queryParams: { status: item.details.status, refNo: item.refNo, userID: item.details.userID, user: item.details.name, cell: item.details.cell, currentPage: '/landing' } }
     this.navCtrl.navigateForward(['pending-order'], parameter);
+    this.hideSideMenu()
   }
  
 

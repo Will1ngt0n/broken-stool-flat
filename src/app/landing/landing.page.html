@@ -106,7 +106,8 @@
           </div>
           <div class="items-list">
             <ion-card *ngFor='let item of history' class="item-card-list" (click)='viewOrderHistory(item)'>
-              <p class="floating">Paid</p>
+              <p class="floating" *ngIf="item.details.status === 'cancelled'">Cancelled</p>
+              <p class="floating" *ngIf="item.details.status !== 'cancelled'">{{item.details.status}}</p>
               <p><b>{{item.details.userID}}</b></p>
               <p>R {{item.details.grandTotal}}</p>
               <p>REF: {{item.refNo}}</p>
@@ -331,7 +332,7 @@
       </div>
       <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
       <div *ngIf="miniSearchBarState">
-        <ion-searchbar [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' show-cancel-button="never"></ion-searchbar>
+        <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search" show-cancel-button="never"></ion-input>
       </div>
       <div (click)="showSearchBar()">
         <ion-icon name="{{searchButtonState}}"></ion-icon>
@@ -396,9 +397,17 @@
             <h5>Inventory</h5>
           </div>
           <div class="myItems" *ngFor='let item of allProducts '>
-            <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+            <img [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
             <p id="nameOfItem">{{item.data.name}}</p>
             <p id="item-price">{{item.data.quantity}}</p>
+            <p>{{item.productID}}</p>
+            <ion-button id="minuser-small" (click)='subtract(item)'>
+              <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+            </ion-button>
+            <ion-button id="adder-small" (click)='add(item)'>
+              <ion-icon ios="ios-add" md="md-add"></ion-icon>
+            </ion-button>
+            <ion-button id="adder-small" color="success" (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</ion-button>
 
           </div>
             <div class="quantities">
