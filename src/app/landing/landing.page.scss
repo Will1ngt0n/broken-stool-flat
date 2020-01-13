@@ -126,7 +126,7 @@
     .myBox {
       width: 16.6666666666666%;
       height: 39px;
-      background: red;
+      // background: red;
       .myCheck {
         width: 100%;
         height: 100%;
@@ -460,9 +460,6 @@ ion-searchbar {
     height: calc(100% - 50px);
       
     overflow-y: scroll;
-  }
-  .item-card-list {
-    cursor: pointer;
   }
   ion-card {
     background: white;
@@ -874,6 +871,15 @@ ion-searchbar {
     #qtyInput {
       width: 100px;
     }
+
+    input{
+      border: .5px solid red;
+      width: 160px;
+      padding-left: 5px;
+      border-radius: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   }
   .inserter {
     border-bottom: 1px solid black;
@@ -973,4 +979,7 @@ label {
   font-weight: 500;
   border-radius: 5px;
   padding-left: 5px !important;
+}
+.item-card-list {
+  cursor: pointer;
 }
