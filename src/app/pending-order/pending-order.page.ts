@@ -233,10 +233,11 @@ orderReady(){
   })
 }
 orderCollected(){
+  let status;
   if(this.deliveryType === 'Collection'){
-    let status = 'Collected'
+    status = 'Collected'
   }else if(this.deliveryType === 'Delivery'){
-    let status = 'Delivered'
+    status = 'Delivered'
   }
 
   return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType, this.purchaseDate).then(result => {
