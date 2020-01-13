@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import * as firebase from 'firebase'
-
+import * as moment from 'moment'
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { LoginPage } from '../login/login.page';
+import { log } from 'util';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -19,6 +21,9 @@ export class ItemsListPage implements OnInit {
   allItems: Array<any> = []
   currentViewedItems: Array<any> = [] //products under the category and brand the user just clicked on in previous pages
   price
+  today
+  endDateLimit
+
   description
   quantity
   searchInput
@@ -30,7 +35,7 @@ export class ItemsListPage implements OnInit {
   //promos
   itemName; itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink; itemSizes; itemColors
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
-  
+  promoButtonEnabled : boolean
   checkXS : boolean; checkS : boolean; checkM : boolean; checkL : boolean; checkXL : boolean; checkXXL : boolean; checkXXXL : boolean;
   checkRed: boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
   //updates
@@ -99,7 +104,7 @@ export class ItemsListPage implements OnInit {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+  constructor(public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     console.log(this.department);
     //this.productsService.getCategories()
     this.loadDankieJesuItems()
@@ -119,6 +124,8 @@ export class ItemsListPage implements OnInit {
     //   console.log(date);
 
     // }
+
+    this.promoButtonEnabled = false
     this.orderItems()
 
     // for (let key in this.status) {
@@ -129,6 +136,25 @@ export class ItemsListPage implements OnInit {
     //this.getClosedOrders()
     this.getInventory()
   }
+
+  async productAlert(message) {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      message: message,
+      buttons: [
+        {
+          text: 'Delete',
+          handler: (okay) => {
+            console.log('User clicked "okay"');
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  
   signOutPopup() {
     this.presentLogoutConfirmAlert()
   }
@@ -529,6 +555,9 @@ export class ItemsListPage implements OnInit {
         this.route.navigate(['/login'])
       } else {
         this.activatedRoute.queryParams.subscribe(result => {
+          this.today = moment(new Date()).format('YYYY-MM-DD')
+          console.log(this.today);
+          
           console.log(result);
           this.currentCategory = result.category
           let brand = result.brand
@@ -592,7 +621,16 @@ export class ItemsListPage implements OnInit {
   //     //console.log(this.allItems);
   //   })
   // }
+  enableEndDateInput(){
+    if(this.editStartDate){
+      let date : number = Number(moment(this.editStartDate).format('DD')) + 1
+      console.log(date);
+      this.endDateLimit = moment(this.editStartDate).format('YYYY-MM-'+ date)
+    }
+    this.checkPromoValidity()
+  }
   promoteItem() {
+    this.presentLoading()
     console.log(this.editPercentage);
     console.log(this.editStartDate);
     console.log(this.editEndDate);
@@ -601,15 +639,21 @@ export class ItemsListPage implements OnInit {
     console.log(price);
 
 
-    return this.productsService.promoteItem(price, this.editPercentage, this.editStartDate, this.editEndDate, this.itemBrand, this.itemCategory, this.itemID, this.itemName, this.itemImageLink, this.itemDescription, this.selectedItem).then(result => {
+    return this.productsService.promoteItem(this.salePrice, this.editPercentage, this.editStartDate, this.editEndDate, this.itemBrand, this.itemCategory, this.itemID, this.itemName, this.itemImageLink, this.itemDescription, this.selectedItem).then(result => {
       console.log(result);
       if(result === 'success'){
         console.log(result);
+        this.loadingCtrl.dismiss()
         return this.dismissPromo()
+
       }else(
         alert('An error occurred, please retry')
       )
     })
+  }
+
+  runCheck(){
+    this.checkPromoValidity()
   }
   async deleteItem(productID, brand, category, item) {
     const alert = await this.alertController.create({
@@ -636,24 +680,35 @@ export class ItemsListPage implements OnInit {
     await alert.present();
   }
   deleteItemConfirmed(productID, brand, category, item) {
-    
+    this.presentLoading()
     return this.productsService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
+      if(result === 'Deleted'){
+        this.loadingCtrl.dismiss()
+      }
       //location.reload()
     })
   }
   hideItem(productID, brand, category) {
+    this.presentLoading()
     return this.productsService.hideProduct(productID, brand, category).then(result => {
       console.log(result);
+      if(result === 'success'){
+        this.loadingCtrl.dismiss()
+      }
     })
   }
   showItem(productID, brand, category) {
+    this.presentLoading()
     return this.productsService.showProduct(productID, brand, category).then(result => {
       console.log(result);
       // firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).onSnapshot( result => {
       //   let hideItem = result.data().hideItem
         
       // })
+      if(result === 'success'){
+        this.loadingCtrl.dismiss()
+      }
     })
   }
   reloadPage(){
@@ -663,7 +718,9 @@ export class ItemsListPage implements OnInit {
   calculateSalePrice(event){
     console.log(event.target.value);
     if(event.target.value === ''){
-
+      this.salePrice = 0
+      console.log(this.salePrice);
+      
     }else if(event.target.value === ' '){
       event.target.value = ''
     }else if(event.target.value !== ''){
@@ -672,8 +729,8 @@ export class ItemsListPage implements OnInit {
         this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
         console.log(this.salePrice);
         
-      }else if(event.target.value < 1){
-        event.target.value = 1
+      }else if(event.target.value < 0){
+        event.target.value = 0
         this.salePrice = this.itemPrice - this.itemPrice * event.target.value / 100
         console.log(this.salePrice);
         
@@ -682,7 +739,7 @@ export class ItemsListPage implements OnInit {
         console.log(this.salePrice);
       }
     }
-
+    this.checkPromoValidity()
     //this.salePrice = this.itemPrice - this.itemPrice * this.editPercentage / 100
     //console.log(this.salePrice);
     //let price = this.itemPrice - this.itemPrice * this.editPercentage / 100
@@ -692,6 +749,7 @@ export class ItemsListPage implements OnInit {
   }
   pictureUpdate : File
   updateItem() {
+    this.presentLoading()
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
     //console.log(this.updateName);
 
@@ -702,15 +760,44 @@ export class ItemsListPage implements OnInit {
         }, 30);
       if (result === 'success') {
         console.log(result);
+        this.loadingCtrl.dismiss()
         return this.dismissPromo()
+
       }
     })
   }
   addPictureUpdate(event){
     this.pictureUpdate = <File>event.target.files[0]
   }
+
+  checkPromoValidity(){
+    if(this.editStartDate === undefined || this.editStartDate === '' || this.editEndDate === undefined || this.editEndDate === '' || this.editPercentage === 0 || this.editPercentage === undefined || this.editPercentage === null){
+      this.promoButtonEnabled = false
+      console.log(this.editPercentage);
+      console.log(this.editStartDate);
+      console.log(this.editEndDate);
+      
+      
+      
+    }else if(this.editEndDate !== undefined && this.editEndDate !== '' && this.editStartDate !== undefined &&  this.editStartDate !== '' && this.editPercentage !== 0 && this.editPercentage !== undefined && this.editPercentage !== null){
+      this.promoButtonEnabled = true
+      console.log(this.editPercentage);
+      console.log(this.editStartDate);
+      console.log(this.editEndDate);
+    }
+  }
   submitUpdatedItem(itemName, itemPrice, itemDescription) {
 
+  }
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Loading...',
+    });
+    await loading.present();
+
+    // const { role, data } = await loading.onDidDismiss();
+
+    // console.log('Loading dismissed!');
   }
   toggleUpdate(productID, brand, category, name, description, price, imageLink, sizes, colors) {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;

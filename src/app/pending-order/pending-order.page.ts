@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import * as firebase from 'firebase'
 ​​import * as moment from 'moment'
 declare var window
@@ -29,7 +29,7 @@ export class PendingOrderPage implements OnInit {
   cell
   totalQuantity : number
   routingPage
-  constructor(private alertController : AlertController, private authService : AuthService, private route : Router, private activatedRoute : ActivatedRoute, private productsService: ProductsService) { }
+  constructor(public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, private route : Router, private activatedRoute : ActivatedRoute, private productsService: ProductsService) { }
 ​
   ngOnInit() {
     
@@ -104,6 +104,7 @@ export class PendingOrderPage implements OnInit {
     })
   }
 getOrder(refNo, name){
+  this.presentLoading()
  return this.productsService.getOrderDetails(refNo).then(result => {
     this.item = result[0]
     this.item['details'].name = name
@@ -136,13 +137,23 @@ getOrder(refNo, name){
     this.countQuantity()
   })
 }
+async presentLoading() {
+  const loading = await this.loadingCtrl.create({
+    message: 'Loading...',
+  });
+  await loading.present();
+
+  // const { role, data } = await loading.onDidDismiss();
+
+  // console.log('Loading dismissed!');
+}
 countQuantity(){
   this.totalQuantity = 0
   for(let key in this.products){
     this.totalQuantity = this.totalQuantity + this.products[key].quantity
   }
   console.log(this.totalQuantity);
-  
+  this.loadingCtrl.dismiss()
 }
 goBack(){
   this.route.navigate([this.routingPage])
@@ -183,11 +194,15 @@ goBack(){
 ​status : string;
 cancelOrder(){
   let status = 'cancelled'
+  this.presentLoading()
   return this.productsService.cancelOrder(this.refNo, status, this.userID, this.products,  this.purchaseDate).then(result => {
+    this.loadingCtrl.dismiss()
     this.route.navigate([this.routingPage])
+
   })
 }
 processOrder(){
+  this.presentLoading()
   let status
   // if(this.item['details']['status'] === 'Order recieved' || this.item['details']['status'] === 'received'){
     status = 'processed'
@@ -214,12 +229,14 @@ processOrder(){
         //     this.status = status
         //   }
         // }
+        this.loadingCtrl.dismiss()
       })
     }
   })
 ​
 }
 orderReady(){
+  this.presentLoading()
   let status = 'ready'
   return this.productsService.processOrder(this.refNo, status).then(result => {
     //window.location.reload()
@@ -228,12 +245,14 @@ orderReady(){
         console.log(result.metadata);
         let status = result.data().status
         this.status = status
+        this.loadingCtrl.dismiss()
       })
     }
   })
 }
 orderCollected(){
   let status;
+  this.presentLoading()
   if(this.deliveryType === 'Collection'){
     status = 'Collected'
   }else if(this.deliveryType === 'Delivery'){
@@ -241,6 +260,7 @@ orderCollected(){
   }
 
   return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType, this.purchaseDate).then(result => {
+    this.loadingCtrl.dismiss()
     this.route.navigate([this.routingPage])
   })
 }

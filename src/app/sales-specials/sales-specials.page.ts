@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import * as firebase from 'firebase'
 @Component({
   selector: 'app-sales-specials',
@@ -85,7 +85,7 @@ export class SalesSpecialsPage implements OnInit {
   @ViewChild('checkboxYellow', {static : true}) checkboxYellow : ElementRef
   @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
   @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
-  constructor(private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
+  constructor(public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
 
     //this.getDankieJesuSales('Dankie Jesu')
 
@@ -196,6 +196,17 @@ export class SalesSpecialsPage implements OnInit {
       }
     }
     console.log(this.dankieJesuSales);
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Loading...',
+    });
+    await loading.present();
+
+    // const { role, data } = await loading.onDidDismiss();
+
+    // console.log('Loading dismissed!');
   }
 
   async loadPictures(){
@@ -400,9 +411,12 @@ deleteItem(item, productID){
   
         console.log(productID);
         console.log(item);
-        
+        this.presentLoading()
         return this.productsService.deleteSpecialsItem(productID, item).then(result => {
           console.log(result);
+          if(result === 'success'){
+            this.loadingCtrl.dismiss()
+          }
           //location.reload()
         })
       }
@@ -415,14 +429,17 @@ deleteItem(item, productID){
 }
 
 hideItem(productID, item){
+  this.presentLoading()
   return this.productsService.hideItem(productID, item).then(result => {
     console.log(result);
+    this.loadingCtrl.dismiss()
   })
 }
 
 updateItem(productID, item){
+  this.presentLoading()
   return this.productsService.updateSpecialsItem(productID, item, this.newPrice, this.newPricePercentage, this.newStartDate, this.newEndDate).then(result => {
-    
+this.loadingCtrl.dismiss()
   })
 }
 /////////Adding product form (validation and data retrieval)

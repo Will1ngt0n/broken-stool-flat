@@ -15,12 +15,12 @@
         </p>
         <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage' (keyup)='calculateSalePrice($event);'>
         <div class="gridded-inputs">
-          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' /><input type="date"
-            placeholder="End Date" [(ngModel)]='editEndDate' />
+          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' [min]='today' (change)='enableEndDateInput()'/><input  [disabled]='!editStartDate' type="date"
+            placeholder="End Date" [(ngModel)]='editEndDate' [min]='endDateLimit' (change)='runCheck()'/>
         </div>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success" (click)='promoteItem()'>Promote</ion-button>
+          <ion-button color="success" (click)='promoteItem()' [disabled]='promoButtonEnabled'>Promote</ion-button>
         </div>
       </div>
     </div>
@@ -197,7 +197,10 @@
                   </button>
                 </div>
                 <div>
-                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'>
+                  <button icon-only (click)='showItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === true'>
+                    <ion-icon name="eye"></ion-icon>
+                  </button>
+                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === false'>
                     <ion-icon name="eye-off"></ion-icon>
                   </button>
                 </div>
