@@ -76,7 +76,8 @@
         <input #updateSearchPic width='100px' id="uploaderBtn" class='pictureInput' type="file"
           accept="image/jpeg, jpg, tif, png" (change)='addUpdatePicture($event)'>
         <ion-button color="dark" (click)='updateItem()'>Update</ion-button>
-        <ion-button color="medium" (click)='hideItem(item.productID, item.brand, item.category)'>Hide</ion-button>
+        <ion-button color="medium" (click)='hideItem(item.productID, item.brand, item.category)'  *ngIf='item.data.hideItem === false'>Hide</ion-button>
+        <ion-button color='medium' (click)='showItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === true'>Show</ion-button>
         <ion-button color="danger" (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete</ion-button>
       </div>
     </div>

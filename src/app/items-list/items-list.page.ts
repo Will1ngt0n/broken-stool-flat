@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import * as firebase from 'firebase'
-
+import * as moment from 'moment'
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController } from '@ionic/angular';
+import { LoginPage } from '../login/login.page';
+import { log } from 'util';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -19,6 +21,9 @@ export class ItemsListPage implements OnInit {
   allItems: Array<any> = []
   currentViewedItems: Array<any> = [] //products under the category and brand the user just clicked on in previous pages
   price
+  today
+  endDateLimit
+
   description
   quantity
   searchInput
@@ -529,6 +534,9 @@ export class ItemsListPage implements OnInit {
         this.route.navigate(['/login'])
       } else {
         this.activatedRoute.queryParams.subscribe(result => {
+          this.today = moment(new Date()).format('YYYY-MM-DD')
+          console.log(this.today);
+          
           console.log(result);
           this.currentCategory = result.category
           let brand = result.brand
@@ -592,6 +600,13 @@ export class ItemsListPage implements OnInit {
   //     //console.log(this.allItems);
   //   })
   // }
+  enableEndDateInput(){
+    if(this.editStartDate){
+      let date : number = Number(moment(this.editStartDate).format('DD')) + 1
+      console.log(date);
+      this.endDateLimit = moment(this.editStartDate).format('YYYY-MM-'+ date)
+    }
+  }
   promoteItem() {
     console.log(this.editPercentage);
     console.log(this.editStartDate);

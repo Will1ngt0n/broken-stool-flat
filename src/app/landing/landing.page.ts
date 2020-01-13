@@ -132,7 +132,7 @@ export class LandingPage implements OnInit {
   }
   itemPrice; itemDescription; itemBrand; itemCategory; itemID; itemImageLink; itemSizes; itemColors
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
-
+  searchedProductStatus
   popCheckboxXS : boolean; popCheckboxS : boolean; popCheckboxM : boolean; popCheckboxL : boolean; popCheckboxXL : boolean; popCheckboxXXL : boolean; popCheckboxXXXL : boolean ;
   checkRed : boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
@@ -175,7 +175,7 @@ export class LandingPage implements OnInit {
     //     this.orderItems()
     //   }
     // }
-    this.getPendingOrdersSnap()
+
     this.getPendingOrders()
     this.getReadyOrders()
     this.getOrderHistory()
@@ -234,6 +234,7 @@ export class LandingPage implements OnInit {
   ngOnInit() { ////copy
     this.nativeCategory.nativeElement.disabled = true
     this.refreshOrderHistory()
+    this.getPendingOrdersSnap()
     return this.authService.checkingAuthState().then( result => {
       if(result === null){
         this.route.navigate(['/login'])
@@ -839,9 +840,13 @@ export class LandingPage implements OnInit {
   }
   refreshOrderHistory(){
     return firebase.firestore().collection('orderHistory').onSnapshot(result => {
-      let closedOrder : object = {}
+      let closedOrder : Array<any> = []
       let addHistory : boolean
-
+      let refNo
+      let data
+      let totalPrice : Number = 0
+      let grandTotal : Number = 0
+      let numberOfItems : Number = 0;
       console.log(result);
       console.log(this.history);
       
@@ -856,50 +861,69 @@ export class LandingPage implements OnInit {
           //let data : object = {}
           let productID = change.doc.id
           let docData = change.doc.data()
-          let refNo = change.doc.id
-          let data = change.doc.data()
-            closedOrder = {refNo : refNo, details : data}
+          refNo = change.doc.id
+          data = change.doc.data()
+            closedOrder.push({refNo : refNo, details : data})
             console.log(closedOrder);
             ///
-            let totalPrice : Number = 0
-            let numberOfItems : Number = 0;
+
             //console.log(this.history);
             if(closedOrder){
 
-              for(let key in this.history){
-                addHistory = false
-                if(this.history[key].refNo !== refNo){
-                  console.log('history Ref = ', this.history[key].refNo);
-                  console.log('new item refNo');
-                  
-                  
-                  addHistory = true
-                }else if(this.history[key].refNo === refNo){
-                  addHistory = false
-                }
-              }
-              if(addHistory === true){
-                totalPrice = 0
-                numberOfItems = 0
-                for(let i in closedOrder['details'].orders){
-                  //console.log(closedOrder['details'].details);
-                  totalPrice = +totalPrice + +closedOrder['details'].orders[i].cost * +closedOrder['details'].orders[i].quantity
-                  numberOfItems = +numberOfItems + +closedOrder['details'].orders[i].quantity
-                  //console.log(totalPrice);
-                  //console.log(numberOfItems);
-                }
-                closedOrder['details'].totalPrice = totalPrice
-                closedOrder['details'].numberOfItems = numberOfItems
 
-            ////
-            this.history.unshift(closedOrder)
-            this.orderHistoryLength = this.history.length
-            }else if(addHistory === false){
-
-            }
           }
         }
       }
+      for(let i in closedOrder){
+        addHistory = false
+        for(let key in this.history){
+          if(this.history[key].refNo !== closedOrder[i].refNo){
+            console.log('history Ref = ', this.history[key].refNo);
+            console.log('new item refNo');
+            
+            
+            addHistory = true
+            console.log(this.history[key]);
+            console.log(closedOrder[i]);
+            
+            
+          }else if(this.history[key].refNo === refNo){
+            addHistory = false
+          }
+        }
+        if(addHistory === true){
+
+          
+          
+          totalPrice = 0
+          numberOfItems = 0
+          grandTotal = 0
+          for(let j in closedOrder[i].details.orders){
+            //console.log(closedOrder[i].details);
+            totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
+            numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
+            if(closedOrder[i].details.deliveryType === 'Delivery'){
+              grandTotal = Number(totalPrice) + 100
+            }else if(closedOrder[i].details.deliveryType === 'Collection'){
+              grandTotal = Number(totalPrice)
+            }
+            //console.log(totalPrice);
+            //console.log(numberOfItems);
+          }
+          closedOrder[i].details.totalPrice = totalPrice
+          closedOrder[i].details.numberOfItems = numberOfItems
+          closedOrder[i].details.grandTotal = grandTotal
+          console.log(grandTotal);
+      ////
+
+      this.history.unshift(closedOrder[i])
+      this.orderHistoryLength = this.history.length
+      }else if(addHistory === false){
+  
+      }
+
+      }
+
     })
   }
 
@@ -914,6 +938,8 @@ export class LandingPage implements OnInit {
         let  grandTotal : Number = 0
         //console.log(this.history);
         if(this.history.length !== 0){
+          console.log(this.history);
+          
           for(let key in this.history){
             totalPrice = 0
             numberOfItems = 0
@@ -1315,6 +1341,7 @@ export class LandingPage implements OnInit {
       this.itemSizes = item.data.size
       this.itemColors = item.data.color
       this.item = item
+      this.searchedProductStatus = item.data.hideItem
       console.log(this.updatePic);
       
       console.log(item);
@@ -1456,6 +1483,30 @@ export class LandingPage implements OnInit {
   hideItem(productID, brand, category) {
     return this.productService.hideProduct(productID, brand, category).then(result => {
       console.log(result);
+    }).then(result => {
+      this.getHideStatus(productID, brand, category)
+    })
+  }
+  showItem(productID, brand, category) {
+    return this.productService.showProduct(productID, brand, category).then(result => {
+      console.log(result);
+    }).then(result => {
+      this.getHideStatus(productID, brand, category)
+    })
+  }
+  getHideStatus(productID, brand, category){
+    firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).onSnapshot(result => {
+      let product = result.data()
+      let status : Boolean = result.data().hideItem
+      console.log(status);
+      //this.item
+      console.log(this.item.data.hideItem);
+      console.log(this.item);
+      
+      this.item.data = { hideItem : status}
+      console.log(this.item.data = { hideItem : status});
+      
+      this.searchedProductStatus = status
     })
   }
   reloadPage(){
