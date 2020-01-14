@@ -1143,14 +1143,17 @@ export class LandingPage implements OnInit {
   showPendingList() {
     var historyItems = document.getElementsByClassName("pending-items") as HTMLCollectionOf<HTMLElement>;
     historyItems[0].style.display = "block"
+    document.getElementById("helpDesk").style.display = "none"
   }
   showHistoryList() {
     var pendingItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
     pendingItems[0].style.display = "block"
+    document.getElementById("helpDesk").style.display = "none"
   }
   showInventoryList() {
     var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
     inventoryItems[0].style.display = "block"
+    document.getElementById("helpDesk").style.display = "none"
   }
   dismissList() {
     var historyItems = document.getElementsByClassName("history-items") as HTMLCollectionOf<HTMLElement>;
@@ -1159,6 +1162,7 @@ export class LandingPage implements OnInit {
     pendingItems[0].style.display = "none";
     var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
     inventoryItems[0].style.display = "none"
+    document.getElementById("helpDesk").style.display = "block"
 
   }
   subtract(item) {
