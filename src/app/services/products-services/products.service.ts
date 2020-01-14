@@ -279,6 +279,13 @@ export class ProductsService {
     })
   }
 
+  showItem(productID, item){
+    return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).update({
+      hideItem : false
+    }).then(result => {
+     // console.log(result);
+    })
+  }
   updateSpecialsItem(productID, item, newPrice, newPricePercentage, newStartDate, newEndDate){
     return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).update({
       saleprice: newPrice,
@@ -391,19 +398,29 @@ export class ProductsService {
     })
 
   }
-  hideProduct(productID, brand, category){
+  hideProduct(productID, brand, category, item){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       hideItem : true
     }).then(result => {
      // console.log(result);
+     if(item.data.onSale){
+       if(item.data.onSale === true){
+          this.hideItem(productID, item)
+       }
+     }
      return 'success'
     })
   }
-  showProduct(productID, brand, category){
+  showProduct(productID, brand, category, item){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       hideItem : false
     }).then(result => {
      // console.log(result);
+     if(item.data.onSale){
+       if(item.data.onSale === true){
+         this.showItem(productID, item)
+       }
+     }
      return 'success'
     })
   }

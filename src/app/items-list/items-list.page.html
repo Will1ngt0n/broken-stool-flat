@@ -158,11 +158,11 @@
                 <div
                   (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item.data.size, item.data.color)">
                   Update</div>
-                <div (click)='hideItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === false'>
+                <div (click)='hideItem(item.productID, item.brand, item.category, item)' *ngIf='item.data.hideItem === false'>
                   Hide</div>
-                <div (click)='showItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === true'>
+                <div (click)='showItem(item.productID, item.brand, item.category, item)' *ngIf='item.data.hideItem === true'>
                   Show</div>
-                <div (click)='hideItem(item.productID, item.brand, item.category)'
+                <div (click)='hideItem(item.productID, item.brand, item.category, item)'
                   *ngIf='item.data.hideItem !== false && item.data.hideItem !==true'>Hide</div>
                 <div (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete</div>
               </div>
@@ -225,11 +225,11 @@
                   </button>
                 </div>
                 <div>
-                  <button icon-only (click)='showItem(item.productID, item.brand, item.category)'
+                  <button icon-only (click)='showItem(item.productID, item.brand, item.category, item)'
                     *ngIf='item.data.hideItem === true'>
                     <ion-icon name="eye"></ion-icon>
                   </button>
-                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'
+                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category, item)'
                     *ngIf='item.data.hideItem === false'>
                     <ion-icon name="eye-off"></ion-icon>
                   </button>

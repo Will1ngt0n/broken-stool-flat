@@ -690,18 +690,18 @@ export class ItemsListPage implements OnInit {
       //location.reload()
     })
   }
-  hideItem(productID, brand, category) {
+  hideItem(productID, brand, category, item) {
     this.presentLoading()
-    return this.productsService.hideProduct(productID, brand, category).then(result => {
+    return this.productsService.hideProduct(productID, brand, category, item).then(result => {
       console.log(result);
       if(result === 'success'){
         this.loadingCtrl.dismiss()
       }
     })
   }
-  showItem(productID, brand, category) {
+  showItem(productID, brand, category, item) {
     this.presentLoading()
-    return this.productsService.showProduct(productID, brand, category).then(result => {
+    return this.productsService.showProduct(productID, brand, category, item).then(result => {
       console.log(result);
       // firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).onSnapshot( result => {
       //   let hideItem = result.data().hideItem

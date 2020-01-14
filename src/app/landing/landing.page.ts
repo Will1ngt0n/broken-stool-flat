@@ -1677,15 +1677,15 @@ export class LandingPage implements OnInit {
     })
   }
 
-  hideItem(productID, brand, category) {
-    return this.productService.hideProduct(productID, brand, category).then(result => {
+  hideItem(productID, brand, category, item) {
+    return this.productService.hideProduct(productID, brand, category, item).then(result => {
       console.log(result);
     }).then(result => {
       this.getHideStatus(productID, brand, category)
     })
   }
-  showItem(productID, brand, category) {
-    return this.productService.showProduct(productID, brand, category).then(result => {
+  showItem(productID, brand, category, item) {
+    return this.productService.showProduct(productID, brand, category, item).then(result => {
       console.log(result);
     }).then(result => {
       this.getHideStatus(productID, brand, category)
