@@ -28,13 +28,36 @@ Disclaimer -->
             </div>
         </div>
         <div class="navigator-small">
-            <div>1</div>
-            <div>2</div>
+            <div>
+                <ion-button icon-only fill="clear" (click)="toggleSideMenu()">
+                    <ion-icon name="{{myMenu}}"></ion-icon>
+                </ion-button>
+            </div>
+            <div><h1>Dankie Jesu</h1></div>
+            
+        </div>
+        <div id="side-menu">
+            <div (click)="goHome()">Dankie Jesu </div>
+            <div>
+                <p (click)="toggleTab('FAQs')">FAQs</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Terms and Privacy Policy')">Terms and Privacy Policy</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Payment Process')">Payment Process</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('About Company')">About Company</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Disclaimer')">Disclaimer</p>
+            </div>
         </div>
         <div class="inner-content">
             <div id="FAQs" *ngIf="activeTab === 'FAQs'">
                 <div class="top-bar">
-                    <h1>How can we help?</h1>
+                    <h1 id="how-can-we-help">How can we help?</h1>
                     <input id="query" type="text" placeholder="Type keywords to find answers" [(ngModel)]="usersinput"
                         (keyup)="searchresult(usersinput)">
                     <div class="searchResults" *ngIf="usersinput">

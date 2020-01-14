@@ -153,7 +153,8 @@ export class HomePage {
   activeTab: string = "FAQs";
   toggleTab(selectedTab) {
     this.activeTab = selectedTab;
-    console.log(this.activeTab)
+    console.log(this.activeTab);
+    this.toggleSideMenu()
   }
   usersInput: string;
   searchresult(usersinput) {
@@ -174,5 +175,20 @@ export class HomePage {
         }
       }
     })
+  }
+  myMenu = "menu"
+  menuDrawer = 0;
+  toggleSideMenu() {
+    var mySide = document.getElementById("side-menu");
+    if (this.menuDrawer == 0) {
+      this.myMenu = "close"
+      this.menuDrawer = 1
+      mySide.style.left = "0%"
+    }
+    else {
+      this.myMenu = "menu"
+      this.menuDrawer = 0
+      mySide.style.left = "-100%"
+    }
   }
 }
