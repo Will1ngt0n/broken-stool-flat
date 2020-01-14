@@ -229,6 +229,24 @@ export class LandingPage implements OnInit {
   //     return this.route.navigate(['/login'])
   //   })
   // }
+  ionViewDidEnter(){
+    console.log('ion view did enter');
+    
+  }
+
+  ionViewWillEnter(){
+    console.log('ion view will enter');
+    
+  }
+  ionViewWillLeave(){
+    console.log('ion view will leave')
+  }
+
+  ionViewDidLeave(){
+    console.log('ion view did leave');
+    
+  }
+  
   loader(){
     
   }
@@ -236,21 +254,21 @@ export class LandingPage implements OnInit {
     this.nativeCategory.nativeElement.disabled = true
     this.refreshOrderHistory()
     this.getPendingOrdersSnap()
-    // this.loadFormal('Kwanga', 'Formal')
-    // this.loadTraditional('Kwanga', 'Traditional')
-    // this.loadSmartCasual('Kwanga', 'Smart Casual')
-    // this.loadSportsWear('Kwanga', 'Sports')
-    // this.loadVests('Dankie Jesu', 'Vests')
-    // this.loadCaps('Dankie Jesu', 'Caps')
-    // this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-    // this.loadShorts('Dankie Jesu', 'Shorts')
-    // this.loadCropTops('Dankie Jesu', 'Crop Tops')
-    // this.loadTShirts('Dankie Jesu', 'T-Shirts')
+    this.loadFormal('Kwanga', 'Formal')
+    this.loadTraditional('Kwanga', 'Traditional')
+    this.loadSmartCasual('Kwanga', 'Smart Casual')
+    this.loadSportsWear('Kwanga', 'Sports')
+    this.loadVests('Dankie Jesu', 'Vests')
+    this.loadCaps('Dankie Jesu', 'Caps')
+    this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+    this.loadShorts('Dankie Jesu', 'Shorts')
+    this.loadCropTops('Dankie Jesu', 'Crop Tops')
+    this.loadTShirts('Dankie Jesu', 'T-Shirts')
      this.loadBags('Dankie Jesu', 'Bags')
-    // this.loadSweaters('Dankie Jesu', 'Sweaters')
-    // this.loadHoodies('Dankie Jesu', 'Hoodies')
-    // this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-    // this.loadBeanies('Dankie Jesu', 'Beanies')
+    this.loadSweaters('Dankie Jesu', 'Sweaters')
+    this.loadHoodies('Dankie Jesu', 'Hoodies')
+    this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+    this.loadBeanies('Dankie Jesu', 'Beanies')
 
     return this.authService.checkingAuthState().then( result => {
       if(result === null){
@@ -362,7 +380,6 @@ export class LandingPage implements OnInit {
     let docData
     let addItems : boolean
     for(let key in result.docChanges()){
-        
       let change = result.docChanges()[key]
       if(change.type === 'added'){
         data = {}
@@ -379,6 +396,59 @@ export class LandingPage implements OnInit {
             this.inventoryLength = this.allProducts.length
           }
         }
+        if(brand === 'Dankie Jesu'){
+          if(change.doc.data().isSummer === true){
+            for(let key in this.summerGear){
+              if(productID === this.summerGear[key].productID){
+                let index = Number(key)
+                this.summerGear.splice(index, 1)
+
+              }
+            }
+          }else if(change.doc.data().isSummer === false){
+            for(let key in this.winterGear){
+              if(productID === this.winterGear[key].productID){
+                let index = Number(key)
+                this.winterGear.splice(index, 1)
+              }
+            }
+          }
+        }else if(brand === 'Kwanga'){
+          for(let key in this.kwangaGear){
+            if(productID === this.kwangaGear[key].productID){
+              let index = Number(key)
+              this.kwangaGear.splice(index, 1)
+            }
+          }
+        }
+        this.summerGear = []
+        this.winterGear = []
+        this.kwangaGear = []
+        for(let key in this.allProducts){
+          if(this.allProducts[key].brand === 'Kwanga'){
+            if(this.kwangaGear.length < 3){
+              this.kwangaGear.push(this.allProducts[key])
+              console.log(this.kwangaGear);
+            }
+          }else if(this.allProducts[key].brand === 'Dankie Jesu') {
+            if(this.allProducts[key].data.isSummer === true){
+              this.summerProducts.push(this.allProducts[key])
+              if(this.summerGear.length < 5){
+                this.summerGear.push(this.allProducts[key])
+              }
+            } else if (this.allProducts[key].data.isSummer === false) {
+              if(this.allProducts[key].category === 'Bags'){
+      
+              }else if(this.allProducts[key].category !== 'Bags'){
+                console.log(this.allProducts[key].category);
+                
+                this.winterProducts.push(this.allProducts[key])
+                if(this.winterGear.length < 5){
+                  this.winterGear.push(this.allProducts[key])
+                }
+              }
+            }
+        }}
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
@@ -418,6 +488,55 @@ export class LandingPage implements OnInit {
         }
       }
     }
+    let addToWinter : boolean
+    let addToSummer : boolean
+    let addToKwanga : boolean
+
+
+    // for(let i in this.allProducts){
+    //   addToSummer = false
+    //   for(let j in this.summerGear){
+    //   if(this.allProducts[i].brand === 'Dankie Jesu'){
+    //     if(this.allProducts[i].data.isSummer === true){
+    //       if(this.allProducts[i].productID !== this.summerGear[j].productID){
+    //         addToSummer = true
+    //         console.log(this.allProducts[i].productID);
+            
+    //       }else if(this.allProducts[i].productID === this.summerGear[j].productID){
+    //         addToSummer = false
+    //         console.log(this.allProducts[i].productID);
+    //       }
+    //       }
+    //     }
+    //   }
+    //   if(addToSummer === true){
+    //     if(this.summerGear.length < 5){
+    //       this.summerGear.push(this.allProducts[i])
+    //     }
+    //   }
+    // }
+    // for(let i in this.allProducts){
+    //   addToWinter = false
+    //   for(let j in this.winterGear){
+    //   if(this.allProducts[i].brand === 'Dankie Jesu'){
+    //     if(this.allProducts[i].data.isSummer === false){
+    //       if(this.allProducts[i].productID !== this.winterGear[j].productID){
+    //         addToWinter = true
+    //         console.log(this.allProducts[i].productID);
+            
+    //       }else if(this.allProducts[i].productID === this.winterGear[j].productID){
+    //         addToWinter = false
+    //       }
+
+    //       }
+    //     }
+    //   }
+    //   if(addToWinter === true){
+    //     if(this.winterGear.length < 5){
+    //       this.winterGear.push(this.allProducts[i])
+    //     }
+    //   }
+    // }
   }
   changeDepartment(event) {
     //console.log('Accessory ', this.accessory);
@@ -472,9 +591,6 @@ export class LandingPage implements OnInit {
       this.accessory = false
     }
     this.checkValidity()
-  }
-  ionViewDidEnter() {
-
   }
 
   check(event, size) {
@@ -895,7 +1011,6 @@ export class LandingPage implements OnInit {
      // console.log(result);
       
       for(let key in result.docChanges()){
-
         let change = result.docChanges()[key]
         if(change.type === 'added'){
           console.log(change);
@@ -906,50 +1021,29 @@ export class LandingPage implements OnInit {
           console.log(data);
           console.log(userID);
           
-          
-          
           pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
           this.loadUserName(userID)
-
-
-          // for(let key in this.pendingOrders){
-          //   if(this.pendingOrders[key].refNo === refNo){
-          //     add = false
-          //     let index = Number(key)
-          //     //this.pendingOrders.splice(index, 1)
-          //   }else if(this.pendingOrders[key].refNo !== refNo){
-          //     add = true
-          //   }
-          // }
-
-          // if(add === false){
-
-          // }else if(add === true){
-          //   this.pendingOrders.unshift(pendingOrder)
-          // }
-
-
-
-
         }
         if(change.type === 'modified' ){
           console.log(change);
-          let pendingOrder : object = {}
+          let pendingOrderModified : object = {}
           let refNo = change.doc.id
           let data = change.doc.data()
           let userID = data.userID
-          pendingOrder = {refNo : refNo, details : data, noOfItems: data.product.length}
+          console.log(userID);
+          
+          pendingOrderModified = {refNo : refNo, details : data, noOfItems: data.product.length}
         }
         if(change.type === 'removed'){
           console.log(change);
-          let pendingOrder : object = {}
+          let pendingOrderRemoved : object = {}
           let refNo = change.doc.id
           let data = change.doc.data()
           let userID = data.userID
           console.log(refNo);
           console.log(data);
           console.log(userID);
-          pendingOrder = {refNo : refNo, details : data, noOfItems: data.product.length}
+          pendingOrderRemoved = {refNo : refNo, details : data, noOfItems: data.product.length}
           for(let key in this.pendingOrders){
             if(this.pendingOrders[key].refNo === refNo){
               let index = Number(key)
@@ -970,6 +1064,8 @@ export class LandingPage implements OnInit {
             add = false
           }else if(this.pendingOrders[key].refNo !== pendingOrder[i].refNo){
             add = true
+            console.log(this.pendingOrders[key], pendingOrder);
+            //console.log(pendingOrder[i]);
           }
         }
         if(add === true){
@@ -977,26 +1073,7 @@ export class LandingPage implements OnInit {
           this.pendingOrdersLength = this.pendingOrders.length
         }
       }
-      //   for(let key in result.docs){
-      // //  console.log(result.docs[key].id);
-      //   let refNo = result.docs[key].id
-      //  // console.log(result.docs[key].data());
-      //   let data = result.docs[key].data()
-      //   let userID = data.userID
-      //   console.log(userID);
-      //   //this.loadUser(userID)
-
-      //   pendingOrder.unshift({refNo : refNo, details : data, noOfItems: data.product.length})
-      // };
-      // console.log('Snapped', pendingOrder);
-      // for (let key in pendingOrder) {
-      //   this.loadUserName(pendingOrder[key].details.userID)
-      // }
-      //   this.pendingOrders = pendingOrder
-
       console.log(this.pendingOrders);
-      
-
       return pendingOrder
       })
   }
@@ -1004,6 +1081,7 @@ export class LandingPage implements OnInit {
   getPendingOrders() {
     return this.productService.getPendingOrders().then(result => {
       console.log(result);
+      this.pendingOrders = []
       let array = result
       if (result.length !== 0) {
         for (let key in result) {
@@ -1698,15 +1776,16 @@ export class LandingPage implements OnInit {
     return this.productService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
       if(result = 'Deleted'){
+        this.loadTotalNumberOfProducts()
+        this.loadingCtrl.dismiss()
+        this.productAlert('Product was successfully deleted')
+        this.showHideSearchDetails('close')
         for(let key in this.allProducts){
           if(productID === this.allProducts[key].productID){
             //let index = this.allProducts.indexOf(this.allProducts[key])
             //this.allProducts.splice(index, 1)
             //this.inventoryLength = this.allProducts.length
-            this.loadTotalNumberOfProducts()
-            this.loadingCtrl.dismiss()
-            this.productAlert('Product was successfully deleted')
-            this.showHideSearchDetails('close')
+
           }
         }
         // firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
