@@ -12,15 +12,15 @@
 }
 .navigation > div {
   height: 100%;
-//   border: 2px solid red;
+  //   border: 2px solid red;
   margin: 0 auto;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  p{
-      cursor: pointer;
-      margin: 0;
+  p {
+    cursor: pointer;
+    margin: 0;
   }
 }
 
@@ -30,101 +30,145 @@
   line-height: 80px;
 }
 .navigation > div:nth-child(2) {
-    width: 14.16666666666666%;  
+  width: 14.16666666666666%;
 }
 .navigation > div:nth-child(3) {
-    width: 14.16666666666666%;  
+  width: 14.16666666666666%;
 }
 .navigation > div:nth-child(4) {
-    width: 14.16666666666666%;  
+  width: 14.16666666666666%;
 }
 .navigation > div:nth-child(5) {
-    width: 14.16666666666666%;  
+  width: 14.16666666666666%;
 }
 .navigation > div:nth-child(6) {
-    width: 14.16666666666666%;  
+  width: 14.16666666666666%;
 }
-
-.inner-content{
-    width: 100%;
-    height: calc(100% - 80px);
+@keyframes faderIn {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.1;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.inner-content {
+  width: 100%;
+  height: calc(100% - 80px);
+  overflow-y: scroll;
+  div {
+    animation: faderIn 300ms;
+  }
+}
+.top-bar {
+  // border: 2px solid red;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background: rgb(235, 235, 235);
+  position: relative;
+}
+#query {
+  width: 50%;
+  margin: 30px auto;
+  height: 50px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #7c0000;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  transition: 300ms;
+}
+.searchResults {
+  width: 50%;
+  background: white;
+  position: absolute;
+  top: 141px;
+  left: 50%;
+  transform: translateX(-50%);
+//   border: 1px solid red;
+  transition: 300ms;
+  border-radius: 10px;
+  padding: 10px;
+  div {
     overflow-y: scroll;
+    height: 400px;
+  }
 }
-.top-bar{
-    // border: 2px solid red;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    background: rgb(235, 235, 235);
-    position: relative;
+#answers {
+  width: 60%;
+  margin: 10px auto;
+  transition: 300ms;
 }
-#query{
-    width: 50%;
-    margin: 30px auto;
-    height: 50px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #7c0000;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.searchResults{
-    width: 50%;
-    background: white;
-    position: absolute;
-    top: 141px;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 1px solid red;
-    transition: 300ms;
-    border-radius: 10px;
-    padding: 10px;
-    div{
-    overflow-y: scroll;
-    max-height: 400px;
-    }
-}
-#answers{
-    width: 60%;
-    margin: 10px auto;
-    transition: 300ms;
-}
-#QA{
-    h3{
-        padding-bottom: 10px;
-        border-bottom: 2px solid grey;
-    }
+#QA {
+  h3 {
+    padding-bottom: 10px;
+    border-bottom: 2px solid grey;
+  }
 }
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #7c0000;
-    border-radius: 10px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #b30000;
-  }
+  width: 10px;
+}
 
-  @media screen and (max-width: 769px){
-    .inner-content > #FAQs > #answers{
-        border: 2px solid red;
-        width: 100%;
-        padding: 10px;
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #7c0000;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}
+.navigator-small{
+    display: none;
+    width: 100%;
+    height: 50px;
+    background: rgb(205, 205, 205);
+}
+
+.navigator-small > div:nth-child(1){
+    width: 50px;
+}
+
+.navigator-small > div:nth-child(2){
+    width: calc(100% - 50px);
+}
+@media screen and (max-width: 769px) {
+  .inner-content > #FAQs > #answers {
+    // border: 2px solid red;
+    width: 100%;
+    padding: 10px;
+  }
+  .searchResults {
+    width: 100%;
+  }
+  @media screen and (max-width: 530px) {
+    .navigation {
+      display: none;
     }
-    .searchResults{
-        width: 100%;
+    .navigator-small{
+        display: flex;
+    }
+    #query{
+        width: 90%;
+    }
+    .inner-content{
+        height: calc(100% - 50px);  
     }
   }
+}
