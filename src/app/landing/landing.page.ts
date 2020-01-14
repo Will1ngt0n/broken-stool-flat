@@ -1714,6 +1714,10 @@ export class LandingPage implements OnInit {
       }
     })
   }
+
+  goToHelpDesk(){
+    
+  }
   async productAlert(message) {
     const alert = await this.alertController.create({
       header: 'Success!',
