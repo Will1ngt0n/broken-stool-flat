@@ -207,7 +207,7 @@
           <div class="items">
             <div class="box-item" *ngFor='let item of summerGear'>
               <p id="item-label">{{item.data.name}}</p>
-              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="" (click)="showHideSearchDetails(item)">
               <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
             </div>
 
@@ -226,7 +226,7 @@
           <div class="items">
             <div class="box-item" *ngFor='let item of winterGear'>
               <p id="item-label">{{item.data.name}}</p>
-              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="" (click)="showHideSearchDetails(item)">
               <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
             </div>
 
@@ -245,7 +245,7 @@
           <div class="items">
             <div class="box-item" *ngFor='let item of kwangaGear'>
               <p id="item-label1">{{item.data.name}}</p>
-              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="" (click)="showHideSearchDetails(item)">
               <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
             </div>
 
@@ -533,7 +533,7 @@
           <ion-slides pager="false" [options]="sliderConfigSmall" #sliderRefSmall>
             <ion-slide *ngFor='let item of kwangaGear'>
               <div class="slide-img">
-                <p>{{item.data.name}}</p>
+                <p  (click)="showHideSearchDetails(item)">{{item.data.name}}</p>
                 <!-- <img class="slide-img" src="../../assets/imgs/331249_1_800.jpeg" alt=""> -->
                 <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
                 <img class="slide-img" src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">

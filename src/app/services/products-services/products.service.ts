@@ -371,6 +371,12 @@ export class ProductsService {
           })
         }
       }
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+        let number : string = String(Number(result.data().numberOfProducts) - 1)
+        firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+          numberOfProducts: number
+        })
+      })
       return 'Deleted'
     })
   }

@@ -543,6 +543,8 @@ export class LandingPage implements OnInit {
         
   }
   addProducts(numberOfProducts) {
+    let brand = this.department
+    let category = this.selectedCategory
     return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then(result => {
 
       console.log('added to first firebase')
@@ -564,7 +566,7 @@ export class LandingPage implements OnInit {
             let data : object = {}
             let productID = change.doc.id
             let docData = change.doc.data()
-            data = {productID: productID, data: docData, category: this.selectedCategory, brand: this.department}
+            data = {productID: productID, data: docData, category: category, brand: brand}
             console.log(data);
             //this.allProducts.unshift(data)
             console.log('');
@@ -1348,6 +1350,16 @@ export class LandingPage implements OnInit {
   }
   addUpdatePicture(event){
     this.updateSearchPic =  <File>event.target.files[0]
+    this.pictureUpdate
+
+    
+    let reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.updatePic = event.target.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+    console.log(event.target.files[0]);
+    this.pictureUpdate = event.target.files[0]
     //this.updatePic = this.updateSearchPic
   }
   // updateItem(){
@@ -1643,6 +1655,7 @@ export class LandingPage implements OnInit {
             this.loadTotalNumberOfProducts()
             this.loadingCtrl.dismiss()
             this.productAlert('Product was successfully deleted')
+            this.showHideSearchDetails('close')
           }
         }
         // firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
