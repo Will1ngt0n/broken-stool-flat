@@ -151,10 +151,14 @@ googleSignIn(){
     
   }
 
-  activeTab: string = '';
+  activeTab: string = "FAQs";
   toggleTab(selectedTab){
     this.activeTab = selectedTab;
     console.log(this.activeTab)
-
+  }
+  usersInput: string;
+  searchresult(usersinput){
+    console.log(usersinput);
+    
   }
 }

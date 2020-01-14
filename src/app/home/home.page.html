@@ -31,7 +31,12 @@ Disclaimer -->
             <div id="FAQs" *ngIf="activeTab === 'FAQs'">
                 <div class="top-bar">
                     <h1>How can we help?</h1>
-                    <input id="query" type="text" placeholder="Type keywords to find answers">
+                    <input id="query" type="text" placeholder="Type keywords to find answers" [(ngModel)]="usersinput" (keyup)="searchresult(usersinput)">
+                    <div class="searchResults" *ngIf="usersinput">
+                        <div>
+                            <ion-item>dfgskdfhglksdf</ion-item>
+                        </div>
+                    </div>
                 </div>
                 <div id="answers">
                     <div id="QA">

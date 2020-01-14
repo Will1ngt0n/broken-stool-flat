@@ -55,7 +55,8 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    background: rgb(235, 235, 235)
+    background: rgb(235, 235, 235);
+    position: relative;
 }
 #query{
     width: 50%;
@@ -66,6 +67,22 @@
     border: 1px solid #7c0000;
     font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
+}
+.searchResults{
+    width: 50%;
+    background: white;
+    position: absolute;
+    top: 141px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid red;
+    transition: 300ms;
+    border-radius: 10px;
+    padding: 10px;
+    div{
+    overflow-y: scroll;
+    max-height: 400px;
+    }
 }
 #answers{
     width: 60%;
@@ -106,5 +123,8 @@
         border: 2px solid red;
         width: 100%;
         padding: 10px;
+    }
+    .searchResults{
+        width: 100%;
     }
   }
