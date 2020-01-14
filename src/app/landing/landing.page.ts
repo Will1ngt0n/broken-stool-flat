@@ -1873,4 +1873,8 @@ export class LandingPage implements OnInit {
   getKwangaSnap(){
 
   }
+  goToHelpDesk(){
+    
+    this.route.navigate(['/home'])
+  }
 }

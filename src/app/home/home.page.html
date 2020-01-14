@@ -1,4 +1,3 @@
-
 <!-- Use this page to contain information as follows:
 
 FAQs
@@ -8,3 +7,137 @@ Payment Process
 Currency used by company
 App information
 Disclaimer -->
+<ion-content>
+    <div class="content-container">
+        <div class="navigation">
+            <div (click)="goHome()">Dankie Jesu</div>
+            <div>
+                <p (click)="toggleTab('FAQs')">FAQs</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Terms and Privacy Policy')">Terms and Privacy Policy</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Payment Process')">Payment Process</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('About Company')">About Company</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Disclaimer')">Disclaimer</p>
+            </div>
+        </div>
+        <div class="navigator-small">
+            <div>
+                <ion-button icon-only fill="clear" (click)="toggleSideMenu()">
+                    <ion-icon name="{{myMenu}}"></ion-icon>
+                </ion-button>
+            </div>
+            <div><h1>Dankie Jesu</h1></div>
+            
+        </div>
+        <div id="side-menu">
+            <div (click)="goHome()">Dankie Jesu </div>
+            <div>
+                <p (click)="toggleTab('FAQs')">FAQs</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Terms and Privacy Policy')">Terms and Privacy Policy</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Payment Process')">Payment Process</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('About Company')">About Company</p>
+            </div>
+            <div>
+                <p (click)="toggleTab('Disclaimer')">Disclaimer</p>
+            </div>
+        </div>
+        <div class="inner-content">
+            <div id="FAQs" *ngIf="activeTab === 'FAQs'">
+                <div class="top-bar">
+                    <h1 id="how-can-we-help">How can we help?</h1>
+                    <input id="query" type="text" placeholder="Type keywords to find answers" [(ngModel)]="usersinput"
+                        (keyup)="searchresult(usersinput)">
+                    <div class="searchResults" *ngIf="usersinput">
+                        <div>
+                            <ion-item>dfgskdfhglksdf</ion-item>
+                        </div>
+                    </div>
+                </div>
+                <div id="answers">
+                    <div>
+                        <h1>Frequently Asked Questions</h1>
+                    </div>
+                    <div id="QA">
+                        <h3>Lorem ipsum dolor sit.</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum alias adipisci quis deleniti
+                            voluptatum esse, obcaecati nisi veniam excepturi, eligendi voluptatibus rerum impedit quae
+                            repudiandae repellat assumenda quia ratione asperiores ipsa officia doloribus? Illo ipsa
+                            animi molestias obcaecati deserunt consequuntur, ut rem ipsam ab optio quaerat
+                            reprehenderit, corrupti nobis est debitis totam facilis inventore at itaque? Nostrum alias
+                            iusto eligendi eaque tenetur nihil quia numquam nesciunt ab odit, excepturi laborum
+                            consectetur iste culpa, dolores error sapiente neque corporis earum! Recusandae!</p>
+                    </div>
+                    <div id="QA">
+                        <h3>Lorem ipsum dolor sit.</h3>
+                        <p> adipisicing elit. Earum alias adipisci quis deleniti voluptatum esse, obcaecati nisi veniam
+                            excepturi, eligendi voluptatibus rerum impedit quae repudiandae repellat assumenda quia
+                            ratione asperiores ipsa officia doloribus? Illo ipsa animi molestias obcaecati deserunt
+                            consequuntur, ut rem ipsam ab optio quaerat reprehenderit, corrupti nobis est debitis totam
+                            facilis inventore at itaque? Nostrum alias iusto eligendi eaque tenetur nihil quia numquam
+                            nesciunt ab odit, excepturi laborum consectetur iste culpa, dolores error sapiente neque
+                            corporis earum! Recusandae!</p>
+                    </div>
+                    <div id="QA">
+                        <h3>Lorem ipsum dolor sit.</h3>
+                        <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Non provident ipsum similique,
+                            quidem numquam, perspiciatis est natus nostrum optio aspernatur fugiat? Rerum, obcaecati
+                            perferendis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum alias adipisci
+                            quis deleniti voluptatum esse, obcaecati nisi veniam excepturi, eligendi voluptatibus rerum
+                            impedit quae repudiandae repellat assumenda quia ratione asperiores ipsa officia doloribus?
+                            Illo ipsa animi molestias obcaecati deserunt consequuntur, ut rem ipsam ab optio quaerat
+                            reprehenderit, corrupti nobis est debitis totam facilis inventore at itaque? Nostrum alias
+                            iusto eligendi eaque tenetur nihil quia numquam nesciunt ab odit, excepturi laborum
+                            consectetur iste culpa, dolores error sapiente neque corporis earum! Recusandae!</p>
+                    </div>
+                    <div id="QA">
+                        <h3>Lorem ipsum dolor sit.</h3>
+                        <p>Lorem ipsum dolor consectetur adipisicing elit. Earum alias adipisci quis deleniti voluptatum
+                            esse, obcaecati nisi veniam excepturi, eligendi voluptatibus rerum impedit quae repudiandae
+                            repellat assumenda quia ratione asperiores ipsa officia doloribus? Illo ipsa animi molestias
+                            obcaecati deserunt consequuntur, ut rem ipsam ab optio quaerat reprehenderit, corrupti nobis
+                            est debitis totam facilis inventore at itaque? Nostrum alias iusto eligendi eaque tenetur
+                            nihil quia numquam nesciunt ab odit, excepturi laborum consectetur iste culpa, dolores error
+                            sapiente neque corporis earum! Recusandae!</p>
+                    </div>
+                    <div id="QA">
+                        <h3>Lorem ipsum dolor sit.</h3>
+                        <p>Lorem ipsum dolor sit amet voluptatum esse, obcaecati nisi veniam excepturi, eligendi
+                            voluptatibus rerum impedit quae repudiandae repellat assumenda quia ratione asperiores ipsa
+                            officia doloribus? Illo ipsa animi molestias obcaecati deserunt consequuntur, ut rem ipsam
+                            ab optio quaerat reprehenderit, corrupti nobis est debitis totam facilis inventore at
+                            itaque? Nostrum alias iusto eligendi eaque tenetur nihil quia numquam nesciunt ab odit,
+                            excepturi laborum consectetur iste culpa, dolores error sapiente neque corporis earum!
+                            Recusandae!</p>
+                    </div>
+                    <div id="QA">
+                        <h3>Lorem ipsum dolor sit.</h3>
+                        <p>consectetur adipisicing elit. Earum alias adipisci quis deleniti voluptatum esse, obcaecati
+                            nisi veniam excepturi, eligendi voluptatibus rerum impedit quae repudiandae repellat
+                            assumenda quia ratione asperiores ipsa officia doloribus? Illo ipsa animi molestias
+                            obcaecati deserunt consequuntur, ut rem ipsam ab optio quaerat reprehenderit, corrupti nobis
+                            est debitis totam facilis inventore at itaque? Nostrum alias iusto eligendi eaque tenetur
+                            nihil quia numquam nesciunt ab odit, excepturi laborum consectetur iste culpa, dolores error
+                            sapiente neque corporis earum! Recusandae!</p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="activeTab === 'Terms and Privacy Policy'">Terms and Privacy Policy</div>
+            <div *ngIf="activeTab === 'Payment Process'">Payment Process</div>
+            <div *ngIf="activeTab === 'About Company'">About Company</div>
+            <div *ngIf="activeTab === 'Disclaimer'">Disclaimer</div>
+        </div>
+    </div>
+</ion-content>
