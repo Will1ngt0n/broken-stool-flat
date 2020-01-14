@@ -625,10 +625,11 @@ loadViewedCategory(){
   
 }
 loadSalesSnap(){
+  this.presentLoading()
   return firebase.firestore().collection('Specials').onSnapshot(result => {
     let sales : Array<any> = []
     console.log(result);
-    
+
     for(let key in result.docs){
         let productID = result.docs[key].id
         let docData = result.docs[key].data()
@@ -636,6 +637,7 @@ loadSalesSnap(){
         
         sales.push({productID: productID, data: docData, category: docData.category, brand: docData.brand, link: docData.pictureLink})
       }
+      this.loadingCtrl.dismiss()
       console.log(sales);
       this.allBrandSales = sales
       if(sales.length !== 0){
