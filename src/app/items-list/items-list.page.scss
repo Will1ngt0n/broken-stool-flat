@@ -923,3 +923,17 @@ ion-searchbar {
 a{
   cursor: pointer;
 }
+#old-price{
+  color: grey;
+  text-decoration: line-through;
+  font-size: 14px;
+  font-weight: 0 !important;
+}
+#new-price{
+  font-weight: bolder;
+  color: black
+}
+.on-sale{
+  display: flex;
+  height: 20px !important
+}

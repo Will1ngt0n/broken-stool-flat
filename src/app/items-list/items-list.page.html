@@ -13,14 +13,17 @@
         <p class="description">
           {{itemDescription}}
         </p>
-        <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage' (keyup)='calculateSalePrice($event);'>
+        <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'
+          (keyup)='calculateSalePrice($event);'>
+          <p *ngIf="salePrice !== 0">Sale Price R {{salePrice}}</p>
         <div class="gridded-inputs">
-          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' [min]='today' (change)='enableEndDateInput()'/><input  [disabled]='!editStartDate' type="date"
-            placeholder="End Date" [(ngModel)]='editEndDate' [min]='endDateLimit' (change)='runCheck()'/>
+          <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' [min]='today'
+            (change)='enableEndDateInput()' /><input [disabled]='!editStartDate' type="date" placeholder="End Date"
+            [(ngModel)]='editEndDate' [min]='endDateLimit' (change)='runCheck()' />
         </div>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success" (click)='promoteItem()' [disabled]='promoButtonEnabled'>Promote</ion-button>
+          <ion-button color="success" (click)='promoteItem()' [disabled]='!promoButtonEnabled'>Promote</ion-button>
         </div>
       </div>
     </div>
@@ -32,54 +35,68 @@
         <p class="item-detail">
           R {{updatePrice}}
         </p>
+
         <p class="item-detail">Choose Avalable Sizes</p>
         <div class="sizes-colours-item">
-          <ion-checkbox color="primary" [checked]='checkXS' name='checkboxXS' (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkXS' name='checkboxXS'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'></ion-checkbox>
           <p id="text-size">XS</p>
-          <ion-checkbox color="primary" [checked]='checkS' name='checkboxS' (ionChange)='checkSizeUpdateCheckboxes($event, "S")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkS' name='checkboxS'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "S")'></ion-checkbox>
           <p id="text-size">S</p>
-          <ion-checkbox color="primary" [checked]='checkM' name='checkboxM' (ionChange)='checkSizeUpdateCheckboxes($event, "M")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkM' name='checkboxM'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "M")'></ion-checkbox>
           <p id="text-size">M</p>
-          <ion-checkbox color="primary" [checked]='checkL' name='checkboxL' (ionChange)='checkSizeUpdateCheckboxes($event, "L")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkL' name='checkboxL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "L")'></ion-checkbox>
           <p id="text-size">L</p>
-          <ion-checkbox color="primary" [checked]='checkXL' name='checkboxXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkXL' name='checkboxXL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'></ion-checkbox>
           <p id="text-size">XL</p>
-          <ion-checkbox color="primary" [checked]='checkXXL' name='checkboxXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkXXL' name='checkboxXXL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'></ion-checkbox>
           <p id="text-size">XXL</p>
-          <ion-checkbox color="primary" [checked]='checkXXXL' name='checkboxXXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'></ion-checkbox>
+          <ion-checkbox color="primary" [checked]='checkXXXL' name='checkboxXXXL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'></ion-checkbox>
           <p id="text-size">XXXL</p>
         </div>
         <input #pictureUpdate width='100px' class='pictureInput' type="file" accept="image/jpeg, jpg, tif, png"
-        (change)='addPictureUpdate($event)'>
+          (change)='addPictureUpdate($event)'>
         <p class="item-detail">Choose Available Colours</p>
         <div class="sizes-colours-item">
           <div>
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkRed' color="primary" name='red' (ionChange)='checkColorUpdate($event, "Red")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkRed' color="primary" name='red'
+              (ionChange)='checkColorUpdate($event, "Red")'>
             </ion-checkbox>
           </div>
           <div>
 
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkBlue' color="primary" name='blue' (ionChange)='checkColorUpdate($event, "Blue")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkBlue' color="primary" name='blue'
+              (ionChange)='checkColorUpdate($event, "Blue")'>
             </ion-checkbox>
           </div>
           <div>
 
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkGreen' color="primary" name='green' (ionChange)='checkColorUpdate($event, "Green")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkGreen' color="primary" name='green'
+              (ionChange)='checkColorUpdate($event, "Green")'>
             </ion-checkbox>
           </div>
           <div>
 
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkYellow' color="primary" name='orange' (ionChange)='checkColorUpdate($event, "Orange")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkYellow' color="primary" name='orange'
+              (ionChange)='checkColorUpdate($event, "Orange")'>
             </ion-checkbox>
           </div>
           <div>
 
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkPink' color="primary" name='pink' (ionChange)='checkColorUpdate($event, "Pink")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkPink' color="primary" name='pink'
+              (ionChange)='checkColorUpdate($event, "Pink")'>
             </ion-checkbox>
           </div>
           <div>
 
-            <ion-checkbox class="color-checkbox"  color="medium" [checked]='checkWhite' color="primary" name='white' (ionChange)='checkColorUpdate($event, "White")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkWhite' color="primary" name='white'
+              (ionChange)='checkColorUpdate($event, "White")'>
             </ion-checkbox>
           </div>
         </div>
@@ -129,7 +146,11 @@
             <div id="info">
               <h5>{{item.data.name}}</h5>
               <p>{{item.data.description}}.</p>
-              <p><b>R {{item.data.price}}</b></p>
+              <p *ngIf="!item.data.saleprice"><b>R {{item.data.price}}</b></p>
+              <div class="on-sale" *ngIf="item.data.saleprice">
+                <p id="old-price"><b>R {{item.data.price}}</b></p>
+                <p id="new-price"><b> Now R {{item.data.saleprice}}</b></p>
+              </div>
               <div class="options">
                 <div
                   (click)="togglePromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item)">
@@ -137,9 +158,12 @@
                 <div
                   (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item.data.size, item.data.color)">
                   Update</div>
-                <div (click)='hideItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === false'>Hide</div>
-                <div (click)='showItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === true'>Show</div>
-                <div (click)='hideItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem !== false && item.data.hideItem !==true'>Hide</div>               
+                <div (click)='hideItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === false'>
+                  Hide</div>
+                <div (click)='showItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === true'>
+                  Show</div>
+                <div (click)='hideItem(item.productID, item.brand, item.category)'
+                  *ngIf='item.data.hideItem !== false && item.data.hideItem !==true'>Hide</div>
                 <div (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete</div>
               </div>
             </div>
@@ -182,7 +206,11 @@
             <div>
               <h5>{{item.data.name}}</h5>
               <!-- <p>{{item.data.description}}</p> -->
-              <p>R {{item.data.price}}</p>
+              <p *ngIf="!item.data.saleprice"><b>R {{item.data.price}}</b></p>
+              <div class="on-sale" *ngIf="item.data.saleprice">
+                <p id="new-price"><b>R {{item.data.saleprice}}</b></p>
+                <p id="old-price"><b>R {{item.data.price}}</b></p>
+              </div>
               <div class="opts">
                 <div>
                   <button icon-only
@@ -197,10 +225,12 @@
                   </button>
                 </div>
                 <div>
-                  <button icon-only (click)='showItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === true'>
+                  <button icon-only (click)='showItem(item.productID, item.brand, item.category)'
+                    *ngIf='item.data.hideItem === true'>
                     <ion-icon name="eye"></ion-icon>
                   </button>
-                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category)' *ngIf='item.data.hideItem === false'>
+                  <button icon-only (click)='hideItem(item.productID, item.brand, item.category)'
+                    *ngIf='item.data.hideItem === false'>
                     <ion-icon name="eye-off"></ion-icon>
                   </button>
                 </div>

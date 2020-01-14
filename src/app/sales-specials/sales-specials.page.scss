@@ -810,27 +810,6 @@ ion-searchbar {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      button {
-        background: transparent;
-        color: white;
-        height: 100%;
-        transition: 200ms;
-      }
-      button:active {
-        background: rgba(0, 0, 0, 0.376);
-      }
-    }
-    .opts > div:nth-child(1) {
-      background: red;
-    }
-    .opts > div:nth-child(2) {
-      background: #7c0000;
-    }
-    .opts > div:nth-child(3) {
-      background: grey;
-    }
-    .opts > div:nth-child(4) {
-      background: red;
     }
   }
 }
@@ -838,4 +817,17 @@ ion-searchbar {
   color: grey;
   font-size: 12px;
   text-align: center;
+}
+#old-price{
+  color: grey;
+  text-decoration: line-through;
+  font-size: 14px
+}
+#new-price{
+  font-weight: bolder;
+  color: black
+}
+.prices{
+  display: flex;
+  height: 10px !important;
 }

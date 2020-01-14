@@ -78,7 +78,7 @@ export class ItemsListPage implements OnInit {
   orderedSummerProducts: Array<any> = []
   seasonalWear: Array<any> = []
   status = ['ready', 'recieved', 'collected', 'processed', 'cancelled']
-  salePrice
+  salePrice = 0;
   blackAvailable; blackPic
   brownAvailable; brownPic
   orangeAvailable; orangePic
