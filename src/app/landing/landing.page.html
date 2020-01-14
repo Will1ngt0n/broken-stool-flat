@@ -89,7 +89,7 @@
           <h4>DankieJesu</h4>
         </div>
         <div id="searchbar">
-          <ion-searchbar [(ngModel)]='searchInput' (ionChange)='search()'></ion-searchbar>
+          <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search" show-cancel-button="never"></ion-input>
         </div>
         <div id="admin" (click)='signOutPopup()'>
           <p>SIGN OUT</p>
