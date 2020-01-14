@@ -150,4 +150,11 @@ googleSignIn(){
   change(){
     
   }
+
+  activeTab: string = '';
+  toggleTab(selectedTab){
+    this.activeTab = selectedTab;
+    console.log(this.activeTab)
+
+  }
 }
