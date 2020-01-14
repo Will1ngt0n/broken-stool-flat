@@ -995,9 +995,10 @@ label {
   cursor: pointer;
 }
 
+
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
@@ -1015,7 +1016,4 @@ label {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #b30000;
-}
-#helpDesk{
-  display: block
 }
