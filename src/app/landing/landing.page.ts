@@ -229,23 +229,7 @@ export class LandingPage implements OnInit {
   //     return this.route.navigate(['/login'])
   //   })
   // }
-  ionViewDidEnter(){
-    console.log('ion view did enter');
-    
-  }
 
-  ionViewWillEnter(){
-    console.log('ion view will enter');
-    
-  }
-  ionViewWillLeave(){
-    console.log('ion view will leave')
-  }
-
-  ionViewDidLeave(){
-    console.log('ion view did leave');
-    
-  }
   
   loader(){
     
@@ -1782,26 +1766,10 @@ export class LandingPage implements OnInit {
         this.showHideSearchDetails('close')
         for(let key in this.allProducts){
           if(productID === this.allProducts[key].productID){
-            //let index = this.allProducts.indexOf(this.allProducts[key])
-            //this.allProducts.splice(index, 1)
-            //this.inventoryLength = this.allProducts.length
 
           }
         }
-        // firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-        //   for(let key in result.docChanges()){
-        //     let change = result.docChanges()[key]
-        //     if(change.type === 'removed'){
-        //       console.log('An item was removed');
-        //       console.log(result.docChanges()[key]);
-        //       console.log(change.doc.data());
-        //       let data : object = {}
-        //       let productID = change.doc.id
-        //       let docData = change.doc.data()
-        //       data = {productID: productID, data: docData, category: this.selectedCategory, brand: this.department}
-        //     } 
-        //   }
-        // })
+
       }
       //location.reload()
     })
@@ -1851,30 +1819,31 @@ export class LandingPage implements OnInit {
 
     // console.log('Loading dismissed!');
   }
-  loadSnaps(){
-    for(let key in this.kwangaCategories){
-      this.getKwangaSnap()
-    }
-    for(let key in this.dankieJesuCategories){
-      this.getDankieSnap('Dankie Jesu', this.dankieJesuCategories[key])
-    }
-  }
-  getDankieSnap(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      for(let key in result.docChanges()){
-        let change = result.docChanges[key]
-        if(change.type === 'added'){
-          console.log(change.type);
-          
-        }
-      }
-    })
-  }
-  getKwangaSnap(){
 
-  }
-  goToHelpDesk(){
+  ionViewDidEnter(){
+    console.log('ion view did enter');
     
-    this.route.navigate(['/home'])
+  }
+
+  ionViewWillEnter(){
+    console.log('ion view will enter');
+    
+  }
+  ionViewWillLeave(){
+    console.log('ion view will leave')
+  }
+
+  ionViewDidLeave(){
+    console.log('ion view did leave');
+    
+  }
+
+  ionViewWillLoad(){
+    console.log('ion view will load');
+    
+  }
+  ionViewDidLoad(){
+    console.log('ion view did load');
+    
   }
 }
