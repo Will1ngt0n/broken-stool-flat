@@ -644,6 +644,11 @@ export class ItemsListPage implements OnInit {
       if(result === 'success'){
         console.log(result);
         this.loadingCtrl.dismiss()
+        this.editEndDate = undefined
+        this.editStartDate = undefined
+        this.editPercentage = 0
+        this.itemID = undefined
+        this.salePrice = 0
         return this.dismissPromo()
 
       }else(
@@ -885,8 +890,12 @@ export class ItemsListPage implements OnInit {
   }
   dismissPromo() {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
-
     promoUpd[0].style.display = "none"
+    this.editEndDate = undefined
+    this.editStartDate = undefined
+    this.editPercentage = undefined
+    this.itemID = undefined
+    this.salePrice = undefined
   }
 
   showPendingList() {

@@ -264,7 +264,9 @@ export class ProductsService {
     return firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
       console.log(result);
       firebase.firestore().collection('Products').doc(item.brand).collection(item.category).doc(productID).update({
-        onSale : false
+        onSale : false,
+        discount : 0,
+        saleprice : item.data.normalPrice
       })
       return result
     }).catch(error => {
