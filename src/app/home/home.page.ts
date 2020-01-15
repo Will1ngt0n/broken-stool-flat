@@ -22,6 +22,7 @@ export class HomePage {
   inputCode
   constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router) {
     let person = {}
+    
     person = {
       'hello': {
         tree: 'hi',
@@ -152,7 +153,7 @@ export class HomePage {
 
   }
 
-  activeTab: string = "Payment Process";
+  activeTab: string = "FAQs";
   toggleTab(selectedTab) {
     this.activeTab = selectedTab;
     // console.log(this.activeTab);
@@ -178,6 +179,9 @@ export class HomePage {
         }
       }
     })
+  }
+  onInput(e) {
+    console.log(e)
   }
 
   goHome(){

@@ -169,8 +169,6 @@ export class AuthService {
     // })
   }
 ​
-​
-  //delete?
   retrievingUserInfo(uid){
     return new Promise((resolve, reject) => {
       var userRoot = firebase.database().ref("Users").child(uid)
@@ -218,6 +216,4 @@ export class AuthService {
       resolve ()
     })
   }
-​
-​
 }

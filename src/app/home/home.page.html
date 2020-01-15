@@ -9,10 +9,23 @@ App information
 Disclaimer -->
 <ion-content>
 
+    <div class="answer-questions">
+        <div class="inner-to-answer">
+            <div class="header">
+                <h3>Q&A</h3>
+            </div>
+            <div class="app-body" id="page1">
+
+            </div>
+            <div class="app-body" id="page2">
+
+            </div>
+        </div>
+    </div>
     <ion-fab vertical="bottom" horizontal="end" *ngIf="admin">
-        <ion-fab-button ion-fab>
-            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon>
-        </ion-fab-button>
+        <ion-button>
+            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> Answer Questions
+        </ion-button>
     </ion-fab>
     <div class="content-container">
         <div class="navigation">
@@ -67,9 +80,9 @@ Disclaimer -->
         </div>
         <div class="inner-content">
             <div id="FAQs" *ngIf="activeTab === 'FAQs'">
-                <div class="top-bar">
+                <div class="top-bar" (ionFocus)='onInput($event)' >
                     <h1 id="how-can-we-help">How can we help?</h1>
-                    <input id="query" type="text" placeholder="Type keywords to find answers" [(ngModel)]="usersinput"
+                    <input id="query" type="text" placeholder="Type keywords to find answers" (ionFocus)='onInput($event)' [(ngModel)]="usersinput"
                         (keyup)="searchresult(usersinput)">
                     <div class="searchResults" *ngIf="usersinput">
                         <div>

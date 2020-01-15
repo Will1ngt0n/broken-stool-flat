@@ -205,6 +205,42 @@
   color: grey;
 }
 
+.answer-questions{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.274);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  display: none;
+}
+.inner-to-answer{
+  width: 70%;
+  height: 80%;
+  background: white;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.383);
+}
+.header{
+  width: 100%;
+  height: 50px;
+  background: whitesmoke;
+  h3{
+    margin: 0;
+    line-height: 50px;
+    text-align: center;
+  }
+}
+.app-body{
+  width: 100%;
+  height: calc(100% - 60px);
+  background: white;
+}
+
 @media screen and (min-width: 531px) {
   #side-menu {
     display: none;
