@@ -22,7 +22,7 @@ export class HomePage {
   inputCode
   constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router) {
     let person = {}
-    
+
     person = {
       'hello': {
         tree: 'hi',
@@ -167,7 +167,8 @@ export class HomePage {
 
   admin;
   checkAuthState() {
-    return this.authService.checkingAuthState().then(result => { if (result !== null) {
+    return this.authService.checkingAuthState().then(result => {
+      if (result !== null) {
         console.log(result);
         if (result['uid']) {
           console.log(result['uid']);
@@ -180,11 +181,7 @@ export class HomePage {
       }
     })
   }
-  onInput(e) {
-    console.log(e)
-  }
-
-  goHome(){
+  goHome() {
     return this.authService.checkingAuthState().then(result => {
       if (result === null) {
         location.reload()
@@ -212,5 +209,8 @@ export class HomePage {
       this.menuDrawer = 0
       mySide.style.left = "-100%"
     }
+  }
+  onInput(e) {
+    console.log(e)
   }
 }
