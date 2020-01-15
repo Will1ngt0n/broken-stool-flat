@@ -1282,6 +1282,7 @@ export class LandingPage implements OnInit {
       }
       console.log(this.pendingOrders);
 
+      this.loadingCtrl.dismiss()
     })
     //thisgffdsg
 
@@ -2068,5 +2069,10 @@ export class LandingPage implements OnInit {
   ionViewDidLoad(){
     console.log('ion view did load');
     
+  }
+  
+  goToHelpDesk(){
+    
+    this.route.navigate(['/home'])
   }
 }

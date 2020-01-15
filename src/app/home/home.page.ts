@@ -153,12 +153,12 @@ export class HomePage {
   activeTab: string = "FAQs";
   toggleTab(selectedTab) {
     this.activeTab = selectedTab;
-    console.log(this.activeTab);
+    // console.log(this.activeTab);
     this.toggleSideMenu()
   }
   usersInput: string;
   searchresult(usersinput) {
-    console.log(usersinput);
+    // console.log(usersinput);
 
   }
 
