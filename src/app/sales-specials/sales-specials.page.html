@@ -27,7 +27,7 @@
       </div>
       <div id="mid">
         <div class="top-bar">
-          <ion-button color="dark" fill="outline" (click)='back()'>
+          <ion-button color="dark" fill="clear" (click)='back()'>
             <ion-icon name="arrow-back"></ion-icon>
           </ion-button>
           <div class="page-title">
@@ -54,7 +54,7 @@
                       <p id="new-price">R {{item.data.saleprice}}</p>
                       <p id="old-price">R {{item.data.normalPrice}}</p>
                     </div>                 
-                      <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Delete</ion-button>
+                      <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Remove</ion-button>
                   </div>
                 </div>
               </div>
@@ -124,7 +124,7 @@
   <div class="mobile-view">
     <div class="cont-small">
       <div class="top-bar">
-        <ion-button color="dark" fill="outline" (click)='back()'>
+        <ion-button color="dark" fill="clear" (click)='back()'>
           <ion-icon name="arrow-back"></ion-icon>
         </ion-button>
         <div class="page-title">

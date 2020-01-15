@@ -10,14 +10,14 @@
   display: flex;
   flex-wrap: wrap;
 }
-.navigation-inner{
-
-    width: 80%;
-    height: 80px;
-    display: flex;
-    flex-wrap: wrap;
-    // border: 2px solid red;
-    margin: 0 auto;
+.navigation-inner {
+  width: 80%;
+  height: 80px;
+  display: flex;
+  flex-wrap: wrap;
+  // border: 2px solid red;
+  margin: 0 auto;
+  transition: 300ms;
 }
 .navigation-inner > div {
   height: 100%;
@@ -119,33 +119,32 @@
 #QA {
   h3 {
     padding-bottom: 10px;
-    border-bottom: 2px solid grey;;
-    color: rgb(165, 165, 165)
+    border-bottom: 2px solid grey;
+    color: rgb(165, 165, 165);
   }
 }
 
 /* width */
 ::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey;
-    border-radius: 5px;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #7c0000;
-    border-radius: 5px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #b30000;
-  }
+  width: 5px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #7c0000;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}
 
 .navigator-small {
   display: none;
@@ -166,48 +165,6 @@
     margin-left: -50px;
   }
 }
-@media screen and (min-width: 531px) {
-  #side-menu {
-    display: none;
-  }
-  #how-can-we-help{
-      display: block;
-  }
-}
-@media screen and (max-width: 769px) {
-  .inner-content > #FAQs > #answers {
-    // border: 2px solid red;
-    width: 100%;
-    padding: 10px;
-  }
-  .searchResults {
-    width: 100%;
-  }
-  @media screen and (max-width: 530px) {
-      #how-can-we-help{
-          display: none;
-      }
-      #query{
-          margin: 10px auto
-      }
-    .navigation {
-      display: none;
-    }
-    .navigator-small {
-      display: flex;
-    }
-    #query {
-      width: 90%;
-    }
-    .inner-content {
-      height: calc(100% - 50px);
-    }
-    #side-menu {
-      display: block;
-    }
-  }
-}
-
 #side-menu {
   width: 100%;
   height: 100%;
@@ -225,8 +182,76 @@
 #side-menu > div:nth-child(1) {
   line-height: 50px;
 }
-#active-tab{
-    color: grey;
-    padding: 5px;
-    margin: 0;
+#active-tab {
+  color: grey;
+  padding: 5px;
+  margin: 0;
+}
+
+#titler {
+  font-size: 3vh;
+}
+
+.about-information {
+  transition: 300ms;
+  width: 40%;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+#team-role {
+  padding-left: 10px;
+  margin-top: 25px;
+  color: grey;
+}
+
+@media screen and (min-width: 531px) {
+  #side-menu {
+    display: none;
+  }
+  #how-can-we-help {
+    display: block;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .about-information {
+    width: 100%;
+  }
+  .inner-content > #FAQs > #answers {
+    // border: 2px solid red;
+    width: 100%;
+    padding: 10px;
+  }
+  .navigation-inner {
+    width: 100%;
+  }
+  .searchResults {
+    width: 100%;
+  }
+  @media screen and (max-width: 530px) {
+  .searchResults {
+    top: 60px;
+  }
+    #how-can-we-help {
+      display: none;
+    }
+    #query {
+      margin: 10px auto;
+    }
+    .navigation {
+      display: none;
+    }
+    .navigator-small {
+      display: flex;
+    }
+    #query {
+      width: 90%;
+    }
+    .inner-content {
+      height: calc(100% - 50px);
+    }
+    #side-menu {
+      display: block;
+    }
+  }
 }

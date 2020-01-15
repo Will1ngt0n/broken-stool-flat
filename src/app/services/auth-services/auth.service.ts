@@ -123,7 +123,28 @@ export class AuthService {
       }
     })
   }
-​
+​ getProfile(userID){
+  return firebase.firestore().collection('Admin').get().then(result => {
+    let admins : Array<any> = []
+    let exists : boolean
+
+    for(let key in result.docs){
+      let uid = result.docs[key].id
+      admins.push(uid)
+    }
+    for(let key in admins){
+      if(admins[key] === userID){
+        exists = true
+        console.log(userID, admins[key]);
+        break
+      }else if(admins[key] !== userID){
+
+        exists = false
+      }
+    }
+    return exists
+  })
+}
   checkingAuthState(){
     return new Promise((resolve, reject) =>{
       firebase.auth().onAuthStateChanged((user) =>{

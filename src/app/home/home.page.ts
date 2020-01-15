@@ -39,6 +39,8 @@ export class HomePage {
     this.registrationForm = formBuilder.group({
       number: [this.number, Validators.compose([Validators.required])]
     })
+
+    this.checkAuthState()
   }
   googleSignIn() {
     firebase.auth().signInWithPopup(provider).then(function (result) {
@@ -150,7 +152,7 @@ export class HomePage {
 
   }
 
-  activeTab: string = "FAQs";
+  activeTab: string = "Payment Process";
   toggleTab(selectedTab) {
     this.activeTab = selectedTab;
     // console.log(this.activeTab);
@@ -162,7 +164,23 @@ export class HomePage {
 
   }
 
-  goHome() {
+  admin;
+  checkAuthState() {
+    return this.authService.checkingAuthState().then(result => { if (result !== null) {
+        console.log(result);
+        if (result['uid']) {
+          console.log(result['uid']);
+          return this.authService.getProfile(result['uid']).then(result => {
+            console.log(result);
+            this.admin = result
+          })
+          // this.navCtrl.navigate(['/landing'])
+        }
+      }
+    })
+  }
+
+  goHome(){
     return this.authService.checkingAuthState().then(result => {
       if (result === null) {
         location.reload()
