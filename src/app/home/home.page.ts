@@ -22,6 +22,7 @@ export class HomePage {
   inputCode
   constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router) {
     let person = {}
+
     person = {
       'hello': {
         tree: 'hi',
@@ -39,6 +40,8 @@ export class HomePage {
     this.registrationForm = formBuilder.group({
       number: [this.number, Validators.compose([Validators.required])]
     })
+
+    this.checkAuthState()
   }
   googleSignIn() {
     firebase.auth().signInWithPopup(provider).then(function (result) {
@@ -162,6 +165,22 @@ export class HomePage {
 
   }
 
+  admin;
+  checkAuthState() {
+    return this.authService.checkingAuthState().then(result => {
+      if (result !== null) {
+        console.log(result);
+        if (result['uid']) {
+          console.log(result['uid']);
+          return this.authService.getProfile(result['uid']).then(result => {
+            console.log(result);
+            this.admin = result
+          })
+          // this.navCtrl.navigate(['/landing'])
+        }
+      }
+    })
+  }
   goHome() {
     return this.authService.checkingAuthState().then(result => {
       if (result === null) {
@@ -190,5 +209,8 @@ export class HomePage {
       this.menuDrawer = 0
       mySide.style.left = "-100%"
     }
+  }
+  onInput(e) {
+    console.log(e)
   }
 }

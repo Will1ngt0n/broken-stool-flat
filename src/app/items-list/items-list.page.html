@@ -131,7 +131,7 @@
       </div>
       <div id="mid">
         <div class="top-bar">
-          <ion-button color="dark" fill="outline" (click)='back()'>
+          <ion-button color="dark" fill="clear" (click)='back()'>
             <ion-icon name="arrow-back"></ion-icon>
           </ion-button>
           <div class="page-title">
@@ -146,8 +146,8 @@
             <div id="info">
               <h5>{{item.data.name}}</h5>
               <p id="theDesc">{{item.data.description}}.</p>
-              <p *ngIf="!item.data.saleprice"><b>R {{item.data.price}}</b></p>
-              <div class="on-sale" *ngIf="item.data.saleprice">
+              <p *ngIf="item.data.onSale === false"><b>R {{item.data.price}}</b></p>
+              <div class="on-sale" *ngIf="item.data.onSale === true">
                 <p id="new-price"><b>R {{item.data.saleprice}}</b></p>
                 <p id="old-price"><b>R {{item.data.price}}</b></p>
               </div>
@@ -189,7 +189,7 @@
   <div class="mobile-view">
     <div class="cont-small">
       <div class="top-bar">
-        <ion-button color="dark" fill="outline" (click)='back()'>
+        <ion-button color="dark" fill="clear" (click)='back()'>
           <ion-icon name="arrow-back"></ion-icon>
         </ion-button>
         <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
@@ -205,8 +205,8 @@
             </div>
             <div>
               <h5>{{item.data.name}}</h5>
-              <p *ngIf="!item.data.saleprice"><b>R {{item.data.price}}</b></p>
-              <div class="on-sale" *ngIf="item.data.saleprice">
+              <p *ngIf="item.data.onSale === false"><b>R {{item.data.price}}</b></p>
+              <div class="on-sale" *ngIf="item.data.onSale === true">
                 <p id="new-price"><b>R {{item.data.saleprice}}</b></p>
                 <p id="old-price"><b>R {{item.data.price}}</b></p>
               </div>
