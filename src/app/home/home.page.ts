@@ -210,7 +210,16 @@ export class HomePage {
       mySide.style.left = "-100%"
     }
   }
+
   onInput(e) {
     console.log(e)
+  }
+
+  showQA: boolean = false;
+  asnwerQuestions(){
+    this.showQA = true;
+  }
+  askUs(){
+    this.showQA = true;
   }
 }

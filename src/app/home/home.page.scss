@@ -214,16 +214,49 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  display: none;
+  // display: none;
+}
+.inputs{
+  width: 100%;
+  // border: 2px solid red;
+  margin: 0 auto;
+  text-align: center;
+}
+#instruction{
+  width: 50%;
+  margin: 0 auto
+}
+#q-a{
+  width: 50%;
+  height: 40px;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+#q-a-textarea{
+  resize: none;
+  width: 50%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 .inner-to-answer{
-  width: 70%;
+  width: 60%;
   height: 80%;
   background: white;
   margin: 0 auto;
   border-radius: 10px;
-  overflow: hidden;
+  overflow-y: hidden;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.383);
+}
+#me{
+  overflow-y:scroll;
+  height: calc(100% - 50px);
+}
+#me > div{
+  border: 1px
 }
 .header{
   width: 100%;
@@ -239,7 +272,22 @@
   width: 100%;
   height: calc(100% - 60px);
   background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+.app-body-answers{
+  width: 100%;
+  height: calc(100% - 60px);
+  background: white;
+}
+
+#is-user{
+  // border: 2px solid red;
+  text-align: center;
+}
+// #not-user{
+// }
 
 @media screen and (min-width: 531px) {
   #side-menu {
