@@ -143,6 +143,9 @@ export class LandingPage implements OnInit {
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
     this.allSpecialsPicture = undefined
+    this.allProducts = []
+    this.pendingOrders = []
+    this.history = []
     //this.productService.getCategories()
     this.loadTotalNumberOfProducts()
     this.getPendingOrders()
@@ -705,7 +708,30 @@ export class LandingPage implements OnInit {
         }
       }
     }
-
+    for(let i in this.allProducts){
+      //addToSummer = false
+      for(let j in this.kwangaGear){
+      if(this.allProducts[i].brand === 'Kwanga'){
+          if(this.allProducts[i].productID !== this.kwangaGear[j].productID){
+            addToKwanga = true
+            //console.log(this.allProducts[i].productID);
+            
+          }else if(this.allProducts[i].productID === this.kwangaGear[j].productID){
+            addToKwanga = false
+            //console.log(this.allProducts[i].productID);
+            break
+          }
+        }
+      }
+      if(addToKwanga === true){
+        if(this.kwangaGear.length < 3){
+          this.kwangaGear.push(this.allProducts[i])
+        }
+      }
+    }
+    this.sortKwangaProducts()
+    this.sortSummerProducts()
+    this.sortWinterProducts()
   }
   changeDepartment(event) {
     //console.log('Accessory ', this.accessory);
@@ -1110,6 +1136,40 @@ export class LandingPage implements OnInit {
       // this.kwangaGear.sort(( a , b  ) => a.data.dateAdded > b.data.dateAdded ? 1 : 0 )
       // console.log(this.kwangaGear, this.summerGear, this.winterGear)
     })
+  }
+
+  sortSummerProducts(){
+    this.summerGear.sort( (a,b) => {
+      let data = (a.data.name) - (b.data.name)
+      let c : any = new Date(a.data.dateAdded)
+      let d : any = new Date(b.data.dateAdded)
+      //console.log(data);
+      //console.log(c - d);
+      
+      return d - c
+    });
+  }
+  sortWinterProducts(){
+    this.winterGear.sort( (a,b) => {
+      let data = (a.data.name) - (b.data.name)
+      let c : any = new Date(a.data.dateAdded)
+      let d : any = new Date(b.data.dateAdded)
+      //console.log(data);
+      //console.log(c - d);
+      
+      return d - c
+    });
+  }
+  sortKwangaProducts(){
+    this.kwangaGear.sort( (a,b) => {
+      let data = (a.data.name) - (b.data.name)
+      let c : any = new Date(a.data.dateAdded)
+      let d : any = new Date(b.data.dateAdded)
+      //console.log(data);
+      //console.log(c - d);
+      
+      return d - c
+    });
   }
   sortProducts(){
     this.allProducts.sort( (a,b) => {

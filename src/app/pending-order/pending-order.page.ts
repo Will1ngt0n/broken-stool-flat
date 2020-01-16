@@ -211,7 +211,7 @@ processOrder(){
     //window.location.reload()
     //this.refreshPendingOrder()
     if(result === 'success'){
-      let unsubscribe = firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
+    firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
        // console.log(result.metadata);
         //console.log(result);
         
@@ -235,7 +235,7 @@ processOrder(){
         // }
 
       })
-      unsubscribe()
+      
       this.loadingCtrl.dismiss()
     }
   })
@@ -249,7 +249,7 @@ orderReady(){
     
     //window.location.reload()
     if(result === 'success'){
-     let unsubscribe = firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
+    firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
         //console.log(result.metadata);
         //console.log(result);
         
@@ -257,7 +257,7 @@ orderReady(){
         this.status = status
 
       })
-      unsubscribe()
+      
       this.loadingCtrl.dismiss()
     }
   })
