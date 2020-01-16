@@ -211,10 +211,14 @@ processOrder(){
     //window.location.reload()
     //this.refreshPendingOrder()
     if(result === 'success'){
-      firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
-        console.log(result.metadata);
+      let unsubscribe = firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
+       // console.log(result.metadata);
+        //console.log(result);
+        
         let status = result.data().status
         this.status = status
+        console.log(status);
+        
         // for(let key in result.docChanges()){
         //   let change = result.docChanges()[key]
         //   console.log(change);
@@ -229,8 +233,10 @@ processOrder(){
         //     this.status = status
         //   }
         // }
-        this.loadingCtrl.dismiss()
+
       })
+      unsubscribe()
+      this.loadingCtrl.dismiss()
     }
   })
 ​
@@ -239,14 +245,20 @@ orderReady(){
   this.presentLoading()
   let status = 'ready'
   return this.productsService.processOrder(this.refNo, status).then(result => {
+    //console.log(result);
+    
     //window.location.reload()
     if(result === 'success'){
-      firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
-        console.log(result.metadata);
+     let unsubscribe = firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
+        //console.log(result.metadata);
+        //console.log(result);
+        
         let status = result.data().status
         this.status = status
-        this.loadingCtrl.dismiss()
+
       })
+      unsubscribe()
+      this.loadingCtrl.dismiss()
     }
   })
 }
@@ -255,14 +267,20 @@ orderCollected(){
   this.presentLoading()
   if(this.deliveryType === 'Collection'){
     status = 'Collected'
+    return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType, this.purchaseDate).then(result => {
+      this.loadingCtrl.dismiss()
+      this.route.navigate([this.routingPage])
+    })
   }else if(this.deliveryType === 'Delivery'){
     status = 'Delivered'
+    return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType, this.purchaseDate).then(result => {
+      this.loadingCtrl.dismiss()
+      this.route.navigate([this.routingPage])
+    })
   }
+  console.log(status);
+  
 
-  return this.productsService.closedOrders(this.refNo, status, this.userID, this.products, this.deliveryType, this.purchaseDate).then(result => {
-    this.loadingCtrl.dismiss()
-    this.route.navigate([this.routingPage])
-  })
 }
 refreshPendingOrder(){
   return this.productsService.refreshPendingOrder(this.refNo).then(result => {

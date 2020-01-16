@@ -553,7 +553,11 @@ export class ProductsService {
 
         pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
       };
-      return pendingOrder
+      if(pendingOrder.length > 0){
+        return pendingOrder
+      }else if(pendingOrder.length === 0){
+        return null
+      }
       })
   }
   loadUser(userID){
@@ -563,7 +567,7 @@ export class ProductsService {
       let number = data.data().cellPhone
       let userID = data.id
       let address = data.data().address
-      console.log(userName, userID);
+      //console.log(userName, userID);
       user = {name: userName, userID: userID, cell: number, address: address}
       return user
     })
@@ -690,6 +694,8 @@ export class ProductsService {
     return firebase.firestore().collection('Order').doc(refNo).update({
       status: status
     }).then( result => {
+      //console.log('success');
+      
       return 'success'
       
     })

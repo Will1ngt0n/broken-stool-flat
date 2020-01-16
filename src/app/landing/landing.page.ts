@@ -139,12 +139,13 @@ export class LandingPage implements OnInit {
   pictureUpdate : File
 
   constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
-    console.log(this.department);
+    //console.log(this.department);
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
     this.allSpecialsPicture = undefined
     //this.productService.getCategories()
     this.loadTotalNumberOfProducts()
+    this.getPendingOrders()
     this.loadDankieJesuItems()
     this.loadKwangaItems()
     this.presentLoader()
@@ -177,7 +178,7 @@ export class LandingPage implements OnInit {
     //   }
     // }
 
-    this.getPendingOrders()
+
     this.getReadyOrders()
     this.getOrderHistory()
     this.getInventory()
@@ -235,6 +236,8 @@ export class LandingPage implements OnInit {
     
   }
   ngOnInit() { ////copy
+    console.log('Oninit did run');
+    
     this.nativeCategory.nativeElement.disabled = true
     this.refreshOrderHistory()
     this.getPendingOrdersSnap()
@@ -265,93 +268,93 @@ export class LandingPage implements OnInit {
   }
   loadFormal(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running formal snapshots');
+      //console.log('Running formal snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadTraditional(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running traditional snapshots');
+     // console.log('Running traditional snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadSmartCasual(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running smart casual snapshots');
+      //console.log('Running smart casual snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadSportsWear(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running sports wear snapshots');
+      //console.log('Running sports wear snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadVests(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running vests snapshots');
+      //console.log('Running vests snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
 
   loadCaps(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running caps snapshots');
+      //console.log('Running caps snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
 
   loadBucketHats(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running bucket hats snapshots');
+      //console.log('Running bucket hats snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
 
   loadShorts(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running shorts snapshots');
+      //console.log('Running shorts snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadCropTops(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running crop tops snapshots');
+      //console.log('Running crop tops snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadTShirts(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running t-shirts snapshots');
+      //console.log('Running t-shirts snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadBags(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running bags snapShots');
+      //console.log('Running bags snapShots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadSweaters(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      console.log('Running sweaters snapshots');
+      //console.log('Running sweaters snapshots');
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadHoodies(brand, category){
-    console.log('Running hoodies snapshots');
+    //console.log('Running hoodies snapshots');
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadTrackSuits(brand, category){
-    console.log('Running track suits snapshots');
+    //console.log('Running track suits snapshots');
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
       this.modifyLocalObjects(result, brand, category)
     })
   }
   loadBeanies(brand, category){
-    console.log('Running beanies snapshots');
+    //console.log('Running beanies snapshots');
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
       this.modifyLocalObjects(result, brand, category)
     })
@@ -624,6 +627,7 @@ export class LandingPage implements OnInit {
             addItems = true
           }else if(this.allProducts[key].productID === items[i].productID){
             addItems = false
+            break
           }
         }
         if(addItems === true){
@@ -657,11 +661,11 @@ export class LandingPage implements OnInit {
         if(this.allProducts[i].data.isSummer === true){
           if(this.allProducts[i].productID !== this.summerGear[j].productID){
             addToSummer = true
-            console.log(this.allProducts[i].productID);
+            //console.log(this.allProducts[i].productID);
             
           }else if(this.allProducts[i].productID === this.summerGear[j].productID){
             addToSummer = false
-            console.log(this.allProducts[i].productID);
+            //console.log(this.allProducts[i].productID);
             break
           }
           }
@@ -680,7 +684,7 @@ export class LandingPage implements OnInit {
         if(this.allProducts[i].data.isSummer === false){
           if(this.allProducts[i].productID !== this.winterGear[j].productID){
             addToWinter = true
-            console.log(this.allProducts[i].productID);
+            //console.log(this.allProducts[i].productID);
             
           }else if(this.allProducts[i].productID === this.winterGear[j].productID){
             addToWinter = false
@@ -1036,7 +1040,7 @@ export class LandingPage implements OnInit {
 
       
       category = this.dankieJesuCategories[key]
-      console.log(category);
+      //console.log(category);
       this.loadItems(category, 'Dankie Jesu')
     }
   }
@@ -1047,7 +1051,7 @@ export class LandingPage implements OnInit {
   loadTotalNumberOfProducts(){
     return this.productService.getNumberOfProducts().then( (result : number) => {
       this.currentNumberOfProducts = result
-      console.log(this.currentNumberOfProducts);
+      //console.log(this.currentNumberOfProducts);
       
     })
   }
@@ -1063,7 +1067,7 @@ export class LandingPage implements OnInit {
     let data : Array<any> = []
     return this.productService.loadCategoryItems(category, brand).then(result => {
       if(result !== undefined){
-        console.log(result);
+        //console.log(result);
 
         
         for(let key in result){
@@ -1074,7 +1078,7 @@ export class LandingPage implements OnInit {
             if(this.kwangaSpecialsPicture !== undefined){
               this.kwangaSpecialsPicture = this.kwangaProducts[0].data.pictureLink
             }
-            console.log(this.allProducts);
+            //console.log(this.allProducts);
 
 
           }else if(brand === 'Dankie Jesu'){
@@ -1092,7 +1096,7 @@ export class LandingPage implements OnInit {
 
       //sorting allProducts array
 
-      console.log(this.allProducts);
+      //console.log(this.allProducts);
       
       this.inventoryLength = this.allProducts.length
       this.sortProducts()
@@ -1112,13 +1116,13 @@ export class LandingPage implements OnInit {
       let data = (a.data.name) - (b.data.name)
       let c : any = new Date(a.data.dateAdded)
       let d : any = new Date(b.data.dateAdded)
-      console.log(data);
-      console.log(c - d);
+      //console.log(data);
+      //console.log(c - d);
       
       return d - c
     });
-    console.log(this.inventoryLength);
-    console.log(this.currentNumberOfProducts);
+    //console.log(this.inventoryLength);
+    //console.log(this.currentNumberOfProducts);
     
     if(this.inventoryLength === +this.currentNumberOfProducts){
       for(let key in this.allProducts){
@@ -1170,6 +1174,7 @@ export class LandingPage implements OnInit {
 
   }
   getPendingOrdersSnap() {
+    //Running pending orders snap
     return firebase.firestore().collection('Order').onSnapshot(result => {
       let pendingOrder : Array<any> = []
       let add : boolean
@@ -1223,14 +1228,15 @@ export class LandingPage implements OnInit {
         }
       }
 
-      if(this.pendingOrders.length = 0){
-        //this.pendingOrders = pendingOrder
-      }else if(this.pendingOrders.length > 0){
+      // if(this.pendingOrders.length = 0){
+      //   //this.pendingOrders = pendingOrder
+      // }else if(this.pendingOrders.length > 0){
         for(let i in pendingOrder){
           add = false
           for(let key in this.pendingOrders){
             if(this.pendingOrders[key].refNo === pendingOrder[i].refNo){
               add = false
+              break
             }else if(this.pendingOrders[key].refNo !== pendingOrder[i].refNo){
               add = true
               console.log(this.pendingOrders[key], pendingOrder);
@@ -1243,7 +1249,7 @@ export class LandingPage implements OnInit {
           }
         }
         console.log(this.pendingOrders);
-      }
+      // }
 
       return pendingOrder
       })
@@ -1252,14 +1258,16 @@ export class LandingPage implements OnInit {
   getPendingOrders() {
     return this.productService.getPendingOrders().then(result => {
       console.log(result);
-      this.pendingOrders = []
+      //this.pendingOrders = []
       let array = result
-      if (result.length !== 0) {
-        for (let key in result) {
-          this.pendingOrders.push(result[key])
-          this.pendingOrdersLength = this.pendingOrders.length
-          console.log(this.pendingOrders);
-        }
+      if (result !== null) {
+        // for (let key in result) {
+        //   this.pendingOrders.push(result[key])
+
+        //   console.log(this.pendingOrders);
+        // }
+        this.pendingOrders = result
+        this.pendingOrdersLength = this.pendingOrders.length
         for (let key in this.pendingOrders) {
           this.loadUserName(this.pendingOrders[key].details.userID)
         }
@@ -1282,7 +1290,7 @@ export class LandingPage implements OnInit {
       }
       console.log(this.pendingOrders);
 
-      this.loadingCtrl.dismiss()
+      //this.loadingCtrl.dismiss()
     })
     //thisgffdsg
 
@@ -1302,24 +1310,24 @@ export class LandingPage implements OnInit {
       let totalPrice : Number = 0
       let grandTotal : Number = 0
       let numberOfItems : Number = 0;
-      console.log(result);
-      console.log(this.history);
+      //console.log(result);
+      //console.log(this.history);
       
       for(let key in result.docChanges()){
         let change = result.docChanges()[key]
-        console.log(change);
+        //console.log(change);
         addHistory = false
         if(change.type === 'added'){
-          console.log('New item was added');
-          console.log(result.docChanges()[key]);
-          console.log(change.doc.data());
+         // console.log('New item was added');
+          //console.log(result.docChanges()[key]);
+          //console.log(change.doc.data());
           //let data : object = {}
           let productID = change.doc.id
           let docData = change.doc.data()
           refNo = change.doc.id
           data = change.doc.data()
             closedOrder.push({refNo : refNo, details : data})
-            console.log(closedOrder);
+            //console.log(closedOrder);
             ///
 
             //console.log(this.history);
@@ -1330,46 +1338,47 @@ export class LandingPage implements OnInit {
         }
       }
 
-      if(this.history.length = 0){
-        for(let i in closedOrder){
-          totalPrice = 0
-          numberOfItems = 0
-          grandTotal = 0
-          for(let j in closedOrder[i].details.orders){
-            //console.log(closedOrder[i].details);
-            totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
-            numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
-            if(closedOrder[i].details.deliveryType === 'Delivery'){
-              grandTotal = Number(totalPrice) + 100
-            }else if(closedOrder[i].details.deliveryType === 'Collection'){
-              grandTotal = Number(totalPrice)
-            }
-            //console.log(totalPrice);
-            //console.log(numberOfItems);
-          }
-          closedOrder[i].details.totalPrice = totalPrice
-          closedOrder[i].details.numberOfItems = numberOfItems
-          closedOrder[i].details.grandTotal = grandTotal
-          console.log(grandTotal);
-        }
-        //this.history = closedOrder
-      }
+      // if(this.history.length = 0){
+      //   for(let i in closedOrder){
+      //     totalPrice = 0
+      //     numberOfItems = 0
+      //     grandTotal = 0
+      //     for(let j in closedOrder[i].details.orders){
+      //       //console.log(closedOrder[i].details);
+      //       totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
+      //       numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
+      //       if(closedOrder[i].details.deliveryType === 'Delivery'){
+      //         grandTotal = Number(totalPrice) + 100
+      //       }else if(closedOrder[i].details.deliveryType === 'Collection'){
+      //         grandTotal = Number(totalPrice)
+      //       }
+      //       //console.log(totalPrice);
+      //       //console.log(numberOfItems);
+      //     }
+      //     closedOrder[i].details.totalPrice = totalPrice
+      //     closedOrder[i].details.numberOfItems = numberOfItems
+      //     closedOrder[i].details.grandTotal = grandTotal
+      //     console.log(grandTotal);
+      //   }
+      //   //this.history = closedOrder
+      // }
       if(this.history.length > 0){
         for(let i in closedOrder){
           addHistory = false
           for(let key in this.history){
             if(this.history[key].refNo !== closedOrder[i].refNo){
-              console.log('history Ref = ', this.history[key].refNo);
-              console.log('new item refNo');
+              //console.log('history Ref = ', this.history[key].refNo);
+              //console.log('new item refNo');
               
               
               addHistory = true
-              console.log(this.history[key]);
-              console.log(closedOrder[i]);
+            //  console.log(this.history[key]);
+             // console.log(closedOrder[i]);
               
               
-            }else if(this.history[key].refNo === refNo){
+            }else if(this.history[key].refNo === closedOrder[i].refNo){
               addHistory = false
+              break
             }
           }
           if(addHistory === true){
@@ -1394,7 +1403,7 @@ export class LandingPage implements OnInit {
             closedOrder[i].details.totalPrice = totalPrice
             closedOrder[i].details.numberOfItems = numberOfItems
             closedOrder[i].details.grandTotal = grandTotal
-            console.log(grandTotal);
+           // console.log(grandTotal);
         ////
   
         this.history.unshift(closedOrder[i])
@@ -1421,7 +1430,7 @@ export class LandingPage implements OnInit {
         let  grandTotal : Number = 0
         //console.log(this.history);
         if(this.history.length !== 0){
-          console.log(this.history);
+         // console.log(this.history);
           
           for(let key in this.history){
             totalPrice = 0
@@ -1442,7 +1451,7 @@ export class LandingPage implements OnInit {
             this.history[key].details.totalPrice = totalPrice
             this.history[key].details.numberOfItems = numberOfItems
             this.history[key].details.grandTotal = grandTotal
-            console.log(grandTotal);
+            //console.log(grandTotal);
             
             //console.log(this.history[key]);
             
@@ -1458,7 +1467,7 @@ export class LandingPage implements OnInit {
     let parameter: NavigationExtras = { queryParams: { category: item, link: '/landing', refNo: item.refNo, userID: item.details.uid } }
     this.navCtrl.navigateForward(['order-receipt'], parameter);
     this.hideSideMenu()
-    console.log(item.details);
+    //console.log(item.details);
     
   }
   closeOrder(docID) {
@@ -1495,7 +1504,7 @@ export class LandingPage implements OnInit {
 
   }
   subtract(item) {
-    console.log(item.productID);
+    //console.log(item.productID);
     for(let key in this.allProducts){
       if(this.allProducts[key].productID === item.productID){
         if(this.allProducts[key].data.quantity !== 0){
@@ -1505,7 +1514,7 @@ export class LandingPage implements OnInit {
     }
   }
   add(item) {
-    console.log(item);
+    //console.log(item);
     for(let key in this.allProducts){
       if(this.allProducts[key].productID === item.productID){
         if(this.allProducts[key].data.quantity < 10000){
@@ -1935,9 +1944,9 @@ export class LandingPage implements OnInit {
     })
   }
 
-  goToHelpDesk(){
+  // goToHelpDesk(){
     
-  }
+  // }
   async productAlert(message) {
     const alert = await this.alertController.create({
       header: 'Success!',
