@@ -9,22 +9,79 @@ App information
 Disclaimer -->
 <ion-content>
 
-    <div class="answer-questions">
+    <div class="answer-questions" id="disappear" *ngIf="showQA === true">
         <div class="inner-to-answer">
             <div class="header">
+                <ion-button id="closer" (click)="close_query()">
+                    <ion-icon name="close"></ion-icon>
+                </ion-button>
                 <h3>Q&A</h3>
             </div>
-            <div class="app-body" id="page1">
-
+            <div class="app-body" id="not-user" *ngIf="!admin">
+                <div class="inputs">
+                    <h3>Contact Us</h3>
+                    <p id="instruction">Fill in the form and take this moment to ask any questions concerning the app or
+                        the company and its people and employees</p>
+                    <input type="text" id="q-a" placeholder="Name"><br>
+                    <input type="text" id="q-a" placeholder="Email"><br>
+                    <textarea name="" id="q-a-textarea" cols="30" rows="10"
+                        placeholder="Your question here..."></textarea><br>
+                    <ion-button>Sumbit</ion-button>
+                </div>
             </div>
-            <div class="app-body" id="page2">
+            <div class="app-body-answers" id="is-user" *ngIf="admin">
+                <h3>Answer questions</h3>
+                <div class="inputs" id="me">
 
+                    
+                    <div>
+                        <p>How do I cancel an order?</p>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
+                            placeholder="Your answer here..."></textarea><br>
+                        <ion-button>Send Answer</ion-button>
+                    </div>
+                    <div>
+                        <p>How do I cancel an order?</p>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
+                            placeholder="Your answer here..."></textarea><br>
+                        <ion-button>Send Answer</ion-button>
+                    </div>
+                    <div>
+                        <p>How do I cancel an order?</p>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
+                            placeholder="Your answer here..."></textarea><br>
+                        <ion-button>Send Answer</ion-button>
+                    </div>
+                    <div>
+                        <p>How do I cancel an order?</p>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
+                            placeholder="Your answer here..."></textarea><br>
+                        <ion-button>Send Answer</ion-button>
+                    </div>
+                    <div>
+                        <p>How do I cancel an order?</p>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
+                            placeholder="Your answer here..."></textarea><br>
+                        <ion-button>Send Answer</ion-button>
+                    </div>
+                    <div>
+                        <p>How do I cancel an order?</p>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
+                            placeholder="Your answer here..."></textarea><br>
+                        <ion-button>Send Answer</ion-button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <ion-fab vertical="bottom" horizontal="end" *ngIf="admin">
-        <ion-button>
-            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> Answer Questions
+        <ion-button (click)="asnwerQuestions()">
+            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i>Answer Questions</i> 
+        </ion-button>
+    </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" *ngIf="!admin">
+        <ion-button (click)="askUs()">
+            <ion-icon name="help"></ion-icon><i>Ask Us</i> 
         </ion-button>
     </ion-fab>
     <div class="content-container">
@@ -80,10 +137,10 @@ Disclaimer -->
         </div>
         <div class="inner-content">
             <div id="FAQs" *ngIf="activeTab === 'FAQs'">
-                <div class="top-bar" (ionFocus)='onInput($event)' >
+                <div class="top-bar" (ionFocus)='onInput($event)'>
                     <h1 id="how-can-we-help">How can we help?</h1>
-                    <input id="query" type="text" placeholder="Type keywords to find answers" (ionFocus)='onInput($event)' [(ngModel)]="usersInput"
-                        (keyup)="searchresult(usersinput)">
+                    <input id="query" type="text" placeholder="Type keywords to find answers"
+                        (ionFocus)='onInput($event)' [(ngModel)]="usersInput" (keyup)="searchresult(usersinput)">
                     <div class="searchResults" *ngIf="usersInput">
                         <div>
                             <ion-item>dfgskdfhglksdf</ion-item>
@@ -226,17 +283,22 @@ Disclaimer -->
                             their progress by clicking "TRACK MY ORDER"
                         </p>
                         <p>
-                            Here you will see a list of all the items you have placed in this order, after the list will be the order details, at the very bottom, you will see your order status with the following four steps.
+                            Here you will see a list of all the items you have placed in this order, after the list will
+                            be the order details, at the very bottom, you will see your order status with the following
+                            four steps.
                             <br>
                             <br>
                             1 - Order Received
                             <br>
-                            This means that your order was received and will be processed as soon as a cash deposit has checked out.
+                            This means that your order was received and will be processed as soon as a cash deposit has
+                            checked out.
                             <br>
                             <br>
                             2 - Order is being processed
                             <br>
-                            After you have made the cash deposit and it has been validated, the order status will move to this stage. This means that DankieJesu and its affiliates are preparing your order, this typically  
+                            After you have made the cash deposit and it has been validated, the order status will move
+                            to this stage. This means that DankieJesu and its affiliates are preparing your order, this
+                            typically
                         </p>
                     </div>
 

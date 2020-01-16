@@ -210,7 +210,22 @@ export class HomePage {
       mySide.style.left = "-100%"
     }
   }
+
   onInput(e) {
     console.log(e)
+  }
+
+  showQA: boolean = false;
+  asnwerQuestions() {
+    this.showQA = true;
+  }
+  askUs() {
+    this.showQA = true;
+  }
+  close_query() {
+    document.getElementById("disappear").style.animation = "faderOut 299ms"
+    setTimeout(() => {
+      this.showQA = false;
+    }, 299);
   }
 }
