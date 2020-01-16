@@ -216,10 +216,16 @@ export class HomePage {
   }
 
   showQA: boolean = false;
-  asnwerQuestions(){
+  asnwerQuestions() {
     this.showQA = true;
   }
-  askUs(){
+  askUs() {
     this.showQA = true;
+  }
+  close_query() {
+    document.getElementById("disappear").style.animation = "faderOut 299ms"
+    setTimeout(() => {
+      this.showQA = false;
+    }, 299);
   }
 }

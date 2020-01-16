@@ -9,9 +9,12 @@ App information
 Disclaimer -->
 <ion-content>
 
-    <div class="answer-questions" *ngIf="showQA === true">
+    <div class="answer-questions" id="disappear" *ngIf="showQA === true">
         <div class="inner-to-answer">
             <div class="header">
+                <ion-button id="closer" (click)="close_query()">
+                    <ion-icon name="close"></ion-icon>
+                </ion-button>
                 <h3>Q&A</h3>
             </div>
             <div class="app-body" id="not-user" *ngIf="!admin">
@@ -73,12 +76,12 @@ Disclaimer -->
     </div>
     <ion-fab vertical="bottom" horizontal="end" *ngIf="admin">
         <ion-button (click)="asnwerQuestions()">
-            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> Answer Questions
+            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i>Answer Questions</i> 
         </ion-button>
     </ion-fab>
     <ion-fab vertical="bottom" horizontal="end" *ngIf="!admin">
         <ion-button (click)="askUs()">
-            <ion-icon name="help"></ion-icon> Ask Us
+            <ion-icon name="help"></ion-icon><i>Ask Us</i> 
         </ion-button>
     </ion-fab>
     <div class="content-container">
