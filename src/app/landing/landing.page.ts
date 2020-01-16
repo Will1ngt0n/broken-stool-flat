@@ -621,16 +621,22 @@ export class LandingPage implements OnInit {
         }
       }
     }
-
-    if(this.allProducts.length > 0){
-      for(let i in items){
+    // if(this.allProducts.length === 0){
+    //   this.allProducts.push(items[1])
+    //   return
+    // }
+      for(let key in this.allProducts){
         addItems = false
-        for(let key in this.allProducts){
+        for(let i in items){
           if(this.allProducts[key].productID !== items[i].productID){
             addItems = true
           }else if(this.allProducts[key].productID === items[i].productID){
             addItems = false
-            break
+            let logo : Array<any> = []
+            logo.push(addItems);
+            console.log(logo);
+            
+            return
           }
         }
         if(addItems === true){
@@ -650,7 +656,9 @@ export class LandingPage implements OnInit {
           }
         }
       }
-    }
+    // if(this.allProducts.length === 0){
+    //   this.allProducts = items
+    // }
 
     let addToWinter : boolean
     let addToSummer : boolean
@@ -669,7 +677,7 @@ export class LandingPage implements OnInit {
           }else if(this.allProducts[i].productID === this.summerGear[j].productID){
             addToSummer = false
             //console.log(this.allProducts[i].productID);
-            break
+            return
           }
           }
         }
@@ -1291,23 +1299,29 @@ export class LandingPage implements OnInit {
       // if(this.pendingOrders.length = 0){
       //   //this.pendingOrders = pendingOrder
       // }else if(this.pendingOrders.length > 0){
-        for(let i in pendingOrder){
-          add = false
-          for(let key in this.pendingOrders){
-            if(this.pendingOrders[key].refNo === pendingOrder[i].refNo){
-              add = false
-              break
-            }else if(this.pendingOrders[key].refNo !== pendingOrder[i].refNo){
-              add = true
-              console.log(this.pendingOrders[key], pendingOrder);
-              //console.log(pendingOrder[i]);
+        if(this.pendingOrders.length === 0){
+          this.pendingOrders = pendingOrder
+          return
+        }else if(this.pendingOrders.length > 0){
+          for(let i in pendingOrder){
+            add = false
+            for(let key in this.pendingOrders){
+              if(this.pendingOrders[key].refNo === pendingOrder[i].refNo){
+                add = false
+                break
+              }else if(this.pendingOrders[key].refNo !== pendingOrder[i].refNo){
+                add = true
+                console.log(this.pendingOrders[key], pendingOrder);
+                //console.log(pendingOrder[i]);
+              }
+            }
+            if(add === true){
+              this.pendingOrders.unshift(pendingOrder[i])
+              this.pendingOrdersLength = this.pendingOrders.length
             }
           }
-          if(add === true){
-            this.pendingOrders.unshift(pendingOrder[i])
-            this.pendingOrdersLength = this.pendingOrders.length
-          }
         }
+
         console.log(this.pendingOrders);
       // }
 

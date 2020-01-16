@@ -656,8 +656,12 @@ export class ProductsService {
       
       data = [{details: item, refNo: refNo}]
       console.log(data);
-      
-      return data
+      if(data.length > 0){
+        return data
+      }else if(data.length === 0){
+        return null
+      }
+
     })
   }
   //orderReady(), orderCollected, cancelOrder(), processOrder()
