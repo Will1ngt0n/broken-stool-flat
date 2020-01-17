@@ -118,6 +118,7 @@
   transition: 300ms;
 }
 #QA {
+  text-align: left;;
   h3 {
     padding-bottom: 10px;
     border-bottom: 2px solid grey;
@@ -125,6 +126,15 @@
   }
 }
 
+
+#QAAanswers-answered{
+  width: 100%;
+  height: unset;
+  text-align: left;
+}
+#QAAnswer{
+  border: 2px solid red;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

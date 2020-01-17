@@ -156,6 +156,9 @@ export class HomePage {
       let returnResult
       let addToReturn : boolean
       returnResult = answerResult
+      if(returnResult.length === 0){
+        returnResult = questionResult
+      }
       for(let i in questionResult){
         addToReturn = false
         for(let key in returnResult){
@@ -358,7 +361,11 @@ export class HomePage {
   usersInput: string;
   searchresult(query) {
     // console.log(usersinput);
+    console.log(query);
+
+    
     this.filterItems(query, this.answeredQuestions)
+    console.log(this.answeredQuestions);
   }
 
   admin;
@@ -373,6 +380,7 @@ export class HomePage {
             this.admin = result
             if(result === true){
               this.getQuestions()
+              this.getFAQs()
             }
           })
           // this.navCtrl.navigate(['/landing'])

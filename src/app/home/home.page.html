@@ -24,7 +24,7 @@ Disclaimer -->
                         the company and its people and employees</p>
                         <form [formGroup]='questionsForm'>
                             <input type="text" id="q-a" placeholder="Name" formControlName='name'><br>
-                            <input type="text" id="q-a" placeholder="Email" formControlName='email' (keydown)='check()'><br>
+                            <input type="text" id="q-a" placeholder="Email" formControlName='email' (keyup)='check()'><br>
                             <textarea name="" id="q-a-textarea" cols="30" rows="10"
                                 placeholder="Your question here..." formControlName='question'></textarea><br>
 
@@ -40,7 +40,7 @@ Disclaimer -->
                     <div *ngFor='let item of questionsArray'>
                         <p>{{item.data.question}}</p>
                         <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..." (keydown)='updateAnswer(item, $event)'></textarea><br>
+                            placeholder="Your answer here..." (keyup)='updateAnswer(item, $event)'></textarea><br>
                         <ion-button (click)='submitAnswer(item)' [disabled]='!item.data.answer'>Send Answer</ion-button>
                     </div>
                 </div>
@@ -116,8 +116,13 @@ Disclaimer -->
                     <input id="query" type="text" placeholder="Type keywords to find answers"
                         (ionFocus)='onInput($event)' [(ngModel)]="usersInput" (keyup)="searchresult(usersInput)">
                     <div class="searchResults" *ngIf="usersInput">
-                        <div>
-                            <ion-item>dfgskdfhglksdf</ion-item>
+                        <div id="QAAnswer">
+                            <div id="QAAnswers-answered" *ngFor="let items of searchArray">
+                                <ion-item>{{items.data.question}}</ion-item>
+                                <i >We stand behind all of our Clothes and gear. If your product is defective or faulty and it's
+                                    been more than 30 days since your purchase, start a return and send your item back.</i>
+                            </div>
+                            <!-- <ion-item>{{items.data.answer}}</ion-item> -->
                         </div>
                     </div>
                 </div>
