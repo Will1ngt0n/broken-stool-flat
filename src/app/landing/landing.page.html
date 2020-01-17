@@ -208,11 +208,20 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item" *ngFor='let item of summerGear'>
-              <p id="item-label">{{item.data.name}}</p>
-              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="" (click)="showHideSearchDetails(item)">
+            <ion-grid>
+              <ion-row>
+                <ion-col class="my-ion-col" size="2" *ngFor='let item of summerGear' (click)="showHideSearchDetails(item)">
+            
+            <div class="item-container">
+              <p>{{item.data.name}}</p>
               <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
+              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
             </div>
+                </ion-col>
+              </ion-row>
+              </ion-grid>
+
+            
 
           </div>
         </div>
@@ -227,12 +236,25 @@
             </ion-note>
           </ion-item>
           <div class="items">
-            <div class="box-item" *ngFor='let item of winterGear'>
+            <!-- <div class="box-item" *ngFor='let item of winterGear'>
               <p id="item-label">{{item.data.name}}</p>
               <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="" (click)="showHideSearchDetails(item)">
               <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
-            </div>
+            </div> -->
 
+            
+            <ion-grid>
+              <ion-row>
+                <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear' (click)="showHideSearchDetails(item)" offset=".2">
+            
+            <div class="item-container">
+              <p>{{item.data.name}}</p>
+              <img src="../../assets/imgs/images.jpg" *ngIf="!item.data" alt="">
+              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+            </div>
+                </ion-col>
+              </ion-row>
+              </ion-grid>
           </div>
         </div>
 
