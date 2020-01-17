@@ -1345,7 +1345,9 @@ export class LandingPage implements OnInit {
         for (let key in this.pendingOrders) {
           this.loadUserName(this.pendingOrders[key].details.userID)
         }
+        //this.loadingCtrl.dismiss()
       }
+
     })
   }
   loadUserName(data) {
