@@ -22,11 +22,14 @@ Disclaimer -->
                     <h3>Contact Us</h3>
                     <p id="instruction">Fill in the form and take this moment to ask any questions concerning the app or
                         the company and its people and employees</p>
-                    <input type="text" id="q-a" placeholder="Name"><br>
-                    <input type="text" id="q-a" placeholder="Email"><br>
-                    <textarea name="" id="q-a-textarea" cols="30" rows="10"
-                        placeholder="Your question here..."></textarea><br>
-                    <ion-button>Sumbit</ion-button>
+                        <form [formGroup]='questionsForm'>
+                            <input type="text" id="q-a" placeholder="Name" formControlName='name'><br>
+                            <input type="text" id="q-a" placeholder="Email" formControlName='email' (keydown)='check()'><br>
+                            <textarea name="" id="q-a-textarea" cols="30" rows="10"
+                                placeholder="Your question here..." formControlName='question'></textarea><br>
+
+                        </form>
+                        <ion-button [disabled]='!questionsForm.valid' (click)='submitQuestion()' >Sumbit</ion-button>
                 </div>
             </div>
             <div class="app-body-answers" id="is-user" *ngIf="admin">
@@ -34,38 +37,8 @@ Disclaimer -->
                 <div class="inputs" id="me">
 
                     
-                    <div>
-                        <p>How do I cancel an order?</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..."></textarea><br>
-                        <ion-button>Send Answer</ion-button>
-                    </div>
-                    <div>
-                        <p>How do I cancel an order?</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..."></textarea><br>
-                        <ion-button>Send Answer</ion-button>
-                    </div>
-                    <div>
-                        <p>How do I cancel an order?</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..."></textarea><br>
-                        <ion-button>Send Answer</ion-button>
-                    </div>
-                    <div>
-                        <p>How do I cancel an order?</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..."></textarea><br>
-                        <ion-button>Send Answer</ion-button>
-                    </div>
-                    <div>
-                        <p>How do I cancel an order?</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..."></textarea><br>
-                        <ion-button>Send Answer</ion-button>
-                    </div>
-                    <div>
-                        <p>How do I cancel an order?</p>
+                    <div *ngFor='let item of questionsArray'>
+                        <p>{{item.data.question}}</p>
                         <textarea name="" id="q-a-textarea" cols="30" rows="3"
                             placeholder="Your answer here..."></textarea><br>
                         <ion-button>Send Answer</ion-button>
@@ -140,7 +113,7 @@ Disclaimer -->
                 <div class="top-bar" (ionFocus)='onInput($event)'>
                     <h1 id="how-can-we-help">How can we help?</h1>
                     <input id="query" type="text" placeholder="Type keywords to find answers"
-                        (ionFocus)='onInput($event)' [(ngModel)]="usersInput" (keyup)="searchresult(usersinput)">
+                        (ionFocus)='onInput($event)' [(ngModel)]="usersInput" (keyup)="searchresult(usersInput)">
                     <div class="searchResults" *ngIf="usersInput">
                         <div>
                             <ion-item>dfgskdfhglksdf</ion-item>

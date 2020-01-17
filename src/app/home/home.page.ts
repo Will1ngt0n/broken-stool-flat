@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, EmailValidator } from '@angular/forms';
 import { AuthService } from '../services/auth-services/auth.service';
 import * as firebase from 'firebase'
 import { AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionsService } from '../services/question-services/questions.service';
+
 
 declare var window
 var provider = new firebase.auth.GoogleAuthProvider();
@@ -20,21 +22,35 @@ export class HomePage {
   smsSent
   confirmationResult = ''
   inputCode
-  constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router) {
-    let person = {}
-
-    person = {
-      'hello': {
-        tree: 'hi',
-        flower: false,
-        houses: {
-          'double-storey': true,
-          'flat-house': false
-        }
-      }
-    }
-    console.log(person);
-
+  submitButton : boolean
+  questionsArray : Array<any> = []
+  //emailPattern : string = "[a-zA-Z0-9-_.+#$!=%^&*/?]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9]+"
+  emailPattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  secondEmailPattern : string = "[a-zA-Z0-9-_.+#$!=%^&*/?]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9]+[.][a-zA-Z0-9]+"
+  //pattern = new RegExp(this.emailPattern || this.secondEmailPattern)
+  name
+  email
+  question
+  questionsForm
+  constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService : QuestionsService) {
+    // let person = {}
+    // person = {
+    //   'hello': {
+    //     tree: 'hi',
+    //     flower: false,
+    //     houses: {
+    //       'double-storey': true,
+    //       'flat-house': false
+    //     }
+    //   }
+    // }
+    //console.log(person);
+  
+    this.questionsForm = formBuilder.group({
+      email: [this.email, Validators.compose([Validators.required, Validators.pattern(this.emailPattern)])],
+      name: [this.name, Validators.compose([Validators.required, Validators.minLength(3)])],
+      question: [this.question, Validators.compose([Validators.required, Validators.minLength(15)])]
+    })
     this.smsSent = false
     firebase.auth().languageCode = 'en';
     this.registrationForm = formBuilder.group({
@@ -43,6 +59,69 @@ export class HomePage {
 
     this.checkAuthState()
   }
+  check(){
+    // console.log(this.questionsForm.get('name').setValue('dfsfsdf'))
+  }
+  submitQuestion(){
+    
+    this.email = this.questionsForm.get('email').value
+    this.name = this.questionsForm.get('name').value
+    this.question = this.questionsForm.get('question').value
+    let emailArray : Array<any> = []
+    let index
+    let dotsCount : number = 0
+    for(let i in this.email){
+      emailArray.push(this.email[i])
+    }
+    index = emailArray.indexOf('@')
+    for(let i = index; i< emailArray.length; i++){
+      if(emailArray[i]=== '.'){
+        dotsCount = dotsCount + 1
+      }
+    }
+    console.log(dotsCount);
+
+    if(dotsCount > 2){
+      alert('Email format is incorrect')
+
+    }else if(dotsCount < 2){
+      this.questionsService.submitQuestion(this.name, this.email, this.question).then(result => {
+      if(result === 'success'){
+        console.log('submitted');
+        alert('Submitted')
+        this.email = ''
+        this.name = ''
+        this.question = ''
+        this.questionsForm.get('name').setValue('')
+        this.questionsForm.get('email').setValue('')
+        this.questionsForm.get('question').setValue('')
+      }
+    })
+    }
+
+  }
+
+  getQuestions(){
+    return this.questionsService.retrieveQuestions().then(result => {
+      this.questionsArray = result
+      console.log(this.questionsArray);
+      
+    })
+  }
+
+  autoComplete(query){
+    if(query === ' ' || query === '  ' || query === '   '){
+      this.usersInput = ''
+    }
+    if(query !== '' || query !== ' '){
+      if(query === '*'){
+        
+      }else if(query !== '*'){
+        
+      }
+    }
+  }
+
   googleSignIn() {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -175,6 +254,7 @@ export class HomePage {
           return this.authService.getProfile(result['uid']).then(result => {
             console.log(result);
             this.admin = result
+            this.getQuestions()
           })
           // this.navCtrl.navigate(['/landing'])
         }
