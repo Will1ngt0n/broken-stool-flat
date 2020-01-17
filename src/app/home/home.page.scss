@@ -9,6 +9,7 @@
   background: rgb(205, 205, 205);
   display: flex;
   flex-wrap: wrap;
+  animation: faderIn 300ms
 }
 .navigation-inner {
   width: 80%;
@@ -117,6 +118,7 @@
   transition: 300ms;
 }
 #QA {
+  text-align: left;;
   h3 {
     padding-bottom: 10px;
     border-bottom: 2px solid grey;
@@ -124,6 +126,15 @@
   }
 }
 
+
+#QAAanswers-answered{
+  width: 100%;
+  height: unset;
+  text-align: left;
+}
+#QAAnswer{
+  border: 2px solid red;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
@@ -151,6 +162,7 @@
   width: 100%;
   height: 50px;
   background: rgb(205, 205, 205);
+  animation: faderIn 300ms;
 }
 
 .navigator-small > div:nth-child(1) {
@@ -167,7 +179,7 @@
 }
 #side-menu {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 50px);
   background: white;
   position: absolute;
   z-index: 100;
@@ -253,6 +265,7 @@
   padding: 10px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.5);
+  transition: 300ms;
 }
 .inner-to-answer{
   width: 60%;
@@ -270,7 +283,9 @@
   height: calc(100% - 50px);
 }
 #me > div{
-  border: 1px
+  border-bottom: 1px solid grey;
+  padding-bottom: 20px;
+  
 }
 .header{
   width: 100%;
@@ -304,12 +319,19 @@
 // #not-user{
 // }
 
+.document-upload{
+  width: 50%;
+  margin: 20px auto;
+  padding: 10px;
+  transition: 300ms;
+}
 @media screen and (min-width: 531px) {
   #side-menu {
     display: none;
   }
   #how-can-we-help {
     display: block;
+    animation: faderIn 300ms
   }
   i{
     display: block
@@ -318,6 +340,12 @@
 @media screen and (max-width: 1050px) {
   .about-information {
     width: 100%;
+  }
+  .document-upload{
+    width: 100%;
+  }
+  #q-a-textarea{
+    width: 90%
   }
   .inner-content > #FAQs > #answers {
     // border: 2px solid red;
@@ -354,6 +382,7 @@
     }
     .inner-content {
       height: calc(100% - 50px);
+      // background: red;
     }
     #side-menu {
       display: block;
@@ -372,4 +401,11 @@
 #closer{
   position: absolute;
   left: 5px;
+}
+
+#one, #two, #three, #four, #five{
+  font-weight: 500;
+}
+#one{
+  font-weight: bold;
 }

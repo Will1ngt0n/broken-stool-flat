@@ -156,6 +156,9 @@ export class HomePage {
       let returnResult
       let addToReturn : boolean
       returnResult = answerResult
+      if(returnResult.length === 0){
+        returnResult = questionResult
+      }
       for(let i in questionResult){
         addToReturn = false
         for(let key in returnResult){
@@ -309,15 +312,60 @@ export class HomePage {
   }
 
   activeTab: string = "FAQs";
+  makeBold = "";
   toggleTab(selectedTab) {
     this.activeTab = selectedTab;
     // console.log(this.activeTab);
+    this.menuDrawer = 1;
     this.toggleSideMenu()
+    this.makeBold = "makeBold";
+    // console.log(this.makeBold);
+    if(selectedTab === "FAQs"){
+      document.getElementById("one").style.fontWeight = "bold"
+      document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("five").style.fontWeight = "500"
+    }
+    else if(selectedTab === "Terms and Privacy Policy"){
+      document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("two").style.fontWeight = "bold"
+      document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("five").style.fontWeight = "500"
+    }
+    else if(selectedTab === "Payment Process"){
+      document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("three").style.fontWeight = "bold"
+      document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("five").style.fontWeight = "500"
+    }
+    else if(selectedTab === "About Company"){
+      document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("four").style.fontWeight = "bold"
+      document.getElementById("five").style.fontWeight = "500"
+    }
+    else if(selectedTab === "Disclaimer"){
+      document.getElementById("one").style.fontWeight = "500 "
+      document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("five").style.fontWeight = "bold"
+    }
+    
+
   }
   usersInput: string;
   searchresult(query) {
     // console.log(usersinput);
+    console.log(query);
+
+    
     this.filterItems(query, this.answeredQuestions)
+    console.log(this.answeredQuestions);
   }
 
   admin;
@@ -332,6 +380,7 @@ export class HomePage {
             this.admin = result
             if(result === true){
               this.getQuestions()
+              this.getFAQs()
             }
           })
           // this.navCtrl.navigate(['/landing'])
