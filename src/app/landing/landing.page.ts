@@ -2205,7 +2205,7 @@ export class LandingPage implements OnInit {
   
   goToHelpDesk(){
     
-    this.route.navigate(['/home'])
+    this.route.navigate(['/home', 'Terms and Privacy Policy'])
   }
 
   modifyLocalObjectsVests(result, brand, category){

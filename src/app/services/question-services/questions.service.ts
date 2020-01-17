@@ -39,6 +39,7 @@ export class QuestionsService {
       answer: answer,
       timestamp: new Date().getTime()
     }).then(() => {
+      firebase.firestore().collection('FAQs').doc(docRef).delete()
       return 'success'
     }).catch( () => {
       return 'error'

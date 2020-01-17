@@ -34,7 +34,7 @@ export class HomePage {
   email
   question
   questionsForm
-  constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService : QuestionsService) {
+  constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService : QuestionsService, private activatedRoute : ActivatedRoute) {
     // let person = {}
     // person = {
     //   'hello': {
@@ -47,7 +47,11 @@ export class HomePage {
     //   }
     // }
     //console.log(person);
-  
+    this.activatedRoute.params.subscribe(result => {
+      console.log(result);
+      
+    })
+
     this.questionsForm = formBuilder.group({
       email: [this.email, Validators.compose([Validators.required, Validators.pattern(this.emailPattern)])],
       name: [this.name, Validators.compose([Validators.required, Validators.minLength(3)])],
