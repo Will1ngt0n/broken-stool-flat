@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase'
-import { EmailValidator } from '@angular/forms';
-import { emit } from 'cluster';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,16 +26,22 @@ export class QuestionsService {
       }
       if(questions.length > 0){
         return questions
-      }else if(questions.length === 0) 
+      }else if(questions.length === 0){
         return null
+      }
     })
   }
-  submitAnswer(docRef, question, name, email){
+  submitAnswer(docRef, question, name, email, answer){
     return firebase.firestore().collection('AnsweredQuestions').doc(docRef).set({
       question: question,
       name: name,
       email: email,
+      answer: answer,
       timestamp: new Date().getTime()
+    }).then(() => {
+      return 'success'
+    }).catch( () => {
+      return 'error'
     })
   }
   retrieveAnsweredQuestions(){
@@ -47,6 +51,11 @@ export class QuestionsService {
         let data = result.docs[key].data()
         let docRef = result.docs[key].id
         questions.push({data: data, docRef: docRef})
+      }
+      if(questions.length > 0){
+        return questions
+      }else if(questions.length === 0){
+        return null
       }
     })
   }

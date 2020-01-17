@@ -40,8 +40,8 @@ Disclaimer -->
                     <div *ngFor='let item of questionsArray'>
                         <p>{{item.data.question}}</p>
                         <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..."></textarea><br>
-                        <ion-button>Send Answer</ion-button>
+                            placeholder="Your answer here..." (keydown)='updateAnswer(item, $event)'></textarea><br>
+                        <ion-button (click)='submitAnswer(item)' [disabled]='!item.data.answer'>Send Answer</ion-button>
                     </div>
                 </div>
             </div>

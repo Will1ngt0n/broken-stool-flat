@@ -22,6 +22,8 @@ export class HomePage {
   smsSent
   confirmationResult = ''
   inputCode
+  searchArray : Array<any> = []
+  answeredQuestions : Array<any> = []
   submitButton : boolean
   questionsArray : Array<any> = []
   //emailPattern : string = "[a-zA-Z0-9-_.+#$!=%^&*/?]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9]+"
@@ -100,6 +102,23 @@ export class HomePage {
     }
 
   }
+  updateAnswer(item, event){
+    let index = this.questionsArray.indexOf(item)
+    console.log(index);
+    this.questionsArray[index].data.answer = event.target.value
+    
+  }
+  submitAnswer(item){
+    return this.questionsService.submitAnswer(item.docRef, item.data.question, item.data.name, item.data.email, item.data.answer).then(result => {
+      console.log(result);
+      if(result === 'success'){
+
+      }else if(result === 'error'){
+
+      }
+      
+    })
+  }
 
   getQuestions(){
     return this.questionsService.retrieveQuestions().then(result => {
@@ -121,7 +140,64 @@ export class HomePage {
       }
     }
   }
+  // searchresult(query) {
+ 
+  //   // this.searchArray = []
+  // }
+  filterItems(query, array) {
+    let queryFormatted = query.toLowerCase();
+    // console.log(queryFormatted);
+    // console.log(array);
+    if(queryFormatted !== '' && queryFormatted !== '*'){
+      let answerResult = array.filter(item => item.data.answer.toLowerCase().indexOf(queryFormatted) >= 0)
+      let questionResult = array.filter(item => item.data.question.toLowerCase().indexOf(queryFormatted) >= 0)
+      console.log(answerResult);
+      console.log(questionResult);
+      let returnResult
+      let addToReturn : boolean
+      returnResult = answerResult
+      for(let i in questionResult){
+        addToReturn = false
+        for(let key in returnResult){
+          if(returnResult[key].docRef !== questionResult[i].docRef){
+            console.log(returnResult[key].docRef);
+            
+            addToReturn = true
+          }else if(returnResult[key].docRef === questionResult[i].docRef){
+            addToReturn = false
+            break
+          }
+        }
+        if(addToReturn === true){
+          returnResult.push(questionResult[i])
+        }
+      }
+      console.log('ideas are flowing');
+      
+      let addBrand: boolean
+      let addCategory: boolean
+      let addName: boolean
+      addName = false
+      addCategory = false
+      addBrand = false
+      //// console.log(brandResult);
+      //// console.log(categoryResult);
+      // console.log(nameResult);
+      this.searchArray = returnResult
+    }else if(queryFormatted === '*'){
+    this.searchArray = this.answeredQuestions
+    }
+    console.log(this.searchArray);
+    
+  }
 
+  getFAQs(){
+    return this.questionsService.retrieveAnsweredQuestions().then(result => {
+      this.answeredQuestions = result
+      console.log(this.answeredQuestions);
+      
+    })
+  }
   googleSignIn() {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -239,9 +315,9 @@ export class HomePage {
     this.toggleSideMenu()
   }
   usersInput: string;
-  searchresult(usersinput) {
+  searchresult(query) {
     // console.log(usersinput);
-
+    this.filterItems(query, this.answeredQuestions)
   }
 
   admin;
@@ -254,10 +330,14 @@ export class HomePage {
           return this.authService.getProfile(result['uid']).then(result => {
             console.log(result);
             this.admin = result
-            this.getQuestions()
+            if(result === true){
+              this.getQuestions()
+            }
           })
           // this.navCtrl.navigate(['/landing'])
         }
+      }else if(result === null){
+        this.getFAQs()
       }
     })
   }
