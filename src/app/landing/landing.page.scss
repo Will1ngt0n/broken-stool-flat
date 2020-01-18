@@ -39,6 +39,8 @@
     position: absolute;
     background: rgba(0, 0, 0, 0.493);
     z-index: 1000000000000000000000000000000000000000000000000;
+    color: white;
+    font-weight: bolder;
   }
   div > img {
     width: 100%;
@@ -125,7 +127,6 @@
     .myBox {
       width: 16.6666666666666%;
       height: 39px;
-      // background: red;
       .myCheck {
         width: 100%;
         height: 100%;
@@ -137,7 +138,7 @@
 ion-list > div {
   cursor: pointer;
 }
-.clicked-from-search > div {
+.clicked-from-search > #forms {
   width: 30%;
   height: 80%;
   background: white;
@@ -145,6 +146,16 @@ ion-list > div {
   transition: 300ms;
   border-radius: 10px;
   overflow: hidden;
+  z-index: 1;
+  transition: 300ms;
+}
+
+#dismisser-bg{
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  position: absolute;
+  z-index: 0;
 }
 .searchResults {
   position: absolute;
@@ -654,6 +665,12 @@ ion-searchbar {
       width: 100%;
       height: 100%;
     }
+    
+.clicked-from-search > #forms {
+  width: 100%;
+  height: 100%;
+  border-radius: 0px;
+}
   }
 }
 @media screen and (min-width: 1331px) {
@@ -1047,9 +1064,5 @@ label {
   }
 }
 ion-row {
-  // border: 2px solid green;
   height: 100%;
 }
-// ion-grid {
-//   // border: 2px solid blue;
-// }
