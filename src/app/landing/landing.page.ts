@@ -2178,7 +2178,7 @@ export class LandingPage implements OnInit {
 
   ionViewDidEnter(){
     console.log('ion view did enter');
-    
+    this.alertController.dismiss()
   }
 
   ionViewWillEnter(){
