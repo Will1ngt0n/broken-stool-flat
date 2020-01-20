@@ -24,7 +24,7 @@
                 <ion-label position="floating">Password</ion-label>
                 <ion-input type="password" formControlName='password'></ion-input>
               </ion-item>
-              <p id="password-forgotten" (click)='resetPassword()'>I forgot my password</p>
+              <p id="password-forgotten" (click)='showResetPrompt()'>I forgot my password</p>
               <ion-button [disabled]='!loginForm.valid' color="dark" (click)='login()'>Login</ion-button>
           </form>
 

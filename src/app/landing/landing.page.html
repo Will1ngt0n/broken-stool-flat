@@ -19,7 +19,10 @@
     </div>
   </div>
   <div class="clicked-from-search" *ngIf="clickedSearchItem === 'showItem'">
-    <div>
+    <div id="dismisser-bg" (click)="showHideSearchDetails('close')">
+
+    </div>
+    <div id="forms">
       <button id="dismisser" (click)="showHideSearchDetails('close')">
         <ion-icon name="close"></ion-icon>
       </button>

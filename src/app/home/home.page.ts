@@ -5,6 +5,7 @@ import * as firebase from 'firebase'
 import { AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionsService } from '../services/question-services/questions.service';
+import { Location } from '@angular/common'
 
 
 declare var window
@@ -34,7 +35,7 @@ export class HomePage {
   email
   question
   questionsForm
-  constructor(public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService : QuestionsService, private activatedRoute : ActivatedRoute) {
+  constructor(private loc : Location,public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService : QuestionsService, private activatedRoute : ActivatedRoute) {
     // let person = {}
     // person = {
     //   'hello': {
@@ -47,9 +48,16 @@ export class HomePage {
     //   }
     // }
     //console.log(person);
+    let FAQs = 'FAQs'
+    let about = 'About Company'
+    let Terms = 'Terms and Privacy Policy'
+    let Disclaimer = 'Disclaimer'
+    let payment = 'Payment Policy'
+
     this.activatedRoute.params.subscribe(result => {
       console.log(result);
-      
+      //this.activeTab = result.id
+      this.toggleTab(result.id)
     })
 
     this.questionsForm = formBuilder.group({
@@ -311,11 +319,21 @@ export class HomePage {
 
     await alert.present();
   }
-  change() {
-
+  changeTab(event) {
+    this.loc.go('/home/' + event)
+    this.toggleTab(event)
   }
+  // changeTabs(event){
+  //   this.loc.replaceState('/' + event)
+  // }
+  // changeTab2(event){
+  //   this.loc.go(['/home/'] + event)
+  // }
+  // changeTab3(event){
+  //   this.loc.go('/home/' + event)
+  // }
 
-  activeTab: string = "FAQs";
+  activeTab: string = ''
   makeBold = "";
   toggleTab(selectedTab) {
     this.activeTab = selectedTab;
