@@ -111,7 +111,7 @@
   #QAAnswer {
     overflow-y: scroll;
     padding-bottom: 50px;
-    border: 2px solid red;
+    // border: 2px solid red;
   }
   #QAAnswers-answered {
     padding-bottom: 10px;
@@ -373,7 +373,7 @@
   @media screen and (max-width: 530px) {
     .searchResults {
       top: 60px;
-      border: 2px solid red;
+      // border: 2px solid red;
       height: calc(100vh - 120px);
       width: 100%;
       z-index: 10000000000000000000000000000000000000000;
