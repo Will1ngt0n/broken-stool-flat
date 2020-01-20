@@ -441,4 +441,90 @@ export class HomePage {
       this.showQA = false;
     }, 299);
   }
+  ngOnInit(){
+    this.questionsSnap()
+    this.answersSnap()
+  }
+  questionsSnap(){
+    firebase.firestore().collection('FAQs').onSnapshot(result => {
+      console.log(result)
+      let questions : Array<any> = []
+      let addItem : boolean
+      let docRef
+      let data
+      for(let key in result.docChanges()){
+        let change = result.docChanges()[key]
+        if(change.type === 'removed'){
+          let id = change.doc.id
+          console.log(id);
+          console.log('removed');
+          
+          for(let j in this.questionsArray){
+            if(id === this.questionsArray[j].docRef){
+              this.questionsArray.splice(Number(j), 1)
+            }
+          }
+        }else if(change.type === 'added'){
+          console.log('added');
+          
+          docRef = change.doc.id
+          data = change.doc.data()
+          questions.push({data: data, docRef: docRef})
+        }
+      }
+      for(let key in questions){
+        for(let j in this.questionsArray){
+          if(questions[key].docRef === this.questionsArray[j].docRef){
+            addItem = false
+            break
+          }else if(questions[key].docRef !== this.questionsArray[j].docRef){
+            addItem = true
+          }
+        }
+        if(addItem === true){
+          this.questionsArray.push(questions[key])
+        }
+      }
+    })
+  }
+  answersSnap(){
+    firebase.firestore().collection('AnsweredQuestions').onSnapshot(result => {
+      console.log(result);
+      
+      let answers : Array<any> = []
+      let docRef 
+      let data
+      let addItem : boolean
+      for(let key in result.docChanges()){
+        let change = result.docChanges()[key]
+        if(change.type === 'added'){
+          docRef = change.doc.id
+          data = change.doc.data()
+          answers.push({docRef: docRef, data: data})
+          console.log('added');
+          
+        }else if(change.type === 'modified'){
+          console.log('modified');
+          
+        }
+      }
+      console.log(answers);
+      console.log(this.answeredQuestions);
+      
+      
+      for(let key in answers){
+        for(let j in this.answeredQuestions){
+          if(answers[key].docRef === this.answeredQuestions[j]){
+            addItem = false
+            break
+          }else if(answers[key].docRef !== this.answeredQuestions[j]){
+            addItem = true
+          }
+        }
+        if(addItem === true){
+          this.answeredQuestions.push(answers[key])
+        }
+      }
+    })
+  }
 }
