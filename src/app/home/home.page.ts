@@ -488,9 +488,14 @@ export class HomePage {
           docRef = change.doc.id
           data = change.doc.data()
           questions.push({data: data, docRef: docRef})
+          console.log(questions);
+          
         }
       }
       for(let key in questions){
+        if(this.questionsArray.length === 0){
+          addItem = true
+        }
         for(let j in this.questionsArray){
           if(questions[key].docRef === this.questionsArray[j].docRef){
             addItem = false
@@ -503,6 +508,8 @@ export class HomePage {
           this.questionsArray.push(questions[key])
         }
       }
+      console.log(this.questionsArray);
+      
     })
   }
   answersSnap(){
