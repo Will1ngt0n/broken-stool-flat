@@ -28,31 +28,64 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  p {
-    cursor: pointer;
-    margin: 0;
-  }
 }
 
 .navigation-inner > div:nth-child(1) {
   width: 26%;
   font-weight: bold;
-  line-height: 80px;
-  cursor: pointer;
+  // cursor: pointer;
+  #noAdmin {
+  }
+  #yesAdmin {
+    cursor: pointer;
+    margin: 0;
+    // border: 1px solid red;
+    // height: 20px;
+  }
 }
 .navigation-inner > div:nth-child(2) {
+  p {
+    cursor: pointer;
+    margin: 0;
+    // border: 1px solid red;
+    // height: 20px;
+  }
   width: 14.16666666666666%;
 }
 .navigation-inner > div:nth-child(3) {
+  p {
+    cursor: pointer;
+    margin: 0;
+    // border: 1px solid red;
+    // height: 20px;
+  }
   width: 14.16666666666666%;
 }
 .navigation-inner > div:nth-child(4) {
+  p {
+    cursor: pointer;
+    margin: 0;
+    // border: 1px solid red;
+    // height: 20px;
+  }
   width: 14.16666666666666%;
 }
 .navigation-inner > div:nth-child(5) {
+  p {
+    cursor: pointer;
+    margin: 0;
+    // border: 1px solid red;
+    // height: 20px;
+  }
   width: 14.16666666666666%;
 }
 .navigation-inner > div:nth-child(6) {
+  p {
+    cursor: pointer;
+    margin: 0;
+    // border: 1px solid red;
+    // height: 20px;
+  }
   width: 14.16666666666666%;
 }
 @keyframes faderIn {
@@ -107,7 +140,7 @@
   transition: 300ms;
   border-radius: 10px;
   padding: 10px;
-    height: 400px;
+  height: 400px;
   #QAAnswer {
     overflow-y: scroll;
     padding-bottom: 50px;
@@ -149,6 +182,7 @@
 }
 #QAAnswer {
   // border: 2px solid red;
+  height: 100%;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -431,11 +465,10 @@
   font-weight: bold;
 }
 
-
-.no-questions{
+.no-questions {
   width: 100%;
   height: 100%;
-  background: url('../../assets/imgs/empty.jpg');
+  background: url("../../assets/imgs/empty.jpg");
   background-size: cover;
   background-position: center;
 
@@ -443,4 +476,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.goAwayer {
+  width: 100%;
+  height: 100%;
+  background: red;
+  position: absolute;
+  z-index: -1;
 }

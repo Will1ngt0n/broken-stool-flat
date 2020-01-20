@@ -22,25 +22,25 @@ Disclaimer -->
                     <h3>Contact Us</h3>
                     <p id="instruction">Fill in the form and take this moment to ask any questions concerning the app or
                         the company and its people and employees</p>
-                        <form [formGroup]='questionsForm'>
-                            <input type="text" id="q-a" placeholder="Name" formControlName='name'><br>
-                            <input type="text" id="q-a" placeholder="Email" formControlName='email' (keyup)='check()'><br>
-                            <textarea name="" id="q-a-textarea" cols="30" rows="10"
-                                placeholder="Your question here..." formControlName='question'></textarea><br>
+                    <form [formGroup]='questionsForm'>
+                        <input type="text" id="q-a" placeholder="Name" formControlName='name'><br>
+                        <input type="text" id="q-a" placeholder="Email" formControlName='email' (keyup)='check()'><br>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="10" placeholder="Your question here..."
+                            formControlName='question'></textarea><br>
 
-                        </form>
-                        <ion-button [disabled]='!questionsForm.valid' (click)='submitQuestion()' >Sumbit</ion-button>
+                    </form>
+                    <ion-button [disabled]='!questionsForm.valid' (click)='submitQuestion()'>Sumbit</ion-button>
                 </div>
             </div>
             <div class="app-body-answers" id="is-user" *ngIf="admin">
                 <h3>Answer questions</h3>
                 <div class="inputs" id="me">
 
-                    
+
                     <div *ngFor='let item of questionsArray'>
                         <p>{{item.data.question}}</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..." (keyup)='updateAnswer(item, $event)'></textarea><br>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3" placeholder="Your answer here..."
+                            (keyup)='updateAnswer(item, $event)'></textarea><br>
                         <ion-button (click)='submitAnswer(item)' [disabled]='!item.data.answer'>Send Answer</ion-button>
                     </div>
                     <div class="no-questions" *ngIf="!questionsArray">
@@ -65,7 +65,10 @@ Disclaimer -->
             <div class="navigation-inner">
 
 
-                <div (click)="goHome()">Dankie Jesu</div>
+                <div>
+                    <p id="yesAdmin" (click)="goHome()" *ngIf="admin">Dankie Jesu</p>
+                    <p id="noAdmin" *ngIf="!admin">Dankie Jesu</p>
+                </div>
                 <div>
                     <p id="one" (click)="changeTab('FAQs')">FAQs</p>
                 </div>
@@ -95,7 +98,11 @@ Disclaimer -->
 
         </div>
         <div id="side-menu">
-            <div (click)="goHome()">Dankie Jesu </div>
+            <div>
+                <p (click)="goHome()">
+                    Dankie Jesu
+                </p>
+            </div>
             <div>
                 <p (click)="changeTab('FAQs')">FAQs</p>
             </div>
@@ -113,6 +120,9 @@ Disclaimer -->
             </div>
         </div>
         <div class="inner-content">
+            <div class="goAwayer" (click)="goAway()">
+
+            </div>
             <div id="FAQs" *ngIf="activeTab === 'FAQs'">
                 <div class="top-bar" (ionFocus)='onInput($event)'>
                     <h1 id="how-can-we-help">How can we help?</h1>
@@ -122,9 +132,9 @@ Disclaimer -->
                         <div id="QAAnswer">
                             <div id="QAAnswers-answered" *ngFor="let items of searchArray">
                                 <div>
-                                    
-                                <ion-item>{{items.data.question}}</ion-item>
-                                <i id="answer-description">{{items.data.answer}} </i>
+
+                                    <ion-item>{{items.data.question}}</ion-item>
+                                    <i id="answer-description">{{items.data.answer}} </i>
                                 </div>
                             </div>
                             <!-- <ion-item>{{items.data.answer}}</ion-item> -->
@@ -451,7 +461,8 @@ Disclaimer -->
                             <br>
                             4 - Delivered/Collected
                             <br>
-                            After you have received your order, the status will change to Delivered or Collected - respectively; this order will then move from your pending orders to your order history.
+                            After you have received your order, the status will change to Delivered or Collected -
+                            respectively; this order will then move from your pending orders to your order history.
                             <br>
                         </p>
                     </div>
