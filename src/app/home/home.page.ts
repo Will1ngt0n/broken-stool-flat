@@ -393,7 +393,7 @@ export class HomePage {
 
   admin;
   checkAuthState() {
-    return this.authService.checkingAuthState().then(result => {
+    return this.authService.checkingAuthStateHome().then(result => {
       if (result !== null) {
         console.log(result);
         if (result['uid']) {
@@ -414,7 +414,7 @@ export class HomePage {
     })
   }
   goHome() {
-    return this.authService.checkingAuthState().then(result => {
+    return this.authService.checkingAuthStateHome().then(result => {
       if (result === null) {
         location.reload()
       }
@@ -446,13 +446,17 @@ export class HomePage {
   goAway(){
     //  Removes the search results
     //  alert("clicked")
+    if(document.getElementById("userSearchResults")){
+      document.getElementById("userSearchResults").style.display = "none"
+    }
 
-     document.getElementById("userSearchResults").style.display = "none"
   }
   changingValue(){
     // alert("Changing")
+    if(document.getElementById("userSearchResults")){
+      document.getElementById("userSearchResults").style.display = "block"
+    }
 
-    document.getElementById("userSearchResults").style.display = "block"
     // Calls back the search results
   }
 

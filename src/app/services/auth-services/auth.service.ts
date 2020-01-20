@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase'
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 declare var window
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class AuthService {
   email
   password
   //confirmationResult
-  constructor(public alertCtrl: AlertController) { }
+  constructor(public alertCtrl: AlertController, public route : Router) { }
   requestLogin(number, appVerifier){
     return firebase.auth().signInWithPhoneNumber(number, appVerifier).then(confirmationResult => {
       window.confirmationResult = confirmationResult;
@@ -146,6 +147,22 @@ export class AuthService {
   })
 }
   checkingAuthState(){
+    return new Promise((resolve, reject) =>{
+      firebase.auth().onAuthStateChanged((user) =>{
+        if(user){
+          console.log(user);
+          
+          resolve (user)
+        }else{
+          console.log('not logged in');
+          this.route.navigate(['/login'])
+          resolve (null)
+        }
+      })
+    })
+  }
+
+  checkingAuthStateHome(){
     return new Promise((resolve, reject) =>{
       firebase.auth().onAuthStateChanged((user) =>{
         if(user){

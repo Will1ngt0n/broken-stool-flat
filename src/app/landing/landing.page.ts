@@ -140,6 +140,7 @@ export class LandingPage implements OnInit {
 
   constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     //console.log(this.department);
+    this.presentLoader()
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
     this.allSpecialsPicture = undefined
@@ -151,7 +152,7 @@ export class LandingPage implements OnInit {
     this.getPendingOrders()
     this.loadDankieJesuItems()
     this.loadKwangaItems()
-    this.presentLoader()
+
     this.colors = { red: '' }
     this.accessory = false;
     this.summer = false;
@@ -244,21 +245,21 @@ export class LandingPage implements OnInit {
     this.nativeCategory.nativeElement.disabled = true
     this.refreshOrderHistory()
     this.getPendingOrdersSnap()
-    // this.loadFormal('Kwanga', 'Formal')
-    // this.loadTraditional('Kwanga', 'Traditional')
-    // this.loadSmartCasual('Kwanga', 'Smart Casual')
-    // this.loadSportsWear('Kwanga', 'Sports')
-    // this.loadVests('Dankie Jesu', 'Vests')
-    // this.loadCaps('Dankie Jesu', 'Caps')
-    // this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-    // this.loadShorts('Dankie Jesu', 'Shorts')
-    // this.loadCropTops('Dankie Jesu', 'Crop Tops')
-    // this.loadTShirts('Dankie Jesu', 'T-Shirts')
-    //  this.loadBags('Dankie Jesu', 'Bags')
-    // this.loadSweaters('Dankie Jesu', 'Sweaters')
-    // this.loadHoodies('Dankie Jesu', 'Hoodies')
-    // this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-    // this.loadBeanies('Dankie Jesu', 'Beanies')
+    this.loadFormal('Kwanga', 'Formal')
+    this.loadTraditional('Kwanga', 'Traditional')
+    this.loadSmartCasual('Kwanga', 'Smart Casual')
+    this.loadSportsWear('Kwanga', 'Sports')
+    this.loadVests('Dankie Jesu', 'Vests')
+    this.loadCaps('Dankie Jesu', 'Caps')
+    this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+    this.loadShorts('Dankie Jesu', 'Shorts')
+    this.loadCropTops('Dankie Jesu', 'Crop Tops')
+    this.loadTShirts('Dankie Jesu', 'T-Shirts')
+    this.loadBags('Dankie Jesu', 'Bags')
+    this.loadSweaters('Dankie Jesu', 'Sweaters')
+    this.loadHoodies('Dankie Jesu', 'Hoodies')
+    this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+    this.loadBeanies('Dankie Jesu', 'Beanies')
 
     return this.authService.checkingAuthState().then( result => {
       if(result === null){
@@ -2178,7 +2179,7 @@ export class LandingPage implements OnInit {
 
   ionViewDidEnter(){
     console.log('ion view did enter');
-    this.alertController.dismiss()
+    
   }
 
   ionViewWillEnter(){
@@ -2205,7 +2206,7 @@ export class LandingPage implements OnInit {
   
   goToHelpDesk(){
     
-    this.route.navigate(['/home', 'FAQs'])
+    this.route.navigate(['/home', 'Terms and Privacy Policy'])
   }
 
   modifyLocalObjectsVests(result, brand, category){
