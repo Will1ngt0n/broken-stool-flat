@@ -141,6 +141,7 @@
   border-radius: 10px;
   padding: 10px;
   height: 400px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
   #QAAnswer {
     overflow-y: scroll;
     padding-bottom: 50px;
@@ -412,6 +413,7 @@
       height: calc(100vh - 110px);
       width: 100%;
       z-index: 10000000000000000000000000000000000000000;
+      border-radius: 0;
     }
     #QAAnswer {
       height: 100%;
