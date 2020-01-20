@@ -9,7 +9,7 @@
   background: rgb(205, 205, 205);
   display: flex;
   flex-wrap: wrap;
-  animation: faderIn 300ms
+  animation: faderIn 300ms;
 }
 .navigation-inner {
   width: 80%;
@@ -107,9 +107,24 @@
   transition: 300ms;
   border-radius: 10px;
   padding: 10px;
-  div {
-    overflow-y: scroll;
     height: 400px;
+  #QAAnswer {
+    overflow-y: scroll;
+    padding-bottom: 50px;
+    border: 2px solid red;
+  }
+  #QAAnswers-answered {
+    padding-bottom: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin: 10px;
+    text-align: left;
+  }
+  #answer-description {
+    margin-top: -5px;
+    padding: 10px;
+    color: grey;
+    // min-height: 80px;
   }
 }
 #answers {
@@ -118,7 +133,7 @@
   transition: 300ms;
 }
 #QA {
-  text-align: left;;
+  text-align: left;
   h3 {
     padding-bottom: 10px;
     border-bottom: 2px solid grey;
@@ -126,14 +141,13 @@
   }
 }
 
-
-#QAAanswers-answered{
+#QAAanswers-answered {
   width: 100%;
   height: unset;
   text-align: left;
 }
-#QAAnswer{
-  border: 2px solid red;
+#QAAnswer {
+  // border: 2px solid red;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -142,7 +156,6 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
   border-radius: 5px;
 }
 
@@ -217,7 +230,7 @@
   color: grey;
 }
 
-.answer-questions{
+.answer-questions {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -228,29 +241,29 @@
   justify-content: center;
   transition: 299ms;
 }
-#disappear{
+#disappear {
   opacity: 1;
 }
-.inputs{
+.inputs {
   width: 100%;
   // border: 2px solid red;
   margin: 0 auto;
   text-align: center;
 }
-#instruction{
+#instruction {
   width: 50%;
-  margin: 0 auto
+  margin: 0 auto;
 }
 
 @keyframes faderOut {
-  0%{
+  0% {
     opacity: 1;
   }
-  100%{
+  100% {
     opacity: 0;
   }
 }
-#q-a{
+#q-a {
   width: 50%;
   height: 40px;
   margin: 10px;
@@ -258,7 +271,7 @@
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
-#q-a-textarea{
+#q-a-textarea {
   resize: none;
   width: 50%;
   margin: 10px;
@@ -267,7 +280,7 @@
   border: 1px solid rgba(0, 0, 0, 0.5);
   transition: 300ms;
 }
-.inner-to-answer{
+.inner-to-answer {
   width: 60%;
   height: 80%;
   background: white;
@@ -278,27 +291,26 @@
   transition: 300ms;
   animation: faderIn 300ms;
 }
-#me{
-  overflow-y:scroll;
+#me {
+  overflow-y: scroll;
   height: calc(100% - 50px);
 }
-#me > div{
+#me > div {
   border-bottom: 1px solid grey;
   padding-bottom: 20px;
-  
 }
-.header{
+.header {
   width: 100%;
   height: 50px;
   background: whitesmoke;
   position: relative;
-  h3{
+  h3 {
     margin: 0;
     line-height: 50px;
     text-align: center;
   }
 }
-.app-body{
+.app-body {
   width: 100%;
   height: calc(100% - 60px);
   background: white;
@@ -306,20 +318,20 @@
   flex-direction: column;
   justify-content: center;
 }
-.app-body-answers{
+.app-body-answers {
   width: 100%;
   height: calc(100% - 60px);
   background: white;
 }
 
-#is-user{
+#is-user {
   // border: 2px solid red;
   text-align: center;
 }
 // #not-user{
 // }
 
-.document-upload{
+.document-upload {
   width: 50%;
   margin: 20px auto;
   padding: 10px;
@@ -331,21 +343,21 @@
   }
   #how-can-we-help {
     display: block;
-    animation: faderIn 300ms
+    animation: faderIn 300ms;
   }
-  i{
-    display: block
+  i {
+    display: block;
   }
 }
 @media screen and (max-width: 1050px) {
   .about-information {
     width: 100%;
   }
-  .document-upload{
+  .document-upload {
     width: 100%;
   }
-  #q-a-textarea{
-    width: 90%
+  #q-a-textarea {
+    width: 90%;
   }
   .inner-content > #FAQs > #answers {
     // border: 2px solid red;
@@ -356,15 +368,19 @@
     width: 100%;
   }
   .searchResults {
-    width: 100%;
+    width: 80%;
   }
   @media screen and (max-width: 530px) {
-  .searchResults {
-    top: 60px;
-  }
-  i{
-    display: none
-  }
+    .searchResults {
+      top: 60px;
+      border: 2px solid red;
+      height: calc(100vh - 120px);
+      width: 100%;
+      z-index: 10000000000000000000000000000000000000000;
+    }
+    #QAAnswer {
+      height: 100%;
+    }
     #how-can-we-help {
       display: none;
     }
@@ -390,22 +406,26 @@
   }
 }
 
-@media screen and (max-width: 640px){
-  .inner-to-answer{
+@media screen and (max-width: 640px) {
+  .inner-to-answer {
     width: 100%;
     height: 100%;
     border-radius: 0;
   }
 }
 
-#closer{
+#closer {
   position: absolute;
   left: 5px;
 }
 
-#one, #two, #three, #four, #five{
+#one,
+#two,
+#three,
+#four,
+#five {
   font-weight: 500;
 }
-#one{
+#one {
   font-weight: bold;
 }

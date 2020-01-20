@@ -388,6 +388,7 @@ export class HomePage {
     
     this.filterItems(query, this.answeredQuestions)
     console.log(this.answeredQuestions);
+    this.changingValue()
   }
 
   admin;
@@ -440,6 +441,19 @@ export class HomePage {
       this.menuDrawer = 0
       mySide.style.left = "-100%"
     }
+  }
+
+  goAway(){
+    //  Removes the search results
+    //  alert("clicked")
+
+     document.getElementById("userSearchResults").style.display = "none"
+  }
+  changingValue(){
+    // alert("Changing")
+
+    document.getElementById("userSearchResults").style.display = "block"
+    // Calls back the search results
   }
 
   onInput(e) {
