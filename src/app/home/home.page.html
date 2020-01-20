@@ -12,7 +12,7 @@ Disclaimer -->
     <div class="answer-questions" id="disappear" *ngIf="showQA === true">
         <div class="inner-to-answer">
             <div class="header">
-                <ion-button id="closer" (click)="close_query()">
+                <ion-button id="closer" (click)="close_query()" fill="clear">
                     <ion-icon name="close"></ion-icon>
                 </ion-button>
                 <h3>Q&A</h3>
@@ -43,6 +43,9 @@ Disclaimer -->
                             placeholder="Your answer here..." (keyup)='updateAnswer(item, $event)'></textarea><br>
                         <ion-button (click)='submitAnswer(item)' [disabled]='!item.data.answer'>Send Answer</ion-button>
                     </div>
+                    <div class="no-questions" *ngIf="!questionsArray">
+                        <h1>You have no questions to answer</h1>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,7 +61,7 @@ Disclaimer -->
         </ion-button>
     </ion-fab>
     <div class="content-container">
-        <div class="navigation">
+        <div class="navigation" (click)="goAway()">
             <div class="navigation-inner">
 
 
@@ -80,14 +83,14 @@ Disclaimer -->
                 </div>
             </div>
         </div>
-        <div class="navigator-small">
+        <div class="navigator-small" (click)="goAway()">
             <div>
-                <ion-button icon-only fill="clear" (click)="toggleSideMenu()">
+                <ion-button *ngIf="!usersInput" icon-only fill="clear" (click)="toggleSideMenu()">
                     <ion-icon name="{{myMenu}}"></ion-icon>
                 </ion-button>
             </div>
             <div>
-                <h1>Dankie Jesu</h1>
+                <h1 *ngIf="!usersInput">Dankie Jesu</h1>
             </div>
 
         </div>
@@ -115,18 +118,20 @@ Disclaimer -->
                     <h1 id="how-can-we-help">How can we help?</h1>
                     <input id="query" type="text" placeholder="Type keywords to find answers"
                         (ionFocus)='onInput($event)' [(ngModel)]="usersInput" (keyup)="searchresult(usersInput)">
-                    <div class="searchResults" *ngIf="usersInput">
+                    <div class="searchResults" id="userSearchResults" *ngIf="usersInput">
                         <div id="QAAnswer">
                             <div id="QAAnswers-answered" *ngFor="let items of searchArray">
+                                <div>
+                                    
                                 <ion-item>{{items.data.question}}</ion-item>
-                                <i >We stand behind all of our Clothes and gear. If your product is defective or faulty and it's
-                                    been more than 30 days since your purchase, start a return and send your item back.</i>
+                                <i id="answer-description">{{items.data.answer}} </i>
+                                </div>
                             </div>
                             <!-- <ion-item>{{items.data.answer}}</ion-item> -->
                         </div>
                     </div>
                 </div>
-                <div id="answers">
+                <div id="answers" (click)="goAway()">
                     <div>
                         <h1>Frequently Asked Questions</h1>
                     </div>
