@@ -34,8 +34,6 @@
   width: 26%;
   font-weight: bold;
   // cursor: pointer;
-  #noAdmin {
-  }
   #yesAdmin {
     cursor: pointer;
     margin: 0;
@@ -373,7 +371,7 @@
   padding: 10px;
   transition: 300ms;
 }
-@media screen and (min-width: 531px) {
+@media screen and (min-width: 573px) {
   #side-menu {
     display: none;
   }
@@ -406,7 +404,7 @@
   .searchResults {
     width: 80%;
   }
-  @media screen and (max-width: 530px) {
+  @media screen and (max-width: 572px) {
     .searchResults {
       top: 60px;
       // border: 2px solid red;
@@ -481,8 +479,9 @@
 }
 .goAwayer {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 80px);
   background: red;
   position: absolute;
   z-index: -1;
 }
+
