@@ -12,7 +12,7 @@ Disclaimer -->
     <div class="answer-questions" id="disappear" *ngIf="showQA === true">
         <div class="inner-to-answer">
             <div class="header">
-                <ion-button id="closer" (click)="close_query()">
+                <ion-button id="closer" (click)="close_query()" fill="clear">
                     <ion-icon name="close"></ion-icon>
                 </ion-button>
                 <h3>Q&A</h3>
@@ -42,6 +42,9 @@ Disclaimer -->
                         <textarea name="" id="q-a-textarea" cols="30" rows="3"
                             placeholder="Your answer here..." (keyup)='updateAnswer(item, $event)'></textarea><br>
                         <ion-button (click)='submitAnswer(item)' [disabled]='!item.data.answer'>Send Answer</ion-button>
+                    </div>
+                    <div class="no-questions" *ngIf="!questionsArray">
+                        <h1>You have no questions to answer</h1>
                     </div>
                 </div>
             </div>
