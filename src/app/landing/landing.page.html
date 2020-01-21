@@ -248,7 +248,7 @@
             
             <ion-grid>
               <ion-row>
-                <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear' (click)="showHideSearchDetails(item)" offset=".2">
+                <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear' (click)="showHideSearchDetails(item)">
             
             <div class="item-container">
               <p>{{item.data.name}}</p>
@@ -471,7 +471,7 @@
 
         </select><br>
 
-        <select #nativeCategory [disabled]='department === "Select Department"' (click)="changeCategory($event);">
+        <select #nativeCategory [disabled]='department === "Select Department"' (change)="changeCategory($event);">
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
