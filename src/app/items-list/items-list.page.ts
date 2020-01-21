@@ -544,12 +544,50 @@ export class ItemsListPage implements OnInit {
     // })
   }
 
+  getSnaps(category, brand){
+    console.log(category, brand);
+    
+    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
+      let pictureLink
+      // for(let key in this.currentViewedItems){
+        console.log(result);
+        
+      // }
+      for(let key in result.docChanges){
+        let change = result.docChanges[key]
+        console.log(change)
+        if(change.type === 'modified'){
+          let id = change.id
+          console.log(id)
+          pictureLink = change.data.pictureLink
+          for(let i in this.currentViewedItems){
+            if(this.currentViewedItems[i].productID === id){
+              this.currentViewedItems[i].data['pictureLink'] = pictureLink
+            }
+          }
+        }
+      }
+    })
+
+    
+  }
+
+  
 
 
 
-
+brand
   //////native to this page
   ngOnInit() {
+    if(this.currentCategory !== '' && this.currentCategory !== undefined && this.brand !== '' && this.brand !== undefined){
+      console.log('okay now');
+      
+      this.getSnaps(this.currentCategory, this.brand)
+    }else {
+      console.log('nah man');
+      
+    }
+
     return this.authService.checkingAuthState().then(result => {
       if (result == null) {
         this.route.navigate(['/login'])
@@ -561,6 +599,7 @@ export class ItemsListPage implements OnInit {
           console.log(result);
           this.currentCategory = result.category
           let brand = result.brand
+          this.brand = brand
           this.title = result.title
           console.log(this.title)
           this.link = result.link
@@ -572,6 +611,7 @@ export class ItemsListPage implements OnInit {
           console.log(this.currentCategory);
           this.loadCategoryItems(this.currentCategory, brand)
           this.loadCategoryItemsSnap(this.currentCategory, brand)
+
           // this.loadPictures().then(result => {
           //   console.log(result);
 
@@ -766,6 +806,7 @@ export class ItemsListPage implements OnInit {
         }, 30);
       if (result === 'success') {
         console.log(result);
+        location.reload()
         this.loadingCtrl.dismiss()
         this.productAlert('Product was successfully updated')
         return this.dismissPromo()

@@ -34,17 +34,17 @@ export class ProductsService {
     }).then(result => {
     //  console.log(result);
       
-      if(department === 'Dankie Jesu'){
-        if(summer === true){
-          firebase.firestore().collection('Brands').doc(department).collection('Summer').doc(result.id).set({
-            timestamp : firebase.firestore.FieldValue.serverTimestamp()
-          })
-        }else if(summer === false){
-          firebase.firestore().collection('Brands').doc(department).collection('Winter').doc(result.id).set({
-            timestamp : firebase.firestore.FieldValue.serverTimestamp()
-          })
-        }
-      }
+      // if(department === 'Dankie Jesu'){
+      //   if(summer === true){
+      //     firebase.firestore().collection('Brands').doc(department).collection('Summer').doc(result.id).set({
+      //       timestamp : firebase.firestore.FieldValue.serverTimestamp()
+      //     })
+      //   }else if(summer === false){
+      //     firebase.firestore().collection('Brands').doc(department).collection('Winter').doc(result.id).set({
+      //       timestamp : firebase.firestore.FieldValue.serverTimestamp()
+      //     })
+      //   }
+      // }
       firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
         let number : string = String(Number(result.data().numberOfProducts) + 1)
         firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
@@ -696,7 +696,8 @@ export class ProductsService {
   processOrder(refNo, status){
     console.log(status);
     return firebase.firestore().collection('Order').doc(refNo).update({
-      status: status
+      status: status,
+      time: new Date().getTime()
     }).then( result => {
       //console.log('success');
       
