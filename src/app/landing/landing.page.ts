@@ -1684,7 +1684,7 @@ export class LandingPage implements OnInit {
   saveQuantity(brand, category, productID, quantity) {
     console.log(brand, category, productID, quantity);
     const toast = document.createElement('ion-toast');
-    toast.message = 'Your settings have been saved.';
+    toast.message = 'Your changes have been saved.';
     toast.duration = 2000;
   
     document.body.appendChild(toast);

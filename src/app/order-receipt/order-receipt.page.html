@@ -85,7 +85,7 @@
   <div class="mobile-view">
     <div class="top">
       <ion-button icon-only id="bckBtn" fill="clear" color="dark" (click)='goBack()'>
-        <ion-icon name="arrow-back"></ion-icon>
+        <ion-icon name="home"></ion-icon>
       </ion-button>
       Order Details
     </div>
@@ -142,7 +142,7 @@
             <p>{{dateClosed}}</p>
           </div>
         </div>
-        <p id="subHeader">
+        <p id="subHeader" *ngIf="deliveryAddress">
           Order Address
         </p>
         <p id="address">{{deliveryAddress}}</p>

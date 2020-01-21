@@ -1,5 +1,6 @@
 <ion-content>
   <div class="del-upd-del">
+    <div id="goAway" (click)="dismissPromo()"></div>
     <div class="inner-cont-opt" *ngIf="promoUdpate === 'Promote item'">
       <p id="topic-item"><b>{{promoUdpate}}</b></p>
       <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
@@ -29,6 +30,7 @@
     </div>
     <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
       <p id="topic-item"><b>{{promoUdpate}}</b></p>
+      <img *ngIf='!itemImageLink' src="../../assets/imgs/images.jpg" alt="" id="item-image">
       <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
       <div class="item-data">
         <h3>{{updateName}}</h3>
@@ -119,7 +121,6 @@
           <h4>DankieJesu</h4>
         </div>
         <div id="searchbar">
-          <!-- <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar> -->
         </div>
         <div id="admin" (click)='signOutPopup()'>
           <p>SIGN OUT</p>
@@ -132,7 +133,7 @@
       <div id="mid">
         <div class="top-bar">
           <ion-button color="dark" fill="clear" (click)='back()'>
-            <ion-icon name="arrow-back"></ion-icon>
+            <ion-icon name="home"></ion-icon>
           </ion-button>
           <div class="page-title">
             <!-- Use this section to change views by use of *ngIf, replace directory label and content according to the specific page -->
@@ -190,7 +191,7 @@
     <div class="cont-small">
       <div class="top-bar">
         <ion-button color="dark" fill="clear" (click)='back()'>
-          <ion-icon name="arrow-back"></ion-icon>
+          <ion-icon name="home"></ion-icon>
         </ion-button>
         <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
         </div>
