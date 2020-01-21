@@ -413,6 +413,9 @@
       z-index: 10000000000000000000000000000000000000000;
       border-radius: 0;
     }
+    #fab-text{
+      display: none;
+    }
     #QAAnswer {
       height: 100%;
     }
@@ -483,5 +486,9 @@
   background: red;
   position: absolute;
   z-index: -1;
+}
+
+#fab-button{
+  display: none
 }
 

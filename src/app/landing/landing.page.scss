@@ -1037,7 +1037,7 @@ label {
 .my-ion-col {
   height: 100%;
   position: relative;
-
+  cursor: pointer;
 }
 .item-container{
   width: 100%;
@@ -1065,4 +1065,11 @@ label {
 }
 ion-row {
   height: 100%;
+}
+
+#dankie-home-button{
+  cursor: pointer;
+}
+.title-top{
+  padding-left: 10px;
 }

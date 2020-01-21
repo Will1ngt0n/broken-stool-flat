@@ -50,14 +50,14 @@ Disclaimer -->
             </div>
         </div>
     </div>
-    <ion-fab vertical="bottom" horizontal="end" *ngIf="admin">
+    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="admin">
         <ion-button (click)="asnwerQuestions()">
-            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i>Answer Questions</i>
+            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i id="fab-text">Answer Questions</i>
         </ion-button>
     </ion-fab>
-    <ion-fab vertical="bottom" horizontal="end" *ngIf="!admin">
+    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="!admin">
         <ion-button (click)="askUs()">
-            <ion-icon name="help"></ion-icon><i>Ask Us</i>
+            <ion-icon name="help"></ion-icon><i id="fab-text">Ask Us</i>
         </ion-button>
     </ion-fab>
     <div class="content-container">
@@ -137,7 +137,6 @@ Disclaimer -->
                                     <i id="answer-description">{{items.data.answer}} </i>
                                 </div>
                             </div>
-                            <!-- <ion-item>{{items.data.answer}}</ion-item> -->
                         </div>
                     </div>
                 </div>

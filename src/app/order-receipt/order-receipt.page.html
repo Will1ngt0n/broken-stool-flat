@@ -142,7 +142,7 @@
             <p>{{dateClosed}}</p>
           </div>
         </div>
-        <p id="subHeader">
+        <p id="subHeader" *ngIf="deliveryAddress">
           Order Address
         </p>
         <p id="address">{{deliveryAddress}}</p>
