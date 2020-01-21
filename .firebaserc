@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "broken-stool"
+    "default": "broken-stool",
+    "staging": "fir-crud-11c1f"
   }
 }

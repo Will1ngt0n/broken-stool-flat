@@ -480,6 +480,7 @@ export class HomePage {
   ngOnInit(){
     this.questionsSnap()
     this.answersSnap()
+    this.writeToUpdates()
   }
   questionsSnap(){
     firebase.firestore().collection('FAQs').onSnapshot(result => {
@@ -568,6 +569,11 @@ export class HomePage {
           this.answeredQuestions.push(answers[key])
         }
       }
+    })
+  }
+  writeToUpdates(){
+    firebase.firestore().collection('Updates').add({
+      timestamp: new Date().getTime()
     })
   }
 }

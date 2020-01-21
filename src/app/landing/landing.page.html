@@ -439,7 +439,7 @@
 
         </select><br>
 
-        <select #nativeCategory [disabled]='department === "Select Department"' (click)="changeCategory($event);">
+        <select #nativeCategory [disabled]='department === "Select Department"' (change)="changeCategory($event);">
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
