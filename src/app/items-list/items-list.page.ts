@@ -588,8 +588,8 @@ brand
       
     }
     this.promoUdpate = ''
-    this.dismissPromo()
-    this.dismissList()
+    //this.dismissPromo()
+    //this.dismissList()
 
     return this.authService.checkingAuthState().then(result => {
       if (result == null) {
