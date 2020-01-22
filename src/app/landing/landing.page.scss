@@ -150,7 +150,7 @@ ion-list > div {
   transition: 300ms;
 }
 
-#dismisser-bg{
+#dismisser-bg {
   width: 100%;
   height: 100vh;
   background: transparent;
@@ -645,6 +645,9 @@ ion-searchbar {
   }
 }
 
+#dismisser {
+  display: none;
+}
 @media screen and (max-width: 1330px) {
   #myFab {
     display: block;
@@ -661,17 +664,27 @@ ion-searchbar {
     height: calc(100% - 55px);
     animation: faderIn 300ms;
   }
+  @media screen and (max-width: 1024px) {
+    .clicked-from-search > #forms {
+      width: calc(100% - 50px);
+      height: calc(100% - 50px);
+      border-radius: 0px;
+    }
+    #dismisser {
+      display: block;
+    }
+  }
+
   @media screen and (max-width: 600px) {
     .clicked-from-search > div {
       width: 100%;
       height: 100%;
     }
-    
-.clicked-from-search > #forms {
-  width: 100%;
-  height: 100%;
-  border-radius: 0px;
-}
+    .clicked-from-search > #forms {
+      width: 100%;
+      height: 100%;
+      border-radius: 0px;
+    }
   }
 }
 @media screen and (min-width: 1331px) {
@@ -1040,20 +1053,20 @@ label {
   position: relative;
   cursor: pointer;
 }
-.item-container{
+.item-container {
   width: 100%;
   height: 100%;
   overflow: hidden;
   position: relative;
   padding: 5px;
-  img{
+  img {
     height: 100%;
     width: 100%;
     border-radius: 5px;
     box-shadow: 0 2px 4px black;
     object-fit: cover;
   }
-  p{
+  p {
     position: absolute;
     z-index: 1000000;
     color: white;
@@ -1068,9 +1081,9 @@ ion-row {
   height: 100%;
 }
 
-#dankie-home-button{
+#dankie-home-button {
   cursor: pointer;
 }
-.title-top{
+.title-top {
   padding-left: 10px;
 }
