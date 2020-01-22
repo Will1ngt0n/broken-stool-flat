@@ -142,6 +142,7 @@
         </div>
         <div class="SubCat" *ngFor='let item of currentViewedItems'>
           <div class="gridder">
+            <div class="hidden" *ngIf='item.data.hideItem === true'>Hidden</div>
             <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
             <img class="bg" src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
             <div id="info">
@@ -201,6 +202,7 @@
 
           <div class="SubCats">
             <div>
+            <div class="hidden" *ngIf='item.data.hideItem === true'>Hidden</div>
               <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
               <img src="../../assets/imgs/images.jpg" *ngIf="!item.data.pictureLink" alt="">
             </div>

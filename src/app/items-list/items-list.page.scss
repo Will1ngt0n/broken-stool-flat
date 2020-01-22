@@ -857,6 +857,7 @@ ion-searchbar {
     border-radius: 5px;
     display: flex;
     overflow: hidden;
+    position: relative;f
     div {
       height: 100%;
     }
@@ -972,4 +973,12 @@ a{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #b30000;
+}
+.hidden{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 5px black;
 }
