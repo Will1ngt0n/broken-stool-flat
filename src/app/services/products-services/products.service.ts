@@ -455,6 +455,11 @@ export class ProductsService {
 
   }
   hideProduct(productID, brand, category, item){
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
+    
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       hideItem : true
     }).then(result => {
@@ -465,9 +470,21 @@ export class ProductsService {
        }
      }
      return 'success'
+    }).catch(error => {
+      console.log(error);
+      
+      return 'error'
     })
   }
   showProduct(productID, brand, category, item){
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
+    
+    
+    
+    
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
       hideItem : false
     }).then(result => {
@@ -478,29 +495,15 @@ export class ProductsService {
        }
      }
      return 'success'
+    }).catch(error => {
+      console.log(error);
+      return 'error'
     })
   }
   updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture, colors){
     console.log(picture,' I am pictrue');
     
-    if(picture !== undefined){
-      console.log(picture);
-      
-      firebase.storage().ref('clothes/' + itemID).put(picture).then(result => {
-          console.log(result);
-          result.ref.getDownloadURL().then(url => {
-            firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
-              pictureLink: url,
-              hideItem: false
-            })
-          })
-          console.log('Sad');
-        
-      })
-    }else{
-      console.log('Picture is undefined');
-      
-    }
+
     return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
       price : itemPrice,
       description : itemDescription,
@@ -508,7 +511,24 @@ export class ProductsService {
       size: sizes,
       color: colors
     }).then(result => {
-
+      if(picture !== undefined){
+        console.log(picture);
+        
+        firebase.storage().ref('clothes/' + itemID).put(picture).then(result => {
+            console.log(result);
+            result.ref.getDownloadURL().then(url => {
+              firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+               pictureLink: url,
+                hideItem: false
+              })
+            })
+            console.log('Sad');
+          
+        })
+      }else{
+        console.log('Picture is undefined');
+        
+      }
       return 'success'
     })
   }

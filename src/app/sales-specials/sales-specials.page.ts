@@ -415,7 +415,9 @@ deleteItem(item, productID){
         return this.productsService.deleteSpecialsItem(productID, item).then(result => {
           console.log(result);
           if(result === 'success'){
-            this.loadingCtrl.dismiss()
+            if(this.loadingCtrl){
+              this.loadingCtrl.dismiss()
+            }
           }
           //location.reload()
         })
@@ -432,14 +434,18 @@ hideItem(productID, item){
   this.presentLoading()
   return this.productsService.hideItem(productID, item).then(result => {
     console.log(result);
-    this.loadingCtrl.dismiss()
+    if(this.loadingCtrl){
+      this.loadingCtrl.dismiss()
+    }
   })
 }
 
 updateItem(productID, item){
   this.presentLoading()
   return this.productsService.updateSpecialsItem(productID, item, this.newPrice, this.newPricePercentage, this.newStartDate, this.newEndDate).then(result => {
-this.loadingCtrl.dismiss()
+    if(this.loadingCtrl){
+      this.loadingCtrl.dismiss()
+    }
   })
 }
 /////////Adding product form (validation and data retrieval)
@@ -634,7 +640,9 @@ loadSalesSnap(){
         
         sales.push({productID: productID, data: docData, category: docData.category, brand: docData.brand, link: docData.pictureLink})
       }
-      this.loadingCtrl.dismiss()
+      if(this.loadingCtrl){
+        this.loadingCtrl.dismiss()
+      }
       console.log(sales);
       this.allBrandSales = sales
       if(sales.length !== 0){

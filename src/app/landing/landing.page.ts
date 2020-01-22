@@ -267,7 +267,7 @@ export class LandingPage implements OnInit {
     this.loadHoodies('Dankie Jesu', 'Hoodies')
     this.loadTrackSuits('Dankie Jesu', 'Track Suits')
     this.loadBeanies('Dankie Jesu', 'Beanies')
-
+    this.loadPictures()
     return this.authService.checkingAuthState().then( result => {
       if(result === null){
         this.route.navigate(['/login'])
@@ -276,6 +276,9 @@ export class LandingPage implements OnInit {
 
       }
     })
+  }
+  loadPictures(){
+    // firebase.storage().ref('/clothes').
   }
   loadFormal(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
@@ -1269,8 +1272,16 @@ export class LandingPage implements OnInit {
         }
       }
     }
-    if(this.kwangaGear.length === 3){
-      this.loadingCtrl.dismiss()
+    console.log(this.inventoryLength, this.currentNumberOfProducts);
+    
+    if(this.inventoryLength === Number(this.currentNumberOfProducts)){
+      if(this.loadingCtrl){
+        for(let i = 0; i < 5000; i++){
+          if(i === 4999){
+            this.loadingCtrl.dismiss()
+          }
+        }
+      }
     }
   }
   orderItems() {
@@ -1413,8 +1424,10 @@ export class LandingPage implements OnInit {
         }
       }
       console.log(this.pendingOrders);
+      // if(this.loadingCtrl){
+      //   this.loadingCtrl.dismiss()
+      // }
 
-      //this.loadingCtrl.dismiss()
     })
     //thisgffdsg
 
@@ -1777,26 +1790,26 @@ export class LandingPage implements OnInit {
     }
   }
 
-  async loadPictures() {
-    return this.productService.getPictures().then(result => {
-      // console.log(result);
-      let pictures: Array<any> = []
-      for (let key in result.items) {
-        result.items[key].getDownloadURL().then(link => {
-          let path = result.items[key].fullPath
-          let splitPath = path.split('/')
-          let pictureID = splitPath[splitPath.length - 1]
-          // picture['link'] = link
-          // picture['productID'] = pictureID
-          this.pictures.push({ link: link, productID: pictureID })
-          // console.log(this.pictures);
-          this.insertPictures()
-         })
+  // async loadPictures() {
+  //   return this.productService.getPictures().then(result => {
+  //     // console.log(result);
+  //     let pictures: Array<any> = []
+  //     for (let key in result.items) {
+  //       result.items[key].getDownloadURL().then(link => {
+  //         let path = result.items[key].fullPath
+  //         let splitPath = path.split('/')
+  //         let pictureID = splitPath[splitPath.length - 1]
+  //         // picture['link'] = link
+  //         // picture['productID'] = pictureID
+  //         this.pictures.push({ link: link, productID: pictureID })
+  //         // console.log(this.pictures);
+  //         this.insertPictures()
+  //        })
 
-         //return result
-        }
-    })
-  }
+  //        //return result
+  //       }
+  //   })
+  // }
 
   insertPictures() {
     // console.log(this.pictures);

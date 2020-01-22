@@ -693,12 +693,10 @@ brand
       console.log(result);
       if(result === 'success'){
         console.log(result);
-        this.loadingCtrl.dismiss()
-        this.editEndDate = undefined
-        this.editStartDate = undefined
-        this.editPercentage = 0
-        this.itemID = undefined
-        this.salePrice = 0
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
+        this.clearPromoForm()
         return this.dismissPromo()
 
       }else(
@@ -739,7 +737,9 @@ brand
     return this.productsService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
       if(result === 'Deleted'){
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
         
       }
       //location.reload()
@@ -747,15 +747,33 @@ brand
   }
   hideItem(productID, brand, category, item) {
     this.presentLoading()
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
     return this.productsService.hideProduct(productID, brand, category, item).then(result => {
       console.log(result);
       if(result === 'success'){
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
+      }else if(result === 'error'){
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
       }
     })
   }
   showItem(productID, brand, category, item) {
     this.presentLoading()
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
+    
+    
+    
+    
     return this.productsService.showProduct(productID, brand, category, item).then(result => {
       console.log(result);
       // firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).onSnapshot( result => {
@@ -763,7 +781,13 @@ brand
         
       // })
       if(result === 'success'){
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
+      }else if(result === 'error'){
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
       }
     })
   }
@@ -817,13 +841,36 @@ brand
       if (result === 'success') {
         console.log(result);
         //location.reload()
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
         this.productAlert('Product was successfully updated')
+        this.clearUpdateForm()
         return this.dismissPromo()
 
 
       }
     })
+  }
+  clearUpdateForm(){
+    this.pictureUpdate = undefined
+    this.updateName = ''
+    this.updatePrice = ''
+    this.updateDescription = ''
+    this.itemID = ''
+    this.itemBrand = ''
+    this.itemCategory = ''
+    this.itemSizes = []
+    this.itemColors = []
+    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
+    this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+  }
+  clearPromoForm(){
+    this.editEndDate = undefined
+    this.editStartDate = undefined
+    this.editPercentage = 0
+    this.itemID = undefined
+    this.salePrice = 0
   }
   addPictureUpdate(event){
     this.pictureUpdate = <File>event.target.files[0]
@@ -872,6 +919,10 @@ brand
     this.itemImageLink = imageLink
     this.itemSizes = sizes
     this.itemColors = colors
+    console.log(productID, brand, category, name, description, price, imageLink, sizes, colors);
+    
+    console.log(this.promoUdpate);
+    
     console.log(this.itemSizes);
     console.log(this.itemColors);
     
@@ -938,6 +989,10 @@ brand
     this.itemID = productID
     this.itemImageLink = imageLink
     this.selectedItem = item
+    console.log(this.promoUdpate);
+    
+    console.log('promo toggled');
+    
   }
   dismissPromo() {
     var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
