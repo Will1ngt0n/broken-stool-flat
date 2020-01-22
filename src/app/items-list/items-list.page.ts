@@ -37,7 +37,7 @@ export class ItemsListPage implements OnInit {
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
   promoButtonEnabled : boolean
   checkXS : boolean; checkS : boolean; checkM : boolean; checkL : boolean; checkXL : boolean; checkXXL : boolean; checkXXXL : boolean;
-  checkRed: boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
+  checkBlack: boolean; checkBrown : boolean; checkOrange : boolean; checkYellow : boolean; checkWhite : boolean
   //updates
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
 
@@ -587,6 +587,9 @@ brand
       console.log('nah man');
       
     }
+    this.promoUdpate = ''
+    this.dismissPromo()
+    this.dismissList()
 
     return this.authService.checkingAuthState().then(result => {
       if (result == null) {
@@ -863,7 +866,7 @@ brand
     this.itemSizes = []
     this.itemColors = []
     this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
-    this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+    this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
   }
   clearPromoForm(){
     this.editEndDate = undefined
@@ -927,8 +930,8 @@ brand
     console.log(this.itemColors);
     
     console.log(this.checkboxXS);
-    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
-    this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL = false; this.checkXXL =false ;this.checkXXXL =false ;
+    this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
     for(let key in this.itemSizes){
       if(this.itemSizes[key] === 'XS'){
         this.checkXS = true
@@ -954,21 +957,18 @@ brand
       }
     }
     for(let key in this.itemColors){
-      if(this.itemColors[key] === 'Red'){
-        this.checkRed = true
+      if(this.itemColors[key] === 'Black'){
+        this.checkBlack = true
         this.updateColors.push('XS')
-      }else if(this.itemColors[key] === 'Blue'){
-        this.checkBlue = true
+      }else if(this.itemColors[key] === 'Brown'){
+        this.checkBrown = true
         this.updateColors.push('S')
-      }else if(this.itemColors[key] === 'Green'){
-        this.checkGreen = true
+      }else if(this.itemColors[key] === 'Orange'){
+        this.checkOrange = true
         this.updateColors.push('M')
       }else if(this.itemColors[key] === 'Yellow'){
         this.checkYellow = true
         this.updateColors.push('XL')
-      }else if(this.itemColors[key] === 'Pink'){
-        this.checkPink = true
-        this.updateColors.push('XXL')
       }else if(this.itemColors[key] === 'White'){
         this.checkWhite = true
         this.updateColors.push('XXL')

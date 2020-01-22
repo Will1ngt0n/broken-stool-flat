@@ -106,23 +106,23 @@
       margin: 0 auto;
     }
     .opts-search > div:nth-child(1) {
-      background: red;
+      background: black;
     }
     .opts-search > div:nth-child(2) {
-      background: blue;
+      background: brown;
     }
     .opts-search > div:nth-child(3) {
-      background: green;
+      background: orange;
     }
     .opts-search > div:nth-child(4) {
-      background: rgb(255, 102, 0);
+      background: yellow;
     }
     .opts-search > div:nth-child(5) {
-      background: pink;
-    }
-    .opts-search > div:nth-child(6) {
       background: white;
     }
+    // .opts-search > div:nth-child(6) {
+    //   background: white;
+    // }
 
     .myBox {
       width: 16.6666666666666%;

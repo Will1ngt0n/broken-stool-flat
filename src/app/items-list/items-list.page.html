@@ -16,7 +16,7 @@
         </p>
         <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'
           (keyup)='calculateSalePrice($event);'>
-          <p *ngIf="salePrice !== 0">Sale Price R {{salePrice}}</p>
+          <p *ngIf="salePrice">Sale Price R {{salePrice}}</p>
         <div class="gridded-inputs">
           <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' [min]='today'
             (change)='enableEndDateInput()' /><input [disabled]='!editStartDate' type="date" placeholder="End Date"
@@ -67,34 +67,34 @@
         <p class="item-detail">Choose Available Colours</p>
         <div class="sizes-colours-item">
           <div>
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkRed' color="primary" name='red'
-              (ionChange)='checkColorUpdate($event, "Red")'>
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkBlack' color="primary" name='red'
+              (ionChange)='checkColorUpdate($event, "Black")'>
             </ion-checkbox>
           </div>
           <div>
 
             <ion-checkbox class="color-checkbox" color="medium" [checked]='checkBlue' color="primary" name='blue'
-              (ionChange)='checkColorUpdate($event, "Blue")'>
+              (ionChange)='checkColorUpdate($event, "Brown")'>
             </ion-checkbox>
           </div>
           <div>
 
             <ion-checkbox class="color-checkbox" color="medium" [checked]='checkGreen' color="primary" name='green'
-              (ionChange)='checkColorUpdate($event, "Green")'>
-            </ion-checkbox>
-          </div>
-          <div>
-
-            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkYellow' color="primary" name='orange'
               (ionChange)='checkColorUpdate($event, "Orange")'>
             </ion-checkbox>
           </div>
           <div>
 
+            <ion-checkbox class="color-checkbox" color="medium" [checked]='checkYellow' color="primary" name='orange'
+              (ionChange)='checkColorUpdate($event, "Yellow")'>
+            </ion-checkbox>
+          </div>
+          <!-- <div>
+
             <ion-checkbox class="color-checkbox" color="medium" [checked]='checkPink' color="primary" name='pink'
               (ionChange)='checkColorUpdate($event, "Pink")'>
             </ion-checkbox>
-          </div>
+          </div> -->
           <div>
 
             <ion-checkbox class="color-checkbox" color="medium" [checked]='checkWhite' color="primary" name='white'

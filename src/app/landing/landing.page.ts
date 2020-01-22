@@ -134,7 +134,7 @@ export class LandingPage implements OnInit {
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
   searchedProductStatus
   popCheckboxXS : boolean; popCheckboxS : boolean; popCheckboxM : boolean; popCheckboxL : boolean; popCheckboxXL : boolean; popCheckboxXXL : boolean; popCheckboxXXXL : boolean ;
-  checkRed : boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
+  checkBlack: boolean; checkBrown : boolean; checkOrange : boolean; checkYellow : boolean; checkWhite : boolean
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
   pictureUpdate : File
 
@@ -2045,7 +2045,7 @@ export class LandingPage implements OnInit {
       this.clickedSearchItem = "showItem"
 
       this.popCheckboxXS = false ;this.popCheckboxS = false ;this.popCheckboxM = false ;this.popCheckboxL = false ;this.popCheckboxXL = false ;this.popCheckboxXXL = false ;this.popCheckboxXXXL = false ;
-      this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+      this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
       for(let key in this.itemSizes){
         if(this.itemSizes[key] === 'XS'){
           this.popCheckboxXS = true
@@ -2071,21 +2071,18 @@ export class LandingPage implements OnInit {
         }
       }
       for(let key in this.itemColors){
-        if(this.itemColors[key] === 'Red'){
-          this.checkRed = true
+        if(this.itemColors[key] === 'Black'){
+          this.checkBlack = true
           this.updateSizes.push('XS')
-        }else if(this.itemColors[key] === 'Blue'){
-          this.checkBlue = true
+        }else if(this.itemColors[key] === 'Brown'){
+          this.checkBrown = true
           this.updateSizes.push('S')
-        }else if(this.itemColors[key] === 'Green'){
-          this.checkGreen = true
+        }else if(this.itemColors[key] === 'Orange'){
+          this.checkOrange = true
           this.updateSizes.push('M')
         }else if(this.itemColors[key] === 'Yellow'){
           this.checkYellow = true
           this.updateSizes.push('XL')
-        }else if(this.itemColors[key] === 'Pink'){
-          this.checkPink = true
-          this.updateSizes.push('XXL')
         }else if(this.itemColors[key] === 'White'){
           this.checkWhite = true
           this.updateSizes.push('XXL')

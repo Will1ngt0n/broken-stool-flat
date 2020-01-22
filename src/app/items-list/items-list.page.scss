@@ -124,23 +124,23 @@ textarea {
 }
 
 .sizes-colours-item > div:nth-child(1) {
-  background: red;
+  background: black;
 }
 .sizes-colours-item > div:nth-child(2) {
-  background: blue;
+  background: brown;
 }
 .sizes-colours-item > div:nth-child(3) {
-  background: green;
+  background: orange;
 }
 .sizes-colours-item > div:nth-child(4) {
-  background: rgb(255, 102, 0);
+  background: yellow;
 }
 .sizes-colours-item > div:nth-child(5) {
-  background: pink;
-}
-.sizes-colours-item > div:nth-child(6) {
   background: white;
 }
+// .sizes-colours-item > div:nth-child(6) {
+//   background: white;
+// }
 .gridded-inputs {
   display: flex;
   margin-top: 10px;
