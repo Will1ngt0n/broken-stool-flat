@@ -12,7 +12,59 @@ export class ProductsService {
   constructor(public loadingCtrl: LoadingController) {
     this.products = []
   }
+  addItems(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
+    let productID 
+    new Promise(function(resolve, reject) {
 
+      firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
+        quantity: 1,
+        color: color,
+        // brand: department,
+        // category: selectedCategory,
+        pictureLink: 'none',
+        price : price,
+        size : size,
+        name : itemName,
+        hideItem : true,
+        description : description,
+        isAccessory: accessory,
+        isSummer: summer,
+        onSale: false,
+        timestamp : firebase.firestore.FieldValue.serverTimestamp(),
+        dateAdded : moment(new Date()).format('LLLL')
+      })
+    }).then(result => { // (**)
+       productID = result
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+        let number : string = String(Number(result.data().numberOfProducts) + 1)
+        firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+          numberOfProducts: number
+        })
+      })
+
+      return result;
+    
+    }).then( () => { // (***)
+      let storageRef = firebase.storage().ref('clothes/' + productID.id)
+      console.log(picture);
+      
+      storageRef.put(picture).then((data) => {
+        console.log(data);
+        data.ref.getDownloadURL().then(url => {
+          firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc(productID.id).update({
+            pictureLink: url,
+            hideItem: false
+          }).then( result => {
+            return result
+          })
+        })
+        console.log('Saved');
+      }).catch( result => {
+        alert('picture might be corrupt')
+      })
+
+    })
+  }
   addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
    // console.log(department);
   //  console.log(selectedCategory);
@@ -21,10 +73,11 @@ export class ProductsService {
       color: color,
       // brand: department,
       // category: selectedCategory,
+      pictureLink: 'none',
       price : price,
       size : size,
       name : itemName,
-      hideItem : false,
+      hideItem : true,
       description : description,
       isAccessory: accessory,
       isSummer: summer,
@@ -59,7 +112,8 @@ export class ProductsService {
         console.log(data);
         data.ref.getDownloadURL().then(url => {
           firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc(result.id).update({
-            pictureLink: url
+            pictureLink: url,
+            hideItem: false
           })
         })
         console.log('Saved');
@@ -342,7 +396,7 @@ export class ProductsService {
    // console.log(brand);
    // console.log(category);
     
-    return firebase.firestore().collection('Products').doc(brand).collection(category).orderBy('timestamp', 'desc').get().then(result => {
+    return firebase.firestore().collection('Products').doc(brand).collection(category).orderBy('dateAdded', 'desc').get().then(result => {
       //console.log(result.docs);
       //console.log(result);
       let data : Array<any> = []
@@ -433,7 +487,15 @@ export class ProductsService {
       console.log(picture);
       
       firebase.storage().ref('clothes/' + itemID).put(picture).then(result => {
-
+          console.log(result);
+          result.ref.getDownloadURL().then(url => {
+            firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+              pictureLink: url,
+              hideItem: false
+            })
+          })
+          console.log('Sad');
+        
       })
     }else{
       console.log('Picture is undefined');

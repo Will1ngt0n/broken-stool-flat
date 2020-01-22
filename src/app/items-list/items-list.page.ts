@@ -393,7 +393,7 @@ export class ItemsListPage implements OnInit {
 
   }
   loadCategoryItemsSnap(category, brand){
-    return firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
+    return firebase.firestore().collection('Products').doc(brand).collection(category).orderBy('timestamp', 'desc').onSnapshot(result => {
       //console.log(result.docs);
       //console.log(result);
       let data : Array<any> = []
@@ -641,7 +641,17 @@ brand
   // loadViewedCategory(){
 
   // }
-
+  sortProducts(){
+    this.allProducts.sort( (a,b) => {
+      let data = (a.data.name) - (b.data.name)
+      let c : any = new Date(a.data.dateAdded)
+      let d : any = new Date(b.data.dateAdded)
+      //console.log(data);
+      //console.log(c - d);
+      
+      return d - c
+    });
+  }
   back() {
     this.route.navigate(['/landing'])
   }
@@ -806,7 +816,7 @@ brand
         }, 30);
       if (result === 'success') {
         console.log(result);
-        location.reload()
+        //location.reload()
         this.loadingCtrl.dismiss()
         this.productAlert('Product was successfully updated')
         return this.dismissPromo()

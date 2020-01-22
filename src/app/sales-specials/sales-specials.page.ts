@@ -99,8 +99,8 @@ export class SalesSpecialsPage implements OnInit {
 
     console.log(this.department);
     //this.productsService.getCategories()
-    this.loadDankieJesuItems()
-    this.loadKwangaItems()
+    // this.loadDankieJesuItems()
+    // this.loadKwangaItems()
     this.colors = { red: '' }
     this.accessory = false;
     this.summer = false;
@@ -120,7 +120,7 @@ export class SalesSpecialsPage implements OnInit {
     this.getReadyOrders()
     this.getClosedOrders()
     this.getInventory()
-    this.loadSales()
+    //this.loadSales()
     this.loadSalesSnap()
   }
   signOutPopup(){
@@ -359,13 +359,13 @@ export class SalesSpecialsPage implements OnInit {
           console.log(this.dankieJesuSales[key].productID)
           let productID = this.dankieJesuSales[key].productID
           let item = this.dankieJesuSales[key]
-          this.loadProducts(brand, category, productID, item)
+          //this.loadProducts(brand, category, productID, item)
         }
         for(let key in this.kwangaSales){
           console.log(this.kwangaSales[key]);
           let productID = this.kwangaSales[key].productID
           let item = this.dankieJesuSales[key]
-          this.loadProducts(brand, category, productID, item)
+         // this.loadProducts(brand, category, productID, item)
         }
       }
     })
@@ -598,35 +598,32 @@ viewMore(query){
   this.route.navigate(['/'+ query])
 }
 
-loadKwangaItems(){
-  let category : String
-  console.log(this.kwangaCategories);
-  console.log('run this shixt again');
+// loadKwangaItems(){
+//   let category : String
+//   console.log(this.kwangaCategories);
+//   console.log('run this shixt again');
   
   
-  for(let key in this.kwangaCategories){
-    category  = this.kwangaCategories[key]
-    this.loadItems(category, 'Kwanga')
-    console.log(this.kwangaCategories[key]);
-    console.log('kwanga is here');
+//   for(let key in this.kwangaCategories){
+//     category  = this.kwangaCategories[key]
+//     this.loadItems(category, 'Kwanga')
+//     console.log(this.kwangaCategories[key]);
+//     console.log('kwanga is here');
     
-  }
-}
-loadDankieJesuItems(){
-  let category : String
-  console.log('fgdfgdfggdgdg');
+//   }
+// }
+// loadDankieJesuItems(){
+//   let category : String
+//   console.log('fgdfgdfggdgdg');
   
-  for(let key in this.dankieJesuCategories){
-    category = this.dankieJesuCategories[key]
-    this.loadItems(category, 'Dankie Jesu')
-  }
-}
-loadViewedCategory(){
-  
-}
+//   for(let key in this.dankieJesuCategories){
+//     category = this.dankieJesuCategories[key]
+//     this.loadItems(category, 'Dankie Jesu')
+//   }
+// }
 loadSalesSnap(){
   this.presentLoading()
-  return firebase.firestore().collection('Specials').onSnapshot(result => {
+  return firebase.firestore().collection('Specials').orderBy('timestamp', 'desc').onSnapshot(result => {
     let sales : Array<any> = []
     console.log(result);
 
@@ -644,16 +641,6 @@ loadSalesSnap(){
         return sales
       }
     })
-}
-loadSales(){
-  // return this.productsService.getBrandSales().then(result => {
-  //   console.log(result);
-  //   if(result  !== undefined && result !== null && result.length !== 0){
-  //     this.allBrandSales = result
-  //     console.log(this.allBrandSales[0].data.saleprice);
-      
-  //   }
-  // })
 }
 loadItems(category, brand){
   let data : Array<any> = []
