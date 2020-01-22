@@ -2197,8 +2197,8 @@ export class LandingPage implements OnInit {
       console.log(this.item.data.hideItem);
       console.log(this.item);
       
-      this.item.data = { hideItem : status}
-      console.log(this.item.data = { hideItem : status});
+      this.item.data['hideItem'] = status
+      //console.log(this.item.data = { hideItem : status});
       
       this.searchedProductStatus = status
     })
