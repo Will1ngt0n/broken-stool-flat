@@ -928,7 +928,7 @@ export class LandingPage implements OnInit {
     }
     console.log(this.size);
     
-    //this.addProducts(number)
+    this.addProducts(number)
         
   }
   addProducts(numberOfProducts) {
