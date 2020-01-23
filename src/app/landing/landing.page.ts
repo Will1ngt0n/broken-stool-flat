@@ -241,17 +241,7 @@ export class LandingPage implements OnInit {
   }
   ngOnInit() { ////copy
 
-    for(let key in this.allProducts){
-      this.allProducts.splice(Number(key), (this.allProducts.length - 1))
-    }
-    this.loadDankieJesuItems()
-    this.loadKwangaItems()
-    this.inventoryLength = 0
-    console.log('Oninit did run');
-    this.presentLoader()
-    this.nativeCategory.nativeElement.disabled = true
-    this.refreshOrderHistory()
-    this.getPendingOrdersSnap()
+
     this.loadFormal('Kwanga', 'Formal')
     this.loadTraditional('Kwanga', 'Traditional')
     this.loadSmartCasual('Kwanga', 'Smart Casual')
@@ -268,14 +258,14 @@ export class LandingPage implements OnInit {
     this.loadTrackSuits('Dankie Jesu', 'Track Suits')
     this.loadBeanies('Dankie Jesu', 'Beanies')
     this.loadPictures()
-    return this.authService.checkingAuthState().then( result => {
-      if(result === null){
-        this.route.navigate(['/login'])
-      }else{
-        //return this.loadPictures()
+    // return this.authService.checkingAuthState().then( result => {
+    //   if(result === null){
+    //     this.route.navigate(['/login'])
+    //   }else{
+    //     //return this.loadPictures()
 
-      }
-    })
+    //   }
+    // })
   }
   loadPictures(){
     // firebase.storage().ref('/clothes').
@@ -816,6 +806,9 @@ export class LandingPage implements OnInit {
     }
     console.log(event.target.checked);
     console.log(event.target['name']);
+
+
+    this.size
     this.checkValidity()
   }
   invprice : number
@@ -888,9 +881,26 @@ export class LandingPage implements OnInit {
         let reader = new FileReader();
         reader.onload = (event: any) => {
           this.myUpload = event.target.result;
+          console.log(this.myUpload);
+          //console.log(event.target.readAsText(this.picture));
+
         };
+         //         this.picture = <File>event.target.files[0]
         reader.readAsDataURL(event.target.files[0]);
         console.log(event.target.files[0]);
+        console.log(event);
+        console.log(reader.DONE);
+        console.log(reader.EMPTY);
+        console.log(reader.error);
+        console.log(reader.onerror);
+        console.log(reader.readyState);
+        //console.log(reader.readAsText(event.target.files[0]));
+        
+        
+        
+        
+        
+        
         
         if(event.target.files[0]){
           this.uploaderImage[0].style.display = "none"
@@ -906,17 +916,31 @@ export class LandingPage implements OnInit {
     this.currentNumberOfProducts = this.inventoryLength
     let number : string = String(Number(this.currentNumberOfProducts) + 1)
     console.log(number);
-
-    this.addProducts(number)
+    let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    let tempColor = this.size
+    this.size = []
+    for(let color in sort){
+      for(let i in tempColor){
+        if(sort[color] === tempColor[i]){
+          this.size.push(sort[color])
+        }
+      }
+    }
+    console.log(this.size);
+    
+    //this.addProducts(number)
         
   }
   addProducts(numberOfProducts) {
     let brand = this.department
     let category = this.selectedCategory
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then(result => {
-
-      console.log('added to first firebase')
-    }).then(result => {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then((result : any) => {
+      console.log(result);
+      
+      if(result === 'success'){
+        console.log('successs');
+        
+      }
       this.loadTotalNumberOfProducts()
       this.loadingCtrl.dismiss()
       this.productAlert('Product was successfully added')
@@ -2105,7 +2129,16 @@ export class LandingPage implements OnInit {
     this.presentLoading()
     console.log(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors);
     //console.log(this.updateName);
-
+    let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    let tempColor = this.itemSizes
+    this.itemSizes = []
+    for(let color in sort){
+      for(let i in tempColor){
+        if(sort[color] === tempColor[i]){
+          this.itemSizes.push(sort[color])
+        }
+      }
+    }
     return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
       console.log(result);
         setTimeout(() => {
@@ -2236,7 +2269,22 @@ export class LandingPage implements OnInit {
 
   ionViewWillEnter(){
     console.log('ion view will enter');
+    // for(let key in this.allProducts){
+    //   this.allProducts.splice(Number(key), (this.allProducts.length - 1))
+    // }
+    console.log(this.allProducts.length);
     
+    if(this.allProducts.length === 0){
+      this.loadDankieJesuItems()
+      this.loadKwangaItems()
+      this.inventoryLength = 0
+      this.presentLoader()
+    }
+    console.log('Oninit did run');
+
+    this.nativeCategory.nativeElement.disabled = true
+    this.refreshOrderHistory()
+    this.getPendingOrdersSnap()
   }
   ionViewWillLeave(){
     console.log('ion view will leave')
@@ -2244,7 +2292,8 @@ export class LandingPage implements OnInit {
 
   ionViewDidLeave(){
     console.log('ion view did leave');
-    
+    //this.allProducts = []
+    //this.inventoryLength = 0
   }
 
   ionViewWillLoad(){
@@ -2259,6 +2308,25 @@ export class LandingPage implements OnInit {
   goToHelpDesk(){
     
     this.route.navigate(['/home', 'Terms and Privacy Policy'])
+  }
+  sortArray(array){
+    return new Promise((resolve, reject) => {
+      let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+      let tempColor = array
+      array = []
+      for(let color in sort){
+        for(let i in tempColor){
+          if(sort[color] === tempColor[i]){
+            array.push(sort[color])
+          }
+        }
+      }
+      console.log(array);
+      resolve(array)
+    
+    })
+    return array
+
   }
 
   modifyLocalObjectsVests(result, brand, category){

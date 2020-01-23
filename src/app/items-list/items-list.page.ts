@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ɵConsole, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import * as firebase from 'firebase'
 import * as moment from 'moment'
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { LoginPage } from '../login/login.page';
 import { log } from 'util';
 @Component({
@@ -12,7 +12,7 @@ import { log } from 'util';
   templateUrl: './items-list.page.html',
   styleUrls: ['./items-list.page.scss'],
 })
-export class ItemsListPage implements OnInit {
+export class ItemsListPage implements OnInit, OnDestroy {
   currentCategory
   kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
@@ -104,7 +104,7 @@ export class ItemsListPage implements OnInit {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+  constructor(public loadingCtrl: LoadingController, private navCtrl:NavController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     console.log(this.department);
     //this.productsService.getCategories()
     this.loadDankieJesuItems()
@@ -660,6 +660,9 @@ brand
   }
   navigate() {
     this.route.navigate(['/' + this.link])
+
+
+
   }
   // loadItems(category, brand){
   //   //console.log(1234);
@@ -835,7 +838,7 @@ brand
     this.presentLoading()
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
     //console.log(this.updateName);
-
+    this.sortArray()
     return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
       console.log(result);
         setTimeout(() => {
@@ -854,6 +857,20 @@ brand
 
       }
     })
+  }
+  sortArray(){
+    let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    let tempColor = this.itemSizes
+    this.itemSizes = []
+    for(let color in sort){
+      for(let i in tempColor){
+        if(sort[color] === tempColor[i]){
+          this.itemSizes.push(sort[color])
+        }
+      }
+    }
+    console.log(this.itemSizes);
+    
   }
   clearUpdateForm(){
     this.pictureUpdate = undefined
@@ -1030,12 +1047,15 @@ brand
     console.log(size);
     console.log(this.itemSizes);
     let checkbox = event.target['name']
+    let index = this.itemSizes.indexOf(size)
     if (checkbox) {
-      if (event.target.checked === true) {
+      if (event.target.checked === true && index === -1) {
+        console.log(index);
+        
         this.itemSizes.push(size)
         console.log(this.itemSizes);
       } else if (event.target.checked === false) {
-        let index = this.itemSizes.indexOf(size)
+        // let index = this.itemSizes.indexOf(size)
         console.log(index);
         this.itemSizes.splice(index, 1)
         console.log(this.itemSizes);
@@ -1044,14 +1064,19 @@ brand
     // console.log(event.target.checked);
     // console.log(event.target['name']);
   }
+  ngOnDestroy(){
+    console.log('destroying page');
+    this.navCtrl.pop()
+  }
   checkColorUpdate(event, color){
     let checkbox = event.target['name']
+    let index = this.itemColors.indexOf(color)
     if(checkbox){
-      if(event.target.checked === true){
+      if(event.target.checked === true && index === -1){
         this.itemColors.push(color)
         console.log(this.itemColors);
       }else if(event.target.checked === false){
-        let index = this.itemColors.indexOf(color)
+        // let index = this.itemColors.indexOf(color)
         this.itemColors.splice(index, 1)
         console.log(this.itemColors);
       }

@@ -12,10 +12,9 @@ export class ProductsService {
   constructor(public loadingCtrl: LoadingController) {
     this.products = []
   }
-  addItems(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
-    let productID 
-    new Promise(function(resolve, reject) {
-
+  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
+    let object_result 
+return new Promise((resolve, reject)  => {
       firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
         quantity: 1,
         color: color,
@@ -33,39 +32,44 @@ export class ProductsService {
         timestamp : firebase.firestore.FieldValue.serverTimestamp(),
         dateAdded : moment(new Date()).format('LLLL')
       })
-    }).then(result => { // (**)
-       productID = result
-      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+    .then(result => { // (**)
+      console.log(result, 'second chain');
+      object_result = result
+      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then((result : any) => {
+        console.log(result, 'third chain');
         let number : string = String(Number(result.data().numberOfProducts) + 1)
         firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
           numberOfProducts: number
         })
       })
-
-      return result;
-    
-    }).then( () => { // (***)
-      let storageRef = firebase.storage().ref('clothes/' + productID.id)
+    })
+    .then( (result) => { // (***)
+      console.log(result, 'fourth chain');
+      let storageRef = firebase.storage().ref('clothes/' + object_result.id)
       console.log(picture);
-      
-      storageRef.put(picture).then((data) => {
+      storageRef.put(picture).then((data : any) => {
+        console.log(data, 'fifth chain');
         console.log(data);
         data.ref.getDownloadURL().then(url => {
-          firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc(productID.id).update({
+          console.log(url, 'sixth chain');
+          firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc(object_result.id).update({
             pictureLink: url,
             hideItem: false
-          }).then( result => {
-            return result
+          }).then(result => {
+    resolve ('success')
+    return 'sucesss'
+    //return
           })
         })
-        console.log('Saved');
-      }).catch( result => {
-        alert('picture might be corrupt')
       })
-
     })
+  }).then(result => {
+
+    return 'success'
+  })
+
   }
-  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
+  addItems(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
    // console.log(department);
   //  console.log(selectedCategory);
     return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
