@@ -4,7 +4,7 @@
   background: grey;
   overflow: hidden;
 }
-.del-upd-del {
+.del-upd-del-list {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.315);
@@ -13,7 +13,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  display: none;
+  // display: none;
+  .dismissBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 #goAway{
   width: 100%;
@@ -118,7 +123,7 @@ textarea {
   justify-content: center;
   div {
     height: 100%;
-    width: 16.666666%;
+    width: 100%;
     border-top: 0.5px solid black;
   }
 }
