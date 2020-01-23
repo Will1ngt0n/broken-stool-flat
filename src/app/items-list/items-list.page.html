@@ -2,6 +2,9 @@
   <div class="del-upd-del-list">
     <div id="goAway" (click)="dismissPromo()"></div>
     <div class="inner-cont-opt" *ngIf="promoUdpate === 'Promote item'">
+      <ion-button fill="clear" class="dismissBtn" (click)="dismissPromo()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
       <p id="topic-item"><b>{{promoUdpate}}</b></p>
       <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">
       <img *ngIf='!itemImageLink' src="../../assets/imgs/images.jpg" alt="" id="item-image">
@@ -29,6 +32,9 @@
       </div>
     </div>
     <div class="inner-cont-opt" *ngIf="promoUdpate === 'Update item'">
+      <ion-button fill="clear" class="dismissBtn" (click)="dismissPromo()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
       <p id="topic-item"><b>{{promoUdpate}}</b></p>
       <img *ngIf='!itemImageLink' src="../../assets/imgs/images.jpg" alt="" id="item-image">
       <img *ngIf='itemImageLink' [src]="itemImageLink" alt="" id="item-image">

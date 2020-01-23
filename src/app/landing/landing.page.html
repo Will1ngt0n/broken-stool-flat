@@ -23,14 +23,14 @@
 
     </div>
     <div id="forms">
-      <button id="dismisser" (click)="showHideSearchDetails('close')">
+      <ion-button id="dismisserBtn" fill="clear" (click)="showHideSearchDetails('close')">
         <ion-icon name="close"></ion-icon>
-      </button>
+      </ion-button>
       <label for="uploaderBtn" id="imageToupdate">
         <div id="upload-label">
           Update Photo
         </div>
-        <img src="../../assets/imgs/331249_1_800.jpeg" *ngIf='!updatePic' alt="">
+        <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf='!updatePic' alt="">
         <img [src]="updatePic" *ngIf='updatePic' alt="">
       </label>
       <div class="product-information-search">

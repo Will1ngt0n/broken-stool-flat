@@ -14,6 +14,11 @@
   flex-direction: column;
   justify-content: center;
   display: none;
+  .dismissBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 #goAway{
   width: 100%;
@@ -118,7 +123,7 @@ textarea {
   justify-content: center;
   div {
     height: 100%;
-    width: 16.666666%;
+    width: 100%;
     border-top: 0.5px solid black;
   }
 }

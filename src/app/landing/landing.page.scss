@@ -42,6 +42,11 @@
     color: white;
     font-weight: bolder;
   }
+  #dismisserBtn{
+    position: absolute;
+    right: 0;
+    z-index: 1000000000000000000000000000000000000000000000000;
+  }
   div > img {
     width: 100%;
     height: 350px;
@@ -105,6 +110,9 @@
       margin-left: 2.5px;
       margin: 0 auto;
     }
+    .opts-search > div{
+      width: 100%
+    }
     .opts-search > div:nth-child(1) {
       background: black;
     }
@@ -148,6 +156,7 @@ ion-list > div {
   overflow: hidden;
   z-index: 1;
   transition: 300ms;
+  position: relative;
 }
 
 #dismisser-bg {
@@ -237,6 +246,8 @@ ion-list > div {
   height: 100%;
   background: #f2f2f2;
   position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 ion-searchbar {
   width: 50%;
