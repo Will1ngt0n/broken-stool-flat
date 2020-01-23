@@ -908,10 +908,10 @@ brand
 
     // console.log('Loading dismissed!');
   }
+    promoUpd = document.getElementsByClassName("del-upd-del-list") as HTMLCollectionOf<HTMLElement>;
   toggleUpdate(productID, brand, category, name, description, price, imageLink, sizes, colors) {
-    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
-    promoUpd[0].style.display = "flex";
+    this.promoUpd[0].style.display = "flex";
     this.promoUdpate = "Update item"
     this.updateName = name
     this.updatePrice = price
@@ -976,10 +976,9 @@ brand
     }
   }
   selectedItem
-  togglePromo(productID, brand, category, name, description, price, imageLink, item) {
-    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
+  showPromo(productID, brand, category, name, description, price, imageLink, item) {
 
-    promoUpd[0].style.display = "flex";
+    this.promoUpd[0].style.display = "flex";
     this.promoUdpate = "Promote item"
     this.itemName = name
     this.itemPrice = price
@@ -995,8 +994,7 @@ brand
     
   }
   dismissPromo() {
-    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
-    promoUpd[0].style.display = "none"
+    this.promoUpd[0].style.display = "none"
     this.editEndDate = undefined
     this.editStartDate = undefined
     this.editPercentage = undefined
