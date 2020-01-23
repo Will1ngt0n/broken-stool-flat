@@ -1,5 +1,5 @@
 <ion-content>
-  <div class="del-upd-del-list">
+  <div class="del-upd-del-list" *ngIf="promoUdpate === 'Promote item' || promoUdpate === 'Update item'">
     <div id="goAway" (click)="dismissPromo()"></div>
     <div class="inner-cont-opt" *ngIf="promoUdpate === 'Promote item'">
       <ion-button fill="clear" class="dismissBtn" (click)="dismissPromo()">
