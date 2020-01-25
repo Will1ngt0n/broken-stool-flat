@@ -72,7 +72,7 @@ export class LoginPage implements OnInit {
 
               location.reload()
             }, 100);
-            this.route.navigate(['landing']);
+            this.route.navigate(['/landing']);
           }
         } else if (result === undefined) {
           loading.dismiss()

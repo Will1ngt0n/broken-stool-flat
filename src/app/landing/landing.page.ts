@@ -134,12 +134,13 @@ export class LandingPage implements OnInit {
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
   searchedProductStatus
   popCheckboxXS : boolean; popCheckboxS : boolean; popCheckboxM : boolean; popCheckboxL : boolean; popCheckboxXL : boolean; popCheckboxXXL : boolean; popCheckboxXXXL : boolean ;
-  checkRed : boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
+  checkBlack: boolean; checkBrown : boolean; checkOrange : boolean; checkYellow : boolean; checkWhite : boolean
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
   pictureUpdate : File
 
   constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     //console.log(this.department);
+
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
     this.allSpecialsPicture = undefined
@@ -149,14 +150,13 @@ export class LandingPage implements OnInit {
     //this.productService.getCategories()
     this.loadTotalNumberOfProducts()
     this.getPendingOrders()
-    this.loadDankieJesuItems()
-    this.loadKwangaItems()
-    this.presentLoader()
+
+
     this.colors = { red: '' }
     this.accessory = false;
     this.summer = false;
-    this.department = undefined
-    this.selectedCategory = undefined
+    this.department = 'Select Department'
+    this.selectedCategory = 'Select Category'
     this.addForm = false
     this.formHasValues = false
     this.itemName = ''
@@ -186,6 +186,7 @@ export class LandingPage implements OnInit {
     this.getOrderHistory()
     this.getInventory()
     this.loader()
+    this.writeToUpdates()
   }
   signOutPopup() {
     this.presentLogoutConfirmAlert()
@@ -239,35 +240,35 @@ export class LandingPage implements OnInit {
     
   }
   ngOnInit() { ////copy
-    console.log('Oninit did run');
-    
-    this.nativeCategory.nativeElement.disabled = true
-    this.refreshOrderHistory()
-    this.getPendingOrdersSnap()
-    // this.loadFormal('Kwanga', 'Formal')
-    // this.loadTraditional('Kwanga', 'Traditional')
-    // this.loadSmartCasual('Kwanga', 'Smart Casual')
-    // this.loadSportsWear('Kwanga', 'Sports')
-    // this.loadVests('Dankie Jesu', 'Vests')
-    // this.loadCaps('Dankie Jesu', 'Caps')
-    // this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-    // this.loadShorts('Dankie Jesu', 'Shorts')
-    // this.loadCropTops('Dankie Jesu', 'Crop Tops')
-    // this.loadTShirts('Dankie Jesu', 'T-Shirts')
-    //  this.loadBags('Dankie Jesu', 'Bags')
-    // this.loadSweaters('Dankie Jesu', 'Sweaters')
-    // this.loadHoodies('Dankie Jesu', 'Hoodies')
-    // this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-    // this.loadBeanies('Dankie Jesu', 'Beanies')
 
-    return this.authService.checkingAuthState().then( result => {
-      if(result === null){
-        this.route.navigate(['/login'])
-      }else{
-        //return this.loadPictures()
 
-      }
-    })
+    this.loadFormal('Kwanga', 'Formal')
+    this.loadTraditional('Kwanga', 'Traditional')
+    this.loadSmartCasual('Kwanga', 'Smart Casual')
+    this.loadSportsWear('Kwanga', 'Sports')
+    this.loadVests('Dankie Jesu', 'Vests')
+    this.loadCaps('Dankie Jesu', 'Caps')
+    this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+    this.loadShorts('Dankie Jesu', 'Shorts')
+    this.loadCropTops('Dankie Jesu', 'Crop Tops')
+    this.loadTShirts('Dankie Jesu', 'T-Shirts')
+    this.loadBags('Dankie Jesu', 'Bags')
+    this.loadSweaters('Dankie Jesu', 'Sweaters')
+    this.loadHoodies('Dankie Jesu', 'Hoodies')
+    this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+    this.loadBeanies('Dankie Jesu', 'Beanies')
+    this.loadPictures()
+    // return this.authService.checkingAuthState().then( result => {
+    //   if(result === null){
+    //     this.route.navigate(['/login'])
+    //   }else{
+    //     //return this.loadPictures()
+
+    //   }
+    // })
+  }
+  loadPictures(){
+    // firebase.storage().ref('/clothes').
   }
   loadFormal(brand, category){
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
@@ -552,7 +553,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -568,7 +569,7 @@ export class LandingPage implements OnInit {
               if(productID === this.summerGear[key].productID){
                 let index = Number(key)
                 this.summerGear.splice(index, 1)
-
+                
               }
             }
           }else if(change.doc.data().isSummer === false){
@@ -587,41 +588,20 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
+            //addItems = false
+          }else if(this.allProducts[key].productID !== productID){
+            //addItems = true
           }
         }
       }
@@ -641,7 +621,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -650,14 +630,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -819,6 +806,9 @@ export class LandingPage implements OnInit {
     }
     console.log(event.target.checked);
     console.log(event.target['name']);
+
+
+    this.size
     this.checkValidity()
   }
   invprice : number
@@ -847,7 +837,7 @@ export class LandingPage implements OnInit {
     if(this.nativeCategory.nativeElement.disabled === true){
       this.selectedCategory = 'Select Category'
     }
-    if (this.selectedCategory === undefined || this.selectedCategory === 'Select Category' || this.department === undefined || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
       this.addForm = false
       console.log(this.addForm);
 
@@ -891,9 +881,26 @@ export class LandingPage implements OnInit {
         let reader = new FileReader();
         reader.onload = (event: any) => {
           this.myUpload = event.target.result;
+          console.log(this.myUpload);
+          //console.log(event.target.readAsText(this.picture));
+
         };
+         //         this.picture = <File>event.target.files[0]
         reader.readAsDataURL(event.target.files[0]);
         console.log(event.target.files[0]);
+        console.log(event);
+        console.log(reader.DONE);
+        console.log(reader.EMPTY);
+        console.log(reader.error);
+        console.log(reader.onerror);
+        console.log(reader.readyState);
+        //console.log(reader.readAsText(event.target.files[0]));
+        
+        
+        
+        
+        
+        
         
         if(event.target.files[0]){
           this.uploaderImage[0].style.display = "none"
@@ -909,17 +916,31 @@ export class LandingPage implements OnInit {
     this.currentNumberOfProducts = this.inventoryLength
     let number : string = String(Number(this.currentNumberOfProducts) + 1)
     console.log(number);
-
+    let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    let tempColor = this.size
+    this.size = []
+    for(let color in sort){
+      for(let i in tempColor){
+        if(sort[color] === tempColor[i]){
+          this.size.push(sort[color])
+        }
+      }
+    }
+    console.log(this.size);
+    
     this.addProducts(number)
         
   }
   addProducts(numberOfProducts) {
     let brand = this.department
     let category = this.selectedCategory
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then(result => {
-
-      console.log('added to first firebase')
-    }).then(result => {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then((result : any) => {
+      console.log(result);
+      
+      if(result === 'success'){
+        console.log('successs');
+        
+      }
       this.loadTotalNumberOfProducts()
       this.loadingCtrl.dismiss()
       this.productAlert('Product was successfully added')
@@ -1135,7 +1156,7 @@ export class LandingPage implements OnInit {
 
       //sorting allProducts array
 
-      //console.log(this.allProducts);
+      console.log(this.allProducts);
       
       this.inventoryLength = this.allProducts.length
       this.sortProducts()
@@ -1152,6 +1173,21 @@ export class LandingPage implements OnInit {
   }
 
   sortSummerProducts(){
+    let addToSummer
+    for(let key in this.allProducts){
+      for(let i in this.summerGear){
+        if(this.allProducts[key].brand === 'Dankie Jesu' && this.allProducts[key].data.isSummer === true)
+        if(this.allProducts[key].productID === this.summerGear[i].productID){
+          addToSummer = false
+          break
+        }else if(this.allProducts[key].productID !== this.summerGear[i].productID){
+          addToSummer = true
+        }
+      }
+      if(addToSummer === true && this.summerGear.length < 6){
+        this.summerGear.push(this.allProducts[key])
+      }
+    }
     this.summerGear.sort( (a,b) => {
       let data = (a.data.name) - (b.data.name)
       let c : any = new Date(a.data.dateAdded)
@@ -1163,6 +1199,22 @@ export class LandingPage implements OnInit {
     });
   }
   sortWinterProducts(){
+    let addToWinter
+    for(let key in this.allProducts){
+      for(let i in this.winterGear){
+        if(this.allProducts[key].brand === 'Dankie Jesu' && this.allProducts[key].data.isSummer === false && this.allProducts[key].data.isAccessory === false){
+          if(this.allProducts[key].productID === this.winterGear[i].productID){
+            addToWinter = false
+            break
+          }else if(this.allProducts[key].productID !== this.winterGear[i].productID){
+            addToWinter = true
+          }
+        }
+      }
+      if(addToWinter === true && this.winterGear.length < 6){
+        this.winterGear.push(this.allProducts[key])
+      }
+    }
     this.winterGear.sort( (a,b) => {
       let data = (a.data.name) - (b.data.name)
       let c : any = new Date(a.data.dateAdded)
@@ -1174,6 +1226,24 @@ export class LandingPage implements OnInit {
     });
   }
   sortKwangaProducts(){
+    let addToKwanga : boolean
+    for(let key in this.allProducts){
+      for(let i in this.kwangaGear){
+        if(this.allProducts[key].brand === 'Kwanga'){
+          if(this.allProducts[key].productID === this.kwangaGear[i].productID){
+            addToKwanga = false
+            break
+          }else if(this.allProducts[key].productID !== this.kwangaGear[i].productID){
+            addToKwanga = true
+          }
+        }
+      }
+      console.log(this.kwangaGear);
+      
+      if(addToKwanga === true && this.kwangaGear.length < 3){
+        this.kwangaGear.push(this.allProducts[key])
+      }
+    }
     this.kwangaGear.sort( (a,b) => {
       let data = (a.data.name) - (b.data.name)
       let c : any = new Date(a.data.dateAdded)
@@ -1226,8 +1296,16 @@ export class LandingPage implements OnInit {
         }
       }
     }
-    if(this.kwangaGear.length === 3){
-      this.loadingCtrl.dismiss()
+    console.log(this.inventoryLength, this.currentNumberOfProducts);
+    
+    if(this.inventoryLength === Number(this.currentNumberOfProducts)){
+      if(this.loadingCtrl){
+        for(let i = 0; i < 5000; i++){
+          if(i === 4999){
+            this.loadingCtrl.dismiss()
+          }
+        }
+      }
     }
   }
   orderItems() {
@@ -1370,8 +1448,10 @@ export class LandingPage implements OnInit {
         }
       }
       console.log(this.pendingOrders);
+      // if(this.loadingCtrl){
+      //   this.loadingCtrl.dismiss()
+      // }
 
-      //this.loadingCtrl.dismiss()
     })
     //thisgffdsg
 
@@ -1641,7 +1721,7 @@ export class LandingPage implements OnInit {
   saveQuantity(brand, category, productID, quantity) {
     console.log(brand, category, productID, quantity);
     const toast = document.createElement('ion-toast');
-    toast.message = 'Your settings have been saved.';
+    toast.message = 'Your changes have been saved.';
     toast.duration = 2000;
   
     document.body.appendChild(toast);
@@ -1734,26 +1814,26 @@ export class LandingPage implements OnInit {
     }
   }
 
-  async loadPictures() {
-    return this.productService.getPictures().then(result => {
-      // console.log(result);
-      let pictures: Array<any> = []
-      for (let key in result.items) {
-        result.items[key].getDownloadURL().then(link => {
-          let path = result.items[key].fullPath
-          let splitPath = path.split('/')
-          let pictureID = splitPath[splitPath.length - 1]
-          // picture['link'] = link
-          // picture['productID'] = pictureID
-          this.pictures.push({ link: link, productID: pictureID })
-          // console.log(this.pictures);
-          this.insertPictures()
-         })
+  // async loadPictures() {
+  //   return this.productService.getPictures().then(result => {
+  //     // console.log(result);
+  //     let pictures: Array<any> = []
+  //     for (let key in result.items) {
+  //       result.items[key].getDownloadURL().then(link => {
+  //         let path = result.items[key].fullPath
+  //         let splitPath = path.split('/')
+  //         let pictureID = splitPath[splitPath.length - 1]
+  //         // picture['link'] = link
+  //         // picture['productID'] = pictureID
+  //         this.pictures.push({ link: link, productID: pictureID })
+  //         // console.log(this.pictures);
+  //         this.insertPictures()
+  //        })
 
-         //return result
-        }
-    })
-  }
+  //        //return result
+  //       }
+  //   })
+  // }
 
   insertPictures() {
     // console.log(this.pictures);
@@ -1989,7 +2069,7 @@ export class LandingPage implements OnInit {
       this.clickedSearchItem = "showItem"
 
       this.popCheckboxXS = false ;this.popCheckboxS = false ;this.popCheckboxM = false ;this.popCheckboxL = false ;this.popCheckboxXL = false ;this.popCheckboxXXL = false ;this.popCheckboxXXXL = false ;
-      this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+      this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
       for(let key in this.itemSizes){
         if(this.itemSizes[key] === 'XS'){
           this.popCheckboxXS = true
@@ -2015,21 +2095,18 @@ export class LandingPage implements OnInit {
         }
       }
       for(let key in this.itemColors){
-        if(this.itemColors[key] === 'Red'){
-          this.checkRed = true
+        if(this.itemColors[key] === 'Black'){
+          this.checkBlack = true
           this.updateSizes.push('XS')
-        }else if(this.itemColors[key] === 'Blue'){
-          this.checkBlue = true
+        }else if(this.itemColors[key] === 'Brown'){
+          this.checkBrown = true
           this.updateSizes.push('S')
-        }else if(this.itemColors[key] === 'Green'){
-          this.checkGreen = true
+        }else if(this.itemColors[key] === 'Orange'){
+          this.checkOrange = true
           this.updateSizes.push('M')
         }else if(this.itemColors[key] === 'Yellow'){
           this.checkYellow = true
           this.updateSizes.push('XL')
-        }else if(this.itemColors[key] === 'Pink'){
-          this.checkPink = true
-          this.updateSizes.push('XXL')
         }else if(this.itemColors[key] === 'White'){
           this.checkWhite = true
           this.updateSizes.push('XXL')
@@ -2052,7 +2129,16 @@ export class LandingPage implements OnInit {
     this.presentLoading()
     console.log(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors);
     //console.log(this.updateName);
-
+    let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    let tempColor = this.itemSizes
+    this.itemSizes = []
+    for(let color in sort){
+      for(let i in tempColor){
+        if(sort[color] === tempColor[i]){
+          this.itemSizes.push(sort[color])
+        }
+      }
+    }
     return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
       console.log(result);
         setTimeout(() => {
@@ -2154,8 +2240,8 @@ export class LandingPage implements OnInit {
       console.log(this.item.data.hideItem);
       console.log(this.item);
       
-      this.item.data = { hideItem : status}
-      console.log(this.item.data = { hideItem : status});
+      this.item.data['hideItem'] = status
+      //console.log(this.item.data = { hideItem : status});
       
       this.searchedProductStatus = status
     })
@@ -2178,12 +2264,27 @@ export class LandingPage implements OnInit {
 
   ionViewDidEnter(){
     console.log('ion view did enter');
-    this.alertController.dismiss()
+    
   }
 
   ionViewWillEnter(){
     console.log('ion view will enter');
+    // for(let key in this.allProducts){
+    //   this.allProducts.splice(Number(key), (this.allProducts.length - 1))
+    // }
+    console.log(this.allProducts.length);
     
+    if(this.allProducts.length === 0){
+      this.loadDankieJesuItems()
+      this.loadKwangaItems()
+      this.inventoryLength = 0
+      this.presentLoader()
+    }
+    console.log('Oninit did run');
+
+    this.nativeCategory.nativeElement.disabled = true
+    this.refreshOrderHistory()
+    this.getPendingOrdersSnap()
   }
   ionViewWillLeave(){
     console.log('ion view will leave')
@@ -2191,7 +2292,8 @@ export class LandingPage implements OnInit {
 
   ionViewDidLeave(){
     console.log('ion view did leave');
-    
+    //this.allProducts = []
+    //this.inventoryLength = 0
   }
 
   ionViewWillLoad(){
@@ -2207,6 +2309,25 @@ export class LandingPage implements OnInit {
     
     this.route.navigate(['/home', 'FAQs'])
   }
+  sortArray(array){
+    return new Promise((resolve, reject) => {
+      let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+      let tempColor = array
+      array = []
+      for(let color in sort){
+        for(let i in tempColor){
+          if(sort[color] === tempColor[i]){
+            array.push(sort[color])
+          }
+        }
+      }
+      console.log(array);
+      resolve(array)
+    
+    })
+    return array
+
+  }
 
   modifyLocalObjectsVests(result, brand, category){
     let items : Array<any> = []
@@ -2221,7 +2342,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -2256,38 +2377,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -2310,7 +2407,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -2319,14 +2416,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -2357,7 +2461,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -2380,12 +2484,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -2428,7 +2532,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -2463,38 +2567,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -2517,7 +2597,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -2526,14 +2606,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -2564,7 +2651,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -2587,12 +2674,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -2635,7 +2722,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -2670,38 +2757,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -2724,7 +2787,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -2733,14 +2796,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -2771,7 +2841,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -2794,12 +2864,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -2842,7 +2912,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -2877,38 +2947,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -2931,7 +2977,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -2940,14 +2986,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -2978,7 +3031,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3001,12 +3054,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3049,7 +3102,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -3084,38 +3137,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -3138,7 +3167,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -3147,14 +3176,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -3185,7 +3221,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3208,12 +3244,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3256,7 +3292,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -3291,38 +3327,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -3345,7 +3357,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -3354,14 +3366,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -3392,7 +3411,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3415,12 +3434,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3463,7 +3482,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -3498,38 +3517,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -3552,7 +3547,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -3561,14 +3556,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -3599,7 +3601,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3622,12 +3624,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3670,7 +3672,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -3705,38 +3707,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -3759,7 +3737,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -3768,14 +3746,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -3806,7 +3791,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3829,12 +3814,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -3877,7 +3862,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -3912,38 +3897,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -3966,7 +3927,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -3975,14 +3936,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -4013,7 +3981,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4036,12 +4004,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4084,7 +4052,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -4119,38 +4087,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -4173,7 +4117,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -4182,14 +4126,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -4220,7 +4171,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4243,12 +4194,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4291,7 +4242,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -4326,38 +4277,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -4380,7 +4307,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -4389,14 +4316,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -4427,7 +4361,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4450,12 +4384,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4498,7 +4432,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -4533,38 +4467,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -4587,7 +4497,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -4596,14 +4506,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -4634,7 +4551,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4657,12 +4574,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4705,7 +4622,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -4740,38 +4657,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -4794,7 +4687,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -4803,14 +4696,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -4841,7 +4741,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4864,12 +4764,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -4912,7 +4812,7 @@ export class LandingPage implements OnInit {
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
+        // items.push(data)
       }else if(change.type === 'removed'){
         productID = change.doc.id
         for(let key in this.allProducts){
@@ -4947,38 +4847,14 @@ export class LandingPage implements OnInit {
             }
           }
         }
-        // this.summerGear = []
-        // this.winterGear = []
-        // this.kwangaGear = []
-        // for(let key in this.allProducts){
-        //   if(this.allProducts[key].brand === 'Kwanga'){
-        //     if(this.kwangaGear.length < 3){
-        //       this.kwangaGear.push(this.allProducts[key])
-        //       console.log(this.kwangaGear);
-        //     }
-        //   }else if(this.allProducts[key].brand === 'Dankie Jesu') {
-        //     if(this.allProducts[key].data.isSummer === true){
-        //       this.summerProducts.push(this.allProducts[key])
-        //       if(this.summerGear.length < 5){
-        //         this.summerGear.push(this.allProducts[key])
-        //       }
-        //     } else if (this.allProducts[key].data.isSummer === false) {
-        //       if(this.allProducts[key].category === 'Bags'){
-      
-        //       }else if(this.allProducts[key].category !== 'Bags'){
-        //         console.log(this.allProducts[key].category);
-                
-        //         this.winterProducts.push(this.allProducts[key])
-        //         if(this.winterGear.length < 5){
-        //           this.winterGear.push(this.allProducts[key])
-        //         }
-        //       }
-        //     }
-        // }}
+        this.sortKwangaProducts()
+        this.sortSummerProducts()
+        this.sortWinterProducts()
       }else if(change.type === 'modified'){
         productID = change.doc.id
         docData = change.doc.data()
         data = {productID: productID, data: docData, category: category, brand: brand}
+        items.push(data)
         for(let key in this.allProducts){
           if(this.allProducts[key].productID === productID){
             this.allProducts[key].data = docData
@@ -5001,7 +4877,7 @@ export class LandingPage implements OnInit {
             logo.push(addItems);
             console.log(logo);
             
-            return
+            break
           }
         }
         if(addItems === true){
@@ -5010,14 +4886,21 @@ export class LandingPage implements OnInit {
           if(brand === 'Dankie Jesu'){
             if(this.summer === true){
               this.summerGear.unshift(data)
-              this.summerGear.splice(this.summerGear.length - 1, 1)
+              if(this.summerGear.length > 6){
+                this.summerGear.splice(this.summerGear.length - 1, 1)
+              }
+
             }else if(this.summer === false){
               this.winterGear.unshift(data)
-              this.winterGear.splice(this.winterGear.length - 1, 1)
+              if(this.winterGear.length > 6){
+                this.winterGear.splice(this.winterGear.length - 1, 1)
+              }
             }
           }else if(brand === 'Kwanga'){
             this.kwangaGear.unshift(data)
-            this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            if(this.kwangaGear.length > 3){
+              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+            }
           }
         }
       }
@@ -5048,7 +4931,7 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -5071,12 +4954,12 @@ export class LandingPage implements OnInit {
         }
       }
       if(addToWinter === true){
-        if(this.winterGear.length < 5){
+        if(this.winterGear.length < 6){
           this.winterGear.push(this.allProducts[i])
         }
       }
       if(addToSummer === true){
-        if(this.summerGear.length < 5){
+        if(this.summerGear.length < 6){
           this.summerGear.push(this.allProducts[i])
         }
       }
@@ -5105,5 +4988,11 @@ export class LandingPage implements OnInit {
     this.sortKwangaProducts()
     this.sortSummerProducts()
     this.sortWinterProducts()
+  }
+
+  writeToUpdates(){
+    firebase.firestore().collection('Updates').add({
+      timestamp: new Date().getTime()
+    })
   }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase'
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import {LocalStorageService} from 'ngx-webstorage';
 declare var window
 @Injectable({
   providedIn: 'root'
@@ -8,8 +10,9 @@ declare var window
 export class AuthService {
   email
   password
+  user : boolean
   //confirmationResult
-  constructor(public alertCtrl: AlertController) { }
+  constructor(public alertCtrl: AlertController, public route : Router, private localStorage : LocalStorageService) { }
   requestLogin(number, appVerifier){
     return firebase.auth().signInWithPhoneNumber(number, appVerifier).then(confirmationResult => {
       window.confirmationResult = confirmationResult;
@@ -65,8 +68,11 @@ export class AuthService {
         let docEmail = result.docs[key].data().email
         console.log(docEmail);
         if(docEmail === email){
+          this.user = true
+          this.localStorage.store('inSession', true)
           return firebase.auth().signInWithEmailAndPassword(email, password).then(result => {
             console.log(result);
+            this.user = true
             return result
           }).catch(error => {
             console.log(error);
@@ -96,10 +102,12 @@ export class AuthService {
     return new Promise((resolve, reject) =>{
       firebase.auth().signOut().then(()=> {
         // Sign-out successful.
-        
+        this.user = false
+        this.localStorage.store('inSession', false)
         resolve()
         this.checkingAuthState().then(data=>{
           console.log(data);
+
         });
         
       }).catch(error => {
@@ -146,6 +154,24 @@ export class AuthService {
   })
 }
   checkingAuthState(){
+    return new Promise((resolve, reject) =>{
+      firebase.auth().onAuthStateChanged((user) =>{
+        if(user){
+          console.log(user);
+          this.user = true
+          resolve (user)
+        }else{
+          console.log('not logged in');
+          this.route.navigate(['/login'])
+          resolve (null)
+        }
+      })
+    })
+  }
+  checkingAuthStateBoolean() : boolean {
+    return this.localStorage.retrieve('inSession')
+  }
+  checkingAuthStateHome(){
     return new Promise((resolve, reject) =>{
       firebase.auth().onAuthStateChanged((user) =>{
         if(user){

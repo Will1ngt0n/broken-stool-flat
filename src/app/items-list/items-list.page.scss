@@ -4,7 +4,7 @@
   background: grey;
   overflow: hidden;
 }
-.del-upd-del {
+.del-upd-del-list {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.315);
@@ -13,7 +13,19 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  display: none;
+  // display: none;
+  .dismissBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+#goAway{
+  width: 100%;
+  height: 100%;
+  // background: rgba(0, 0, 0, 0.322);
+  position: absolute;
+  cursor: pointer;
 }
 .inner-cont-opt {
   position: relative;
@@ -105,35 +117,35 @@ textarea {
 .sizes-colours-item {
   width: 100%;
   height: 34px;
-  border: .5px solid black;
+  // border: .5px solid black;
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
   div {
     height: 100%;
-    width: 16.666666%;
+    width: 100%;
     border-top: 0.5px solid black;
   }
 }
 
 .sizes-colours-item > div:nth-child(1) {
-  background: red;
+  background: black;
 }
 .sizes-colours-item > div:nth-child(2) {
-  background: blue;
+  background: brown;
 }
 .sizes-colours-item > div:nth-child(3) {
-  background: green;
+  background: orange;
 }
 .sizes-colours-item > div:nth-child(4) {
-  background: rgb(255, 102, 0);
+  background: yellow;
 }
 .sizes-colours-item > div:nth-child(5) {
-  background: pink;
-}
-.sizes-colours-item > div:nth-child(6) {
   background: white;
 }
+// .sizes-colours-item > div:nth-child(6) {
+//   background: white;
+// }
 .gridded-inputs {
   display: flex;
   margin-top: 10px;
@@ -245,8 +257,9 @@ ion-searchbar {
 }
 .top-bar {
   width: 100%;
-  height: 37px;
-  border: 1px solid black;
+  height: 45px;
+  border-bottom: 10px solid rgb(235, 235, 235);
+  padding-bottom: 20px;
   display: flex;
   ion-button {
     padding: 0;
@@ -850,6 +863,7 @@ ion-searchbar {
     border-radius: 5px;
     display: flex;
     overflow: hidden;
+    position: relative;f
     div {
       height: 100%;
     }
@@ -965,4 +979,12 @@ a{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #b30000;
+}
+.hidden{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 5px black;
 }

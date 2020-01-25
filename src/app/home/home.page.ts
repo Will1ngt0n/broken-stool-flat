@@ -388,11 +388,12 @@ export class HomePage {
     
     this.filterItems(query, this.answeredQuestions)
     console.log(this.answeredQuestions);
+    this.changingValue()
   }
 
   admin;
   checkAuthState() {
-    return this.authService.checkingAuthState().then(result => {
+    return this.authService.checkingAuthStateHome().then(result => {
       if (result !== null) {
         console.log(result);
         if (result['uid']) {
@@ -413,7 +414,7 @@ export class HomePage {
     })
   }
   goHome() {
-    return this.authService.checkingAuthState().then(result => {
+    return this.authService.checkingAuthStateHome().then(result => {
       if (result === null) {
         location.reload()
       }
@@ -442,6 +443,23 @@ export class HomePage {
     }
   }
 
+  goAway(){
+    //  Removes the search results
+    //  alert("clicked")
+    if(document.getElementById("userSearchResults")){
+      document.getElementById("userSearchResults").style.display = "none"
+    }
+
+  }
+  changingValue(){
+    // alert("Changing")
+    if(document.getElementById("userSearchResults")){
+      document.getElementById("userSearchResults").style.display = "block"
+    }
+
+    // Calls back the search results
+  }
+
   onInput(e) {
     console.log(e)
   }
@@ -458,5 +476,104 @@ export class HomePage {
     setTimeout(() => {
       this.showQA = false;
     }, 299);
+  }
+  ngOnInit(){
+    this.questionsSnap()
+    this.answersSnap()
+    this.writeToUpdates()
+  }
+  questionsSnap(){
+    firebase.firestore().collection('FAQs').onSnapshot(result => {
+      console.log(result)
+      let questions : Array<any> = []
+      let addItem : boolean
+      let docRef
+      let data
+      for(let key in result.docChanges()){
+        let change = result.docChanges()[key]
+        if(change.type === 'removed'){
+          let id = change.doc.id
+          console.log(id);
+          console.log('removed');
+          
+          for(let j in this.questionsArray){
+            if(id === this.questionsArray[j].docRef){
+              this.questionsArray.splice(Number(j), 1)
+            }
+          }
+        }else if(change.type === 'added'){
+          console.log('added');
+          
+          docRef = change.doc.id
+          data = change.doc.data()
+          questions.push({data: data, docRef: docRef})
+          console.log(questions);
+          
+        }
+      }
+      for(let key in questions){
+        if(this.questionsArray.length === 0){
+          addItem = true
+        }
+        for(let j in this.questionsArray){
+          if(questions[key].docRef === this.questionsArray[j].docRef){
+            addItem = false
+            break
+          }else if(questions[key].docRef !== this.questionsArray[j].docRef){
+            addItem = true
+          }
+        }
+        if(addItem === true){
+          this.questionsArray.push(questions[key])
+        }
+      }
+      console.log(this.questionsArray);
+      
+    })
+  }
+  answersSnap(){
+    firebase.firestore().collection('AnsweredQuestions').onSnapshot(result => {
+      console.log(result);
+      
+      let answers : Array<any> = []
+      let docRef 
+      let data
+      let addItem : boolean
+      for(let key in result.docChanges()){
+        let change = result.docChanges()[key]
+        if(change.type === 'added'){
+          docRef = change.doc.id
+          data = change.doc.data()
+          answers.push({docRef: docRef, data: data})
+          console.log('added');
+          
+        }else if(change.type === 'modified'){
+          console.log('modified');
+          
+        }
+      }
+      console.log(answers);
+      console.log(this.answeredQuestions);
+      
+      
+      for(let key in answers){
+        for(let j in this.answeredQuestions){
+          if(answers[key].docRef === this.answeredQuestions[j]){
+            addItem = false
+            break
+          }else if(answers[key].docRef !== this.answeredQuestions[j]){
+            addItem = true
+          }
+        }
+        if(addItem === true){
+          this.answeredQuestions.push(answers[key])
+        }
+      }
+    })
+  }
+  writeToUpdates(){
+    firebase.firestore().collection('Updates').add({
+      timestamp: new Date().getTime()
+    })
   }
 }

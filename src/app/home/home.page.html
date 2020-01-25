@@ -12,7 +12,7 @@ Disclaimer -->
     <div class="answer-questions" id="disappear" *ngIf="showQA === true">
         <div class="inner-to-answer">
             <div class="header">
-                <ion-button id="closer" (click)="close_query()">
+                <ion-button id="closer" (click)="close_query()" fill="clear">
                     <ion-icon name="close"></ion-icon>
                 </ion-button>
                 <h3>Q&A</h3>
@@ -22,47 +22,53 @@ Disclaimer -->
                     <h3>Contact Us</h3>
                     <p id="instruction">Fill in the form and take this moment to ask any questions concerning the app or
                         the company and its people and employees</p>
-                        <form [formGroup]='questionsForm'>
-                            <input type="text" id="q-a" placeholder="Name" formControlName='name'><br>
-                            <input type="text" id="q-a" placeholder="Email" formControlName='email' (keyup)='check()'><br>
-                            <textarea name="" id="q-a-textarea" cols="30" rows="10"
-                                placeholder="Your question here..." formControlName='question'></textarea><br>
+                    <form [formGroup]='questionsForm'>
+                        <input type="text" id="q-a" placeholder="Name" formControlName='name'><br>
+                        <input type="text" id="q-a" placeholder="Email" formControlName='email' (keyup)='check()'><br>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="10" placeholder="Your question here..."
+                            formControlName='question'></textarea><br>
 
-                        </form>
-                        <ion-button [disabled]='!questionsForm.valid' (click)='submitQuestion()' >Sumbit</ion-button>
+                    </form>
+                    <ion-button [disabled]='!questionsForm.valid' (click)='submitQuestion()'>Sumbit</ion-button>
                 </div>
             </div>
             <div class="app-body-answers" id="is-user" *ngIf="admin">
                 <h3>Answer questions</h3>
                 <div class="inputs" id="me">
 
-                    
+
                     <div *ngFor='let item of questionsArray'>
                         <p>{{item.data.question}}</p>
-                        <textarea name="" id="q-a-textarea" cols="30" rows="3"
-                            placeholder="Your answer here..." (keyup)='updateAnswer(item, $event)'></textarea><br>
+                        <textarea name="" id="q-a-textarea" cols="30" rows="3" placeholder="Your answer here..."
+                            (keyup)='updateAnswer(item, $event)'></textarea><br>
                         <ion-button (click)='submitAnswer(item)' [disabled]='!item.data.answer'>Send Answer</ion-button>
+                    </div>
+                    <div class="no-questions" *ngIf="!questionsArray">
+                        <h1>You have no questions to answer</h1>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <ion-fab vertical="bottom" horizontal="end" *ngIf="admin">
+    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="admin">
         <ion-button (click)="asnwerQuestions()">
-            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i>Answer Questions</i>
+            <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i id="fab-text">Answer Questions</i>
         </ion-button>
     </ion-fab>
-    <ion-fab vertical="bottom" horizontal="end" *ngIf="!admin">
+    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="!admin">
         <ion-button (click)="askUs()">
-            <ion-icon name="help"></ion-icon><i>Ask Us</i>
+            <ion-icon name="help"></ion-icon><i id="fab-text">Ask Us</i>
         </ion-button>
     </ion-fab>
     <div class="content-container">
-        <div class="navigation">
+        <div class="navigation" (click)="goAway()">
             <div class="navigation-inner">
 
 
-                <div (click)="goHome()">Dankie Jesu</div>
+                <div>
+                    <p id="yesAdmin" (click)="goHome()" *ngIf="admin">Dankie Jesu</p>
+                    <p id="noAdmin" *ngIf="!admin">Dankie Jesu</p>
+                </div>
                 <div>
                     <p id="one" (click)="changeTab('FAQs')">FAQs</p>
                 </div>
@@ -80,19 +86,23 @@ Disclaimer -->
                 </div>
             </div>
         </div>
-        <div class="navigator-small">
+        <div class="navigator-small" (click)="goAway()">
             <div>
-                <ion-button icon-only fill="clear" (click)="toggleSideMenu()">
+                <ion-button *ngIf="!usersInput" icon-only fill="clear" (click)="toggleSideMenu()">
                     <ion-icon name="{{myMenu}}"></ion-icon>
                 </ion-button>
             </div>
             <div>
-                <h1>Dankie Jesu</h1>
+                <h1 *ngIf="!usersInput">Dankie Jesu</h1>
             </div>
 
         </div>
         <div id="side-menu">
-            <div (click)="goHome()">Dankie Jesu </div>
+            <div>
+                <p (click)="goHome()">
+                    Dankie Jesu
+                </p>
+            </div>
             <div>
                 <p (click)="changeTab('FAQs')">FAQs</p>
             </div>
@@ -110,23 +120,27 @@ Disclaimer -->
             </div>
         </div>
         <div class="inner-content">
+            <div class="goAwayer" (click)="goAway()">
+
+            </div>
             <div id="FAQs" *ngIf="activeTab === 'FAQs'">
                 <div class="top-bar" (ionFocus)='onInput($event)'>
                     <h1 id="how-can-we-help">How can we help?</h1>
                     <input id="query" type="text" placeholder="Type keywords to find answers"
                         (ionFocus)='onInput($event)' [(ngModel)]="usersInput" (keyup)="searchresult(usersInput)">
-                    <div class="searchResults" *ngIf="usersInput">
+                    <div class="searchResults" id="userSearchResults" *ngIf="usersInput">
                         <div id="QAAnswer">
                             <div id="QAAnswers-answered" *ngFor="let items of searchArray">
-                                <ion-item>{{items.data.question}}</ion-item>
-                                <i >We stand behind all of our Clothes and gear. If your product is defective or faulty and it's
-                                    been more than 30 days since your purchase, start a return and send your item back.</i>
+                                <div>
+
+                                    <ion-item>{{items.data.question}}</ion-item>
+                                    <i id="answer-description">{{items.data.answer}} </i>
+                                </div>
                             </div>
-                            <!-- <ion-item>{{items.data.answer}}</ion-item> -->
                         </div>
                     </div>
                 </div>
-                <div id="answers">
+                <div id="answers" (click)="goAway()">
                     <div>
                         <h1>Frequently Asked Questions</h1>
                     </div>
@@ -381,7 +395,7 @@ Disclaimer -->
             <div id="payment" *ngIf="activeTab === 'Payment Process'">
                 <div class="top-bar">
                     <br>
-                    <p id="titler">Payment Process</p>
+                    <h3>Payment Process</h3>
                     <br>
                 </div>
                 <div class="about-information">
@@ -446,7 +460,8 @@ Disclaimer -->
                             <br>
                             4 - Delivered/Collected
                             <br>
-                            After you have received your order, the status will change to Delivered or Collected - respectively; this order will then move from your pending orders to your order history.
+                            After you have received your order, the status will change to Delivered or Collected -
+                            respectively; this order will then move from your pending orders to your order history.
                             <br>
                         </p>
                     </div>
@@ -456,7 +471,7 @@ Disclaimer -->
             <div id="about-company" *ngIf="activeTab === 'About Company'">
                 <div class="top-bar">
                     <br>
-                    <p id="titler">About Dankie Jesu &reg;</p>
+                    <h3>About Dankie Jesu &reg;</h3>
                     <br>
                 </div>
                 <div class="about-information">
@@ -575,7 +590,9 @@ Disclaimer -->
             </div>
             <div id="disclaimer" *ngIf="activeTab === 'Disclaimer'">
                 <div class="top-bar">
+                    <br>
                     <h3>Disclaimer</h3>
+                    <br>
                 </div>
                 <div class="document-upload">
                     <h2>Welcome to Broken Stool</h2>

@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ɵConsole, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import * as firebase from 'firebase'
 import * as moment from 'moment'
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { LoginPage } from '../login/login.page';
 import { log } from 'util';
 @Component({
@@ -12,7 +12,7 @@ import { log } from 'util';
   templateUrl: './items-list.page.html',
   styleUrls: ['./items-list.page.scss'],
 })
-export class ItemsListPage implements OnInit {
+export class ItemsListPage implements OnInit, OnDestroy {
   currentCategory
   kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports Wear']
   dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies']
@@ -37,7 +37,7 @@ export class ItemsListPage implements OnInit {
   editName; editPrice; editDescription; editBrand; editCategory; editID; editPercentage; editStartDate; editEndDate
   promoButtonEnabled : boolean
   checkXS : boolean; checkS : boolean; checkM : boolean; checkL : boolean; checkXL : boolean; checkXXL : boolean; checkXXXL : boolean;
-  checkRed: boolean; checkBlue : boolean; checkGreen : boolean; checkYellow : boolean; checkPink : boolean; checkWhite : boolean
+  checkBlack: boolean; checkBrown : boolean; checkOrange : boolean; checkYellow : boolean; checkWhite : boolean
   //updates
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
 
@@ -104,7 +104,7 @@ export class ItemsListPage implements OnInit {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+  constructor(public loadingCtrl: LoadingController, private navCtrl:NavController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     console.log(this.department);
     //this.productsService.getCategories()
     this.loadDankieJesuItems()
@@ -393,7 +393,7 @@ export class ItemsListPage implements OnInit {
 
   }
   loadCategoryItemsSnap(category, brand){
-    return firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
+    return firebase.firestore().collection('Products').doc(brand).collection(category).orderBy('timestamp', 'desc').onSnapshot(result => {
       //console.log(result.docs);
       //console.log(result);
       let data : Array<any> = []
@@ -544,12 +544,53 @@ export class ItemsListPage implements OnInit {
     // })
   }
 
+  getSnaps(category, brand){
+    console.log(category, brand);
+    
+    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
+      let pictureLink
+      // for(let key in this.currentViewedItems){
+        console.log(result);
+        
+      // }
+      for(let key in result.docChanges){
+        let change = result.docChanges[key]
+        console.log(change)
+        if(change.type === 'modified'){
+          let id = change.id
+          console.log(id)
+          pictureLink = change.data.pictureLink
+          for(let i in this.currentViewedItems){
+            if(this.currentViewedItems[i].productID === id){
+              this.currentViewedItems[i].data['pictureLink'] = pictureLink
+            }
+          }
+        }
+      }
+    })
+
+    
+  }
+
+  
 
 
 
-
+brand
   //////native to this page
   ngOnInit() {
+    if(this.currentCategory !== '' && this.currentCategory !== undefined && this.brand !== '' && this.brand !== undefined){
+      console.log('okay now');
+      
+      this.getSnaps(this.currentCategory, this.brand)
+    }else {
+      console.log('nah man');
+      
+    }
+    this.promoUdpate = ''
+    //this.dismissPromo()
+    //this.dismissList()
+
     return this.authService.checkingAuthState().then(result => {
       if (result == null) {
         this.route.navigate(['/login'])
@@ -561,6 +602,7 @@ export class ItemsListPage implements OnInit {
           console.log(result);
           this.currentCategory = result.category
           let brand = result.brand
+          this.brand = brand
           this.title = result.title
           console.log(this.title)
           this.link = result.link
@@ -572,6 +614,7 @@ export class ItemsListPage implements OnInit {
           console.log(this.currentCategory);
           this.loadCategoryItems(this.currentCategory, brand)
           this.loadCategoryItemsSnap(this.currentCategory, brand)
+
           // this.loadPictures().then(result => {
           //   console.log(result);
 
@@ -601,12 +644,25 @@ export class ItemsListPage implements OnInit {
   // loadViewedCategory(){
 
   // }
-
+  sortProducts(){
+    this.allProducts.sort( (a,b) => {
+      let data = (a.data.name) - (b.data.name)
+      let c : any = new Date(a.data.dateAdded)
+      let d : any = new Date(b.data.dateAdded)
+      //console.log(data);
+      //console.log(c - d);
+      
+      return d - c
+    });
+  }
   back() {
     this.route.navigate(['/landing'])
   }
   navigate() {
     this.route.navigate(['/' + this.link])
+
+
+
   }
   // loadItems(category, brand){
   //   //console.log(1234);
@@ -643,12 +699,10 @@ export class ItemsListPage implements OnInit {
       console.log(result);
       if(result === 'success'){
         console.log(result);
-        this.loadingCtrl.dismiss()
-        this.editEndDate = undefined
-        this.editStartDate = undefined
-        this.editPercentage = 0
-        this.itemID = undefined
-        this.salePrice = 0
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
+        this.clearPromoForm()
         return this.dismissPromo()
 
       }else(
@@ -689,7 +743,9 @@ export class ItemsListPage implements OnInit {
     return this.productsService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
       if(result === 'Deleted'){
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
         
       }
       //location.reload()
@@ -697,15 +753,33 @@ export class ItemsListPage implements OnInit {
   }
   hideItem(productID, brand, category, item) {
     this.presentLoading()
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
     return this.productsService.hideProduct(productID, brand, category, item).then(result => {
       console.log(result);
       if(result === 'success'){
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
+      }else if(result === 'error'){
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
       }
     })
   }
   showItem(productID, brand, category, item) {
     this.presentLoading()
+    console.log(productID);
+    console.log(brand);
+    console.log(category);
+    console.log(item);
+    
+    
+    
+    
     return this.productsService.showProduct(productID, brand, category, item).then(result => {
       console.log(result);
       // firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).onSnapshot( result => {
@@ -713,7 +787,13 @@ export class ItemsListPage implements OnInit {
         
       // })
       if(result === 'success'){
-        this.loadingCtrl.dismiss()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
+      }else if(result === 'error'){
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
       }
     })
   }
@@ -758,7 +838,7 @@ export class ItemsListPage implements OnInit {
     this.presentLoading()
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
     //console.log(this.updateName);
-
+    this.sortArray()
     return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
       console.log(result);
         setTimeout(() => {
@@ -766,13 +846,51 @@ export class ItemsListPage implements OnInit {
         }, 30);
       if (result === 'success') {
         console.log(result);
-        this.loadingCtrl.dismiss()
+        //location.reload()
+        if(this.loadingCtrl){
+          this.loadingCtrl.dismiss()
+        }
         this.productAlert('Product was successfully updated')
+        this.clearUpdateForm()
         return this.dismissPromo()
 
 
       }
     })
+  }
+  sortArray(){
+    let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    let tempColor = this.itemSizes
+    this.itemSizes = []
+    for(let color in sort){
+      for(let i in tempColor){
+        if(sort[color] === tempColor[i]){
+          this.itemSizes.push(sort[color])
+        }
+      }
+    }
+    console.log(this.itemSizes);
+    
+  }
+  clearUpdateForm(){
+    this.pictureUpdate = undefined
+    this.updateName = ''
+    this.updatePrice = ''
+    this.updateDescription = ''
+    this.itemID = ''
+    this.itemBrand = ''
+    this.itemCategory = ''
+    this.itemSizes = []
+    this.itemColors = []
+    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
+    this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
+  }
+  clearPromoForm(){
+    this.editEndDate = undefined
+    this.editStartDate = undefined
+    this.editPercentage = 0
+    this.itemID = undefined
+    this.salePrice = 0
   }
   addPictureUpdate(event){
     this.pictureUpdate = <File>event.target.files[0]
@@ -807,10 +925,10 @@ export class ItemsListPage implements OnInit {
 
     // console.log('Loading dismissed!');
   }
+    // promoUpd = document.getElementsByClassName("del-upd-del-list") as HTMLCollectionOf<HTMLElement>;
   toggleUpdate(productID, brand, category, name, description, price, imageLink, sizes, colors) {
-    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
 
-    promoUpd[0].style.display = "flex";
+    // this.promoUpd[0].style.display = "flex";
     this.promoUdpate = "Update item"
     this.updateName = name
     this.updatePrice = price
@@ -821,12 +939,16 @@ export class ItemsListPage implements OnInit {
     this.itemImageLink = imageLink
     this.itemSizes = sizes
     this.itemColors = colors
+    console.log(productID, brand, category, name, description, price, imageLink, sizes, colors);
+    
+    console.log(this.promoUdpate);
+    
     console.log(this.itemSizes);
     console.log(this.itemColors);
     
     console.log(this.checkboxXS);
-    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
-    this.checkRed = false; this.checkBlue = false; this.checkGreen = false; this.checkYellow = false; this.checkPink = false; this.checkWhite = false
+    this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL = false; this.checkXXL =false ;this.checkXXXL =false ;
+    this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
     for(let key in this.itemSizes){
       if(this.itemSizes[key] === 'XS'){
         this.checkXS = true
@@ -852,21 +974,18 @@ export class ItemsListPage implements OnInit {
       }
     }
     for(let key in this.itemColors){
-      if(this.itemColors[key] === 'Red'){
-        this.checkRed = true
+      if(this.itemColors[key] === 'Black'){
+        this.checkBlack = true
         this.updateColors.push('XS')
-      }else if(this.itemColors[key] === 'Blue'){
-        this.checkBlue = true
+      }else if(this.itemColors[key] === 'Brown'){
+        this.checkBrown = true
         this.updateColors.push('S')
-      }else if(this.itemColors[key] === 'Green'){
-        this.checkGreen = true
+      }else if(this.itemColors[key] === 'Orange'){
+        this.checkOrange = true
         this.updateColors.push('M')
       }else if(this.itemColors[key] === 'Yellow'){
         this.checkYellow = true
         this.updateColors.push('XL')
-      }else if(this.itemColors[key] === 'Pink'){
-        this.checkPink = true
-        this.updateColors.push('XXL')
       }else if(this.itemColors[key] === 'White'){
         this.checkWhite = true
         this.updateColors.push('XXL')
@@ -874,10 +993,9 @@ export class ItemsListPage implements OnInit {
     }
   }
   selectedItem
-  togglePromo(productID, brand, category, name, description, price, imageLink, item) {
-    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
+  showPromo(productID, brand, category, name, description, price, imageLink, item) {
 
-    promoUpd[0].style.display = "flex";
+    // this.promoUpd[0].style.display = "flex";
     this.promoUdpate = "Promote item"
     this.itemName = name
     this.itemPrice = price
@@ -887,15 +1005,19 @@ export class ItemsListPage implements OnInit {
     this.itemID = productID
     this.itemImageLink = imageLink
     this.selectedItem = item
+    console.log(this.promoUdpate);
+    
+    console.log('promo toggled');
+    
   }
   dismissPromo() {
-    var promoUpd = document.getElementsByClassName("del-upd-del") as HTMLCollectionOf<HTMLElement>;
-    promoUpd[0].style.display = "none"
+    // this.promoUpd[0].style.display = "none"
     this.editEndDate = undefined
     this.editStartDate = undefined
     this.editPercentage = undefined
     this.itemID = undefined
     this.salePrice = undefined
+    this.promoUdpate = ""
   }
 
   showPendingList() {
@@ -924,12 +1046,15 @@ export class ItemsListPage implements OnInit {
     console.log(size);
     console.log(this.itemSizes);
     let checkbox = event.target['name']
+    let index = this.itemSizes.indexOf(size)
     if (checkbox) {
-      if (event.target.checked === true) {
+      if (event.target.checked === true && index === -1) {
+        console.log(index);
+        
         this.itemSizes.push(size)
         console.log(this.itemSizes);
       } else if (event.target.checked === false) {
-        let index = this.itemSizes.indexOf(size)
+        // let index = this.itemSizes.indexOf(size)
         console.log(index);
         this.itemSizes.splice(index, 1)
         console.log(this.itemSizes);
@@ -938,14 +1063,19 @@ export class ItemsListPage implements OnInit {
     // console.log(event.target.checked);
     // console.log(event.target['name']);
   }
+  ngOnDestroy(){
+    console.log('destroying page');
+    this.navCtrl.pop()
+  }
   checkColorUpdate(event, color){
     let checkbox = event.target['name']
+    let index = this.itemColors.indexOf(color)
     if(checkbox){
-      if(event.target.checked === true){
+      if(event.target.checked === true && index === -1){
         this.itemColors.push(color)
         console.log(this.itemColors);
       }else if(event.target.checked === false){
-        let index = this.itemColors.indexOf(color)
+        // let index = this.itemColors.indexOf(color)
         this.itemColors.splice(index, 1)
         console.log(this.itemColors);
       }

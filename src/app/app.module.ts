@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 //import { Location } from '@angular/common'
 import * as firebase from 'firebase'
+import { AuthGuard } from './services/auth-guard/auth.guard';
+import {NgxWebstorageModule} from 'ngx-webstorage';
 var firebaseConfig = {
   apiKey: "AIzaSyDOthq8-7ipC4rQYCh_R8_oC9fL0F0Oz5g",
   authDomain: "fir-crud-11c1f.firebaseapp.com",
@@ -36,10 +38,11 @@ firebase.analytics();
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, NgxWebstorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,
+    AuthGuard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

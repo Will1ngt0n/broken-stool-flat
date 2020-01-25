@@ -5,8 +5,6 @@
     <ion-list *ngFor="let item of searchArray">
       <ion-item (click)="showHideSearchDetails(item.data.name)">{{item.data.name}}</ion-item>
     </ion-list>
-
-    <!-- <div id="oops" *ngIf="searchArray.length === 0"><p><ion-icon name="sad"></ion-icon> There are no matches for this search</p></div> -->
   </div>
   <div class="content-container">
     <div class="nav-bar">
@@ -15,7 +13,6 @@
           <h4>DankieJesu</h4>
         </div>
         <div id="searchbar">
-          <!-- <ion-searchbar (ionChange)='search(searchInput)' [(ngModel)]='searchInput'></ion-searchbar> -->
         </div>
         <div id="admin" (click)='signOutPopup()'>
           <p>SIGN OUT</p>
@@ -28,7 +25,7 @@
       <div id="mid">
         <div class="top-bar">
           <ion-button color="dark" fill="clear" (click)='back()'>
-            <ion-icon name="arrow-back"></ion-icon>
+            <ion-icon name="home"></ion-icon>
           </ion-button>
           <div class="page-title">
             <div class="btn-top" id="allSubs" (click)="toggleAll()">Show All</div>
@@ -75,7 +72,7 @@
                       <p id="old-price">R {{item.data.normalPrice}}</p>
                     </div>
                     <div class="options">
-                      <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Delete</ion-button>
+                      <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Remove</ion-button>
                     </div>
                   </div>
                 </div>
@@ -97,7 +94,7 @@
                       <p id="old-price">R {{item.data.normalPrice}}</p>
                     </div>
                     <div class="options">
-                      <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Delete</ion-button>
+                      <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Remove</ion-button>
                     </div>
                   </div>
                 </div>
@@ -125,7 +122,7 @@
     <div class="cont-small">
       <div class="top-bar">
         <ion-button color="dark" fill="clear" (click)='back()'>
-          <ion-icon name="arrow-back"></ion-icon>
+          <ion-icon name="home"></ion-icon>
         </ion-button>
         <div class="page-title">
           <div class="btn-top" id="allSubs" (click)="toggleAll()">Show All</div>
@@ -170,7 +167,6 @@
             </div>
             <div>
               <p id="item-name-small">{{item.data.name}}</p>
-              <!-- <p>{{item.data.description}}</p> -->
               <div class="prices">
                 <p id="new-price">R {{item.data.saleprice}}</p>
                 <p id="old-price">R {{item.data.normalPrice}}</p>
@@ -194,7 +190,6 @@
             </div>
             <div>
               <p id="item-name-small">{{item.data.name}}</p>
-              <!-- <p>{{item.data.description}}</p> -->
               <div class="prices">
                 <p id="new-price">R {{item.data.saleprice}}</p>
                 <p id="old-price">R {{item.data.normalPrice}}</p>
