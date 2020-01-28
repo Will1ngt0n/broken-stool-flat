@@ -586,6 +586,7 @@ export class LandingPage implements OnInit {
 
     //console.log(event.target['value']);
     this.department = event.target['value']
+    console.log(this.department)
     if (this.department === 'Dankie Jesu') {
       this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
     }
@@ -1907,11 +1908,11 @@ export class LandingPage implements OnInit {
     
     if(this.allProducts.length === 0){
       this.presentLoader()
-      //this.loadDankieJesuItems()
-      //this.loadKwangaItems()
+      this.loadDankieJesuItems()
+      this.loadKwangaItems()
       this.inventoryLength = 0
 
-      this.load16CategoryItems()
+      //this.load16CategoryItems()
     }
     console.log('Oninit did run');
 
@@ -2033,9 +2034,9 @@ export class LandingPage implements OnInit {
       this.allProducts = items
       this.inventoryLength = this.allProducts.length
             if(brand === 'Dankie Jesu'){
-        if(this.summer === true){
+        if(data[1].data.isSummer === true){
           this.summerGear.unshift(data)
-        }else if(this.summer === false){
+        }else if(data[1].data.isSummer === false){
           this.winterGear.unshift(data)
         }
       }else if(brand === 'Kwanga'){
