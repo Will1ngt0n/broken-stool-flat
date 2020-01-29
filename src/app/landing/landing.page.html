@@ -207,7 +207,7 @@
 
             </ion-note>
           </ion-item>
-          <div class="items">
+          <div class="items" *ngIf='summerGear'>
             <ion-grid>
               <ion-row>
                 <ion-col class="my-ion-col" size="2" *ngFor='let item of summerGear' (click)="showHideSearchDetails(item)">
@@ -215,7 +215,7 @@
             <div class="item-container">
               <p>{{item.data.name}}</p>
               <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
-              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data' alt="">
             </div>
                 </ion-col>
               </ion-row>
@@ -235,7 +235,7 @@
 
             </ion-note>
           </ion-item>
-          <div class="items">
+          <div class="items" *ngIf='winterGear'>
             <ion-grid>
               <ion-row>
                 <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear' (click)="showHideSearchDetails(item)">
@@ -243,7 +243,7 @@
             <div class="item-container">
               <p>{{item.data.name}}</p>
               <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
-              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data' alt="">
             </div>
                 </ion-col>
               </ion-row>
@@ -260,10 +260,10 @@
 
             </ion-note>
           </ion-item>
-          <div class="items">
+          <div class="items" *ngIf='kwangaGear'>
             <div class="box-item" *ngFor='let item of kwangaGear' (click)="showHideSearchDetails(item)">
               <p id="item-label1">{{item.data.name}}</p>
-              <img class="bg" [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <img class="bg" [src]="item.data.pictureLink" *ngIf='item && item.data' alt="">
               <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
             </div>
 
@@ -532,7 +532,7 @@
             <ion-slide *ngFor='let item of kwangaGear'>
               <div class="slide-img" (click)="showHideSearchDetails(item)">
                 <p>{{item.data.name}}</p>
-                <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+                <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item && item.data.pictureLink' alt="">
                 <img class="slide-img" src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
               </div>
             </ion-slide>

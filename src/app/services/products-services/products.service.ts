@@ -1026,7 +1026,12 @@ return new Promise((resolve, reject)  => {
       }
       DJBeanies = data
       console.log(all_products)
-      resolve(all_products)
+      if(all_products.length === 0){
+        resolve(null)
+      }else if(all_products.length > 0){
+        resolve(all_products)
+      }
+
         })
       })
     })
