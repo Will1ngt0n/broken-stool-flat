@@ -8,13 +8,16 @@ const routes: Routes = [
   { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule) },
   { path: 'landing', loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule),  canActivate: [AuthGuard] },
   { path: 'sales-specials', loadChildren: () => import('./sales-specials/sales-specials.module').then( m => m.SalesSpecialsPageModule),  canActivate: [AuthGuard]  },
-  { path: 'kwanga-sub-categories', loadChildren: () => import('./kwanga-sub-categories/kwanga-sub-categories.module').then( m => m.KwangaSubCategoriesPageModule),  canActivate: [AuthGuard]  },{ path: 'summer-gear', loadChildren: () => import('./summer-gear/summer-gear.module').then( m => m.SummerGearPageModule) },
+  { path: 'kwanga-sub-categories', loadChildren: () => import('./kwanga-sub-categories/kwanga-sub-categories.module').then( m => m.KwangaSubCategoriesPageModule),  canActivate: [AuthGuard]  },
+  { path: 'summer-gear', loadChildren: () => import('./summer-gear/summer-gear.module').then( m => m.SummerGearPageModule),  canActivate: [AuthGuard]  },
   { path: 'winter-gear', loadChildren: () => import('./winter-gear/winter-gear.module').then( m => m.WinterGearPageModule),  canActivate: [AuthGuard]  },
   { path: 'items-list/:id', loadChildren: () => import('./items-list/items-list.module').then( m => m.ItemsListPageModule),  canActivate: [AuthGuard]  },
   { path: 'sign-in', loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule),  canActivate: [AuthGuard]  },
   { path: 'order-receipt', loadChildren: () => import('./order-receipt/order-receipt.module').then( m => m.OrderReceiptPageModule),  canActivate: [AuthGuard]  },
   { path: 'pending-order', loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule),  canActivate: [AuthGuard]  },
-  // { path: '**', redirectTo: 'login', pathMatch: 'full' }
+  { path: 'home', redirectTo: 'home/FAQs', pathMatch: 'full' },
+  { path: 'home/:**', redirectTo: 'home/FAQs', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 
 ];
 
