@@ -23,19 +23,19 @@ export class HomePage {
   smsSent
   confirmationResult = ''
   inputCode
-  searchArray : Array<any> = []
-  answeredQuestions : Array<any> = []
-  submitButton : boolean
-  questionsArray : Array<any> = []
+  searchArray: Array<any> = []
+  answeredQuestions: Array<any> = []
+  submitButton: boolean
+  questionsArray: Array<any> = []
   //emailPattern : string = "[a-zA-Z0-9-_.+#$!=%^&*/?]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9]+"
   emailPattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-  secondEmailPattern : string = "[a-zA-Z0-9-_.+#$!=%^&*/?]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9]+[.][a-zA-Z0-9]+"
+  secondEmailPattern: string = "[a-zA-Z0-9-_.+#$!=%^&*/?]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9]+[.][a-zA-Z0-9]+"
   //pattern = new RegExp(this.emailPattern || this.secondEmailPattern)
   name
   email
   question
   questionsForm
-  constructor(private loc : Location,public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService : QuestionsService, private activatedRoute : ActivatedRoute) {
+  constructor(private loc: Location, public authService: AuthService, public formBuilder: FormBuilder, public alertController: AlertController, private navCtrl: Router, private questionsService: QuestionsService, private activatedRoute: ActivatedRoute) {
     // let person = {}
     // person = {
     //   'hello': {
@@ -58,6 +58,7 @@ export class HomePage {
       console.log(result);
       //this.activeTab = result.id
       this.toggleTab(result.id)
+      this.changeTab(result.id)
     })
 
     this.questionsForm = formBuilder.group({
@@ -73,122 +74,122 @@ export class HomePage {
 
     this.checkAuthState()
   }
-  check(){
+  check() {
     // console.log(this.questionsForm.get('name').setValue('dfsfsdf'))
   }
-  submitQuestion(){
-    
+  submitQuestion() {
+
     this.email = this.questionsForm.get('email').value
     this.name = this.questionsForm.get('name').value
     this.question = this.questionsForm.get('question').value
-    let emailArray : Array<any> = []
+    let emailArray: Array<any> = []
     let index
-    let dotsCount : number = 0
-    for(let i in this.email){
+    let dotsCount: number = 0
+    for (let i in this.email) {
       emailArray.push(this.email[i])
     }
     index = emailArray.indexOf('@')
-    for(let i = index; i< emailArray.length; i++){
-      if(emailArray[i]=== '.'){
+    for (let i = index; i < emailArray.length; i++) {
+      if (emailArray[i] === '.') {
         dotsCount = dotsCount + 1
       }
     }
     console.log(dotsCount);
 
-    if(dotsCount > 2){
+    if (dotsCount > 2) {
       alert('Email format is incorrect')
 
-    }else if(dotsCount < 2){
+    } else if (dotsCount < 2) {
       this.questionsService.submitQuestion(this.name, this.email, this.question).then(result => {
-      if(result === 'success'){
-        console.log('submitted');
-        alert('Submitted')
-        this.email = ''
-        this.name = ''
-        this.question = ''
-        this.questionsForm.get('name').setValue('')
-        this.questionsForm.get('email').setValue('')
-        this.questionsForm.get('question').setValue('')
-      }
-    })
+        if (result === 'success') {
+          console.log('submitted');
+          alert('Submitted')
+          this.email = ''
+          this.name = ''
+          this.question = ''
+          this.questionsForm.get('name').setValue('')
+          this.questionsForm.get('email').setValue('')
+          this.questionsForm.get('question').setValue('')
+        }
+      })
     }
 
   }
-  updateAnswer(item, event){
+  updateAnswer(item, event) {
     let index = this.questionsArray.indexOf(item)
     console.log(index);
     this.questionsArray[index].data.answer = event.target.value
-    
+
   }
-  submitAnswer(item){
+  submitAnswer(item) {
     return this.questionsService.submitAnswer(item.docRef, item.data.question, item.data.name, item.data.email, item.data.answer).then(result => {
       console.log(result);
-      if(result === 'success'){
+      if (result === 'success') {
 
-      }else if(result === 'error'){
+      } else if (result === 'error') {
 
       }
-      
+
     })
   }
 
-  getQuestions(){
+  getQuestions() {
     return this.questionsService.retrieveQuestions().then(result => {
       this.questionsArray = result
       console.log(this.questionsArray);
-      
+
     })
   }
 
-  autoComplete(query){
-    if(query === ' ' || query === '  ' || query === '   '){
+  autoComplete(query) {
+    if (query === ' ' || query === '  ' || query === '   ') {
       this.usersInput = ''
     }
-    if(query !== '' || query !== ' '){
-      if(query === '*'){
-        
-      }else if(query !== '*'){
-        
+    if (query !== '' || query !== ' ') {
+      if (query === '*') {
+
+      } else if (query !== '*') {
+
       }
     }
   }
   // searchresult(query) {
- 
+
   //   // this.searchArray = []
   // }
   filterItems(query, array) {
     let queryFormatted = query.toLowerCase();
     // console.log(queryFormatted);
     // console.log(array);
-    if(queryFormatted !== '' && queryFormatted !== '*'){
+    if (queryFormatted !== '' && queryFormatted !== '*') {
       let answerResult = array.filter(item => item.data.answer.toLowerCase().indexOf(queryFormatted) >= 0)
       let questionResult = array.filter(item => item.data.question.toLowerCase().indexOf(queryFormatted) >= 0)
       console.log(answerResult);
       console.log(questionResult);
       let returnResult
-      let addToReturn : boolean
+      let addToReturn: boolean
       returnResult = answerResult
-      if(returnResult.length === 0){
+      if (returnResult.length === 0) {
         returnResult = questionResult
       }
-      for(let i in questionResult){
+      for (let i in questionResult) {
         addToReturn = false
-        for(let key in returnResult){
-          if(returnResult[key].docRef !== questionResult[i].docRef){
+        for (let key in returnResult) {
+          if (returnResult[key].docRef !== questionResult[i].docRef) {
             console.log(returnResult[key].docRef);
-            
+
             addToReturn = true
-          }else if(returnResult[key].docRef === questionResult[i].docRef){
+          } else if (returnResult[key].docRef === questionResult[i].docRef) {
             addToReturn = false
             break
           }
         }
-        if(addToReturn === true){
+        if (addToReturn === true) {
           returnResult.push(questionResult[i])
         }
       }
       console.log('ideas are flowing');
-      
+
       let addBrand: boolean
       let addCategory: boolean
       let addName: boolean
@@ -199,18 +200,18 @@ export class HomePage {
       //// console.log(categoryResult);
       // console.log(nameResult);
       this.searchArray = returnResult
-    }else if(queryFormatted === '*'){
-    this.searchArray = this.answeredQuestions
+    } else if (queryFormatted === '*') {
+      this.searchArray = this.answeredQuestions
     }
     console.log(this.searchArray);
-    
+
   }
 
-  getFAQs(){
+  getFAQs() {
     return this.questionsService.retrieveAnsweredQuestions().then(result => {
       this.answeredQuestions = result
       console.log(this.answeredQuestions);
-      
+
     })
   }
   googleSignIn() {
@@ -319,9 +320,16 @@ export class HomePage {
 
     await alert.present();
   }
-  changeTab(event) {
-    this.loc.go('/home/' + event)
-    this.toggleTab(event)
+  changeTab(tabName) {
+    if (tabName === 'FAQs' || tabName === 'Terms and Privacy Policy' || tabName === 'Disclaimer' || tabName === 'Payment Process' || tabName === 'About') {
+      this.loc.go('/home/' + tabName)
+      this.toggleTab(tabName)
+    }
+    else {
+      this.loc.go('/home/' + "FAQs")
+      this.toggleTab("FAQs")
+    }
+
   }
   // changeTabs(event){
   //   this.loc.replaceState('/' + event)
@@ -342,42 +350,42 @@ export class HomePage {
     this.toggleSideMenu()
     this.makeBold = "makeBold";
     // console.log(this.makeBold);
-    if(selectedTab === "FAQs"){
+    if (selectedTab === "FAQs") {
       document.getElementById("one").style.fontWeight = "bold"
       document.getElementById("two").style.fontWeight = "500"
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "500"
     }
-    else if(selectedTab === "Terms and Privacy Policy"){
+    else if (selectedTab === "Terms and Privacy Policy") {
       document.getElementById("one").style.fontWeight = "500"
       document.getElementById("two").style.fontWeight = "bold"
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "500"
     }
-    else if(selectedTab === "Payment Process"){
+    else if (selectedTab === "Payment Process") {
       document.getElementById("one").style.fontWeight = "500"
       document.getElementById("two").style.fontWeight = "500"
       document.getElementById("three").style.fontWeight = "bold"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "500"
     }
-    else if(selectedTab === "About Company"){
+    else if (selectedTab === "About Company") {
       document.getElementById("one").style.fontWeight = "500"
       document.getElementById("two").style.fontWeight = "500"
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "bold"
       document.getElementById("five").style.fontWeight = "500"
     }
-    else if(selectedTab === "Disclaimer"){
+    else if (selectedTab === "Disclaimer") {
       document.getElementById("one").style.fontWeight = "500 "
       document.getElementById("two").style.fontWeight = "500"
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "bold"
     }
-    
+
 
   }
   usersInput: string;
@@ -385,7 +393,7 @@ export class HomePage {
     // console.log(usersinput);
     console.log(query);
 
-    
+
     this.filterItems(query, this.answeredQuestions)
     console.log(this.answeredQuestions);
     this.changingValue()
@@ -401,14 +409,14 @@ export class HomePage {
           return this.authService.getProfile(result['uid']).then(result => {
             console.log(result);
             this.admin = result
-            if(result === true){
+            if (result === true) {
               this.getQuestions()
               this.getFAQs()
             }
           })
           // this.navCtrl.navigate(['/landing'])
         }
-      }else if(result === null){
+      } else if (result === null) {
         this.getFAQs()
       }
     })
@@ -443,17 +451,17 @@ export class HomePage {
     }
   }
 
-  goAway(){
+  goAway() {
     //  Removes the search results
     //  alert("clicked")
-    if(document.getElementById("userSearchResults")){
+    if (document.getElementById("userSearchResults")) {
       document.getElementById("userSearchResults").style.display = "none"
     }
 
   }
-  changingValue(){
+  changingValue() {
     // alert("Changing")
-    if(document.getElementById("userSearchResults")){
+    if (document.getElementById("userSearchResults")) {
       document.getElementById("userSearchResults").style.display = "block"
     }
 
@@ -477,101 +485,101 @@ export class HomePage {
       this.showQA = false;
     }, 299);
   }
-  ngOnInit(){
+  ngOnInit() {
     this.questionsSnap()
     this.answersSnap()
     this.writeToUpdates()
   }
-  questionsSnap(){
+  questionsSnap() {
     firebase.firestore().collection('FAQs').onSnapshot(result => {
       console.log(result)
-      let questions : Array<any> = []
-      let addItem : boolean
+      let questions: Array<any> = []
+      let addItem: boolean
       let docRef
       let data
-      for(let key in result.docChanges()){
+      for (let key in result.docChanges()) {
         let change = result.docChanges()[key]
-        if(change.type === 'removed'){
+        if (change.type === 'removed') {
           let id = change.doc.id
           console.log(id);
           console.log('removed');
-          
-          for(let j in this.questionsArray){
-            if(id === this.questionsArray[j].docRef){
+
+          for (let j in this.questionsArray) {
+            if (id === this.questionsArray[j].docRef) {
               this.questionsArray.splice(Number(j), 1)
             }
           }
-        }else if(change.type === 'added'){
+        } else if (change.type === 'added') {
           console.log('added');
-          
+
           docRef = change.doc.id
           data = change.doc.data()
-          questions.push({data: data, docRef: docRef})
+          questions.push({ data: data, docRef: docRef })
           console.log(questions);
-          
+
         }
       }
-      for(let key in questions){
-        if(this.questionsArray.length === 0){
+      for (let key in questions) {
+        if (this.questionsArray.length === 0) {
           addItem = true
         }
-        for(let j in this.questionsArray){
-          if(questions[key].docRef === this.questionsArray[j].docRef){
+        for (let j in this.questionsArray) {
+          if (questions[key].docRef === this.questionsArray[j].docRef) {
             addItem = false
             break
-          }else if(questions[key].docRef !== this.questionsArray[j].docRef){
+          } else if (questions[key].docRef !== this.questionsArray[j].docRef) {
             addItem = true
           }
         }
-        if(addItem === true){
+        if (addItem === true) {
           this.questionsArray.push(questions[key])
         }
       }
       console.log(this.questionsArray);
-      
+
     })
   }
-  answersSnap(){
+  answersSnap() {
     firebase.firestore().collection('AnsweredQuestions').onSnapshot(result => {
       console.log(result);
-      
-      let answers : Array<any> = []
-      let docRef 
+
+      let answers: Array<any> = []
+      let docRef
       let data
-      let addItem : boolean
-      for(let key in result.docChanges()){
+      let addItem: boolean
+      for (let key in result.docChanges()) {
         let change = result.docChanges()[key]
-        if(change.type === 'added'){
+        if (change.type === 'added') {
           docRef = change.doc.id
           data = change.doc.data()
-          answers.push({docRef: docRef, data: data})
+          answers.push({ docRef: docRef, data: data })
           console.log('added');
-          
-        }else if(change.type === 'modified'){
+
+        } else if (change.type === 'modified') {
           console.log('modified');
-          
+
         }
       }
       console.log(answers);
       console.log(this.answeredQuestions);
-      
-      
-      for(let key in answers){
-        for(let j in this.answeredQuestions){
-          if(answers[key].docRef === this.answeredQuestions[j]){
+
+
+      for (let key in answers) {
+        for (let j in this.answeredQuestions) {
+          if (answers[key].docRef === this.answeredQuestions[j]) {
             addItem = false
             break
-          }else if(answers[key].docRef !== this.answeredQuestions[j]){
+          } else if (answers[key].docRef !== this.answeredQuestions[j]) {
             addItem = true
           }
         }
-        if(addItem === true){
+        if (addItem === true) {
           this.answeredQuestions.push(answers[key])
         }
       }
     })
   }
-  writeToUpdates(){
+  writeToUpdates() {
     firebase.firestore().collection('Updates').add({
       timestamp: new Date().getTime()
     })

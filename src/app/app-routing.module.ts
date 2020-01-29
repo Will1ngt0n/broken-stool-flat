@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'order-receipt', loadChildren: () => import('./order-receipt/order-receipt.module').then( m => m.OrderReceiptPageModule),  canActivate: [AuthGuard]  },
   { path: 'pending-order', loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule),  canActivate: [AuthGuard]  },
   { path: 'home', redirectTo: 'home/FAQs', pathMatch: 'full' },
+  { path: 'home/:**', redirectTo: 'home/FAQs', pathMatch: 'full' },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 
 ];
