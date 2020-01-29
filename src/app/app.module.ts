@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 //import { Location } from '@angular/common'
 import * as firebase from 'firebase'
-// import { AuthGuard } from './services/auth-guard/auth.guard';
 import {NgxWebstorageModule} from 'ngx-webstorage';
 // var firebaseConfig = {
 //   apiKey: "AIzaSyDOthq8-7ipC4rQYCh_R8_oC9fL0F0Oz5g",

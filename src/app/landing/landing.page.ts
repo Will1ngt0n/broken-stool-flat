@@ -1202,79 +1202,108 @@ export class LandingPage implements OnInit {
     //Running pending orders snap
     return firebase.firestore().collection('Order').onSnapshot(result => {
       let pendingOrder : Array<any> = []
+      let pendingOrderModified : object = {}
       let add : boolean
      // console.log(result);
-      
-      for(let key in result.docChanges()){
-        let change = result.docChanges()[key]
-        if(change.type === 'added'){
-          console.log(change);
-          let refNo = change.doc.id
-          let data = change.doc.data()
-          let userID = data.userID
-          console.log(refNo);
-          console.log(data);
-          console.log(userID);
-          
-          pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
-          this.loadUserName(userID)
-        }
-        if(change.type === 'modified' ){
-          console.log(change);
-          let pendingOrderModified : object = {}
-          let refNo = change.doc.id
-          let data = change.doc.data()
-          let userID = data.userID
-          console.log(userID);
-          
-          pendingOrderModified = {refNo : refNo, details : data, noOfItems: data.product.length}
-        }
-        if(change.type === 'removed'){
-          console.log(change);
-          let pendingOrderRemoved : object = {}
-          let refNo = change.doc.id
-          let data = change.doc.data()
-          let userID = data.userID
-          console.log(refNo);
-          console.log(data);
-          console.log(userID);
-          pendingOrderRemoved = {refNo : refNo, details : data, noOfItems: data.product.length}
-          for(let key in this.pendingOrders){
-            if(this.pendingOrders[key].refNo === refNo){
-              let index = Number(key)
-              this.pendingOrders.splice(index, 1)
-            }else if(this.pendingOrders[key].refNo !== refNo){
-              //add = true
+      if(result.docChanges().length > 0){
+        for(let key in result.docChanges()){
+          let change = result.docChanges()[key]
+          // if(change.type === 'added'){
+          //   console.log(change);
+          //   let refNo = change.doc.id
+          //   let data = change.doc.data()
+          //   let userID = data.userID
+          //   console.log(refNo);
+          //   console.log(data);
+          //   console.log(userID);
+            
+          //   //pendingOrder.push({refNo : refNo, details : data, noOfItems: data.product.length})
+          //   //this.loadUserName(userID)
+          // }
+          if(change.type === 'modified' ){
+            console.log(change);
+  
+            let refNo = change.doc.id
+            let data = change.doc.data()
+            let userID = data.userID
+            console.log(userID);
+            console.log(data);
+            console.log(userID);
+            let noOfItems : number = 0
+            for(let key in data.product){
+              noOfItems = noOfItems + data.product[key].quantity
+            }
+            console.log(noOfItems);
+            
+            pendingOrderModified = {refNo : refNo, details : data, noOfItems: noOfItems}
+            console.log(pendingOrderModified);
+            console.log(this.pendingOrders.length);
+            
+            // for(let key in this.pendingOrders){
+              
+            // }
+            // if(this.pendingOrders.length  === 0){
+              
+            //   this.pendingOrders.push(pendingOrderModified)
+            //   this.loadUserName(userID)
+            //   console.log(this.pendingOrders);
+              
+            // }
+            if(this.pendingOrders.length === 0){
+              this.pendingOrders.push(pendingOrderModified)
+              this.pendingOrdersLength = this.pendingOrders.length
+              this.loadUserName(userID)
+              return
+            }else if(this.pendingOrders.length > 0){
+                add = false
+                for(let key in this.pendingOrders){
+                  if(this.pendingOrders[key].refNo === pendingOrderModified['refNo']){
+                    add = false
+                    break
+                  }else if(this.pendingOrders[key].refNo !== pendingOrderModified['refNo']){
+                    add = true
+                    console.log(this.pendingOrders[key], pendingOrderModified);
+                    //console.log(pendingOrder[i]);
+                  }
+                }
+                if(add === true){
+                  this.pendingOrders.unshift(pendingOrderModified)
+                  this.loadUserName(userID)
+                  this.pendingOrdersLength = this.pendingOrders.length
+                }
             }
           }
-          let index = this.pendingOrders.indexOf(pendingOrder)
-          this.pendingOrdersLength = this.pendingOrders.length
-          console.log(index);
-        }
-      }
-
-        if(this.pendingOrders.length === 0){
-          this.pendingOrders = pendingOrder
-          return
-        }else if(this.pendingOrders.length > 0){
-          for(let i in pendingOrder){
-            add = false
+          if(change.type === 'removed'){
+            console.log(change);
+            let pendingOrderRemoved : object = {}
+            let refNo = change.doc.id
+            let data = change.doc.data()
+            let userID = data.userID
+            console.log(refNo);
+            console.log(data);
+            console.log(userID);
+            let noOfItems : number = 0
+            for(let key in data.product){
+              noOfItems = noOfItems + data.product[key].quantity
+            }
+            pendingOrderRemoved = {refNo : refNo, details : data, noOfItems: noOfItems}
             for(let key in this.pendingOrders){
-              if(this.pendingOrders[key].refNo === pendingOrder[i].refNo){
-                add = false
-                break
-              }else if(this.pendingOrders[key].refNo !== pendingOrder[i].refNo){
-                add = true
-                console.log(this.pendingOrders[key], pendingOrder);
-                //console.log(pendingOrder[i]);
+              if(this.pendingOrders[key].refNo === refNo){
+                let index = Number(key)
+                this.pendingOrders.splice(index, 1)
+              }else if(this.pendingOrders[key].refNo !== refNo){
+                //add = true
               }
             }
-            if(add === true){
-              this.pendingOrders.unshift(pendingOrder[i])
-              this.pendingOrdersLength = this.pendingOrders.length
-            }
+            let index = this.pendingOrders.indexOf(pendingOrder)
+            this.pendingOrdersLength = this.pendingOrders.length
+            console.log(index);
           }
         }
+  
+
+      }
+ 
 
         console.log(this.pendingOrders);
       // }
@@ -1289,12 +1318,18 @@ export class LandingPage implements OnInit {
       //this.pendingOrders = []
       let array = result
       if (result !== null) {
-        // for (let key in result) {
-        //   this.pendingOrders.push(result[key])
 
-        //   console.log(this.pendingOrders);
-        // }
+
+        for(let i in result){
+          let noOfItems : number = 0
+          for(let key in result[i]['details'].product){
+            noOfItems = noOfItems + Number(result[i]['details'].product[key].quantity)
+          }
+          result[i].noOfItems =noOfItems
+        }
+
         this.pendingOrders = result
+        console.log(result);
         this.pendingOrdersLength = this.pendingOrders.length
         for (let key in this.pendingOrders) {
           this.loadUserName(this.pendingOrders[key].details.userID)
@@ -1334,72 +1369,32 @@ export class LandingPage implements OnInit {
       let totalPrice : Number = 0
       let grandTotal : Number = 0
       let numberOfItems : Number = 0;
-      for(let key in result.docChanges()){
-        let change = result.docChanges()[key]
-        //console.log(change);
-        addHistory = false
-        if(change.type === 'added'){
-          let productID = change.doc.id
-          let docData = change.doc.data()
-          refNo = change.doc.id
-          data = change.doc.data()
-            closedOrder.push({refNo : refNo, details : data})
-            if(closedOrder){
-
-
-          }
-        }
-      }
-      if(this.history.length === 0){
-        for(let i in closedOrder){
-          totalPrice = 0
-          numberOfItems = 0
-          grandTotal = 0
-          for(let j in closedOrder[i].details.orders){
-            //console.log(closedOrder[i].details);
-            totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
-            numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
-            if(closedOrder[i].details.deliveryType === 'Delivery'){
-              grandTotal = Number(totalPrice) + 100
-            }else if(closedOrder[i].details.deliveryType === 'Collection'){
-              grandTotal = Number(totalPrice)
-            }
-            //console.log(totalPrice);
-            //console.log(numberOfItems);
-          }
-          closedOrder[i].details.totalPrice = totalPrice
-          closedOrder[i].details.numberOfItems = numberOfItems
-          closedOrder[i].details.grandTotal = grandTotal
-         // console.log(grandTotal);
-      ////
-
-      this.history.unshift(closedOrder[i])
-      this.orderHistoryLength = this.history.length
-        }
-        //this.history = closedOrder
-        return
-      }else if(this.history.length > 0){
-        for(let i in closedOrder){
+      if(result.docChanges().length !== 0){
+        for(let key in result.docChanges()){
+          let change = result.docChanges()[key]
+          //console.log(change);
           addHistory = false
-          for(let key in this.history){
-            if(this.history[key].refNo !== closedOrder[i].refNo){
-              addHistory = true
-            }else if(this.history[key].refNo === closedOrder[i].refNo){
-              addHistory = false
-              break
+          if(change.type === 'added'){
+            let productID = change.doc.id
+            let docData = change.doc.data()
+            refNo = change.doc.id
+            data = change.doc.data()
+              closedOrder.push({refNo : refNo, details : data})
+              if(closedOrder){
+  
+  
             }
           }
-          if(addHistory === true){
-  
-            
-            
+        }
+        if(this.history.length === 0){
+          for(let i in closedOrder){
             totalPrice = 0
             numberOfItems = 0
             grandTotal = 0
             for(let j in closedOrder[i].details.orders){
               //console.log(closedOrder[i].details);
-              totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
-              numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
+              totalPrice = +totalPrice + +closedOrder[i].details.orders[j].cost * +closedOrder[i].details.orders[j].quantity
+              numberOfItems = +numberOfItems + +closedOrder[i].details.orders[j].quantity
               if(closedOrder[i].details.deliveryType === 'Delivery'){
                 grandTotal = Number(totalPrice) + 100
               }else if(closedOrder[i].details.deliveryType === 'Collection'){
@@ -1416,12 +1411,55 @@ export class LandingPage implements OnInit {
   
         this.history.unshift(closedOrder[i])
         this.orderHistoryLength = this.history.length
-        }else if(addHistory === false){
+          }
+          //this.history = closedOrder
+          return
+        }else if(this.history.length > 0){
+          for(let i in closedOrder){
+            addHistory = false
+            for(let key in this.history){
+              if(this.history[key].refNo !== closedOrder[i].refNo){
+                addHistory = true
+              }else if(this.history[key].refNo === closedOrder[i].refNo){
+                addHistory = false
+                break
+              }
+            }
+            if(addHistory === true){
     
-        }
-  
+              
+              
+              totalPrice = 0
+              numberOfItems = 0
+              grandTotal = 0
+              for(let j in closedOrder[i].details.orders){
+                //console.log(closedOrder[i].details);
+                totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
+                numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
+                if(closedOrder[i].details.deliveryType === 'Delivery'){
+                  grandTotal = Number(totalPrice) + 100
+                }else if(closedOrder[i].details.deliveryType === 'Collection'){
+                  grandTotal = Number(totalPrice)
+                }
+                //console.log(totalPrice);
+                //console.log(numberOfItems);
+              }
+              closedOrder[i].details.totalPrice = totalPrice
+              closedOrder[i].details.numberOfItems = numberOfItems
+              closedOrder[i].details.grandTotal = grandTotal
+             // console.log(grandTotal);
+          ////
+    
+          this.history.unshift(closedOrder[i])
+          this.orderHistoryLength = this.history.length
+          }else if(addHistory === false){
+      
+          }
+    
+          }
         }
       }
+
 
 
     })
@@ -1433,6 +1471,8 @@ export class LandingPage implements OnInit {
       if(result !== null){
         this.history = result
         this.orderHistoryLength = this.history.length
+        console.log(this.orderHistoryLength);
+        
         let totalPrice : Number = 0
         let numberOfItems : Number = 0;
         let  grandTotal : Number = 0

@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, ɵConsole, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../services/products-services/products.service';
 import * as firebase from 'firebase'
 import * as moment from 'moment'
 import { AuthService } from '../services/auth-services/auth.service';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
-import { LoginPage } from '../login/login.page';
-import { log } from 'util';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Location } from '@angular/common'
+import { RouteService } from '../services/route-services/route.service';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -104,7 +104,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(public loadingCtrl: LoadingController, private navCtrl:NavController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+  constructor(private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     console.log(this.department);
     //this.productsService.getCategories()
     this.loadDankieJesuItems()
@@ -124,7 +124,6 @@ export class ItemsListPage implements OnInit, OnDestroy {
     //   console.log(date);
 
     // }
-
     this.promoButtonEnabled = false
     this.orderItems()
 
@@ -345,7 +344,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
   //   let navOptions = {
   //     queryParams : {query : query}
   //   }
-  //   //this.navCtrl.navigateForward(['sales-specials'], navOptions)    
+  
   // }
 
   // viewMore(query){
@@ -588,40 +587,82 @@ brand
       
     }
     this.promoUdpate = ''
-    //this.dismissPromo()
+    // this.dismissPromo()
     //this.dismissList()
-
-    return this.authService.checkingAuthState().then(result => {
-      if (result == null) {
-        this.route.navigate(['/login'])
-      } else {
-        this.activatedRoute.queryParams.subscribe(result => {
-          this.today = moment(new Date()).format('YYYY-MM-DD')
-          console.log(this.today);
-          
-          console.log(result);
-          this.currentCategory = result.category
-          let brand = result.brand
+    this.activatedRoute.params.subscribe(result => {
+      console.log(result.id);
+      let parameters = [
+        {category: 'Formal', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Tradtional', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Smart Casual', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Sports', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Vests', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Caps', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Bucket Hats', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Shorts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Crop Tops', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'T-Shirts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Bags', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Sweaters', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Hoodies', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Track Suits', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Beanies', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+      ]
+      return this.routeService.readParameters().then((result : object)=> {
+        console.log(result);
+          this.currentCategory = result['category']
+          let brand = result['brand']
           this.brand = brand
-          this.title = result.title
+          this.title = result['title']
           console.log(this.title)
-          this.link = result.link
+          this.link = String(result['link'])
+          console.log(this.currentCategory);
+          console.log(this.brand);
+          console.log(this.title);
           console.log(this.link);
-
-
-          console.log(brand);
-          console.log(this.currentCategory);
-          console.log(this.currentCategory);
+          
           this.loadCategoryItems(this.currentCategory, brand)
           this.loadCategoryItemsSnap(this.currentCategory, brand)
-
-          // this.loadPictures().then(result => {
-          //   console.log(result);
-
-          // })
-        })
-      }
+          
+          
+      })
     })
+        // this.activatedRoute.queryParams.subscribe(result => {
+        //   this.today = moment(new Date()).format('YYYY-MM-DD')
+        //   console.log(this.today);
+          
+        //   console.log(result.category);
+          
+        //   // if(result.category === 'Vests' || result.category === 'Caps' || result.category === 'Bucket Hats' || result.category === 'Shorts' || result.category === 'Crop Tops' || result.category === 'T-Shirts' || result.category === 'Bags'
+        //   // || result.category === 'Sweaters' || result.category === 'Hoodies' || result.category === 'Track Suits' || result.category === 'Beanies' || result.category === 'Formal' || result.category === 'Traditional' || result.category === 'Smart Casual' || result.category === 'Sports'){
+
+        //   // }else{
+        //   //   console.log('Not known');
+        //   //   this.route.navigate(['/landing'])
+        //   // }
+
+        //   console.log(result);
+        //   this.currentCategory = result.category
+        //   let brand = result.brand
+        //   this.brand = brand
+        //   this.title = result.title
+        //   console.log(this.title)
+        //   this.link = result.link
+        //   console.log(this.link);
+
+
+        //   console.log(brand);
+        //   console.log(this.currentCategory);
+        //   console.log(this.currentCategory);
+        //   this.loadCategoryItems(this.currentCategory, brand)
+        //   this.loadCategoryItemsSnap(this.currentCategory, brand)
+
+        //   // this.loadPictures().then(result => {
+        //   //   console.log(result);
+
+        //   // })
+        // })
+
 
   }
   // loadKwangaItems(){
@@ -656,13 +697,32 @@ brand
     });
   }
   back() {
-    this.route.navigate(['/landing'])
+    console.log('you clicked wrong');
+    
+    this.route.navigate(['/sales-specials'])
   }
   navigate() {
+
+    alert("Alert")
+    console.log(String(this.link));
+    console.log(this.link);
     this.route.navigate(['/' + this.link])
+    //this.route.navigate(['/' + this.link])
+    //this.route.navigateByUrl('/' + this.link)
 
 
-
+  }
+  toSummerGear(){
+    alert(this.title)
+    this.route.navigate(['/summer-gear'])
+  }
+  toWinterGear(){
+    alert(this.title)
+    this.route.navigate(['/winter-gear'])
+  }
+  toKwanga(){
+    alert(this.title)
+    // this.route.navigate(['/kwanga-sub-categories'])    
   }
   // loadItems(category, brand){
   //   //console.log(1234);
@@ -1065,7 +1125,7 @@ brand
   }
   ngOnDestroy(){
     console.log('destroying page');
-    this.navCtrl.pop()
+
   }
   checkColorUpdate(event, color){
     let checkbox = event.target['name']

@@ -1,0 +1,7 @@
+<ion-content>
+    <div>
+        <h2>Error</h2>
+        <p>404</p>
+        <p>Page not found</p>
+    </div>
+</ion-content>

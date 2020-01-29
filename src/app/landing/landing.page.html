@@ -107,7 +107,7 @@
             <h5> Order History ({{orderHistoryLength}})</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
-          <div class="items-list">
+          <div class="items-list" *ngIf='history'>
             <ion-card *ngFor='let item of history' class="item-card-list" (click)='viewOrderHistory(item)'>
               <p class="floating" *ngIf="item.details.status === 'cancelled'">Cancelled</p>
               <p class="floating" *ngIf="item.details.status !== 'cancelled'">{{item.details.status}}</p>
@@ -127,7 +127,7 @@
           <div class="items-list">
             <ion-card class="item-card-list " *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
               <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
-              <p *ngIf="!item.details.name"><b>Please wait...</b></p>
+              <p *ngIf="item && !item.details.name"><b>Please wait...</b></p>
               <p><b>{{item.details.name}}</b></p>
               <p *ngIf="!item.details.totalPrice">Loading</p>
               <p>R {{item.details.totalPrice}}</p>
@@ -143,7 +143,7 @@
             <h5>Inventory ({{inventoryLength}})</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
-          <div class="items-list">
+          <div class="items-list" *ngIf='allProducts'>
             <ion-card *ngFor='let item of allProducts'>
               <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
               <p><b>{{item.data.name}}</b></p>
@@ -379,7 +379,7 @@
             <h5>Pending Orders</h5>
           </div>
           <div *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
-            <div class="myItems">
+            <div class="myItems" *ngIf='pendingOrders'>
               <p><b>{{item.details.name}}</b></p>
               <p>R {{item.details.totalPrice}}</p>
               <p>REF: {{item.refNo}}</p>
