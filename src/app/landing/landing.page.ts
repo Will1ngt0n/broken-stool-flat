@@ -1350,8 +1350,35 @@ export class LandingPage implements OnInit {
           }
         }
       }
+      if(this.history.length === 0){
+        for(let i in closedOrder){
+          totalPrice = 0
+          numberOfItems = 0
+          grandTotal = 0
+          for(let j in closedOrder[i].details.orders){
+            //console.log(closedOrder[i].details);
+            totalPrice = +totalPrice + +closedOrder[i].details.orders[i].cost * +closedOrder[i].details.orders[i].quantity
+            numberOfItems = +numberOfItems + +closedOrder[i].details.orders[i].quantity
+            if(closedOrder[i].details.deliveryType === 'Delivery'){
+              grandTotal = Number(totalPrice) + 100
+            }else if(closedOrder[i].details.deliveryType === 'Collection'){
+              grandTotal = Number(totalPrice)
+            }
+            //console.log(totalPrice);
+            //console.log(numberOfItems);
+          }
+          closedOrder[i].details.totalPrice = totalPrice
+          closedOrder[i].details.numberOfItems = numberOfItems
+          closedOrder[i].details.grandTotal = grandTotal
+         // console.log(grandTotal);
+      ////
 
-      if(this.history.length > 0){
+      this.history.unshift(closedOrder[i])
+      this.orderHistoryLength = this.history.length
+        }
+        //this.history = closedOrder
+        return
+      }else if(this.history.length > 0){
         for(let i in closedOrder){
           addHistory = false
           for(let key in this.history){

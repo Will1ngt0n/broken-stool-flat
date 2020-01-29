@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'sign-in', loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule),  canActivate: [AuthGuard]  },
   { path: 'order-receipt', loadChildren: () => import('./order-receipt/order-receipt.module').then( m => m.OrderReceiptPageModule),  canActivate: [AuthGuard]  },
   { path: 'pending-order', loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule),  canActivate: [AuthGuard]  },
-  // { path: '**', redirectTo: 'login', pathMatch: 'full' }
+  { path: 'home', redirectTo: 'home/FAQs', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 
 ];
 
