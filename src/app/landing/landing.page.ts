@@ -174,19 +174,10 @@ export class LandingPage implements OnInit {
 
     }
 
-    // for (let key = 0; key < this.status.length; key++) {
-    //   this.getPendingOrders(this.status[key])
-    //   if (key === this.status.length - 1) {
-    //     this.orderItems()
-    //   }
-    // }
-
-
     this.getReadyOrders()
     this.getOrderHistory()
     this.getInventory()
     this.loader()
-    this.writeToUpdates()
   }
   signOutPopup() {
     this.presentLogoutConfirmAlert()
@@ -849,7 +840,7 @@ export class LandingPage implements OnInit {
   addProducts(numberOfProducts) {
     let brand = this.department
     let category = this.selectedCategory
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then((result : any) => {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts, this.newProductCode).then((result : any) => {
       console.log(result);
       
       if(result === 'success'){
@@ -878,6 +869,7 @@ export class LandingPage implements OnInit {
     this.color = []
     this.picture = undefined
     this.myUpload = "../../assets/imgs/default.png"
+    this.newProductCode = ''
     //document.getElementById('accessory')['checked'] = false;
     //document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
@@ -1130,7 +1122,7 @@ export class LandingPage implements OnInit {
   }
   sortProducts(){
     this.allProducts.sort( (a,b) => {
-      let data = (a.data.name) - (b.data.name)
+      //let data = (a.data.name) - (b.data.name)
       let c : any = new Date(a.data.dateAdded)
       let d : any = new Date(b.data.dateAdded)
       //console.log(data);
@@ -4977,10 +4969,84 @@ export class LandingPage implements OnInit {
     this.sortSummerProducts()
     this.sortWinterProducts()
   }
-
-  writeToUpdates(){
-    firebase.firestore().collection('Updates').add({
-      timestamp: new Date().getTime()
+  newProductNameMatch
+ private cutNameArray(checkVal){
+    return new Promise( (resolve, reject) => {
+      let array = checkVal.reverse()
+        while(array[0] === ' '){
+          array.splice(0, 1)
+          console.log(array);
+      }
+      resolve (array.reverse())
     })
+  }
+  findMatch(event){
+    console.log(this.itemName);
+    
+    let val = event.target.value.toLowerCase()
+    let match 
+    if(val !== '' && val !== '*'){
+      let checkVal : Array<string> = val.split('')
+      //console.log(checkVal);
+      console.log(checkVal);
+      
+      this.cutNameArray(checkVal).then((result : Array<any>) => {
+        console.log(result);
+        let joined = result.join('')
+        console.log(joined.length);
+  
+        for(let key in this.allProducts){
+          if(joined === this.allProducts[key].data.name.toLowerCase()){
+            //console.log('joined');
+            //console.log('match');
+            this.newProductNameMatch = true
+            console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+            break
+          }else{
+            //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+            
+            //console.log('no match');
+            
+          }
+        }
+      })
+
+    }
+    console.log(match);
+    
+  }
+  
+  searchInventoryVal : Array<any> = []
+  searchInventory(event){
+    let val = event.target.value.toLowerCase()
+    console.log(val);
+    if(val !== '' && val !== '*'){
+      this.searchInventoryVal = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+    }else{
+      this.searchInventoryVal = []
+    }
+    console.log(this.searchInventoryVal);
+    
+  }
+  newProductCode : string = ' '
+  autoGenerateCode(){
+    let alpha_A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    let alpha_a = 'abcdefghijlmnopqrstuvwxyz'
+    let first2 = (this.department.split('')[0]) + (this.department.split('')[1])
+    let first3 = (this.selectedCategory.split('')[0] + this.selectedCategory.split('')[1] + this.selectedCategory.split('')[2])
+    let second2 = (this.itemName.split('')[0] + this.itemName.split('')[1])
+    let date = new Date()
+    let first4 = (date.getMonth() + date.getDay())
+    let date2 =    moment(moment.utc(new Date().getTime())).format('X')
+    console.log(date2);
+    this.newProductCode = date2
+    console.log(first2);
+    console.log(first3);
+    console.log(second2);
+    
+    
+    
+    console.log(first4);
+    
   }
 }

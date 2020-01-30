@@ -12,14 +12,13 @@ export class ProductsService {
   constructor(public loadingCtrl: LoadingController) {
     this.products = []
   }
-  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
+  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts, productCode){
     let object_result 
 return new Promise((resolve, reject)  => {
       firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
         quantity: 1,
         color: color,
-        // brand: department,
-        // category: selectedCategory,
+        productCode: productCode,
         pictureLink: 'none',
         price : price,
         size : size,
