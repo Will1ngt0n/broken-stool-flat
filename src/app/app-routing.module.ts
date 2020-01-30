@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'summer-gear', redirectTo: 'summer-gear', pathMatch: 'full' },
   { path: 'winter-gear', redirectTo: 'winter-gear', pathMatch: 'full' },
   { path: 'home/:id', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),},
-  { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)},
+  { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule), canActivate : [ReverseAuthGuardGuard]},
   { path: 'landing', loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule),  canActivate: [AuthGuard] },
   { path: 'sales-specials', loadChildren: () => import('./sales-specials/sales-specials.module').then( m => m.SalesSpecialsPageModule),  canActivate: [AuthGuard]  },
   { path: 'kwanga-sub-categories', loadChildren: () => import('./kwanga-sub-categories/kwanga-sub-categories.module').then( m => m.KwangaSubCategoriesPageModule),  canActivate: [AuthGuard]  },

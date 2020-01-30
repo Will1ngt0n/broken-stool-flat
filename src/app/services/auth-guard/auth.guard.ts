@@ -16,14 +16,14 @@ export class AuthGuard implements CanActivate {
     if(this.authService.checkingAuthStateBoolean()){
       console.log(true);
       return true
-      
     }else{
       console.log(false);
       this.router.navigate(['home/FAQs'])
       return false
-    }  
-  }
+    }
 
+  
+  }
 
 
 

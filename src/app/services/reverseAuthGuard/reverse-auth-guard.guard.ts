@@ -11,12 +11,13 @@ export class ReverseAuthGuardGuard implements CanActivate {
   }
   canActivate() : boolean{
     if(this.authService.checkingAuthStateBoolean()){
-      console.log(true);
+      console.log(false);
+      this.router.navigate(['landing'])
       return false
       
     }else{
-      console.log(false);
-      this.router.navigate(['landing'])
+      console.log(true);
+
       return true
     }
   }
