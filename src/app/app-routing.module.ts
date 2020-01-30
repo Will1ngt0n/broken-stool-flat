@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth-guard/auth.guard';
+import { ReverseAuthGuardGuard } from './services/reverseAuthGuard/reverse-auth-guard.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'landing', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'sign-in', redirectTo: 'login', pathMatch: 'full' },
   { path: 'kwanga-sub-categories', redirectTo: 'kwanga-sub-categories', pathMatch: 'full' },
   { path: 'summer-gear', redirectTo: 'summer-gear', pathMatch: 'full' },
   { path: 'winter-gear', redirectTo: 'winter-gear', pathMatch: 'full' },
   { path: 'home/:id', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),},
-  { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule) },
+  { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)},
   { path: 'landing', loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule),  canActivate: [AuthGuard] },
   { path: 'sales-specials', loadChildren: () => import('./sales-specials/sales-specials.module').then( m => m.SalesSpecialsPageModule),  canActivate: [AuthGuard]  },
   { path: 'kwanga-sub-categories', loadChildren: () => import('./kwanga-sub-categories/kwanga-sub-categories.module').then( m => m.KwangaSubCategoriesPageModule),  canActivate: [AuthGuard]  },
@@ -21,7 +22,7 @@ const routes: Routes = [
   { path: 'pending-order', loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule),  canActivate: [AuthGuard]  },
   { path: 'home', redirectTo: 'home/FAQs', pathMatch: 'full' },
 
-  { path: '**', redirectTo: 'login', pathMatch: 'full' }
+  { path: '**', redirectTo: 'home/FAQs', pathMatch: 'full' }
 
 ];
 

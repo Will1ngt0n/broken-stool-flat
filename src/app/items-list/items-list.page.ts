@@ -591,11 +591,14 @@ brand
     //this.dismissList()
     this.activatedRoute.params.subscribe(result => {
       console.log(result.id);
+      let para = result.id
+      let exists : boolean
+      let reroute : boolean
       let parameters = [
-        {category: 'Formal', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Tradtional', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Smart Casual', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Sports', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Formal', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+        {category: 'Tradtional', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+        {category: 'Smart Casual', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+        {category: 'Sports', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
         {category: 'Vests', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
         {category: 'Caps', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
         {category: 'Bucket Hats', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
@@ -603,11 +606,21 @@ brand
         {category: 'Crop Tops', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
         {category: 'T-Shirts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
         {category: 'Bags', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Sweaters', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Hoodies', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Track Suits', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-        {category: 'Beanies', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+        {category: 'Sweaters', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+        {category: 'Hoodies', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+        {category: 'Track Suits', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+        {category: 'Beanies', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
       ]
+      for(let key in parameters){
+        if(parameters[key].category === para){
+          console.log('I do exist, yippee');
+          reroute = false
+          break
+        }else{
+          reroute = true
+        }
+      }
+
       return this.routeService.readParameters().then((result : object)=> {
         console.log(result);
           this.currentCategory = result['category']
@@ -620,7 +633,10 @@ brand
           console.log(this.brand);
           console.log(this.title);
           console.log(this.link);
-          
+          if(reroute === true){
+            console.log('apparently i dont exist :(');
+            this.loc.replaceState('items-list/' + this.currentCategory)
+          }
           this.loadCategoryItems(this.currentCategory, brand)
           this.loadCategoryItemsSnap(this.currentCategory, brand)
           

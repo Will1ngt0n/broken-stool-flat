@@ -12,20 +12,16 @@ export class AuthGuard implements CanActivate {
 
   canActivate() : boolean{
     //let boolean : boolean
-    this.authService.checkingAuthState()
+    //this.authService.checkingAuthState()
     if(this.authService.checkingAuthStateBoolean()){
       console.log(true);
       return true
       
     }else{
       console.log(false);
-      this.router.navigate(['/login'])
+      this.router.navigate(['home/FAQs'])
       return false
-      
-    }
-  
-    
-  
+    }  
   }
 
 

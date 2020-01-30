@@ -18,7 +18,6 @@ export class RouteService {
 
   readParameters(){
     return new Promise((resolve, reject) => {
-
       resolve (this.localStorage.retrieve('parameters'))
     })
   }
