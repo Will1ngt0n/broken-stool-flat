@@ -405,9 +405,8 @@
             <input id="generate-code" type='text' [disabled]='!generateCode' placeholder="Product Code"
               [(ngModel)]='newProductCode' (keyup)='checkValidity()'>
             <br>
-            <i id="or">or</i>
-            <br>
-            <ion-button [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
+            <div id="or">or</div>
+            <ion-button id="gen" [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
           </div>
           <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
           </ion-button>
@@ -609,9 +608,8 @@
           <input type='text' id="generate-code" [disabled]='!generateCode' placeholder="Product Code"
             [(ngModel)]='newProductCode' (keyup)='checkValidity()'>
           <br>
-          <i id="or">or</i>
-          <br>
-          <ion-button [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
+          <div id="or">or</div>
+          <ion-button id="gen" [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
         </div>
         <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
         </ion-button>
