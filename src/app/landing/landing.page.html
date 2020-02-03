@@ -149,8 +149,12 @@
           </div>
           <div class="items-list" *ngIf='allProducts && searchSideInventory.length === 0'>
             <ion-card *ngFor='let item of allProducts'>
-              <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
-              <p><b>{{item.data.name}}</b></p>
+              <div (click)="showHideSearchDetails(item)">
+                <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+                <p><b>{{item.data.name}}</b></p>
+              </div>
+
+
               <p>{{item.data.quantity}}</p>
 
               <div class="quantities">
@@ -169,8 +173,12 @@
 
           <div class="items-list" *ngIf='allProducts && searchSideInventory.length !== 0'>
             <ion-card *ngFor='let item of searchSideInventory'>
-              <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
-              <p><b>{{item.data.name}}</b></p>
+              <div (click)="showHideSearchDetails(item)">
+                <img  [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+                <p><b>{{item.data.name}}</b></p>
+              </div>
+
+
               <p>{{item.data.quantity}}</p>
 
               <div class="quantities">
