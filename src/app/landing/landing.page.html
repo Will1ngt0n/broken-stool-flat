@@ -34,45 +34,58 @@
         <img [src]="updatePic" *ngIf='updatePic' alt="">
       </label>
       <div class="product-information-search">
-        <input type="text" placeholder="Item Name" maxlength="25" (keyup)='findMatch($event, item)' [(ngModel)]='updateName'>
+        <input type="text" placeholder="Item Name" maxlength="25" (keyup)='findMatch($event, item); checkValidity();'
+          [(ngModel)]='updateName'>
         <span *ngIf='categoryUpdateMatch'>This item already exists in this category</span>
         <input type="text" placeholder="Price (R)" (keyup)='changeSearchPrice();' [(ngModel)]='updatePrice'>
         <p class="instruction">Choose available sizes</p>
         <div class="opts-sizes-search">
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXS' name='popCheckboxXS' (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXS' name='popCheckboxXS'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XS")'></ion-checkbox>
           <p id="text-size">XS</p>
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxS' name='popCheckboxS' (ionChange)='checkSizeUpdateCheckboxes($event, "S")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxS' name='popCheckboxS'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "S")'></ion-checkbox>
           <p id="text-size">S</p>
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxM' name='popCheckboxM' (ionChange)='checkSizeUpdateCheckboxes($event, "M")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxM' name='popCheckboxM'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "M")'></ion-checkbox>
           <p id="text-size">M</p>
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxL' name='popCheckboxL' (ionChange)='checkSizeUpdateCheckboxes($event, "L")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxL' name='popCheckboxL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "L")'></ion-checkbox>
           <p id="text-size">L</p>
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXL' name='popCheckboxXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXL' name='popCheckboxXL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XL")'></ion-checkbox>
           <p id="text-size">XL</p>
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXXL' name='popCheckboxXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXXL' name='popCheckboxXXL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XXL")'></ion-checkbox>
           <p id="text-size">2XL</p>
-          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXXXL' name='popCheckboxXXXL' (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'></ion-checkbox>
+          <ion-checkbox color="primary" class="size-checkbox" [checked]='popCheckboxXXXL' name='popCheckboxXXXL'
+            (ionChange)='checkSizeUpdateCheckboxes($event, "XXXL")'></ion-checkbox>
           <p id="text-size">3XL</p>
         </div>
         <p class="instruction">Choose available colours</p>
         <div class="opts-search">
           <div class="myBox">
-            <ion-checkbox class="myCheck" [checked]='checkBlack' (ionChange)='checkColorUpdate($event, "Black")'></ion-checkbox>
+            <ion-checkbox class="myCheck" [checked]='checkBlack' (ionChange)='checkColorUpdate($event, "Black")'>
+            </ion-checkbox>
           </div>
           <div class="myBox">
-            <ion-checkbox class="myCheck" [checked]='checkBrown' (ionChange)='checkColorUpdate($event, "Brown")'></ion-checkbox>
+            <ion-checkbox class="myCheck" [checked]='checkBrown' (ionChange)='checkColorUpdate($event, "Brown")'>
+            </ion-checkbox>
           </div>
           <div class="myBox">
-            <ion-checkbox class="myCheck" [checked]='checkOrange' (ionChange)='checkColorUpdate($event, "Orange")'></ion-checkbox>
+            <ion-checkbox class="myCheck" [checked]='checkOrange' (ionChange)='checkColorUpdate($event, "Orange")'>
+            </ion-checkbox>
           </div>
           <div class="myBox">
-            <ion-checkbox class="myCheck" [checked]='checkYellow' (ionChange)='checkColorUpdate($event, "Yellow")'></ion-checkbox>
+            <ion-checkbox class="myCheck" [checked]='checkYellow' (ionChange)='checkColorUpdate($event, "Yellow")'>
+            </ion-checkbox>
           </div>
           <!-- <div class="myBox">
             <ion-checkbox class="myCheck" [checked]='checkPink' (ionChange)='checkColorUpdate($event, "Pink")'></ion-checkbox>
           </div> -->
           <div class="myBox">
-            <ion-checkbox class="myCheck" [checked]='checkWhite' (ionChange)='checkColorUpdate($event, "White")'></ion-checkbox>
+            <ion-checkbox class="myCheck" [checked]='checkWhite' (ionChange)='checkColorUpdate($event, "White")'>
+            </ion-checkbox>
           </div>
         </div>
         <textarea rows="4" type="text" placeholder="Description" maxlength="150"
@@ -80,9 +93,12 @@
         <input #updateSearchPic width='100px' id="uploaderBtn" class='pictureInput' type="file"
           accept="image/jpeg, jpg, tif, png" (change)='addUpdatePicture($event)'>
         <ion-button color="dark" (click)='updateItem()'>Update</ion-button>
-        <ion-button color="medium" (click)='hideItem(item.productID, item.brand, item.category, item)'  *ngIf='item.data.hideItem === false'>Hide</ion-button>
-        <ion-button color='medium' (click)='showItem(item.productID, item.brand, item.category, item)' *ngIf='item.data.hideItem !== false'>Show</ion-button>
-        <ion-button color="danger" (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete</ion-button>
+        <ion-button color="medium" (click)='hideItem(item.productID, item.brand, item.category, item)'
+          *ngIf='item.data.hideItem === false'>Hide</ion-button>
+        <ion-button color='medium' (click)='showItem(item.productID, item.brand, item.category, item)'
+          *ngIf='item.data.hideItem !== false'>Show</ion-button>
+        <ion-button color="danger" (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete
+        </ion-button>
       </div>
     </div>
   </div>
@@ -93,7 +109,8 @@
           <h4 (click)="reloadPage()" id="dankie-home-button">DankieJesu</h4>
         </div>
         <div id="searchbar">
-          <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search" show-cancel-button="never"></ion-input>
+          <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search"
+            show-cancel-button="never"></ion-input>
         </div>
         <div id="admin" (click)='signOutPopup()'>
           <p>SIGN OUT</p>
@@ -133,7 +150,7 @@
               <p *ngIf="!item.details.totalPrice">Loading</p>
               <p>R {{item.details.totalPrice}}</p>
               <p *ngIf="!item.refNo">Loading</p>
-              
+
               <p>REF: {{item.refNo}}</p>
 
             </ion-card>
@@ -144,10 +161,11 @@
             <h5>Inventory ({{inventoryLength}})</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
-          <div>
-            <input type='text' (keyup)='searchInventory($event, null)'>
+          <div id="searcher">
+            <input type='text' id="inventory-search" placeholder="Search Inventory"
+              (keyup)='searchInventory($event, null)'>
           </div>
-          <div class="items-list" *ngIf='allProducts && searchSideInventory.length === 0'>
+          <div class="items-list" *ngIf='allProducts && !inventorySearch'>
             <ion-card *ngFor='let item of allProducts'>
               <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
               <p><b>{{item.data.name}}</b></p>
@@ -157,11 +175,13 @@
                 <div>
                   <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
-                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity"
+                    (keyup)='changeQuantity($event, item)'></div>
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>
-                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">
+                  Save</div>
               </div>
 
             </ion-card>
@@ -177,11 +197,13 @@
                 <div>
                   <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
                 </div>
-                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity"
+                    (keyup)='changeQuantity($event, item)'></div>
                 <div>
                   <ion-icon name="add" (click)='add(item)'></ion-icon>
                 </div>
-                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">
+                  Save</div>
               </div>
 
             </ion-card>
@@ -235,18 +257,20 @@
           <div class="items" *ngIf='summerGear'>
             <ion-grid>
               <ion-row>
-                <ion-col class="my-ion-col" size="2" *ngFor='let item of summerGear' (click)="showHideSearchDetails(item)">
-            
-            <div class="item-container">
-              <p>{{item.data.name}}</p>
-              <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
-              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data' alt="">
-            </div>
+                <ion-col class="my-ion-col" size="2" *ngFor='let item of summerGear'
+                  (click)="showHideSearchDetails(item)">
+
+                  <div class="item-container">
+                    <p>{{item.data.name}}</p>
+                    <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
+                    <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data'
+                      alt="">
+                  </div>
                 </ion-col>
               </ion-row>
-              </ion-grid>
+            </ion-grid>
 
-            
+
 
           </div>
         </div>
@@ -263,16 +287,18 @@
           <div class="items" *ngIf='winterGear'>
             <ion-grid>
               <ion-row>
-                <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear' (click)="showHideSearchDetails(item)">
-            
-            <div class="item-container">
-              <p>{{item.data.name}}</p>
-              <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
-              <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data' alt="">
-            </div>
+                <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear'
+                  (click)="showHideSearchDetails(item)">
+
+                  <div class="item-container">
+                    <p>{{item.data.name}}</p>
+                    <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
+                    <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data'
+                      alt="">
+                  </div>
                 </ion-col>
               </ion-row>
-              </ion-grid>
+            </ion-grid>
           </div>
         </div>
 
@@ -308,18 +334,25 @@
             <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
           </select><br>
 
-          <input type="text" maxlength='25' class="user-input" placeholder="Item name" [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
-            (keyup)='checkItemName(); findMatch($event)'>
-            <ion-list *ngFor="let item of searchInventoryVal">
-              <div *ngIf='searchInventoryVal.length > 0'>
-                <ion-item (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
-              </div>
+          <input type="text" maxlength='25' class="user-input" placeholder="Item name"
+            [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
+            (keyup)='checkItemName(); findMatch($event, null)'>
+          <span id="already-exists" *ngIf='categoryMatch'>An item with that name already exists in selected
+            category</span>
+          <div>
+            <span id="label-match" *ngIf="itemName !== null && searchInventoryVal.length > 0">Matching products</span>
+            <ion-list id="item-match" *ngFor="let item of searchInventoryVal">
+
+              <ion-item *ngIf='searchInventoryVal.length > 0'>
+                <div id="name-match" (click)="autoFillItemName(item.data.name)">{{item.data.name}}</div>
+              </ion-item>
             </ion-list>
-            <span *ngIf='categoryMatch'>An item with that name already exists in selected category</span>
-          <input #itemPrice type="number" class="user-input" placeholder="Price" [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price'
-            (keyup)='changePrice()'>
-          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item"  [disabled]='selectedCategory === "Select Category"' 
-            [(ngModel)]='description' (keyup)='checkItemDescription();'></textarea>
+          </div>
+          <input #itemPrice type="number" class="user-input" placeholder="Price"
+            [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price' (keyup)='changePrice()'>
+          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item"
+            [disabled]='selectedCategory === "Select Category"' [(ngModel)]='description'
+            (keyup)='checkItemDescription();'></textarea>
           <div class="sizes">
 
             <input #checkboxXS type='checkbox' name='checkboxXS' (change)='check($event, "XS")'> XS
@@ -361,7 +394,12 @@
               src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
           <div>
-            <input type='text' [disabled]='!generateCode' [(ngModel)] ='newProductCode' (keyup)='checkValidity()'><ion-button [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
+            <input id="generate-code" type='text' [disabled]='!generateCode' placeholder="Product Code"
+              [(ngModel)]='newProductCode' (keyup)='checkValidity()'>
+            <br>
+            <i id="or">or</i>
+            <br>
+            <ion-button [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
           </div>
           <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
           </ion-button>
@@ -380,13 +418,14 @@
       </div>
       <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
       <div *ngIf="miniSearchBarState">
-        <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search" show-cancel-button="never"></ion-input>
+        <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search"
+          show-cancel-button="never"></ion-input>
       </div>
       <div (click)="showSearchBar()">
         <ion-icon name="{{searchButtonState}}"></ion-icon>
       </div>
       <div (click)="showRightSide()" *ngIf="!miniSearchBarState">
-        <ion-icon name="add-circle"></ion-icon>
+        <ion-icon name="add-circle" (click)='autoPopulate()'></ion-icon>
       </div>
       <div *ngIf="miniSearchBarState"></div>
     </div>
@@ -401,7 +440,7 @@
         <div id="smallOne" (click)="showPendingListSmall()">Pending Orders ({{pendingOrdersLength}})</div>
         <div id="smallTwo" (click)="showHistoryListSmall()">Order History ({{orderHistoryLength}})</div>
         <div id="smallThree" (click)="showInventoryListSmall()">Inventory ({{inventoryLength}})</div>
-        
+
         <div class="helpDesk" id="helpDesk" (click)="goToHelpDesk()">
           Help Desk?
         </div>
@@ -443,19 +482,45 @@
             <ion-icon name="arrow-back" class="backBtn" (click)="stepBackToBtns()"></ion-icon>
             <h5>Inventory</h5>
           </div>
-          <div class="myItems" *ngFor='let item of allProducts '>
-            <img [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
-            <p id="nameOfItem">{{item.data.name}}</p>
-            <input type="number"  [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'><br>
-            <ion-button id="minuser-small" (click)='subtract(item)'>
-              <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
-            </ion-button>
-            <ion-button id="adder-small" (click)='add(item)'>
-              <ion-icon ios="ios-add" md="md-add"></ion-icon>
-            </ion-button>
-            <ion-button id="adder-small" color="success" (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</ion-button>
-
+          <div id="searcher">
+            <input type='text' id="inventory-search" placeholder="Search Inventory"
+              (keyup)='searchInventory($event, null)'>
           </div>
+          <div *ngIf='allProducts && !inventorySearch'>
+            <div class="myItems" *ngFor='let item of allProducts '>
+              <img [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+              <p id="nameOfItem">{{item.data.name}}</p>
+              <input type="number" [id]='item.productID' [value]="item.data.quantity"
+                (keyup)='changeQuantity($event, item)'><br>
+              <ion-button id="minuser-small" (click)='subtract(item)'>
+                <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+              </ion-button>
+              <ion-button id="adder-small" (click)='add(item)'>
+                <ion-icon ios="ios-add" md="md-add"></ion-icon>
+              </ion-button>
+              <ion-button id="adder-small" color="success"
+                (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</ion-button>
+
+            </div>
+          </div>
+          <div *ngIf='allProducts && searchSideInventory.length > 0'>
+            <div class="myItems" *ngFor='let item of searchSideInventory '>
+              <img [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
+              <p id="nameOfItem">{{item.data.name}}</p>
+              <input type="number" [id]='item.productID' [value]="item.data.quantity"
+                (keyup)='changeQuantity($event, item)'><br>
+              <ion-button id="minuser-small" (click)='subtract(item)'>
+                <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+              </ion-button>
+              <ion-button id="adder-small" (click)='add(item)'>
+                <ion-icon ios="ios-add" md="md-add"></ion-icon>
+              </ion-button>
+              <ion-button id="adder-small" color="success"
+                (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)'>Save</ion-button>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -477,10 +542,20 @@
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
-        <input type="text" class="user-input" placeholder="Item name" maxlength="25" [(ngModel)]='itemName' (keyup)='findMatch($event); checkValidity()'>
-        <input #itemPrice type="number" class="user-input" placeholder="Price" [(ngModel)]='price'
+        <input type="text" class="user-input" placeholder="Item name" maxlength="25"
+          [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
+          (keyup)='findMatch($event, null); checkValidity()'>
+        <ion-list *ngFor="let item of searchInventoryVal">
+          <div *ngIf='searchInventoryVal.length > 0'>
+            <ion-item (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
+          </div>
+        </ion-list>
+        <span *ngIf='categoryMatch'>An item with that name already exists in selected category</span>
+        <input #itemPrice type="number" class="user-input" placeholder="Price"
+          [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price'
           (keyup)='checkValidity(); changePrice()'>
-        <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'
+        <textarea type="text" rows="5" class="user-input-area" placeholder="About the item"
+          [disabled]='selectedCategory === "Select Category"' [(ngModel)]='description'
           (keyup)='checkValidity()'></textarea>
         <div class="sizes">
 
@@ -506,11 +581,29 @@
         </label>
         <div class='colors'>
           <h5>Available colors</h5>
-          <input #mbcheckboxBlack type='checkbox' name='mbcheckboxBlack' (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #mbcheckboxBrown type='checkbox' name='mbcheckboxBrown' (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #mbcheckboxOrange type='checkbox' name='mbcheckboxOrange' (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #mbcheckboxYellow type='checkbox' name='mbcheckboxYellow' (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
-          <input #mbcheckboxWhite type='checkbox' name='mbcheckboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)' src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxBlack type='checkbox' name='mbcheckboxBlack'
+            (change)='checkColor($event, "Black")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
+            src='.\assets\product-colors\black.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxBrown type='checkbox' name='mbcheckboxBrown'
+            (change)='checkColor($event, "Brown")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
+            src='.\assets\product-colors\brown.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxOrange type='checkbox' name='mbcheckboxOrange'
+            (change)='checkColor($event, "Orange")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
+            src='.\assets\product-colors\orange.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxYellow type='checkbox' name='mbcheckboxYellow'
+            (change)='checkColor($event, "Yellow")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
+            src='.\assets\product-colors\yellow.jpg'>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input #mbcheckboxWhite type='checkbox' name='mbcheckboxWhite'
+            (change)='checkColor($event, "White")'>&nbsp;<img width='15px' style='border: 1px solid rgb(0,0,0)'
+            src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        <div>
+          <input type='text' id="generate-code" [disabled]='!generateCode' placeholder="Product Code"
+            [(ngModel)]='newProductCode' (keyup)='checkValidity()'>
+          <br>
+          <i id="or">or</i>
+          <br>
+          <ion-button [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
         </div>
         <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
         </ion-button>

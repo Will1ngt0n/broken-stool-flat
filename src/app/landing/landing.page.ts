@@ -73,7 +73,7 @@ export class LandingPage implements OnInit {
   @ViewChild('fileInput', {static:true}) fileInput : ElementRef
   @ViewChild('departmentCombo', {static : false}) departmentCombo : ElementRef
   
-  @ViewChild('mbdepartmentCombo', {static : false}) mbdepartmentCombo : ElementRef
+  @ViewChild('mbdepartmentCombo', {static : true}) mbdepartmentCombo : ElementRef
   @ViewChild('nativeCategory', {static : true}) nativeCategory : ElementRef
   @ViewChild('checkboxXS', {static : true}) checkboxXS : ElementRef
   @ViewChild('checkboxS', {static : true}) checkboxS : ElementRef
@@ -657,6 +657,8 @@ export class LandingPage implements OnInit {
     }else{
       this.nativeCategory.nativeElement.disabled = false   ////
     }
+
+
     this.checkValidity()
   }
   checkItemName(){
@@ -691,6 +693,7 @@ export class LandingPage implements OnInit {
     }else{
       this.accessory = false
     }
+
     this.checkValidity()
   }
 
@@ -5041,6 +5044,7 @@ export class LandingPage implements OnInit {
   }
   findMatch(event, item){
     console.log(this.itemName);
+    console.log(item);
     
     let val = event.target.value.toLowerCase()
     console.log(event.target.tagName);
@@ -5138,7 +5142,11 @@ export class LandingPage implements OnInit {
   searchSideInventory : Array<any> = []
   categoryMatch : boolean
   categoryUpdateMatch : boolean
+  inventorySearch : boolean
   searchInventory(event, tag){
+    this.inventorySearch = false
+    console.log('inventory search query', this.inventorySearch);
+    
     let val = ''
     if(event.target){
       val = event.target.value.toLowerCase()
@@ -5149,6 +5157,7 @@ export class LandingPage implements OnInit {
 
     console.log(val);
     if(tag !== null){
+
       if(val !== '' && val !== '*' && tag !== 'function'){
         this.searchInventoryVal = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
         for(let key in this.searchInventoryVal){
@@ -5166,9 +5175,11 @@ export class LandingPage implements OnInit {
        // this.categoryMatch = false
       }
     }else if(tag === null){
+
       this.cutDoubleSpace(val).then( (result : any) => {
         val = result
         if(val !== '' && val !== '*' && tag !== 'function'){
+          this.inventorySearch = true
           this.searchSideInventory = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
           for(let key in this.searchSideInventory){
             if((this.searchSideInventory[key].category === this.selectedCategory) && tag !== 'function'){
@@ -5182,6 +5193,7 @@ export class LandingPage implements OnInit {
           }
         }else{
           this.searchSideInventory = []
+          this.inventorySearch = false
          // this.categoryMatch = false
         }
       })
@@ -5227,6 +5239,16 @@ export class LandingPage implements OnInit {
     event = { target : {value : this.itemName, tagName : 'function'}}
     this.findMatch(event, null)
     this.searchInventoryVal = []
+  }
+  autoPopulate(){
+    this.clearForm()
+    // console.log('dfgdfgdfgdf', this.mbdepartmentCombo);
+    // console.log ('fdfgd',this.nativeCategory);
+    
+    // this.mbdepartmentCombo.nativeElement.value = 'fvvdvxcvx'
+    // this.nativeCategory.nativeElement.value = this.selectedCategory
+    
+    
   }
 
   testingEmail(){

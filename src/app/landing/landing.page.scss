@@ -237,7 +237,7 @@ ion-list > div {
   background: white;
   overflow-y: scroll;
   ::-webkit-scrollbar {
-    background: red;
+    background: rgb(158, 156, 156);
   }
 }
 #left,
@@ -590,7 +590,7 @@ ion-searchbar {
   }
   .items-list {
     width: 100%;
-    height: calc(100% - 50px);
+    height: calc(100% - 100px);
 
     overflow-y: scroll;
   }
@@ -926,7 +926,7 @@ ion-searchbar {
     }
 
     input {
-      border: 0.5px solid red;
+      border: 0.5px solid #7c0000;
       width: 160px;
       padding-left: 5px;
       border-radius: 5px;
@@ -1024,7 +1024,7 @@ label {
 }
 
 #mySearchBar {
-  border: 0.5px solid red;
+  background: rgb(231, 231, 231);
   height: 40px;
   margin-top: 10px;
   font-size: 14px;
@@ -1097,4 +1097,43 @@ ion-row {
 }
 .title-top {
   padding-left: 10px;
+}
+
+
+#inventory-search{
+  width: 100%;
+  margin: 0 auto;
+  border: 0;
+  background: rgb(231, 231, 231);
+  border-radius: 5px;
+  height: 40px;
+  padding: 5px;
+}
+#searcher{
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+#already-exists{
+  color: red;
+  font-size: 12px;
+}
+
+#item-match{
+  // position: absolute;
+  width: 100%;
+  cursor: pointer;
+  z-index: 100;
+}
+#label-match{
+  color: grey;
+  font-style: italic;
+  font-size: 12px;
+}
+#generate-code{
+  width: 100%;
+  height: 30px;
+  padding-left: 5px;
+  margin-top: 10px;
 }
