@@ -20,7 +20,7 @@ return new Promise((resolve, reject)  => {
         color: color,
         productCode: productCode,
         pictureLink: 'none',
-        price : price,
+        price : Number(price),
         size : size,
         name : itemName,
         hideItem : true,
@@ -77,7 +77,7 @@ return new Promise((resolve, reject)  => {
       // brand: department,
       // category: selectedCategory,
       pictureLink: 'none',
-      price : price,
+      price : Number(price),
       size : size,
       name : itemName,
       hideItem : true,
@@ -323,7 +323,7 @@ return new Promise((resolve, reject)  => {
       firebase.firestore().collection('Products').doc(item.brand).collection(item.category).doc(productID).update({
         onSale : false,
         discount : 0,
-        saleprice : item.data.normalPrice
+        saleprice : Number(item.data.normalPrice)
       })
       return result
     }).catch(error => {
@@ -347,7 +347,7 @@ return new Promise((resolve, reject)  => {
   }
   updateSpecialsItem(productID, item, newPrice, newPricePercentage, newStartDate, newEndDate){
     return firebase.firestore().collection('Specials').doc(item.data.brand).collection(item.data.category).doc(productID).update({
-      saleprice: newPrice,
+      saleprice: Number(newPrice),
       endDate: newEndDate,
       startDate: newStartDate,
       discount: newPricePercentage
@@ -508,7 +508,7 @@ return new Promise((resolve, reject)  => {
     
 
     return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
-      price : itemPrice,
+      price : Number(itemPrice),
       description : itemDescription,
       name : itemName,
       size: sizes,
@@ -537,7 +537,7 @@ return new Promise((resolve, reject)  => {
   }
   updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes){
     return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
-      price : itemPrice,
+      price : Number(itemPrice),
       description : itemDescription,
       name : itemName,
       size: sizes
@@ -553,7 +553,7 @@ return new Promise((resolve, reject)  => {
       })
     }
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({
-      price : itemPrice,
+      price : Number(itemPrice),
       description : itemDescription,
       name : itemName
     }).then(result => {
@@ -567,7 +567,7 @@ return new Promise((resolve, reject)  => {
     console.log(selectedItem);
     
     return firebase.firestore().collection('Specials').doc(itemID).set({
-      saleprice : price,
+      saleprice : Number(price),
       discount: percentage,
       startDate : startDate,
       endDate : endDate,
@@ -582,14 +582,14 @@ return new Promise((resolve, reject)  => {
       color: selectedItem.data.color,
       quantity: selectedItem.data.quantity,
       size: selectedItem.data.size,
-      normalPrice: selectedItem.data.price,
+      normalPrice: Number(selectedItem.data.price),
       // hideItem: false,
       timestamp : firebase.firestore.FieldValue.serverTimestamp(),
     }).then(result => {
      // console.log(result);
         return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
           onSale: true,
-          saleprice: price,
+          saleprice: Number(price),
           discount: percentage
         }).then(status => {
           return 'success'

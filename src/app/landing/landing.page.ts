@@ -5166,22 +5166,26 @@ export class LandingPage implements OnInit {
        // this.categoryMatch = false
       }
     }else if(tag === null){
-      if(val !== '' && val !== '*' && tag !== 'function'){
-        this.searchSideInventory = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
-        for(let key in this.searchSideInventory){
-          if((this.searchSideInventory[key].category === this.selectedCategory) && tag !== 'function'){
-           // this.categoryMatch = true
-            console.log(this.searchSideInventory[key]);
-            
-            break
-          }else{
-           // this.categoryMatch = false
+      this.cutDoubleSpace(val).then( (result : any) => {
+        val = result
+        if(val !== '' && val !== '*' && tag !== 'function'){
+          this.searchSideInventory = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+          for(let key in this.searchSideInventory){
+            if((this.searchSideInventory[key].category === this.selectedCategory) && tag !== 'function'){
+             // this.categoryMatch = true
+              console.log(this.searchSideInventory[key]);
+              
+              break
+            }else{
+             // this.categoryMatch = false
+            }
           }
+        }else{
+          this.searchSideInventory = []
+         // this.categoryMatch = false
         }
-      }else{
-        this.searchSideInventory = []
-       // this.categoryMatch = false
-      }
+      })
+
     }
     console.log(this.searchSideInventory);
     
