@@ -174,19 +174,10 @@ export class LandingPage implements OnInit {
 
     }
 
-    // for (let key = 0; key < this.status.length; key++) {
-    //   this.getPendingOrders(this.status[key])
-    //   if (key === this.status.length - 1) {
-    //     this.orderItems()
-    //   }
-    // }
-
-
     this.getReadyOrders()
     this.getOrderHistory()
     this.getInventory()
     this.loader()
-    this.writeToUpdates()
   }
   signOutPopup() {
     this.presentLogoutConfirmAlert()
@@ -241,7 +232,7 @@ export class LandingPage implements OnInit {
   }
   ngOnInit() { ////copy
 
-
+    this.testingEmail()
     this.loadFormal('Kwanga', 'Formal')
     this.loadTraditional('Kwanga', 'Traditional')
     this.loadSmartCasual('Kwanga', 'Smart Casual')
@@ -746,13 +737,14 @@ export class LandingPage implements OnInit {
     
     this.checkValidity()
   }
+  generateCode : boolean
   checkValidity() {
     console.log('running');
     
     if(this.nativeCategory.nativeElement.disabled === true){
       this.selectedCategory = 'Select Category'
     }
-    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.newProductCode === '' || this.newProductCode === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
       this.addForm = false
       console.log(this.addForm);
 
@@ -760,7 +752,15 @@ export class LandingPage implements OnInit {
       this.addForm = true
       console.log(this.addForm);
     }
-    if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined) {
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
+      this.generateCode = false
+      console.log(this.generateCode);
+
+    } else {
+      this.generateCode = true
+      console.log(this.generateCode);
+    }
+    if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined || this.newProductCode !== '') {
       this.formHasValues = true
       console.log(this.formHasValues, 'form has values');
      // this.btnClearForm.nativeElement.disabled = false
@@ -842,14 +842,33 @@ export class LandingPage implements OnInit {
       }
     }
     console.log(this.size);
+    let checkVal : Array<string> = this.itemName.split('')
+    //console.log(checkVal);
+    console.log(checkVal);
     
-    this.addProducts(number)
+    this.cutDoubleSpace(this.itemName).then((result : string) => {
+      console.log(result);
+      this.itemName = result
+      console.log(this.itemName)
+    }).then(result => {
+      //let array = this.itemDescription.split('')
+      this.cutDoubleSpace(this.description).then((result : string) => {
+        this.itemDescription = result
+        console.log(result);
+        
+      }).then( res => {
+        console.log('successful');
+              this.addProducts(number)
+      })
+
+    })
+
         
   }
   addProducts(numberOfProducts) {
     let brand = this.department
     let category = this.selectedCategory
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts).then((result : any) => {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts, this.newProductCode).then((result : any) => {
       console.log(result);
       
       if(result === 'success'){
@@ -878,6 +897,7 @@ export class LandingPage implements OnInit {
     this.color = []
     this.picture = undefined
     this.myUpload = "../../assets/imgs/default.png"
+    this.newProductCode = ''
     //document.getElementById('accessory')['checked'] = false;
     //document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
@@ -1130,7 +1150,7 @@ export class LandingPage implements OnInit {
   }
   sortProducts(){
     this.allProducts.sort( (a,b) => {
-      let data = (a.data.name) - (b.data.name)
+      //let data = (a.data.name) - (b.data.name)
       let c : any = new Date(a.data.dateAdded)
       let d : any = new Date(b.data.dateAdded)
       //console.log(data);
@@ -1904,18 +1924,28 @@ export class LandingPage implements OnInit {
         }
       }
     }
-    return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
-      console.log(result);
-        setTimeout(() => {
-          //this.reloadPage()
-        }, 30);
-      if (result === 'success') {
-        console.log(result);
-        this.showHideSearchDetails('close')
-        this.loadingCtrl.dismiss()
-        //return this.dismissPromo()
-      }
+    this.cutDoubleSpace(this.updateName).then(result => {
+      this.updateName = result
+    }).then( result => {
+      this.cutDoubleSpace(this.updateDescription).then(result => {
+        this.updateDescription = result
+      }).then( () => {
+        return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
+          console.log(result);
+            setTimeout(() => {
+              //this.reloadPage()
+            }, 30);
+          if (result === 'success') {
+            console.log(result);
+            this.showHideSearchDetails('close')
+            this.loadingCtrl.dismiss()
+            //return this.dismissPromo()
+          }
+        })
+      })
     })
+
+
   }
 
   // goToHelpDesk(){
@@ -4977,10 +5007,234 @@ export class LandingPage implements OnInit {
     this.sortSummerProducts()
     this.sortWinterProducts()
   }
+  newProductNameMatch
+ private cutNameArray(checkVal){
+    return new Promise( (resolve, reject) => {
+      let array = checkVal.reverse()
+        while(array[0] === ' '){
+          array.splice(0, 1)
+          console.log(array);
+      }
+      resolve (array.reverse())
+    })
+  }
+  cutDoubleSpace(para){
+    return new Promise( (resolve, reject) => {
+      let array : Array<any> = para.split('')
+      while(array[0] === ' '){
+        array.splice(0, 1)
+      }
+      for(let i = 0; i < array.length; i++){
+        if(array[i] === ' '){
+          while(array[i + 1] === ' '){
+            array.splice((i + 1), 1)
+          }
+        }
+      }
+      let arrayReverse : Array<any> = array.reverse()
+      while(arrayReverse[0] === ' '){
+        arrayReverse.splice(0, 1)
+        console.log(arrayReverse);
+    }
+      resolve ((arrayReverse.reverse()).join(''))
+    })
+  }
+  findMatch(event, item){
+    console.log(this.itemName);
+    
+    let val = event.target.value.toLowerCase()
+    console.log(event.target.tagName);
+    if(item === null){
+      let match 
+      if(val !== '' && val !== '*'){
+        let checkVal : Array<string> = val.split('')
+        //console.log(checkVal);
+        console.log(checkVal);
+        
+        this.cutDoubleSpace(val).then((result) => {
+          console.log(result);
+          let joined = result
+          console.log(joined);
+          this.searchInventory(joined, event.target.tagName)
+          for(let key in this.allProducts){
+            if(joined === this.allProducts[key].data.name.toLowerCase()){
+              //console.log('joined');
+              //console.log('match');
+              this.newProductNameMatch = true
+              if(this.allProducts[key].category === this.selectedCategory){
+                this.categoryMatch = true
+                break
+              }else{
+                this.categoryMatch = false
+              }
+              console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              break
+            }else{
+              //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              this.newProductNameMatch = false
+              this.categoryMatch = false
+              //console.log('no match');
+              
+            }
+          }
+          this.checkValidity()
+        })
+  
+      }else if(val === ''){
+        this.categoryMatch = false
+        this.searchInventoryVal = []
+      }
+    }else{
+      let match 
+      if(val !== '' && val !== '*'){
+        let checkVal : Array<string> = val.split('')
+        //console.log(checkVal);
+        console.log(checkVal);
+        
+        this.cutDoubleSpace(val).then((result) => {
+          console.log(result);
+          let joined = result
+          console.log(joined);
+          //this.searchInventory(joined, event.target.tagName)
+          for(let key in this.allProducts){
+            if(joined === this.allProducts[key].data.name.toLowerCase()){
+              //console.log('joined');
+              //console.log('match');
+              this.newProductNameMatch = true
+              if((this.allProducts[key].category === item.category) && (this.allProducts[key].productID !== item.productID)){
+                this.categoryUpdateMatch = true
+                console.log(this.categoryUpdateMatch);
+                
+                break
+              }else{
+                this.categoryUpdateMatch = false
+                console.log(this.categoryUpdateMatch);
+              }
+              console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              break
+            }else{
+              //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              this.newProductNameMatch = false
+              this.categoryUpdateMatch = false
+              console.log(this.categoryUpdateMatch);
+              //console.log('no match');
+              
+            }
+          }
+          //this.checkValidity()
+        })
+  
+      }else if(val === ''){
+        this.categoryMatch = false
+        this.searchInventoryVal = []
+      }
+    }
 
-  writeToUpdates(){
-    firebase.firestore().collection('Updates').add({
-      timestamp: new Date().getTime()
+   // console.log(match);
+    
+  }
+  
+  searchInventoryVal : Array<any> = []
+  searchSideInventory : Array<any> = []
+  categoryMatch : boolean
+  categoryUpdateMatch : boolean
+  searchInventory(event, tag){
+    let val = ''
+    if(event.target){
+      val = event.target.value.toLowerCase()
+    }else{
+      val = event.toLowerCase()
+    }
+
+
+    console.log(val);
+    if(tag !== null){
+      if(val !== '' && val !== '*' && tag !== 'function'){
+        this.searchInventoryVal = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+        for(let key in this.searchInventoryVal){
+          if((this.searchInventoryVal[key].category === this.selectedCategory) && tag !== 'function'){
+           // this.categoryMatch = true
+            console.log(this.searchInventoryVal[key]);
+            
+            break
+          }else{
+           // this.categoryMatch = false
+          }
+        }
+      }else{
+        this.searchInventoryVal = []
+       // this.categoryMatch = false
+      }
+    }else if(tag === null){
+      this.cutDoubleSpace(val).then( (result : any) => {
+        val = result
+        if(val !== '' && val !== '*' && tag !== 'function'){
+          this.searchSideInventory = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+          for(let key in this.searchSideInventory){
+            if((this.searchSideInventory[key].category === this.selectedCategory) && tag !== 'function'){
+             // this.categoryMatch = true
+              console.log(this.searchSideInventory[key]);
+              
+              break
+            }else{
+             // this.categoryMatch = false
+            }
+          }
+        }else{
+          this.searchSideInventory = []
+         // this.categoryMatch = false
+        }
+      })
+
+    }
+    console.log(this.searchSideInventory);
+    
+    console.log(this.searchInventoryVal);
+    
+  }
+  newProductCode : string = ''
+  autoGenerateCode(){
+    let alpha_A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    let alpha_a = 'abcdefghijlmnopqrstuvwxyz'
+    let first2 = (this.department.split('')[0]) + (this.department.split('')[1])
+    let first3 = (this.selectedCategory.split('')[0] + this.selectedCategory.split('')[1] + this.selectedCategory.split('')[2])
+    let second2 = (this.itemName.split('')[0] + this.itemName.split('')[1])
+    let date = new Date()
+    let first4 = (date.getMonth() + date.getDay())
+    let date2 =    moment(moment.utc(new Date().getTime())).format('X')
+    console.log(date2);
+    this.newProductCode = date2
+    console.log(first2);
+    console.log(first3);
+    console.log(second2);
+    let search : boolean
+    
+    
+    console.log(first4);
+    this.checkValidity()
+    for(let key in this.allProducts){
+      if(this.allProducts[key].data.productCode){
+        if(this.newProductCode === this.allProducts[key].data.productCode){
+          this.autoGenerateCode()
+        }
+      }
+    }
+  }
+  autoFillItemName(name){
+    this.itemName = name
+    let event : object = {}
+    //event['target']['value'] = this.itemName
+    event = { target : {value : this.itemName, tagName : 'function'}}
+    this.findMatch(event, null)
+    this.searchInventoryVal = []
+  }
+
+  testingEmail(){
+    console.log('adding');
+    
+    firebase.firestore().collection('TestingEmail').add({
+      email: 'will.last.long3@gmail.com',
+      answer: 'It is very easy to keep switching'
     })
   }
 }

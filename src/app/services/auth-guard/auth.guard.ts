@@ -6,53 +6,18 @@ import { AuthService } from '../auth-services/auth.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService : AuthService, private router : Router){
-
-  }
-
+  constructor(private authService : AuthService, private router : Router){ }
+  
   canActivate() : boolean{
     //let boolean : boolean
     //this.authService.checkingAuthState()
     if(this.authService.checkingAuthStateBoolean()){
       console.log(true);
       return true
-      
     }else{
       console.log(false);
       this.router.navigate(['home/FAQs'])
       return false
-    }  
+    }
   }
-
-
-
-
-// canActivate() : boolean {
-//   let boolean : boolean
-//   this.authService.checkingAuthStateBoolean().then(result => {
-//     if(result){
-//       console.log(true);
-//       boolean = true
-//       console.log(boolean);
-      
-      
-//     }else{
-//       console.log(false);
-//       boolean = false
-//       console.log(boolean);
-      
-      
-//     }
-//     console.log(boolean);
-// return boolean
-
-//   }).then(result => {
-//     return boolean
-//   })
-
-  
-
-// }
-
-
 }

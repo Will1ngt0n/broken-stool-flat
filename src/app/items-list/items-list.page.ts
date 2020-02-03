@@ -715,11 +715,11 @@ brand
   back() {
     console.log('you clicked wrong');
     
-    this.route.navigate(['/sales-specials'])
+    this.route.navigate(['/landing'])
   }
   navigate() {
 
-    alert("Alert")
+    //alert("Alert")
     console.log(String(this.link));
     console.log(this.link);
     this.route.navigate(['/' + this.link])
@@ -915,24 +915,33 @@ brand
     console.log(this.updateName, this.updatePrice, this.updateDescription, this.itemID, this.itemBrand, this.itemCategory, this.itemSizes, this.itemColors);
     //console.log(this.updateName);
     this.sortArray()
-    return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
-      console.log(result);
-        setTimeout(() => {
-          //this.reloadPage()
-        }, 30);
-      if (result === 'success') {
-        console.log(result);
-        //location.reload()
-        if(this.loadingCtrl){
-          this.loadingCtrl.dismiss()
-        }
-        this.productAlert('Product was successfully updated')
-        this.clearUpdateForm()
-        return this.dismissPromo()
-
-
-      }
+    this.cutDoubleSpace(this.updateName).then(result => {
+      this.updateName = result
+    }).then(result => {
+      this.cutDoubleSpace(this.updateDescription).then(result => {
+        this.updateDescription = result
+      }).then(result => {
+        return this.productsService.updateItemsListItem(this.itemID, this.itemBrand, this.itemCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
+          console.log(result);
+            setTimeout(() => {
+              //this.reloadPage()
+            }, 30);
+          if (result === 'success') {
+            console.log(result);
+            //location.reload()
+            if(this.loadingCtrl){
+              this.loadingCtrl.dismiss()
+            }
+            this.productAlert('Product was successfully updated')
+            this.clearUpdateForm()
+            return this.dismissPromo()
+    
+    
+          }
+        })
+      })
     })
+
   }
   sortArray(){
     let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
@@ -971,6 +980,89 @@ brand
   addPictureUpdate(event){
     this.pictureUpdate = <File>event.target.files[0]
   }
+
+  cutDoubleSpace(para){
+    return new Promise( (resolve, reject) => {
+      let array : Array<any> = para.split('')
+      while(array[0] === ' '){
+        array.splice(0, 1)
+      }
+      for(let i = 0; i < array.length; i++){
+        if(array[i] === ' '){
+          while(array[i + 1] === ' '){
+            array.splice((i + 1), 1)
+          }
+        }
+      }
+      let arrayReverse : Array<any> = array.reverse()
+      while(arrayReverse[0] === ' '){
+        arrayReverse.splice(0, 1)
+        console.log(arrayReverse);
+    }
+      resolve ((arrayReverse.reverse()).join(''))
+    })
+  }
+
+  findMatch(event, productID){
+    console.log(productID);
+    
+    //console.log(this.itemName);
+    
+    let val = event.target.value.toLowerCase()
+    console.log(event.target.tagName);
+    
+    let match 
+    if(val !== '' && val !== '*'){
+      let checkVal : Array<string> = val.split('')
+      //console.log(checkVal);
+      console.log(checkVal);
+      
+      this.cutDoubleSpace(val).then((result) => {
+        console.log(result);
+        let joined = result
+        console.log(joined);
+        //this.searchInventory(joined, event.target.tagName)
+        for(let key in this.currentViewedItems){
+          if(joined === this.currentViewedItems[key].data.name.toLowerCase()){
+            //console.log('joined');
+            //console.log('match');
+            //this.newProductNameMatch = true
+            if(this.currentViewedItems[key].productID !== this.itemID){
+              this.categoryMatch = true
+              console.log(this.categoryMatch);
+              
+              break
+            }else{
+              this.categoryMatch = false
+              console.log(false);
+              
+            }
+            console.log(joined, this.currentViewedItems[key].data.name.toLowerCase() );
+            break
+          }else{
+            //console.log(joined, this.currentViewedItems[key].data.name.toLowerCase() );
+            //this.newProductNameMatch = false
+            this.categoryMatch = false
+            console.log(this.categoryMatch);
+            
+            //console.log('no match');
+            
+          }
+        }
+        //this.checkValidity()
+      })
+
+    }else if(val === ''){
+      this.categoryMatch = false
+      //this.searchInventoryVal = []
+    }
+    console.log(match);
+    
+  }
+  
+  searchInventoryVal : Array<any> = []
+  searchSideInventory : Array<any> = []
+  categoryMatch : boolean
 
   checkPromoValidity(){
     if(this.editStartDate === undefined || this.editStartDate === '' || this.editEndDate === undefined || this.editEndDate === '' || this.editPercentage === 0 || this.editPercentage === undefined || this.editPercentage === null){
@@ -1088,6 +1180,7 @@ brand
   }
   dismissPromo() {
     // this.promoUpd[0].style.display = "none"
+    this.categoryMatch = false
     this.editEndDate = undefined
     this.editStartDate = undefined
     this.editPercentage = undefined

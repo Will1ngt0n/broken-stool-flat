@@ -34,7 +34,8 @@
         <img [src]="updatePic" *ngIf='updatePic' alt="">
       </label>
       <div class="product-information-search">
-        <input type="text" placeholder="Item Name" maxlength="25" [(ngModel)]='updateName'>
+        <input type="text" placeholder="Item Name" maxlength="25" (keyup)='findMatch($event, item)' [(ngModel)]='updateName'>
+        <span *ngIf='categoryUpdateMatch'>This item already exists in this category</span>
         <input type="text" placeholder="Price (R)" (keyup)='changeSearchPrice();' [(ngModel)]='updatePrice'>
         <p class="instruction">Choose available sizes</p>
         <div class="opts-sizes-search">
@@ -143,7 +144,10 @@
             <h5>Inventory ({{inventoryLength}})</h5>
             <ion-icon name="close" id="closer" (click)="dismissList()"></ion-icon>
           </div>
-          <div class="items-list" *ngIf='allProducts'>
+          <div>
+            <input type='text' (keyup)='searchInventory($event, null)'>
+          </div>
+          <div class="items-list" *ngIf='allProducts && searchSideInventory.length === 0'>
             <ion-card *ngFor='let item of allProducts'>
               <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
               <p><b>{{item.data.name}}</b></p>
@@ -162,6 +166,27 @@
 
             </ion-card>
           </div>
+
+          <div class="items-list" *ngIf='allProducts && searchSideInventory.length !== 0'>
+            <ion-card *ngFor='let item of searchSideInventory'>
+              <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+              <p><b>{{item.data.name}}</b></p>
+              <p>{{item.data.quantity}}</p>
+
+              <div class="quantities">
+                <div>
+                  <ion-icon name="remove" (click)='subtract(item)'></ion-icon>
+                </div>
+                <div><input type="number" maxlength='6' [id]='item.productID' [value]="item.data.quantity" (keyup)='changeQuantity($event, item)'></div>
+                <div>
+                  <ion-icon name="add" (click)='add(item)'></ion-icon>
+                </div>
+                <div (click)='saveQuantity(item.brand, item.category, item.productID, item.data.quantity)' id="saver">Save</div>
+              </div>
+
+            </ion-card>
+          </div>
+
         </div>
         <div class="side-buttons" (click)="showPendingList()">Pending Orders ({{pendingOrdersLength}})</div>
         <div class="side-buttons" (click)="showHistoryList()">Order History ({{orderHistoryLength}})</div>
@@ -283,11 +308,17 @@
             <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
           </select><br>
 
-          <input type="text" maxlength='25' class="user-input" placeholder="Item name" [(ngModel)]='itemName'
-            (keyup)='checkItemName();'>
-          <input #itemPrice type="number" class="user-input" placeholder="Price" [(ngModel)]='price'
+          <input type="text" maxlength='25' class="user-input" placeholder="Item name" [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
+            (keyup)='checkItemName(); findMatch($event)'>
+            <ion-list *ngFor="let item of searchInventoryVal">
+              <div *ngIf='searchInventoryVal.length > 0'>
+                <ion-item (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
+              </div>
+            </ion-list>
+            <span *ngIf='categoryMatch'>An item with that name already exists in selected category</span>
+          <input #itemPrice type="number" class="user-input" placeholder="Price" [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price'
             (keyup)='changePrice()'>
-          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item"
+          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item"  [disabled]='selectedCategory === "Select Category"' 
             [(ngModel)]='description' (keyup)='checkItemDescription();'></textarea>
           <div class="sizes">
 
@@ -328,6 +359,9 @@
             <input #checkboxWhite type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>&nbsp;<img
               width='15px' style='border: 1px solid rgb(0,0,0)'
               src='.\assets\product-colors\white.png'>&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <div>
+            <input type='text' [disabled]='!generateCode' [(ngModel)] ='newProductCode' (keyup)='checkValidity()'><ion-button [disabled]='!generateCode' (click)='autoGenerateCode()'>Generate Code</ion-button>
           </div>
           <ion-button [disabled]='!addForm' (click)='addProduct()' expand="full" color="success">Add to Stall
           </ion-button>
@@ -443,7 +477,7 @@
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
-        <input type="text" class="user-input" placeholder="Item name" maxlength="25" [(ngModel)]='itemName' (keyup)='checkValidity()'>
+        <input type="text" class="user-input" placeholder="Item name" maxlength="25" [(ngModel)]='itemName' (keyup)='findMatch($event); checkValidity()'>
         <input #itemPrice type="number" class="user-input" placeholder="Price" [(ngModel)]='price'
           (keyup)='checkValidity(); changePrice()'>
         <textarea type="text" rows="5" class="user-input-area" placeholder="About the item" [(ngModel)]='description'

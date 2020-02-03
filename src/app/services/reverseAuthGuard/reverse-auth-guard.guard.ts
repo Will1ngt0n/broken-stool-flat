@@ -6,17 +6,14 @@ import { AuthService } from '../auth-services/auth.service';
   providedIn: 'root'
 })
 export class ReverseAuthGuardGuard implements CanActivate {
-  constructor(private authService : AuthService, private router : Router){
-
-  }
+  constructor(private authService : AuthService, private router : Router){ }
   canActivate() : boolean{
     if(this.authService.checkingAuthStateBoolean()){
-      console.log(true);
-      return false
-      
-    }else{
-      console.log(false);
+      console.log(false);  
       this.router.navigate(['landing'])
+      return false
+    }else{
+      console.log(true);
       return true
     }
   }

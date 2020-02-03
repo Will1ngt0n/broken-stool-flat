@@ -1,88 +1,57 @@
 import * as functions from 'firebase-functions';
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
-//const Firestore = require('@google-cloud/firestore');
+var nodemailer = require('nodemailer');
 
-// exports.deleteSale = functions.firestore.document('Specials/{specials}').onWrite( (change : any, context : any) => {
-    
-// })
+const smtpTransport = require('nodemailer-smtp-transport');
 
-// exports.sendEmail = functions.firestore.document('AnsweredQuestions/{doc}').onCreate( (change : any, context : any) => {
-//     console.log(change);
-//     console.log(context);
-    
-    
-// })
-// exports.sendEmail = functions.firestore.document('Updates/{update}').onCreate( (snap: {data: () => any }, context : any) => {
-//     console.log(snap.data());
-//     // console.log(context.params.userId);
-//     // console.log('logging results', snap.data());
-    
-//     // const data = snap.data().timestamp
 
-//     // console.log(data);
-//     return admin.firestore().collection('TestingJust').add({
-//         timestamp: 'dfdfdfd'
-//     })
-    
-
-    
-// })
-
-// exports.getShortsImageLink = functions.firestore.document('Products/Dankie Jesu/Shorts/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getVestsImageLink = functions.firestore.document('Products/Dankie Jesu/Vests/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getCapsImageLink = functions.firestore.document('Products/Dankie Jesu/Caps/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getBucketHatsImageLink = functions.firestore.document('Products/Dankie Jesu/Bucket Hats/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getCropTopsImageLink = functions.firestore.document('Products/Dankie Jesu/Crop Tops/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getTShirtsImageLink = functions.firestore.document('Products/Dankie Jesu/T-Shirts/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getBagsImageLink = functions.firestore.document('Products/Dankie Jesu/Bags/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getSweatersImageLink = functions.firestore.document('Products/Dankie Jesu/Sweaters/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getHoodiesImageLink = functions.firestore.document('Products/Dankie Jesu/Hoodies/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getTrackSuitsImageLink = functions.firestore.document('Products/Dankie Jesu/Track Suits/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getBeaniesImageLink = functions.firestore.document('Products/Dankie Jesu/Beanies/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getTraditionalImageLink = functions.firestore.document('Products/Dankie Jesu/Traditional/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getFormalImageLink = functions.firestore.document('Products/Dankie Jesu/Formal/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-// exports.getSmartCasualImageLink = functions.firestore.document('Products/Dankie Jesu/Smart Casual/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-//    console.log(snap.data()) 
-// })
-exports.getSportsImageLink = functions.firestore.document('Products/Kwanga/Sports/{productID}').onCreate( (snap : { data : () => any}, context : any) => {
-   console.log(snap.data())
-   console.log(context);
-   console.log(snap);
-   
-   
+exports.sendMail = functions.database.ref('/TestingEmail/{ID}').onCreate((snapshot, context) => {
+   console.log(snapshot.val());
+   //const value = snapshot.val()
+   const mailOptions = {
+      from: 'Testing <will.last.long3@gmail.com>',  // You can write any mail Adress you want this doesn't effect anything
+      to: 'willington.mnisi@gmail.com', // This mail adress should be filled with any mail you want to read it
+      title: 'Name',
+      subject: 'Your question has been answered', // Sample Subject for you template
+      html: '<body style="margin: 0; padding: 0;">'
+   }
+   var transporter : any = nodemailer.createTransport(smtpTransport({
+      service: 'gmail',
+      auth: {
+          user: 'Willington Mnisi <will.last.long3@gmail.com',
+          pass: 'iamlasting'
+      }
+   }))
+   transporter.sendMail(mailOptions, function (error : any, info : any) {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+  });
 })
-// exports.update = functions.firestore.document('Updates/{update}').onUpdate( (change: any, context : any) => {
-//     console.log(change.after);
-    
-// })
-// exports.checkSales = functions.firestore.document('userProfile').onUpdate( (change : any, context : any ) => {
-//     console.log(change);
 
-// })
+
+// var transporter = nodemailer.createTransport({
+//    service: 'gmail',
+//    auth: {
+//      user: 'youremail@gmail.com',
+//      pass: 'yourpassword'
+//    }
+//  });
+ 
+//  var mailOptions = {
+//    from: 'youremail@gmail.com',
+//    to: 'myfriend@yahoo.com',
+//    subject: 'Sending Email using Node.js',
+//    text: 'That was easy!'
+//  };
+ 
+//  transporter.sendMail(mailOptions, function(error, info){
+//    if (error) {
+//      console.log(error);
+//    } else {
+//      console.log('Email sent: ' + info.response);
+//    }
+//  });
+
