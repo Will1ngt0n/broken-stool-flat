@@ -32,18 +32,20 @@ export class QuestionsService {
     })
   }
   submitAnswer(docRef, question, name, email, answer){
-    return firebase.firestore().collection('AnsweredQuestions').doc(docRef).set({
-      question: question,
-      name: name,
-      email: email,
-      answer: answer,
-      timestamp: new Date().getTime()
-    }).then(() => {
-      firebase.firestore().collection('FAQs').doc(docRef).delete()
-      return 'success'
-    }).catch( () => {
-      return 'error'
+    return new Promise ( (resolve, reject) => {
+      return firebase.firestore().collection('AnsweredQuestions').doc(docRef).set({
+        question: question,
+        name: name,
+        email: email,
+        answer: answer,
+        timestamp: new Date().getTime()
+      }).then(() => {
+        firebase.firestore().collection('FAQs').doc(docRef).delete()
+      }).then( () => {
+        
+      })
     })
+
   }
   retrieveAnsweredQuestions(){
     return firebase.firestore().collection('AnsweredQuestions').get().then(result => {

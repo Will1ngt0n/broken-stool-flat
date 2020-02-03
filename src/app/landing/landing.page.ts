@@ -232,7 +232,7 @@ export class LandingPage implements OnInit {
   }
   ngOnInit() { ////copy
 
-
+    this.testingEmail()
     this.loadFormal('Kwanga', 'Formal')
     this.loadTraditional('Kwanga', 'Traditional')
     this.loadSmartCasual('Kwanga', 'Smart Casual')
@@ -737,6 +737,7 @@ export class LandingPage implements OnInit {
     
     this.checkValidity()
   }
+  generateCode : boolean
   checkValidity() {
     console.log('running');
     
@@ -750,6 +751,14 @@ export class LandingPage implements OnInit {
     } else {
       this.addForm = true
       console.log(this.addForm);
+    }
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
+      this.generateCode = false
+      console.log(this.generateCode);
+
+    } else {
+      this.generateCode = true
+      console.log(this.generateCode);
     }
     if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined || this.newProductCode !== '') {
       this.formHasValues = true
@@ -1915,18 +1924,28 @@ export class LandingPage implements OnInit {
         }
       }
     }
-    return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
-      console.log(result);
-        setTimeout(() => {
-          //this.reloadPage()
-        }, 30);
-      if (result === 'success') {
-        console.log(result);
-        this.showHideSearchDetails('close')
-        this.loadingCtrl.dismiss()
-        //return this.dismissPromo()
-      }
+    this.cutDoubleSpace(this.updateName).then(result => {
+      this.updateName = result
+    }).then( result => {
+      this.cutDoubleSpace(this.updateDescription).then(result => {
+        this.updateDescription = result
+      }).then( () => {
+        return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
+          console.log(result);
+            setTimeout(() => {
+              //this.reloadPage()
+            }, 30);
+          if (result === 'success') {
+            console.log(result);
+            this.showHideSearchDetails('close')
+            this.loadingCtrl.dismiss()
+            //return this.dismissPromo()
+          }
+        })
+      })
     })
+
+
   }
 
   // goToHelpDesk(){
@@ -5002,6 +5021,9 @@ export class LandingPage implements OnInit {
   cutDoubleSpace(para){
     return new Promise( (resolve, reject) => {
       let array : Array<any> = para.split('')
+      while(array[0] === ' '){
+        array.splice(0, 1)
+      }
       for(let i = 0; i < array.length; i++){
         if(array[i] === ' '){
           while(array[i + 1] === ' '){
@@ -5017,74 +5039,152 @@ export class LandingPage implements OnInit {
       resolve ((arrayReverse.reverse()).join(''))
     })
   }
-  findMatch(event){
+  findMatch(event, item){
     console.log(this.itemName);
     
     let val = event.target.value.toLowerCase()
     console.log(event.target.tagName);
-    
-    let match 
-    if(val !== '' && val !== '*'){
-      let checkVal : Array<string> = val.split('')
-      //console.log(checkVal);
-      console.log(checkVal);
-      
-      this.cutDoubleSpace(val).then((result) => {
-        console.log(result);
-        let joined = result
-        console.log(joined);
-        this.searchInventory(joined, event.target.tagName)
-        for(let key in this.allProducts){
-          if(joined === this.allProducts[key].data.name.toLowerCase()){
-            //console.log('joined');
-            //console.log('match');
-            this.newProductNameMatch = true
-            if(this.allProducts[key].category === this.selectedCategory){
-              this.categoryMatch = true
+    if(item === null){
+      let match 
+      if(val !== '' && val !== '*'){
+        let checkVal : Array<string> = val.split('')
+        //console.log(checkVal);
+        console.log(checkVal);
+        
+        this.cutDoubleSpace(val).then((result) => {
+          console.log(result);
+          let joined = result
+          console.log(joined);
+          this.searchInventory(joined, event.target.tagName)
+          for(let key in this.allProducts){
+            if(joined === this.allProducts[key].data.name.toLowerCase()){
+              //console.log('joined');
+              //console.log('match');
+              this.newProductNameMatch = true
+              if(this.allProducts[key].category === this.selectedCategory){
+                this.categoryMatch = true
+                break
+              }else{
+                this.categoryMatch = false
+              }
+              console.log(joined, this.allProducts[key].data.name.toLowerCase() );
               break
             }else{
+              //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              this.newProductNameMatch = false
               this.categoryMatch = false
+              //console.log('no match');
+              
             }
-            console.log(joined, this.allProducts[key].data.name.toLowerCase() );
-            break
-          }else{
-            //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
-            this.newProductNameMatch = false
-            this.categoryMatch = false
-            //console.log('no match');
-            
           }
-        }
-        this.checkValidity()
-      })
-
+          this.checkValidity()
+        })
+  
+      }else if(val === ''){
+        this.categoryMatch = false
+        this.searchInventoryVal = []
+      }
+    }else{
+      let match 
+      if(val !== '' && val !== '*'){
+        let checkVal : Array<string> = val.split('')
+        //console.log(checkVal);
+        console.log(checkVal);
+        
+        this.cutDoubleSpace(val).then((result) => {
+          console.log(result);
+          let joined = result
+          console.log(joined);
+          //this.searchInventory(joined, event.target.tagName)
+          for(let key in this.allProducts){
+            if(joined === this.allProducts[key].data.name.toLowerCase()){
+              //console.log('joined');
+              //console.log('match');
+              this.newProductNameMatch = true
+              if((this.allProducts[key].category === item.category) && (this.allProducts[key].productID !== item.productID)){
+                this.categoryUpdateMatch = true
+                console.log(this.categoryUpdateMatch);
+                
+                break
+              }else{
+                this.categoryUpdateMatch = false
+                console.log(this.categoryUpdateMatch);
+              }
+              console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              break
+            }else{
+              //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
+              this.newProductNameMatch = false
+              this.categoryUpdateMatch = false
+              console.log(this.categoryUpdateMatch);
+              //console.log('no match');
+              
+            }
+          }
+          //this.checkValidity()
+        })
+  
+      }else if(val === ''){
+        this.categoryMatch = false
+        this.searchInventoryVal = []
+      }
     }
-    console.log(match);
+
+   // console.log(match);
     
   }
   
   searchInventoryVal : Array<any> = []
+  searchSideInventory : Array<any> = []
   categoryMatch : boolean
+  categoryUpdateMatch : boolean
   searchInventory(event, tag){
-    //let val = event.target.value.toLowerCase()
-    let val = event.toLowerCase()
-    console.log(val);
-    if(val !== '' && val !== '*' && tag !== 'function'){
-      this.searchInventoryVal = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
-      for(let key in this.searchInventoryVal){
-        if((this.searchInventoryVal[key].category === this.selectedCategory) && tag !== 'function'){
-         // this.categoryMatch = true
-          console.log(this.searchInventoryVal[key]);
-          
-          break
-        }else{
-         // this.categoryMatch = false
-        }
-      }
+    let val = ''
+    if(event.target){
+      val = event.target.value.toLowerCase()
     }else{
-      this.searchInventoryVal = []
-     // this.categoryMatch = false
+      val = event.toLowerCase()
     }
+
+
+    console.log(val);
+    if(tag !== null){
+      if(val !== '' && val !== '*' && tag !== 'function'){
+        this.searchInventoryVal = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+        for(let key in this.searchInventoryVal){
+          if((this.searchInventoryVal[key].category === this.selectedCategory) && tag !== 'function'){
+           // this.categoryMatch = true
+            console.log(this.searchInventoryVal[key]);
+            
+            break
+          }else{
+           // this.categoryMatch = false
+          }
+        }
+      }else{
+        this.searchInventoryVal = []
+       // this.categoryMatch = false
+      }
+    }else if(tag === null){
+      if(val !== '' && val !== '*' && tag !== 'function'){
+        this.searchSideInventory = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+        for(let key in this.searchSideInventory){
+          if((this.searchSideInventory[key].category === this.selectedCategory) && tag !== 'function'){
+           // this.categoryMatch = true
+            console.log(this.searchSideInventory[key]);
+            
+            break
+          }else{
+           // this.categoryMatch = false
+          }
+        }
+      }else{
+        this.searchSideInventory = []
+       // this.categoryMatch = false
+      }
+    }
+    console.log(this.searchSideInventory);
+    
     console.log(this.searchInventoryVal);
     
   }
@@ -5121,7 +5221,16 @@ export class LandingPage implements OnInit {
     let event : object = {}
     //event['target']['value'] = this.itemName
     event = { target : {value : this.itemName, tagName : 'function'}}
-    this.findMatch(event)
+    this.findMatch(event, null)
     this.searchInventoryVal = []
+  }
+
+  testingEmail(){
+    console.log('adding');
+    
+    firebase.firestore().collection('TestingEmail').add({
+      email: 'will.last.long3@gmail.com',
+      answer: 'It is very easy to keep switching'
+    })
   }
 }
