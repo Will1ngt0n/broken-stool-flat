@@ -743,7 +743,7 @@ export class LandingPage implements OnInit {
     if(this.nativeCategory.nativeElement.disabled === true){
       this.selectedCategory = 'Select Category'
     }
-    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined) {
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.newProductCode === '' || this.newProductCode === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
       this.addForm = false
       console.log(this.addForm);
 
@@ -751,7 +751,7 @@ export class LandingPage implements OnInit {
       this.addForm = true
       console.log(this.addForm);
     }
-    if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined) {
+    if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined || this.newProductCode !== '') {
       this.formHasValues = true
       console.log(this.formHasValues, 'form has values');
      // this.btnClearForm.nativeElement.disabled = false
@@ -833,8 +833,27 @@ export class LandingPage implements OnInit {
       }
     }
     console.log(this.size);
+    let checkVal : Array<string> = this.itemName.split('')
+    //console.log(checkVal);
+    console.log(checkVal);
     
-    this.addProducts(number)
+    this.cutDoubleSpace(this.itemName).then((result : string) => {
+      console.log(result);
+      this.itemName = result
+      console.log(this.itemName)
+    }).then(result => {
+      //let array = this.itemDescription.split('')
+      this.cutDoubleSpace(this.description).then((result : string) => {
+        this.itemDescription = result
+        console.log(result);
+        
+      }).then( res => {
+        console.log('successful');
+              this.addProducts(number)
+      })
+
+    })
+
         
   }
   addProducts(numberOfProducts) {
@@ -4980,35 +4999,63 @@ export class LandingPage implements OnInit {
       resolve (array.reverse())
     })
   }
+  cutDoubleSpace(para){
+    return new Promise( (resolve, reject) => {
+      let array : Array<any> = para.split('')
+      for(let i = 0; i < array.length; i++){
+        if(array[i] === ' '){
+          while(array[i + 1] === ' '){
+            array.splice((i + 1), 1)
+          }
+        }
+      }
+      let arrayReverse : Array<any> = array.reverse()
+      while(arrayReverse[0] === ' '){
+        arrayReverse.splice(0, 1)
+        console.log(arrayReverse);
+    }
+      resolve ((arrayReverse.reverse()).join(''))
+    })
+  }
   findMatch(event){
     console.log(this.itemName);
     
     let val = event.target.value.toLowerCase()
+    console.log(event.target.tagName);
+    
     let match 
     if(val !== '' && val !== '*'){
       let checkVal : Array<string> = val.split('')
       //console.log(checkVal);
       console.log(checkVal);
       
-      this.cutNameArray(checkVal).then((result : Array<any>) => {
+      this.cutDoubleSpace(val).then((result) => {
         console.log(result);
-        let joined = result.join('')
-        console.log(joined.length);
-  
+        let joined = result
+        console.log(joined);
+        this.searchInventory(joined, event.target.tagName)
         for(let key in this.allProducts){
           if(joined === this.allProducts[key].data.name.toLowerCase()){
             //console.log('joined');
             //console.log('match');
             this.newProductNameMatch = true
+            if(this.allProducts[key].category === this.selectedCategory){
+              this.categoryMatch = true
+              break
+            }else{
+              this.categoryMatch = false
+            }
             console.log(joined, this.allProducts[key].data.name.toLowerCase() );
             break
           }else{
             //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
-            
+            this.newProductNameMatch = false
+            this.categoryMatch = false
             //console.log('no match');
             
           }
         }
+        this.checkValidity()
       })
 
     }
@@ -5017,18 +5064,31 @@ export class LandingPage implements OnInit {
   }
   
   searchInventoryVal : Array<any> = []
-  searchInventory(event){
-    let val = event.target.value.toLowerCase()
+  categoryMatch : boolean
+  searchInventory(event, tag){
+    //let val = event.target.value.toLowerCase()
+    let val = event.toLowerCase()
     console.log(val);
-    if(val !== '' && val !== '*'){
+    if(val !== '' && val !== '*' && tag !== 'function'){
       this.searchInventoryVal = this.allProducts.filter(item => item.data.name.toLowerCase().indexOf(val) >= 0)
+      for(let key in this.searchInventoryVal){
+        if((this.searchInventoryVal[key].category === this.selectedCategory) && tag !== 'function'){
+         // this.categoryMatch = true
+          console.log(this.searchInventoryVal[key]);
+          
+          break
+        }else{
+         // this.categoryMatch = false
+        }
+      }
     }else{
       this.searchInventoryVal = []
+     // this.categoryMatch = false
     }
     console.log(this.searchInventoryVal);
     
   }
-  newProductCode : string = ' '
+  newProductCode : string = ''
   autoGenerateCode(){
     let alpha_A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     let alpha_a = 'abcdefghijlmnopqrstuvwxyz'
@@ -5043,10 +5103,25 @@ export class LandingPage implements OnInit {
     console.log(first2);
     console.log(first3);
     console.log(second2);
-    
+    let search : boolean
     
     
     console.log(first4);
-    
+    this.checkValidity()
+    for(let key in this.allProducts){
+      if(this.allProducts[key].data.productCode){
+        if(this.newProductCode === this.allProducts[key].data.productCode){
+          this.autoGenerateCode()
+        }
+      }
+    }
+  }
+  autoFillItemName(name){
+    this.itemName = name
+    let event : object = {}
+    //event['target']['value'] = this.itemName
+    event = { target : {value : this.itemName, tagName : 'function'}}
+    this.findMatch(event)
+    this.searchInventoryVal = []
   }
 }
