@@ -10,6 +10,7 @@ Disclaimer -->
 <ion-content>
 
     <div class="answer-questions" id="disappear" *ngIf="showQA === true">
+        <div class="toDismiss" (click)="close_query()"></div>
         <div class="inner-to-answer">
             <div class="header">
                 <ion-button id="closer" (click)="close_query()" fill="clear">
@@ -50,12 +51,12 @@ Disclaimer -->
             </div>
         </div>
     </div>
-    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="admin">
+    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="admin === true">
         <ion-button (click)="asnwerQuestions()">
             <ion-icon ios="ios-paper-plane" md="md-paper-plane"></ion-icon> <i id="fab-text">Answer Questions</i>
         </ion-button>
     </ion-fab>
-    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="!admin">
+    <ion-fab id="fab-button" vertical="bottom" horizontal="end" *ngIf="admin === false">
         <ion-button (click)="askUs()">
             <ion-icon name="help"></ion-icon><i id="fab-text">Ask Us</i>
         </ion-button>

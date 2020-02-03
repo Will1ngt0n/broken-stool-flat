@@ -489,6 +489,15 @@
 }
 
 #fab-button{
-  display: none
+  // display: none
+  animation: faderIn 500ms;
 }
 
+.toDismiss{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  // background-color: red;
+  cursor: pointer;
+  z-index: -10;
+}

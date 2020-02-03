@@ -399,7 +399,7 @@ export class HomePage {
     this.changingValue()
   }
 
-  admin;
+  admin: boolean = false;
   checkAuthState() {
     return this.authService.checkingAuthStateHome().then(result => {
       if (result !== null) {
@@ -413,6 +413,8 @@ export class HomePage {
               this.getQuestions()
               this.getFAQs()
             }
+            console.log(this.admin);
+            
           })
           // this.navCtrl.navigate(['/landing'])
         }
