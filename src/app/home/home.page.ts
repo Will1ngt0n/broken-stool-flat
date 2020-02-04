@@ -321,7 +321,7 @@ export class HomePage {
     await alert.present();
   }
   changeTab(tabName) {
-    if (tabName === 'FAQs' || tabName === 'Terms and Privacy Policy' || tabName === 'Disclaimer' || tabName === 'Payment Process' || tabName === 'About') {
+    if (tabName === 'FAQs' || tabName === 'Terms and Privacy Policy' || tabName === 'Disclaimer' || tabName === 'Payment Process' || tabName === 'About Company') {
       this.loc.go('/home/' + tabName)
       this.toggleTab(tabName)
     }
