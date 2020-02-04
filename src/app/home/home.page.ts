@@ -356,6 +356,12 @@ export class HomePage {
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "500"
+
+      document.getElementById("oneS").style.fontWeight = "bold"
+      document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.fontWeight = "500"
     }
     else if (selectedTab === "Terms and Privacy Policy") {
       document.getElementById("one").style.fontWeight = "500"
@@ -363,6 +369,12 @@ export class HomePage {
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "500"
+
+      document.getElementById("oneS").style.fontWeight = "500"
+      document.getElementById("twoS").style.fontWeight = "bold"
+      document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.fontWeight = "500"
     }
     else if (selectedTab === "Payment Process") {
       document.getElementById("one").style.fontWeight = "500"
@@ -370,6 +382,12 @@ export class HomePage {
       document.getElementById("three").style.fontWeight = "bold"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "500"
+
+      document.getElementById("oneS").style.fontWeight = "500"
+      document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("threeS").style.fontWeight = "bold"
+      document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.fontWeight = "500"
     }
     else if (selectedTab === "About Company") {
       document.getElementById("one").style.fontWeight = "500"
@@ -377,6 +395,13 @@ export class HomePage {
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "bold"
       document.getElementById("five").style.fontWeight = "500"
+
+
+      document.getElementById("oneS").style.fontWeight = "500"
+      document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("fourS").style.fontWeight = "bold"
+      document.getElementById("fiveS").style.fontWeight = "500"
     }
     else if (selectedTab === "Disclaimer") {
       document.getElementById("one").style.fontWeight = "500 "
@@ -384,6 +409,12 @@ export class HomePage {
       document.getElementById("three").style.fontWeight = "500"
       document.getElementById("four").style.fontWeight = "500"
       document.getElementById("five").style.fontWeight = "bold"
+      
+      document.getElementById("oneS").style.fontWeight = "500 "
+      document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.fontWeight = "bold"
     }
 
 
@@ -414,7 +445,7 @@ export class HomePage {
               this.getFAQs()
             }
             console.log(this.admin);
-            
+
           })
           // this.navCtrl.navigate(['/landing'])
         }

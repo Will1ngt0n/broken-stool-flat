@@ -100,24 +100,23 @@ Disclaimer -->
         </div>
         <div id="side-menu">
             <div>
-                <p (click)="goHome()">
-                    Dankie Jesu
-                </p>
+                <p id="yesAdmin" (click)="goHome()" *ngIf="admin">Dankie Jesu</p>
+                <p id="noAdmin" *ngIf="!admin">Dankie Jesu</p>
             </div>
             <div>
-                <p (click)="changeTab('FAQs')">FAQs</p>
+                <p id="oneS" (click)="changeTab('FAQs')">FAQs</p>
             </div>
             <div>
-                <p (click)="changeTab('Terms and Privacy Policy')">Terms and Privacy Policy</p>
+                <p id="twoS" (click)="changeTab('Terms and Privacy Policy')">Terms and Privacy Policy</p>
             </div>
             <div>
-                <p (click)="changeTab('Payment Process')">Payment Process</p>
+                <p id="threeS" (click)="changeTab('Payment Process')">Payment Process</p>
             </div>
             <div>
-                <p (click)="changeTab('About Company')">About Company</p>
+                <p id="fourS" (click)="changeTab('About Company')">About Company</p>
             </div>
             <div>
-                <p (click)="changeTab('Disclaimer')">Disclaimer</p>
+                <p id="fiveS" (click)="changeTab('Disclaimer')">Disclaimer</p>
             </div>
         </div>
         <div class="inner-content">

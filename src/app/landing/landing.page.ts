@@ -281,7 +281,7 @@ export class LandingPage implements OnInit {
       console.log(this.isOnline);
       
       console.log('you are offline');
-      
+      alert("Please check your internet connectivity, we can't connect to the database.")
     }
     //this.testingEmail()
 

@@ -34,7 +34,7 @@
         <img [src]="updatePic" *ngIf='updatePic' alt="">
       </label>
       <div class="product-information-search">
-        <input type="text" placeholder="Item Name" maxlength="25" (keyup)='findMatch($event, item); checkValidity();'
+        <input type="text" placeholder="Product name" maxlength="25" (keyup)='findMatch($event, item); checkValidity();'
           [(ngModel)]='updateName'>
         <span *ngIf='categoryUpdateMatch'>This item already exists in this category</span>
         <input type="text" placeholder="Price (R)" (keyup)='changeSearchPrice();' [(ngModel)]='updatePrice'>
@@ -132,7 +132,7 @@
               <p><b>{{item.details.userID}}</b></p>
               <p>R {{item.details.grandTotal}}</p>
               <p>REF: {{item.refNo}}</p>
-              <p>Items ({{item.details.numberOfItems}})</p>
+              <p>Products ({{item.details.numberOfItems}})</p>
 
             </ion-card>
           </div>
@@ -144,7 +144,7 @@
           </div>
           <div class="items-list">
             <ion-card class="item-card-list " *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
-              <p class="floating" id="bottom-right">Items ({{item.noOfItems}})</p>
+              <p class="floating" id="bottom-right">Products ({{item.noOfItems}})</p>
               <p *ngIf="item && !item.details.name"><b>Please wait...</b></p>
               <p><b>{{item.details.name}}</b></p>
               <p *ngIf="!item.details.totalPrice">Loading</p>
@@ -332,7 +332,7 @@
       <div id="right">
 
         <div class="adding">
-          <h4>Add Item</h4>
+          <h4>Add Product</h4>
           <select #departmentCombo (change)="changeDepartment($event); checkValidity()">
             <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
 
@@ -342,7 +342,7 @@
             <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
           </select><br>
 
-          <input type="text" maxlength='25' class="user-input" placeholder="Item name"
+          <input type="text" maxlength='25' class="user-input" placeholder="Product name"
             [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
             (keyup)='checkItemName(); findMatch($event, null)'>
           <span id="already-exists" *ngIf='categoryMatch'>An item with that name already exists in selected
@@ -463,7 +463,7 @@
               <p><b>{{item.details.name}}</b></p>
               <p>R {{item.details.totalPrice}}</p>
               <p>REF: {{item.refNo}}</p>
-              <p>Items ({{item.noOfItems}})</p>
+              <p>Products ({{item.noOfItems}})</p>
             </div>
           </div>
 
@@ -480,7 +480,7 @@
             <p><b>{{item.details.userID}}</b></p>
             <p>R {{item.details.totalPrice}}</p>
             <p>REF: {{item.refNo}}</p>
-            <p>Items ({{item.details.numberOfItems}})</p>
+            <p>Products ({{item.details.numberOfItems}})</p>
           </div>
         </div>
         <div class="forInventory" *ngIf="listOfItems === 3">
@@ -533,13 +533,13 @@
     </div>
     <div id="right-items-list">
       <div class="top-bar">
-        Add Item
+        Add Product
         <ion-button fill="clear" color="dark" icon-only id="dismiss-button" (click)="hideSideMenu()">
           <ion-icon name="close"></ion-icon>
         </ion-button>
       </div>
       <div *ngIf="adding === true" class="adding">
-        <h4>Add Item</h4>
+        <h4>Add Product</h4>
         <select #mbdepartmentCombo (change)="changeDepartment($event);">
           <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
 
@@ -549,7 +549,7 @@
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
-        <input type="text" class="user-input" placeholder="Item name" maxlength="25"
+        <input type="text" class="user-input" placeholder="Product name" maxlength="25"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
           (keyup)='findMatch($event, null); checkValidity()'>
         <ion-list *ngFor="let item of searchInventoryVal">
