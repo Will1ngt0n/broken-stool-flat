@@ -21,8 +21,28 @@ export class LoginPage implements OnInit {
       password: [this.password, Validators.compose([Validators.required])]
     })
   }
-
+  isOnline : boolean
+  isCached : boolean
   ngOnInit() {
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = true
+    }else{
+      this.isOnline = false
+      this.isCached = false
+    }
+  }
+  ionViewWillEnter(){
+    console.log('ion view did enter');
+    if(navigator.onLine){
+      this.isOnline = true
+      this.reload()
+    }else{
+      this.isOnline = false
+    }
+  }
+  reload() {
+    
   }
   resetPassword() {
     this.email = this.loginForm.get('email').value

@@ -92,36 +92,7 @@ export class SalesSpecialsPage implements OnInit {
 
 
 
-    this.loadAll()
-    //this.getKwangaSales('Kwanga')
-    this.iterateThrough()
 
-
-    console.log(this.department);
-    //this.productsService.getCategories()
-    // this.loadDankieJesuItems()
-    // this.loadKwangaItems()
-    this.colors = { red: '' }
-    this.accessory = false;
-    this.summer = false;
-    this.department = undefined
-    this.addForm = false
-    this.formHasValues = false
-    //this.loadSummerItems()
-
-    //this.loadBrandProducts()
-
-    //this.getSummerItems()
-    console.log(this.department);
-    // this.getAllItems()
-   // this.orderItems()
-
-    this.getPendingOrders()
-    this.getReadyOrders()
-    this.getClosedOrders()
-    this.getInventory()
-    //this.loadSales()
-    this.loadSalesSnap()
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()
@@ -155,31 +126,135 @@ export class SalesSpecialsPage implements OnInit {
       console.log(result);
     })
   }
+  isOnline : boolean
+  isCached : boolean
   ngOnInit() {
-    return this.authService.checkingAuthState().then( result => {
-      if(result == null){
-        this.route.navigate(['/login'])
-      }else{
-        //this.loadPictures()
-        this.activatedRoute.queryParams.subscribe(params => {
-          console.log(params);
-          this.query = params['query']
-          console.log(this.query);
-          if(this.query === 'viewAll'){
-            this.toggleAll()
-          }else if(this.query === 'Dankie Jesu'){
-           this.toggleDankie()
-          }else{
-            this.toggleKwanga()
-          }
-          // this.loadPictures().then(result => {
-          //   console.log(result);
-            
-          // })
-        })
-      }
-    })
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = false
+      this.loadAll()
+      //this.getKwangaSales('Kwanga')
+      this.iterateThrough()
+  
+  
+      console.log(this.department);
+      //this.productsService.getCategories()
+      // this.loadDankieJesuItems()
+      // this.loadKwangaItems()
+      this.colors = { red: '' }
+      this.accessory = false;
+      this.summer = false;
+      this.department = undefined
+      this.addForm = false
+      this.formHasValues = false
+      //this.loadSummerItems()
+  
+      //this.loadBrandProducts()
+  
+      //this.getSummerItems()
+      console.log(this.department);
+      // this.getAllItems()
+     // this.orderItems()
+  
+      this.getPendingOrders()
+      this.getReadyOrders()
+      this.getClosedOrders()
+      this.getInventory()
+      //this.loadSales()
+      this.loadSalesSnap()
 
+          //this.loadPictures()
+          this.activatedRoute.queryParams.subscribe(params => {
+            console.log(params);
+            this.query = params['query']
+            console.log(this.query);
+            if(this.query === 'viewAll'){
+              this.toggleAll()
+            }else if(this.query === 'Dankie Jesu'){
+             this.toggleDankie()
+            }else{
+              this.toggleKwanga()
+            }
+            // this.loadPictures().then(result => {
+            //   console.log(result);
+              
+            // })
+          })
+        
+    }else{
+      this.isOnline = false
+      this.isCached = false
+    }
+
+
+  }
+  reload() {
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = false
+      this.loadAll()
+      //this.getKwangaSales('Kwanga')
+      this.iterateThrough()
+  
+  
+      console.log(this.department);
+      //this.productsService.getCategories()
+      // this.loadDankieJesuItems()
+      // this.loadKwangaItems()
+      this.colors = { red: '' }
+      this.accessory = false;
+      this.summer = false;
+      this.department = undefined
+      this.addForm = false
+      this.formHasValues = false
+      //this.loadSummerItems()
+  
+      //this.loadBrandProducts()
+  
+      //this.getSummerItems()
+      console.log(this.department);
+      // this.getAllItems()
+     // this.orderItems()
+  
+      this.getPendingOrders()
+      this.getReadyOrders()
+      this.getClosedOrders()
+      this.getInventory()
+      //this.loadSales()
+      this.loadSalesSnap()
+
+          //this.loadPictures()
+          this.activatedRoute.queryParams.subscribe(params => {
+            console.log(params);
+            this.query = params['query']
+            console.log(this.query);
+            if(this.query === 'viewAll'){
+              this.toggleAll()
+            }else if(this.query === 'Dankie Jesu'){
+             this.toggleDankie()
+            }else{
+              this.toggleKwanga()
+            }
+            // this.loadPictures().then(result => {
+            //   console.log(result);
+              
+            // })
+          })
+        
+    }else{
+      this.isOnline = false
+      //this.isCached = false
+    }
+
+
+  }
+  ionViewWillEnter(){
+    console.log('ion view did enter');
+    if(navigator.onLine){
+      this.isOnline = true
+    }else{
+      this.isOnline = false
+    }
   }
   getKwangaSales(query){
     for(let i in this.allSales){

@@ -30,38 +30,78 @@ export class PendingOrderPage implements OnInit {
   totalQuantity : number
   routingPage
   constructor(public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, private route : Router, private activatedRoute : ActivatedRoute, private productsService: ProductsService) { }
-​
+
+  isOnline : boolean
+  isCached : boolean
   ngOnInit() {
-    
-    return this.authService.checkingAuthState().then( result => {
-      if(result == null){
-        this.route.navigate(['/login'])
-      }else{
-        this.activatedRoute.queryParams.subscribe(result => {
-          //this.item = result.item
-          //console.log(this.item);
-          console.log(result);
-          this.refNo = result.refNo
-          this.status = 'quit'
-          let name = result.user
-          this.userID = result.userID
-          console.log(name);
-          this.cell = result.cell
-          this.getUser(this.userID)
-          console.log(this.cell);
-          this.routingPage = result.currentPage
-          console.log(this.routingPage);
-          
-          this.getOrder(this.refNo, name)
-          this.refreshPendingOrder()
-          // this.loadPictures().then(result => {
-          //   console.log(result);
-            
-          // })
-        })
+
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = true
+      this.activatedRoute.queryParams.subscribe(result => {
+        //this.item = result.item
+        //console.log(this.item);
+        console.log(result);
+        this.refNo = result.refNo
+        this.status = 'quit'
+        let name = result.user
+        this.userID = result.userID
+        console.log(name);
+        this.cell = result.cell
+        this.getUser(this.userID)
+        console.log(this.cell);
+        this.routingPage = result.currentPage
+        console.log(this.routingPage);
+        
+        this.getOrder(this.refNo, name)
+        this.refreshPendingOrder()
+      })
+    }else{
+      this.isOnline = false
+      this.isCached = false
+    }
+
+ 
+  }
+  reload() {
+
+    if(navigator.onLine){
+      this.isOnline = true
+
+      this.activatedRoute.queryParams.subscribe(result => {
+        //this.item = result.item
+        //console.log(this.item);
+        console.log(result);
+        this.refNo = result.refNo
+        this.status = 'quit'
+        let name = result.user
+        this.userID = result.userID
+        console.log(name);
+        this.cell = result.cell
+        this.getUser(this.userID)
+        console.log(this.cell);
+        this.routingPage = result.currentPage
+        console.log(this.routingPage);
+        
+        this.getOrder(this.refNo, name)
+        this.refreshPendingOrder()
+      })
+    }else{
+      this.isOnline = false
+    }
+
+ 
+  }
+  ionViewWillEnter(){
+    console.log('ion view did enter');
+    if(navigator.onLine){
+      this.isOnline = true
+      if(this.isCached === false){
+        this.reload()
       }
-    })
-​ 
+    }else{
+      this.isOnline = false
+    }
   }
   signOutPopup(){
     this.presentLogoutConfirmAlert()

@@ -108,7 +108,7 @@
             </ion-checkbox>
           </div>
         </div>
-        <input type="text" placeholder="Item Name" (keyup)='findMatch($event, item)' [(ngModel)]='updateName' /><br />
+        <input type="text" placeholder="Item Name" (keyup)='findMatch($event)' [(ngModel)]='updateName' /><br />
         ​<span id="exists" *ngIf="categoryMatch === true">This item already exists on this category</span>
         <input type="number" placeholder="Price" [(ngModel)]='updatePrice' />
         <br />

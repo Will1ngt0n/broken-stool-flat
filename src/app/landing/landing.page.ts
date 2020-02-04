@@ -141,43 +141,7 @@ export class LandingPage implements OnInit {
   constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     //console.log(this.department);
 
-    this.kwangaSpecialsPicture = undefined
-    this.dankieJesuSpecialsPicture = undefined
-    this.allSpecialsPicture = undefined
-    this.allProducts = []
-    this.pendingOrders = []
-    this.history = []
-    //this.productService.getCategories()
-    this.loadTotalNumberOfProducts()
-    this.getPendingOrders()
 
-
-    this.colors = { red: '' }
-    this.accessory = false;
-    this.summer = false;
-    this.department = 'Select Department'
-    this.selectedCategory = 'Select Category'
-    this.addForm = false
-    this.formHasValues = false
-    this.itemName = ''
-    this.price = ''
-    this.description = ''
-    this.size = []
-    this.color = []
-    this.picture = undefined
-    let date = moment(new Date()).format('LLLL');
-    let tee = moment(new Date('10/12/2019')).format('LLLL')
-    //console.log(date);
-    //console.log(tee);
-    if (date > tee) {
-      //console.log(date);
-
-    }
-
-    this.getReadyOrders()
-    this.getOrderHistory()
-    this.getInventory()
-    this.loader()
   }
   signOutPopup() {
     this.presentLogoutConfirmAlert()
@@ -230,36 +194,199 @@ export class LandingPage implements OnInit {
   loader(){
     
   }
+  isOnline : boolean
+  isCached : boolean
   ngOnInit() { ////copy
+    console.log('On ngOninit');
+    
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = true
+      console.log(this.isOnline);
+      
+      this.kwangaSpecialsPicture = undefined
+      this.dankieJesuSpecialsPicture = undefined
+      this.allSpecialsPicture = undefined
+      this.allProducts = []
+      this.pendingOrders = []
+      this.history = []
+      //this.productService.getCategories()
+      this.loadTotalNumberOfProducts()
+      this.getPendingOrders()
+  
+  
+      this.colors = { red: '' }
+      this.accessory = false;
+      this.summer = false;
+      this.department = 'Select Department'
+      this.selectedCategory = 'Select Category'
+      this.addForm = false
+      this.formHasValues = false
+      this.itemName = ''
+      this.price = ''
+      this.description = ''
+      this.size = []
+      this.color = []
+      this.picture = undefined
+      let date = moment(new Date()).format('LLLL');
+      let tee = moment(new Date('10/12/2019')).format('LLLL')
+      //console.log(date);
+      //console.log(tee);
+      if (date > tee) {
+        //console.log(date);
+  
+      }
+  
+      this.getReadyOrders()
+      this.getOrderHistory()
+      this.getInventory()
+      this.loader()
+      console.log('you are online');
+      console.log(this.allProducts.length);
+    
+      //if(this.allProducts.length === 0){
+        this.presentLoader()
+        //this.loadDankieJesuItems()
+        //this.loadKwangaItems()
+        this.inventoryLength = 0
+  
+        this.load16CategoryItems()
+      //}
+      console.log('Oninit did run');
+  
+      this.nativeCategory.nativeElement.disabled = true
+      
+      //snapshots
+      this.refreshOrderHistory()
+      this.getPendingOrdersSnap()
+      this.loadFormal('Kwanga', 'Formal')
+      this.loadTraditional('Kwanga', 'Traditional')
+      this.loadSmartCasual('Kwanga', 'Smart Casual')
+      this.loadSportsWear('Kwanga', 'Sports')
+      this.loadVests('Dankie Jesu', 'Vests')
+      this.loadCaps('Dankie Jesu', 'Caps')
+      this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+      this.loadShorts('Dankie Jesu', 'Shorts')
+      this.loadCropTops('Dankie Jesu', 'Crop Tops')
+      this.loadTShirts('Dankie Jesu', 'T-Shirts')
+      this.loadBags('Dankie Jesu', 'Bags')
+      this.loadSweaters('Dankie Jesu', 'Sweaters')
+      this.loadHoodies('Dankie Jesu', 'Hoodies')
+      this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+      this.loadBeanies('Dankie Jesu', 'Beanies')
 
-    this.testingEmail()
-    this.loadFormal('Kwanga', 'Formal')
-    this.loadTraditional('Kwanga', 'Traditional')
-    this.loadSmartCasual('Kwanga', 'Smart Casual')
-    this.loadSportsWear('Kwanga', 'Sports')
-    this.loadVests('Dankie Jesu', 'Vests')
-    this.loadCaps('Dankie Jesu', 'Caps')
-    this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-    this.loadShorts('Dankie Jesu', 'Shorts')
-    this.loadCropTops('Dankie Jesu', 'Crop Tops')
-    this.loadTShirts('Dankie Jesu', 'T-Shirts')
-    this.loadBags('Dankie Jesu', 'Bags')
-    this.loadSweaters('Dankie Jesu', 'Sweaters')
-    this.loadHoodies('Dankie Jesu', 'Hoodies')
-    this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-    this.loadBeanies('Dankie Jesu', 'Beanies')
-    // this.loadPictures()
-    //this.load16CategoryItems()
-    // return this.authService.checkingAuthState().then( result => {
-    //   if(result === null){
-    //     this.route.navigate(['/login'])
-    //   }else{
-    //     //return this.loadPictures()
+    }else{
+      this.isOnline = false
+      this.isCached = false
+      console.log(this.isOnline);
+      
+      console.log('you are offline');
+      
+    }
+    //this.testingEmail()
 
-    //   }
-    // })
+  }
+  reload() { ////copy
+    console.log('On ngOninit');
+    
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = true
+      console.log(this.isOnline);
+      
+      this.kwangaSpecialsPicture = undefined
+      this.dankieJesuSpecialsPicture = undefined
+      this.allSpecialsPicture = undefined
+      this.allProducts = []
+      this.pendingOrders = []
+      this.history = []
+      //this.productService.getCategories()
+      this.loadTotalNumberOfProducts()
+      this.getPendingOrders()
+  
+  
+      this.colors = { red: '' }
+      this.accessory = false;
+      this.summer = false;
+      this.department = 'Select Department'
+      this.selectedCategory = 'Select Category'
+      this.addForm = false
+      this.formHasValues = false
+      this.itemName = ''
+      this.price = ''
+      this.description = ''
+      this.size = []
+      this.color = []
+      this.picture = undefined
+      let date = moment(new Date()).format('LLLL');
+      let tee = moment(new Date('10/12/2019')).format('LLLL')
+      //console.log(date);
+      //console.log(tee);
+      if (date > tee) {
+        //console.log(date);
+  
+      }
+  
+      this.getReadyOrders()
+      this.getOrderHistory()
+      this.getInventory()
+      this.loader()
+      console.log('you are online');
+      console.log(this.allProducts.length);
+    
+      //if(this.allProducts.length === 0){
+        this.presentLoader()
+        //this.loadDankieJesuItems()
+        //this.loadKwangaItems()
+        this.inventoryLength = 0
+  
+        this.load16CategoryItems()
+      //}
+      console.log('Oninit did run');
+  
+      this.nativeCategory.nativeElement.disabled = true
+      
+      //snapshots
+      this.refreshOrderHistory()
+      this.getPendingOrdersSnap()
+      this.loadFormal('Kwanga', 'Formal')
+      this.loadTraditional('Kwanga', 'Traditional')
+      this.loadSmartCasual('Kwanga', 'Smart Casual')
+      this.loadSportsWear('Kwanga', 'Sports')
+      this.loadVests('Dankie Jesu', 'Vests')
+      this.loadCaps('Dankie Jesu', 'Caps')
+      this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+      this.loadShorts('Dankie Jesu', 'Shorts')
+      this.loadCropTops('Dankie Jesu', 'Crop Tops')
+      this.loadTShirts('Dankie Jesu', 'T-Shirts')
+      this.loadBags('Dankie Jesu', 'Bags')
+      this.loadSweaters('Dankie Jesu', 'Sweaters')
+      this.loadHoodies('Dankie Jesu', 'Hoodies')
+      this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+      this.loadBeanies('Dankie Jesu', 'Beanies')
+
+    }else{
+      this.isOnline = false
+      console.log(this.isOnline);
+      
+      console.log('you are offline');
+      
+    }
+    //this.testingEmail()
+
   }
   load16CategoryItems(){
+    console.log(navigator.onLine);
+    
+
+    // setTimeout(() => {
+    //   if(this.allProducts.length === 0){
+    //    // alert('There\' a problem loading the items, please check your internet connection')
+    //    this.errorLoading()
+    //   }else{
+    //     alert('Items have been loaded')
+    //   }
+    // }, 300000);
     return this.productService.load16CategoryItems().then((result : any) => {
       console.log(result)
       if(result !== null && result.length > 0){
@@ -901,6 +1028,7 @@ export class LandingPage implements OnInit {
     this.picture = undefined
     this.myUpload = "../../assets/imgs/default.png"
     this.newProductCode = ''
+    this.generateCode = false
     //document.getElementById('accessory')['checked'] = false;
     //document.getElementById('summer')['checked'] = false;
     this.fileInput.nativeElement.value = ''
@@ -1933,11 +2061,10 @@ export class LandingPage implements OnInit {
       this.cutDoubleSpace(this.updateDescription).then(result => {
         this.updateDescription = result
       }).then( () => {
+
         return this.productService.updateItemsListItem(this.updateProductID, this.updateBrand, this.updateCategory, this.updatePrice, this.updateDescription, this.updateName, this.itemSizes, this.pictureUpdate, this.itemColors).then(result => {
           console.log(result);
-            setTimeout(() => {
-              //this.reloadPage()
-            }, 30);
+
           if (result === 'success') {
             console.log(result);
             this.showHideSearchDetails('close')
@@ -1970,6 +2097,28 @@ export class LandingPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async errorLoading() {
+    const alert = await this.alertController.create({
+      header: 'Error!',
+      message: 'We are having a problem loading your items, please reload or check your internet connection',
+      buttons: [
+        {
+          text: 'Reload',
+          handler: (reload) => {
+
+          }
+        },
+        {
+          text: 'Okay',
+          handler: (okay) => {
+            
+          }
+        }
+      ]
+    })
+    await alert.present()
   }
   async deleteItem(productID, brand, category, item) {
     const alert = await this.alertController.create({
@@ -2062,29 +2211,26 @@ export class LandingPage implements OnInit {
 
   ionViewWillEnter(){
     console.log('ion view did enter');
-    
+    if(navigator.onLine){
+      this.isOnline = true
+      console.log('isOnline', this.isOnline);
+      if(this.isCached === false){
+        this.reload()
+      }
+    }else{
+      this.isOnline = false
+      console.log('isOnline', this.isOnline);
+    }
   }
 
   ionViewDidEnter(){
+    //this.ionViewDidLoad()
+
     console.log('ion view will enter');
     // for(let key in this.allProducts){
     //   this.allProducts.splice(Number(key), (this.allProducts.length - 1))
     // }
-    console.log(this.allProducts.length);
-    
-    if(this.allProducts.length === 0){
-      this.presentLoader()
-      //this.loadDankieJesuItems()
-      //this.loadKwangaItems()
-      this.inventoryLength = 0
 
-      this.load16CategoryItems()
-    }
-    console.log('Oninit did run');
-
-    this.nativeCategory.nativeElement.disabled = true
-    this.refreshOrderHistory()
-    this.getPendingOrdersSnap()
   }
   ionViewWillLeave(){
     console.log('ion view will leave')
@@ -2101,6 +2247,29 @@ export class LandingPage implements OnInit {
     
   }
   ionViewDidLoad(){
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
+    console.log('ion view did load');
     console.log('ion view did load');
     
   }
