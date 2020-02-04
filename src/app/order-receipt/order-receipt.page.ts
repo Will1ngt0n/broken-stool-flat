@@ -130,38 +130,86 @@ export class OrderReceiptPage implements OnInit {
    goBack(){
      this.route.navigate([this.routingPage])
    }
+   isOnline : boolean
+   isCached : boolean
   ngOnInit() {
-    return this.authService.checkingAuthState().then( result => {
-      if(result == null){
-        this.route.navigate(['/login'])
-      }else{
-        this.activatedRoute.queryParams.subscribe(result => {
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = true
+      this.activatedRoute.queryParams.subscribe(result => {
+        console.log(result);
+        
+        //this.item = result.item
+        //console.log(this.item);
+        console.log(result);
+        this.refNo = result.refNo
+        let name = result.user
+        this.userID = result.userID
+        console.log(this.userID);
+        this.getUser(this.userID)
+        console.log(name);
+        this.cell = result.cell
+        console.log(this.cell);
+        this.routingPage = result.link
+        console.log(this.routingPage);
+        //this.presentLoading()
+        this.getOrderHistory(this.refNo, name)
+        this.loadPictures().then(result => {
           console.log(result);
           
-          //this.item = result.item
-          //console.log(this.item);
-          console.log(result);
-          this.refNo = result.refNo
-          let name = result.user
-          this.userID = result.userID
-          console.log(this.userID);
-          this.getUser(this.userID)
-          console.log(name);
-          this.cell = result.cell
-          console.log(this.cell);
-          this.routingPage = result.link
-          console.log(this.routingPage);
-          //this.presentLoading()
-          this.getOrderHistory(this.refNo, name)
-          this.loadPictures().then(result => {
-            console.log(result);
-            
-          })
-    
         })
+  
+      })
+    }else{
+      this.isOnline = false
+      this.isCached = false
+    }
+
+  }
+  reload() {
+    if(navigator.onLine){
+      this.isOnline = true
+      this.isCached = true
+      this.activatedRoute.queryParams.subscribe(result => {
+        console.log(result);
+        
+        //this.item = result.item
+        //console.log(this.item);
+        console.log(result);
+        this.refNo = result.refNo
+        let name = result.user
+        this.userID = result.userID
+        console.log(this.userID);
+        this.getUser(this.userID)
+        console.log(name);
+        this.cell = result.cell
+        console.log(this.cell);
+        this.routingPage = result.link
+        console.log(this.routingPage);
+        //this.presentLoading()
+        this.getOrderHistory(this.refNo, name)
+        this.loadPictures().then(result => {
+          console.log(result);
+          
+        })
+  
+      })
+    }else{
+      this.isOnline = false
+      this.isCached = false
+    }
+
+  }
+  ionViewWillEnter(){
+    console.log('ion view did enter');
+    if(navigator.onLine){
+      this.isOnline = true
+      if(this.isCached === false){
+        this.reload()
       }
-    })
-​
+    }else{
+      this.isOnline = false
+    }
   }
   getUser(userID){
     return this.productsService.loadUser(userID).then(result => {

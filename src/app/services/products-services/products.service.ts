@@ -505,35 +505,42 @@ return new Promise((resolve, reject)  => {
   }
   updateItemsListItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes, picture, colors){
     console.log(picture,' I am pictrue');
-    
-
-    return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
-      price : Number(itemPrice),
-      description : itemDescription,
-      name : itemName,
-      size: sizes,
-      color: colors
-    }).then(result => {
-      if(picture !== undefined){
-        console.log(picture);
-        
-        firebase.storage().ref('clothes/' + itemID).put(picture).then(result => {
-            console.log(result);
-            result.ref.getDownloadURL().then(url => {
-              firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
-               pictureLink: url,
-                hideItem: false
-              })
-            })
-            console.log('Sad');
+    return new Promise( (resolve, reject) => {
+      firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+        price : Number(itemPrice),
+        description : itemDescription,
+        name : itemName,
+        size: sizes,
+        color: colors
+      })
+      .then(result => {
+        if(picture !== undefined){
+          console.log(picture);
           
-        })
-      }else{
-        console.log('Picture is undefined');
-        
-      }
-      return 'success'
+          firebase.storage().ref('clothes/' + itemID).put(picture)
+          .then(result => {
+              console.log(result);
+              result.ref.getDownloadURL()
+              .then(url => {
+                firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
+                 pictureLink: url,
+                  hideItem: false
+                })
+                .then( () => {
+                  resolve ('success')
+                })
+              })
+              console.log('Sad');
+          })
+        }else{
+          console.log('Picture is undefined');
+          resolve ('success')
+        }
+
+      })
     })
+
+
   }
   updateItem(itemID, itemBrand, itemCategory, itemPrice, itemDescription, itemName, sizes){
     return firebase.firestore().collection('Products').doc(itemBrand).collection(itemCategory).doc(itemID).update({
@@ -827,6 +834,8 @@ return new Promise((resolve, reject)  => {
   }
 
   load16CategoryItems(){
+    console.log(firebase.firestore());
+    
     // console.log(brand);
     // console.log(category);
     //kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports']
@@ -857,6 +866,9 @@ return new Promise((resolve, reject)  => {
         all_products.push({productID: productID, data: docData, category: 'Formal', brand: 'Kwanga'})
       }
       KFormal = data
+      }).catch(error => {
+        console.log(error);
+        
       })
       .then(result => {
         firebase.firestore().collection('Products').doc('Kwanga').collection('Traditional').orderBy('dateAdded', 'desc').get().then(result => {
@@ -1030,8 +1042,11 @@ return new Promise((resolve, reject)  => {
       }else if(all_products.length > 0){
         resolve(all_products)
       }
-
+      reject('why, I think i have some major problems')
         })
+      }).catch(error => {
+        console.log(error);
+        
       })
     })
   }
