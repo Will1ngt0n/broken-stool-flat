@@ -706,21 +706,39 @@ return new Promise((resolve, reject)  => {
       //status: 'collected' ?
     })
   }
-  closedOrders(refNo, status, userID, products, deliveryType, purchaseDate){
-    return firebase.firestore().collection('orderHistory').doc(refNo).set({
-      status: status,
-      timestamp: new Date().getTime(),
-      refNo: refNo,
-      uid: userID,
-      orders: products,
-      deliveryType: deliveryType,
-      purchaseDate: purchaseDate
-    }).then( result => {
-      return firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
-        console.log('deleted');
-        return 'Order has been deleted'
+  closedOrders(refNo, status, userID, products, deliveryType, purchaseDate, date, pdf){
+    return new Promise( (resolve, reject) => {
+      
+      firebase.firestore().collection('orderHistory').doc(refNo).set({
+        status: status,
+        timestamp: date,
+        refNo: refNo,
+        uid: userID,
+        orders: products,
+        deliveryType: deliveryType,
+        purchaseDate: purchaseDate
+      }).then( result => {
+        firebase.firestore().collection('Order').doc(refNo).delete().then(result => {
+          console.log('deleted');
+          return 'Order has been deleted'
+        })
+      }).then(result => {
+        console.log(result, 'fourth chain');
+        let storageRef = firebase.storage().ref('Reciepts/' + refNo)
+        storageRef.put(pdf).then((data : any) => {
+          console.log(data, 'fifth chain');
+          console.log(data);
+          data.ref.getDownloadURL().then(url => {
+            console.log(url, 'sixth chain');
+            firebase.firestore().collection('orderHistory').doc(refNo).update({
+              receipt: url,
+            })
+            resolve ('success')
+          })
+        })
       })
     })
+
   }
   updateQuantity(brand, category, productID, quantity){
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).update({

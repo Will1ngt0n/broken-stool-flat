@@ -80,6 +80,7 @@
 
           <div id="buttons">
             <div class="to-buttons">
+              <ion-button color="danger" (click)='orderCollected()' >Create pdf</ion-button>
               <ion-button color="danger" (click)='cancelOrder()' *ngIf="status === 'received'">Cancel Order</ion-button>
               <ion-button color="warning" (click)='processOrder()' *ngIf="status === 'received'">Process Order
               </ion-button>

@@ -4,6 +4,7 @@ import { ProductsService } from '../services/products-services/products.service'
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 ​​import * as moment from 'moment'
+import { NetworkService } from '../services/network-service/network.service';
 @Component({
   selector: 'app-order-receipt',
   templateUrl: './order-receipt.page.html',
@@ -27,8 +28,9 @@ export class OrderReceiptPage implements OnInit {
   userAddress
   datePurchased
   routingPage
-  constructor(public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, private activatedRoute : ActivatedRoute, private productsService : ProductsService, private route : Router) {
-​
+  timer
+  constructor(private networkService : NetworkService, public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, private activatedRoute : ActivatedRoute, private productsService : ProductsService, private route : Router) {
+​ 
   }
   async presentLoading() {
     const loading = await this.loadingCtrl.create({
@@ -74,7 +76,8 @@ export class OrderReceiptPage implements OnInit {
   }
 ​   dateClosed
   getOrderHistory(refNo, name){
-    this.presentLoading()
+    //this.presentLoading()
+    //this.pageLoader = true
     return this.productsService.getOrderHistoryDetails(refNo).then(result => {
       console.log(result)
        this.item = result[0]
@@ -109,14 +112,23 @@ export class OrderReceiptPage implements OnInit {
     }
     console.log(this.totalPrice);
     if(this.deliveryType === 'Delivery'){
-      this.deliveryFee = this.item['details']['deliveryCost']
-      this.grandTotal = this.totalPrice + this.deliveryFee
+      if(this.item['details']['deliveryCost']){
+        this.deliveryFee = this.item['details']['deliveryCost']
+        this.grandTotal = this.totalPrice + this.deliveryFee
+      }else{
+        this.deliveryFee = 100
+        this.grandTotal = this.totalPrice + this.deliveryFee 
+      }
+
     }else if(this.deliveryType === 'Collection'){
       this.deliveryFee = 0
       this.grandTotal = +this.totalPrice
       console.log(this.grandTotal);
     }
-    this.loadingCtrl.dismiss()
+    if(this.pageLoader){
+     this.loadingCtrl.dismiss()     
+    }
+
    }
    countQuantity(){
      this.totalQuantity = 0
@@ -128,38 +140,50 @@ export class OrderReceiptPage implements OnInit {
      
    }
    goBack(){
-     this.route.navigate([this.routingPage])
+     this.route.navigate(['/landing'])
    }
    isOnline : boolean
    isCached : boolean
+   isConnected : boolean
+   pageLoader : boolean
   ngOnInit() {
     if(navigator.onLine){
-      this.isOnline = true
-      this.isCached = true
-      this.activatedRoute.queryParams.subscribe(result => {
+
+      return this.networkService.getUID().then( result => {
         console.log(result);
-        
-        //this.item = result.item
-        //console.log(this.item);
-        console.log(result);
-        this.refNo = result.refNo
-        let name = result.user
-        this.userID = result.userID
-        console.log(this.userID);
-        this.getUser(this.userID)
-        console.log(name);
-        this.cell = result.cell
-        console.log(this.cell);
-        this.routingPage = result.link
-        console.log(this.routingPage);
-        //this.presentLoading()
-        this.getOrderHistory(this.refNo, name)
-        this.loadPictures().then(result => {
-          console.log(result);
-          
-        })
-  
+        if(result === true){
+          this.isConnected = true
+          this.isOnline = true
+          this.isCached = true
+          this.activatedRoute.queryParams.subscribe(result => {
+            console.log(result);
+            
+            //this.item = result.item
+            //console.log(this.item);
+            console.log(result);
+            this.refNo = result.refNo
+            let name = result.user
+            this.userID = result.userID
+            console.log(this.userID);
+            this.getUser(this.userID)
+            console.log(name);
+            this.cell = result.cell
+            console.log(this.cell);
+            this.routingPage = result.link
+            console.log(this.routingPage);
+            //this.presentLoading()
+            this.getOrderHistory(this.refNo, name)
+            this.loadPictures().then(result => {
+              console.log(result);
+              
+            })
+            
+          })
+        }else{
+          this.isConnected = false
+        }
       })
+
     }else{
       this.isOnline = false
       this.isCached = false
@@ -168,48 +192,83 @@ export class OrderReceiptPage implements OnInit {
   }
   reload() {
     if(navigator.onLine){
-      this.isOnline = true
-      this.isCached = true
-      this.activatedRoute.queryParams.subscribe(result => {
+      return this.networkService.getUID().then( result => {
         console.log(result);
-        
-        //this.item = result.item
-        //console.log(this.item);
-        console.log(result);
-        this.refNo = result.refNo
-        let name = result.user
-        this.userID = result.userID
-        console.log(this.userID);
-        this.getUser(this.userID)
-        console.log(name);
-        this.cell = result.cell
-        console.log(this.cell);
-        this.routingPage = result.link
-        console.log(this.routingPage);
-        //this.presentLoading()
-        this.getOrderHistory(this.refNo, name)
-        this.loadPictures().then(result => {
-          console.log(result);
-          
-        })
-  
+        if(result === true){
+          this.isConnected = true
+          this.isOnline = true
+          this.isCached = true
+          clearInterval(this.timer)
+          this.activatedRoute.queryParams.subscribe(result => {
+            console.log(result);
+            
+            //this.item = result.item
+            //console.log(this.item);
+            console.log(result);
+            this.refNo = result.refNo
+            let name = result.user
+            this.userID = result.userID
+            console.log(this.userID);
+            this.getUser(this.userID)
+            console.log(name);
+            this.cell = result.cell
+            console.log(this.cell);
+            this.routingPage = result.link
+            console.log(this.routingPage);
+            //this.presentLoading()
+            this.getOrderHistory(this.refNo, name)
+            this.loadPictures().then(result => {
+              console.log(result);
+              
+            })
+      
+          })
+        }else{
+          this.isConnected = false
+        }
       })
+
     }else{
       this.isOnline = false
       this.isCached = false
     }
 
   }
-  ionViewWillEnter(){
-    console.log('ion view did enter');
+  checkConnectionStatus(){
     if(navigator.onLine){
       this.isOnline = true
+      console.log(this.isCached);
       if(this.isCached === false){
+
         this.reload()
+      }else if(this.isCached === true){
+        clearInterval(this.timer)
+
       }
     }else{
       this.isOnline = false
+      if(this.pageLoader){
+        this.loadingCtrl.dismiss()
+        this.pageLoader = false
+        //clearInterval(this.timer)
+      }
     }
+  }
+  ionViewDidEnter(){
+    console.log('ion view did enter');
+    console.log(this.isCached);
+    
+    if(this.isCached !== true){
+      this.presentLoading()
+      this.pageLoader = true
+    }
+
+    this.timer = setInterval( () => {
+      this.checkConnectionStatus()
+    }, 3000)
+  }
+  ionDidLeave(){
+    clearInterval(this.timer)
   }
   getUser(userID){
     return this.productsService.loadUser(userID).then(result => {
@@ -236,6 +295,7 @@ export class OrderReceiptPage implements OnInit {
          });
          return result
         }
+
     })
   }
   

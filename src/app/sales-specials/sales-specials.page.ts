@@ -4,6 +4,8 @@ import { ProductsService } from '../services/products-services/products.service'
 import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import * as firebase from 'firebase'
+import { NetworkService } from '../services/network-service/network.service';
+
 @Component({
   selector: 'app-sales-specials',
   templateUrl: './sales-specials.page.html',
@@ -85,7 +87,7 @@ export class SalesSpecialsPage implements OnInit {
   @ViewChild('checkboxYellow', {static : true}) checkboxYellow : ElementRef
   @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
   @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
-  constructor(public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
+  constructor(private networkService : NetworkService, public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
 
     //this.getDankieJesuSales('Dankie Jesu')
 
@@ -128,59 +130,69 @@ export class SalesSpecialsPage implements OnInit {
   }
   isOnline : boolean
   isCached : boolean
+  isConnected : boolean
   ngOnInit() {
     if(navigator.onLine){
-      this.isOnline = true
-      this.isCached = false
-      this.loadAll()
-      //this.getKwangaSales('Kwanga')
-      this.iterateThrough()
-  
-  
-      console.log(this.department);
-      //this.productsService.getCategories()
-      // this.loadDankieJesuItems()
-      // this.loadKwangaItems()
-      this.colors = { red: '' }
-      this.accessory = false;
-      this.summer = false;
-      this.department = undefined
-      this.addForm = false
-      this.formHasValues = false
-      //this.loadSummerItems()
-  
-      //this.loadBrandProducts()
-  
-      //this.getSummerItems()
-      console.log(this.department);
-      // this.getAllItems()
-     // this.orderItems()
-  
-      this.getPendingOrders()
-      this.getReadyOrders()
-      this.getClosedOrders()
-      this.getInventory()
-      //this.loadSales()
-      this.loadSalesSnap()
+      return this.networkService.getUID().then( result => {
+        console.log(result);
+        if(result === true){
+          this.isConnected = true
+          this.isOnline = true
+          this.isCached = false
+          this.loadAll()
+          //this.getKwangaSales('Kwanga')
+          this.iterateThrough()
+      
+      
+          console.log(this.department);
+          //this.productsService.getCategories()
+          // this.loadDankieJesuItems()
+          // this.loadKwangaItems()
+          this.colors = { red: '' }
+          this.accessory = false;
+          this.summer = false;
+          this.department = undefined
+          this.addForm = false
+          this.formHasValues = false
+          //this.loadSummerItems()
+      
+          //this.loadBrandProducts()
+      
+          //this.getSummerItems()
+          console.log(this.department);
+          // this.getAllItems()
+         // this.orderItems()
+      
+          this.getPendingOrders()
+          this.getReadyOrders()
+          this.getClosedOrders()
+          this.getInventory()
+          //this.loadSales()
+          this.loadSalesSnap()
+    
+              //this.loadPictures()
+              this.activatedRoute.queryParams.subscribe(params => {
+                console.log(params);
+                this.query = params['query']
+                console.log(this.query);
+                if(this.query === 'viewAll'){
+                  this.toggleAll()
+                }else if(this.query === 'Dankie Jesu'){
+                 this.toggleDankie()
+                }else{
+                  this.toggleKwanga()
+                }
+                // this.loadPictures().then(result => {
+                //   console.log(result);
+                  
+                // })
+              })
+            
+        }else{
+          this.isConnected = false
+        }
+      })
 
-          //this.loadPictures()
-          this.activatedRoute.queryParams.subscribe(params => {
-            console.log(params);
-            this.query = params['query']
-            console.log(this.query);
-            if(this.query === 'viewAll'){
-              this.toggleAll()
-            }else if(this.query === 'Dankie Jesu'){
-             this.toggleDankie()
-            }else{
-              this.toggleKwanga()
-            }
-            // this.loadPictures().then(result => {
-            //   console.log(result);
-              
-            // })
-          })
-        
     }else{
       this.isOnline = false
       this.isCached = false
@@ -190,8 +202,13 @@ export class SalesSpecialsPage implements OnInit {
   }
   reload() {
     if(navigator.onLine){
-      this.isOnline = true
-      this.isCached = false
+      return this.networkService.getUID().then( result => {
+        console.log(result);
+        if(result === true){
+          this.isOnline = true
+          this.isCached = false
+          clearInterval(this.timer)
+          
       this.loadAll()
       //this.getKwangaSales('Kwanga')
       this.iterateThrough()
@@ -241,6 +258,12 @@ export class SalesSpecialsPage implements OnInit {
             // })
           })
         
+        }else{
+          this.isOnline = true
+          this.isCached = false
+        }
+      })
+
     }else{
       this.isOnline = false
       //this.isCached = false
@@ -248,13 +271,40 @@ export class SalesSpecialsPage implements OnInit {
 
 
   }
-  ionViewWillEnter(){
-    console.log('ion view did enter');
+  checkConnectionStatus(){
     if(navigator.onLine){
       this.isOnline = true
+      console.log(this.isCached);
+      if(this.isCached === false){
+
+        this.reload()
+      }else if(this.isCached === true){
+        clearInterval(this.timer)
+
+      }
     }else{
       this.isOnline = false
+      if(this.pageLoader){
+        this.loadingCtrl.dismiss()
+        this.pageLoader = false
+        //clearInterval(this.timer)
+      }
     }
+  }
+  pageLoader
+  timer
+  ionViewDidEnter(){
+    console.log('ion view did enter');
+    if(this.isCached !== true){
+      this.presentLoading()
+      this.pageLoader = true
+    }
+    this.timer = setInterval( () => {
+      this.checkConnectionStatus()
+    }, 3000)
+  }
+  ionViewDidLeave(){
+    clearInterval(this.timer)
   }
   getKwangaSales(query){
     for(let i in this.allSales){
@@ -556,9 +606,6 @@ changeCategory() {
   this.checkValidity()
 }
 
-ionViewDidEnter() {
-
-}
 isAccessory(data) {
   if (data.target.checked === true) {
     this.accessory = true;

@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { NavController, AlertController, LoadingController } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
 import * as firebase from 'firebase'
+import { NetworkService } from '../services/network-service/network.service';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -138,10 +139,32 @@ export class LandingPage implements OnInit {
   updateName; updatePrice; updateDescription; updateColors: Array<any> = []; updateSizes: Array<any> = []
   pictureUpdate : File
 
-  constructor(private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
+  constructor(private networkService : NetworkService, private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     //console.log(this.department);
-
-
+    this.kwangaSpecialsPicture = undefined
+    this.dankieJesuSpecialsPicture = undefined
+    this.allSpecialsPicture = undefined
+    this.allProducts = []
+    this.pendingOrders = []
+    this.history = []
+    this.colors = { red: '' }
+    this.accessory = false;
+    this.summer = false;
+    this.department = 'Select Department'
+    this.selectedCategory = 'Select Category'
+    this.addForm = false
+    this.formHasValues = false
+    this.itemName = ''
+    this.price = ''
+    this.description = ''
+    this.size = []
+    this.color = []
+    this.picture = undefined
+    
+    this.isOnline = false
+    this.isCached = false
+    this.isConnected = false
+    // this.pageLoader = false
   }
   signOutPopup() {
     this.presentLogoutConfirmAlert()
@@ -196,179 +219,197 @@ export class LandingPage implements OnInit {
   }
   isOnline : boolean
   isCached : boolean
+  isConnected : boolean
   ngOnInit() { ////copy
-    console.log('On ngOninit');
-    
-    if(navigator.onLine){
-      this.isOnline = true
-      this.isCached = true
-      console.log(this.isOnline);
-      
-      this.kwangaSpecialsPicture = undefined
-      this.dankieJesuSpecialsPicture = undefined
-      this.allSpecialsPicture = undefined
-      this.allProducts = []
-      this.pendingOrders = []
-      this.history = []
-      //this.productService.getCategories()
-      this.loadTotalNumberOfProducts()
-      this.getPendingOrders()
-  
-  
-      this.colors = { red: '' }
-      this.accessory = false;
-      this.summer = false;
-      this.department = 'Select Department'
-      this.selectedCategory = 'Select Category'
-      this.addForm = false
-      this.formHasValues = false
-      this.itemName = ''
-      this.price = ''
-      this.description = ''
-      this.size = []
-      this.color = []
-      this.picture = undefined
-      let date = moment(new Date()).format('LLLL');
-      let tee = moment(new Date('10/12/2019')).format('LLLL')
-      //console.log(date);
-      //console.log(tee);
-      if (date > tee) {
-        //console.log(date);
-  
-      }
-  
-      this.getReadyOrders()
-      this.getOrderHistory()
-      this.getInventory()
-      this.loader()
-      console.log('you are online');
-      console.log(this.allProducts.length);
-    
-      //if(this.allProducts.length === 0){
-        this.presentLoader()
-        //this.loadDankieJesuItems()
-        //this.loadKwangaItems()
-        this.inventoryLength = 0
-  
-        this.load16CategoryItems()
-      //}
-      console.log('Oninit did run');
-  
-      this.nativeCategory.nativeElement.disabled = true
-      
-      //snapshots
-      this.refreshOrderHistory()
-      this.getPendingOrdersSnap()
-      this.loadFormal('Kwanga', 'Formal')
-      this.loadTraditional('Kwanga', 'Traditional')
-      this.loadSmartCasual('Kwanga', 'Smart Casual')
-      this.loadSportsWear('Kwanga', 'Sports')
-      this.loadVests('Dankie Jesu', 'Vests')
-      this.loadCaps('Dankie Jesu', 'Caps')
-      this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-      this.loadShorts('Dankie Jesu', 'Shorts')
-      this.loadCropTops('Dankie Jesu', 'Crop Tops')
-      this.loadTShirts('Dankie Jesu', 'T-Shirts')
-      this.loadBags('Dankie Jesu', 'Bags')
-      this.loadSweaters('Dankie Jesu', 'Sweaters')
-      this.loadHoodies('Dankie Jesu', 'Hoodies')
-      this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-      this.loadBeanies('Dankie Jesu', 'Beanies')
+    if(this.isCached){
 
     }else{
-      this.isOnline = false
-      this.isCached = false
-      console.log(this.isOnline);
-      
-      console.log('you are offline');
-      alert("Please check your internet connectivity, we can't connect to the database.")
+      if(navigator){
+
+
+        if(navigator.onLine){
+          //this.presentLoader()
+          return this.networkService.getUID().then( result => {
+            console.log(result);
+            if(result === true){
+              clearInterval(this.timer)
+              this.isOnline = true
+              this.isCached = true
+              this.isConnected = true
+              console.log(this.isOnline);
+              console.log(this.isCached, 'iscached');
+              
+              
+    
+              //this.productService.getCategories()
+              this.loadTotalNumberOfProducts()
+              this.getPendingOrders()
+          
+          
+    
+              let date = moment(new Date()).format('LLLL');
+              let tee = moment(new Date('10/12/2019')).format('LLLL')
+              //console.log(date);
+              //console.log(tee);
+              if (date > tee) {
+                //console.log(date);
+          
+              }
+          
+              this.getReadyOrders()
+              this.getOrderHistory()
+              this.getInventory()
+              this.loader()
+              console.log('you are online');
+              console.log(this.allProducts.length);
+            
+              //if(this.allProducts.length === 0){
+                //this.presentLoader()
+                //this.loadDankieJesuItems()
+                //this.loadKwangaItems()
+                this.inventoryLength = 0
+          
+                this.load16CategoryItems()
+              //}
+              console.log('Oninit did run');
+          
+              this.nativeCategory.nativeElement.disabled = true
+              
+              //snapshots
+              this.refreshOrderHistory()
+              this.getPendingOrdersSnap()
+              this.loadFormal('Kwanga', 'Formal')
+              this.loadTraditional('Kwanga', 'Traditional')
+              this.loadSmartCasual('Kwanga', 'Smart Casual')
+              this.loadSportsWear('Kwanga', 'Sports')
+              this.loadVests('Dankie Jesu', 'Vests')
+              this.loadCaps('Dankie Jesu', 'Caps')
+              this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+              this.loadShorts('Dankie Jesu', 'Shorts')
+              this.loadCropTops('Dankie Jesu', 'Crop Tops')
+              this.loadTShirts('Dankie Jesu', 'T-Shirts')
+              this.loadBags('Dankie Jesu', 'Bags')
+              this.loadSweaters('Dankie Jesu', 'Sweaters')
+              this.loadHoodies('Dankie Jesu', 'Hoodies')
+              this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+              this.loadBeanies('Dankie Jesu', 'Beanies')
+        
+            }else{
+              this.isConnected = false
+            }
+          })
+    
+        }else{
+          this.isOnline = false
+          this.isCached = false
+          console.log(this.isOnline, 'hello you are offline');
+          console.log(this.isCached);
+          console.log(this.isOnline);
+          console.log(this.isCached);
+          //this.loadingCtrl.dismiss()
+          
+          // setInterval( () => {
+          //   this.checkConnectionStatus()
+          // }, 3000)
+          
+          console.log('you are offline');
+          //alert("Please check your internet connectivity, we can't connect to the database.")
+        }
+      }
     }
-    //this.testingEmail()
+
 
   }
   reload() { ////copy
     console.log('On ngOninit');
-    
+
     if(navigator.onLine){
-      this.isOnline = true
-      this.isCached = true
-      console.log(this.isOnline);
+      return this.networkService.getUID().then( result => {
+        console.log(result);
+        if(result === true){ 
+          this.presentLoader()
+          this.pageLoader = true
+          this.isOnline = true
+          this.isCached = true
+          this.isConnected = true
+          clearInterval(this.timer)
+          console.log(this.isOnline);
+          
+
+          //this.productService.getCategories()
+          this.loadTotalNumberOfProducts()
+          this.getPendingOrders()
       
-      this.kwangaSpecialsPicture = undefined
-      this.dankieJesuSpecialsPicture = undefined
-      this.allSpecialsPicture = undefined
-      this.allProducts = []
-      this.pendingOrders = []
-      this.history = []
-      //this.productService.getCategories()
-      this.loadTotalNumberOfProducts()
-      this.getPendingOrders()
-  
-  
-      this.colors = { red: '' }
-      this.accessory = false;
-      this.summer = false;
-      this.department = 'Select Department'
-      this.selectedCategory = 'Select Category'
-      this.addForm = false
-      this.formHasValues = false
-      this.itemName = ''
-      this.price = ''
-      this.description = ''
-      this.size = []
-      this.color = []
-      this.picture = undefined
-      let date = moment(new Date()).format('LLLL');
-      let tee = moment(new Date('10/12/2019')).format('LLLL')
-      //console.log(date);
-      //console.log(tee);
-      if (date > tee) {
-        //console.log(date);
-  
-      }
-  
-      this.getReadyOrders()
-      this.getOrderHistory()
-      this.getInventory()
-      this.loader()
-      console.log('you are online');
-      console.log(this.allProducts.length);
+      
+          this.colors = { red: '' }
+          this.accessory = false;
+          this.summer = false;
+          this.department = 'Select Department'
+          this.selectedCategory = 'Select Category'
+          this.addForm = false
+          this.formHasValues = false
+          this.itemName = ''
+          this.price = ''
+          this.description = ''
+          this.size = []
+          this.color = []
+          this.picture = undefined
+          let date = moment(new Date()).format('LLLL');
+          let tee = moment(new Date('10/12/2019')).format('LLLL')
+          //console.log(date);
+          //console.log(tee);
+          if (date > tee) {
+            //console.log(date);
+      
+          }
+      
+          this.getReadyOrders()
+          this.getOrderHistory()
+          this.getInventory()
+          this.loader()
+          console.log('you are online');
+          console.log(this.allProducts.length);
+        
+          //if(this.allProducts.length === 0){
+            //this.presentLoader()
+            //this.loadDankieJesuItems()
+            //this.loadKwangaItems()
+            this.inventoryLength = 0
+      
+            this.load16CategoryItems()
+          //}
+          console.log('Oninit did run');
+      
+          this.nativeCategory.nativeElement.disabled = true
+          
+          //snapshots
+          this.refreshOrderHistory()
+          this.getPendingOrdersSnap()
+          this.loadFormal('Kwanga', 'Formal')
+          this.loadTraditional('Kwanga', 'Traditional')
+          this.loadSmartCasual('Kwanga', 'Smart Casual')
+          this.loadSportsWear('Kwanga', 'Sports')
+          this.loadVests('Dankie Jesu', 'Vests')
+          this.loadCaps('Dankie Jesu', 'Caps')
+          this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+          this.loadShorts('Dankie Jesu', 'Shorts')
+          this.loadCropTops('Dankie Jesu', 'Crop Tops')
+          this.loadTShirts('Dankie Jesu', 'T-Shirts')
+          this.loadBags('Dankie Jesu', 'Bags')
+          this.loadSweaters('Dankie Jesu', 'Sweaters')
+          this.loadHoodies('Dankie Jesu', 'Hoodies')
+          this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+          this.loadBeanies('Dankie Jesu', 'Beanies')
     
-      //if(this.allProducts.length === 0){
-        this.presentLoader()
-        //this.loadDankieJesuItems()
-        //this.loadKwangaItems()
-        this.inventoryLength = 0
-  
-        this.load16CategoryItems()
-      //}
-      console.log('Oninit did run');
-  
-      this.nativeCategory.nativeElement.disabled = true
-      
-      //snapshots
-      this.refreshOrderHistory()
-      this.getPendingOrdersSnap()
-      this.loadFormal('Kwanga', 'Formal')
-      this.loadTraditional('Kwanga', 'Traditional')
-      this.loadSmartCasual('Kwanga', 'Smart Casual')
-      this.loadSportsWear('Kwanga', 'Sports')
-      this.loadVests('Dankie Jesu', 'Vests')
-      this.loadCaps('Dankie Jesu', 'Caps')
-      this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-      this.loadShorts('Dankie Jesu', 'Shorts')
-      this.loadCropTops('Dankie Jesu', 'Crop Tops')
-      this.loadTShirts('Dankie Jesu', 'T-Shirts')
-      this.loadBags('Dankie Jesu', 'Bags')
-      this.loadSweaters('Dankie Jesu', 'Sweaters')
-      this.loadHoodies('Dankie Jesu', 'Hoodies')
-      this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-      this.loadBeanies('Dankie Jesu', 'Beanies')
+        }else{
+          this.isConnected = false
+        }
+      })
 
     }else{
       this.isOnline = false
       console.log(this.isOnline);
-      
+      this.loadingCtrl.dismiss()
       console.log('you are offline');
       
     }
@@ -397,7 +438,11 @@ export class LandingPage implements OnInit {
       this.inventoryLength = this.allProducts.length
       this.sortProducts()
     }
+    if(this.pageLoader){
       this.loadingCtrl.dismiss()
+      this.pageLoader = false
+    }
+
     })
   }
   loadPictures(){
@@ -2208,22 +2253,56 @@ export class LandingPage implements OnInit {
 
     // console.log('Loading dismissed!');
   }
-
-  ionViewWillEnter(){
-    console.log('ion view did enter');
+  checkConnectionStatus(){
+    console.log('me too');
+    console.log(this.isCached);
+    console.log(this.isOnline);
+    console.log(this.timer);
+    
+    
     if(navigator.onLine){
       this.isOnline = true
       console.log('isOnline', this.isOnline);
+      console.log(this.isCached);
+      
       if(this.isCached === false){
         this.reload()
+      }else if(this.isCached === true){
+        clearInterval(this.timer)
+
       }
     }else{
       this.isOnline = false
+      if(this.pageLoader){
+        this.loadingCtrl.dismiss()
+        this.pageLoader = false
+      }
+
       console.log('isOnline', this.isOnline);
     }
   }
-
+  timer
+  pageLoader : boolean
   ionViewDidEnter(){
+    console.log('hahahahahaahahahahahah');
+    if(this.isCached !== true){
+      this.presentLoading()
+      this.pageLoader = true
+    }
+
+
+    console.log(this.isOnline);
+    console.log(this.isCached);
+
+    
+    this.timer = setInterval( () => {
+      this.checkConnectionStatus()
+    }, 3000)
+    console.log('ion view did enter');
+
+  }
+
+  ionViewEnter(){
     //this.ionViewDidLoad()
 
     console.log('ion view will enter');
@@ -2240,6 +2319,8 @@ export class LandingPage implements OnInit {
     console.log('ion view did leave');
     //this.allProducts = []
     //this.inventoryLength = 0
+    console.log(this.timer);
+    
   }
 
   ionViewWillLoad(){
