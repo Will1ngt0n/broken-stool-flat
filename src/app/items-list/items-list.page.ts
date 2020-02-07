@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth-services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Location } from '@angular/common'
 import { RouteService } from '../services/route-services/route.service';
+import { NetworkService } from '../services/network-service/network.service';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -104,8 +105,8 @@ export class ItemsListPage implements OnInit, OnDestroy {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
-
+  constructor(private networkService : NetworkService, private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+    this.today = moment(new Date()).format('YYYY-MM-DD')
   }
 
   async productAlert(message) {
@@ -193,7 +194,58 @@ export class ItemsListPage implements OnInit, OnDestroy {
     }
     this.checkValidity()
   }
-  ionViewDidEnter() {
+  checkConnectionStatus(){
+    if(navigator.onLine){
+      this.isOnline = true
+      console.log(this.isCached);
+      if(this.isCached === false){
+
+        this.reload()
+      }else if(this.isCached === true){
+        clearInterval(this.timer)
+
+      }
+    }else{
+      this.isOnline = false
+      if(this.pageLoader){
+        this.loadingCtrl.dismiss()
+        this.pageLoader = false
+        //clearInterval(this.timer)
+      }
+    }
+  }
+  timer
+  ionViewDidEnter(){
+    console.log('ion view did enter');
+    console.log(this.isCached);
+    
+    if(this.isCached !== true){
+      this.presentLoading()
+      this.pageLoader = true
+    }
+
+    this.timer = setInterval( () => {
+      this.checkConnectionStatus()
+    }, 3000)
+  }
+  reload(){
+    if(navigator.onLine){
+      return this.networkService.getUID().then( result => {
+        console.log(result);
+        if(result === true){
+          this.isConnected = true
+          this.isOnline = true
+          this.isCached = true
+          clearInterval(this.timer)
+          this.loadCategoryItemsSnap(this.currentCategory, this.brand)
+        }else{
+          this.isConnected = false
+        }
+      })
+    }else{
+      this.isOnline = false
+      this.isCached = false
+    }
 
   }
   isAccessory(data) {
@@ -380,6 +432,11 @@ export class ItemsListPage implements OnInit, OnDestroy {
       console.log(data);
       this.currentViewedItems = data
       //console.log(data);
+      if(this.pageLoader){
+        this.loadingCtrl.dismiss()
+        this.pageLoader = false
+        //clearInterval(this.timer)
+      }
       if(data.length !== 0){
         return data
       }
@@ -550,140 +607,116 @@ export class ItemsListPage implements OnInit, OnDestroy {
 brand
   //////native to this page
   isOnline : boolean
+  isConnected : boolean
+  isCached : boolean
+  pageLoader : boolean
   ngOnInit() {
     if(navigator.onLine){
-      this.isOnline = true
-      console.log(this.department);
-      //this.productsService.getCategories()
-      this.loadDankieJesuItems()
-      this.loadKwangaItems()
-      this.colors = { red: '' }
-      this.accessory = false;
-      this.summer = false;
-      this.department = undefined
-      this.addForm = false
-      this.formHasValues = false
-      //moment().format('YYYY MM DD')
-      // let date = moment(new Date()).format('LLLL');
-      // let tee = moment(new Date('10/12/2019')).format('LLLL')
-      // console.log(date);
-      // console.log(tee);
-      // if(date > tee){
-      //   console.log(date);
-  
-      // }
-      this.promoButtonEnabled = false
-      this.orderItems()
-  
-      // for (let key in this.status) {
-      //   this.getPendingOrders(this.status[key])
-      // }
-      //this.getPendingOrders()
-      //this.getReadyOrders()
-      //this.getClosedOrders()
-      this.getInventory()
-      if(this.currentCategory !== '' && this.currentCategory !== undefined && this.brand !== '' && this.brand !== undefined){
-        console.log('okay now');
-        
-        this.getSnaps(this.currentCategory, this.brand)
-      }else {
-        console.log('nah man');
-        
-      }
-      this.promoUdpate = ''
-      // this.dismissPromo()
-      //this.dismissList()
-      this.activatedRoute.params.subscribe(result => {
-        console.log(result.id);
-        let para = result.id
-        let exists : boolean
-        let reroute : boolean
-        let parameters = [
-          {category: 'Formal', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
-          {category: 'Tradtional', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
-          {category: 'Smart Casual', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
-          {category: 'Sports', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
-          {category: 'Vests', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'Caps', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'Bucket Hats', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'Shorts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'Crop Tops', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'T-Shirts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'Bags', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
-          {category: 'Sweaters', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
-          {category: 'Hoodies', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
-          {category: 'Track Suits', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
-          {category: 'Beanies', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
-        ]
-        for(let key in parameters){
-          if(parameters[key].category === para){
-            console.log('I do exist, yippee');
-            reroute = false
-            break
-          }else{
-            reroute = true
+      return this.networkService.getUID().then( result => {
+        console.log(result);
+        if(result === true){
+          this.isConnected = true
+          this.isOnline = true
+          this.isCached = true
+          console.log(this.department);
+          //this.productsService.getCategories()
+          //this.loadDankieJesuItems()
+          //this.loadKwangaItems()
+          this.colors = { red: '' }
+          this.accessory = false;
+          this.summer = false;
+          this.department = undefined
+          this.addForm = false
+          this.formHasValues = false
+          //moment().format('YYYY MM DD')
+          // let date = moment(new Date()).format('LLLL');
+          // let tee = moment(new Date('10/12/2019')).format('LLLL')
+          // console.log(date);
+          // console.log(tee);
+          // if(date > tee){
+          //   console.log(date);
+      
+          // }
+          this.promoButtonEnabled = false
+          this.orderItems()
+      
+          // for (let key in this.status) {
+          //   this.getPendingOrders(this.status[key])
+          // }
+          //this.getPendingOrders()
+          //this.getReadyOrders()
+          //this.getClosedOrders()
+          this.getInventory()
+          if(this.currentCategory !== '' && this.currentCategory !== undefined && this.brand !== '' && this.brand !== undefined){
+            console.log('okay now');
+            
+            this.getSnaps(this.currentCategory, this.brand)
+          }else {
+            console.log('nah man');
+            
           }
-        }
-  
-        return this.routeService.readParameters().then((result : object)=> {
-          console.log(result);
-            this.currentCategory = result['category']
-            let brand = result['brand']
-            this.brand = brand
-            this.title = result['title']
-            console.log(this.title)
-            this.link = String(result['link'])
-            console.log(this.currentCategory);
-            console.log(this.brand);
-            console.log(this.title);
-            console.log(this.link);
-            if(reroute === true){
-              console.log('apparently i dont exist :(');
-              this.loc.replaceState('items-list/' + this.currentCategory)
+          this.promoUdpate = ''
+          // this.dismissPromo()
+          //this.dismissList()
+          this.activatedRoute.params.subscribe(result => {
+            console.log(result.id);
+            let para = result.id
+            let exists : boolean
+            let reroute : boolean
+            let parameters = [
+              {category: 'Formal', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+              {category: 'Tradtional', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+              {category: 'Smart Casual', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+              {category: 'Sports', brand: 'Kwanga', title: 'Kwanga', link: 'kwanga-sub-categories'},
+              {category: 'Vests', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'Caps', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'Bucket Hats', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'Shorts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'Crop Tops', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'T-Shirts', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'Bags', brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'},
+              {category: 'Sweaters', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+              {category: 'Hoodies', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+              {category: 'Track Suits', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+              {category: 'Beanies', brand: 'Dankie Jesu', title: 'Winter Gear', link: 'winter-gear'},
+            ]
+            for(let key in parameters){
+              if(parameters[key].category === para){
+                console.log('I do exist, yippee');
+                reroute = false
+                break
+              }else{
+                reroute = true
+              }
             }
-            this.loadCategoryItems(this.currentCategory, brand)
-            this.loadCategoryItemsSnap(this.currentCategory, brand)
-            
-            
-        })
-      })
-          // this.activatedRoute.queryParams.subscribe(result => {
-          //   this.today = moment(new Date()).format('YYYY-MM-DD')
-          //   console.log(this.today);
-            
-          //   console.log(result.category);
-            
-          //   // if(result.category === 'Vests' || result.category === 'Caps' || result.category === 'Bucket Hats' || result.category === 'Shorts' || result.category === 'Crop Tops' || result.category === 'T-Shirts' || result.category === 'Bags'
-          //   // || result.category === 'Sweaters' || result.category === 'Hoodies' || result.category === 'Track Suits' || result.category === 'Beanies' || result.category === 'Formal' || result.category === 'Traditional' || result.category === 'Smart Casual' || result.category === 'Sports'){
-  
-          //   // }else{
-          //   //   console.log('Not known');
-          //   //   this.route.navigate(['/landing'])
-          //   // }
-  
-          //   console.log(result);
-          //   this.currentCategory = result.category
-          //   let brand = result.brand
-          //   this.brand = brand
-          //   this.title = result.title
-          //   console.log(this.title)
-          //   this.link = result.link
-          //   console.log(this.link);
-  
-  
-          //   console.log(brand);
-          //   console.log(this.currentCategory);
-          //   console.log(this.currentCategory);
-          //   this.loadCategoryItems(this.currentCategory, brand)
-          //   this.loadCategoryItemsSnap(this.currentCategory, brand)
-  
-          //   // this.loadPictures().then(result => {
-          //   //   console.log(result);
-  
-          //   // })
-          // })
-  
-  
+      
+            return this.routeService.readParameters().then((result : object)=> {
+              console.log(result);
+                this.currentCategory = result['category']
+                let brand = result['brand']
+                this.brand = brand
+                this.title = result['title']
+                console.log(this.title)
+                this.link = String(result['link'])
+                console.log(this.currentCategory);
+                console.log(this.brand);
+                console.log(this.title);
+                console.log(this.link);
+                if(reroute === true){
+                  console.log('apparently i dont exist :(');
+                  this.loc.replaceState('items-list/' + this.currentCategory)
+                }
+                this.loadCategoryItems(this.currentCategory, brand)
+                this.loadCategoryItemsSnap(this.currentCategory, brand)
+                
+                
+            })
+          })
+        }else{
+          this.isConnected = false
+        }
+      })  
+
     }else{
       this.isOnline = false
     }
@@ -697,26 +730,7 @@ brand
       this.isOnline = false
     }
   }
-  // loadKwangaItems(){
-  //   let category : String
-  //   for(let key in this.kwangaCategories){
-  //     category  = this.kwangaCategories[key]
-  //     this.loadItems(category, 'Kwanga').then(result => {
-  //       console.log(result);
 
-  //     })
-  //   }
-  // }
-  // loadDankieJesuItems(){
-  //   let category : String
-  //   for(let key in this.dankieJesuCategories){
-  //     category = this.dankieJesuCategories[key]
-  //     this.loadItems(category, 'Dankie Jesu')
-  //   }
-  // }
-  // loadViewedCategory(){
-
-  // }
   sortProducts(){
     this.allProducts.sort( (a,b) => {
       let data = (a.data.name) - (b.data.name)
@@ -754,26 +768,12 @@ brand
   }
   toKwanga(){
     alert(this.title)
-    // this.route.navigate(['/kwanga-sub-categories'])    
   }
-  // loadItems(category, brand){
-  //   //console.log(1234);
-  //   let data : Array<any> = []
-  //   return this.productsService.loadCategoryItems(category, brand).then(result => {
-  //     console.log(result);
-  //     for(let key in result){
-  //       console.log(result);
-  //       //this.allItems.push(result[key])
-  //       this.currentViewedItems.push(result[key])
-  //     }
-  //     //console.log(this.allItems);
-  //   })
-  // }
+
   enableEndDateInput(){
     if(this.editStartDate){
-      let date : number = Number(moment(this.editStartDate).format('DD')) + 1
-      console.log(date);
-      this.endDateLimit = moment(this.editStartDate).format('YYYY-MM-'+ date)
+      this.endDateLimit = moment(this.editStartDate).add('days', 1).format('YYYY-MM-DD')
+      console.log(this.endDateLimit);
     }
     this.checkPromoValidity()
   }
@@ -918,12 +918,6 @@ brand
       }
     }
     this.checkPromoValidity()
-    //this.salePrice = this.itemPrice - this.itemPrice * this.editPercentage / 100
-    //console.log(this.salePrice);
-    //let price = this.itemPrice - this.itemPrice * this.editPercentage / 100
-    //console.log(price);
-    //console.log(this.salePrice);
-    
   }
   pictureUpdate : File
   updateItem() {
