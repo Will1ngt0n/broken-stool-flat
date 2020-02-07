@@ -1295,4 +1295,25 @@ brand
   colorToggle(colorValue){
     document.getElementById(colorValue).style.boxShadow = "0px 3px 10px " + colorValue;
   }
+
+  async promoWarnAlert() {
+    const alert = await this.alertController.create({
+      header: 'Wait a bit!',
+      message: "This item is already on sale",
+      buttons: [
+        {
+          text: 'Okay',
+          handler: (okay) => {
+            console.log('User clicked "okay"');
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  alreadyOnSale(){
+    this.promoWarnAlert();
+  }
 }

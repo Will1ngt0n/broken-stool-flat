@@ -159,10 +159,13 @@
                 <p id="new-price"><b>R {{item.data.saleprice}}</b></p>
                 <p id="old-price"><b>R {{item.data.price}}</b></p>
               </div>
-              <div class="options">
-                <div
+              <div class="options"> 
+                <div *ngIf="item.data.onSale === false"
                   (click)="showPromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item)">
                   Promote</div>
+                  <div *ngIf="item.data.onSale === true"
+                    (click)="alreadyOnSale()">
+                    Promote</div>
                 <div
                   (click)="toggleUpdate(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item.data.size, item.data.color)">
                   Update</div>
@@ -227,10 +230,13 @@
               <br>
               <div class="opts">
                 <div>
-                  <button icon-only
+                  <button icon-only  *ngIf="item.data.onSale === false"
                     (click)="showPromo(item.productID, item.brand, item.category, item.data.name, item.data.description, item.data.price, item.data.pictureLink, item)">
                     <ion-icon name="flash"></ion-icon>
                   </button>
+                  <button icon-only *ngIf="item.data.onSale === true"
+                  (click)="alreadyOnSale()"><ion-icon name="flash"></ion-icon>
+                </button>
                 </div>
                 <div>
                   <button icon-only
