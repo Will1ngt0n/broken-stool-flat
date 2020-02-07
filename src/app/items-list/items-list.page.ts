@@ -107,6 +107,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
 
   constructor(private networkService : NetworkService, private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     this.today = moment(new Date()).format('YYYY-MM-DD')
+
   }
 
   async productAlert(message) {
@@ -980,6 +981,28 @@ brand
     this.checkXS =false ;this.checkS =false ;this.checkM =false ;this.checkL =false ;this.checkXL =false ;this.checkXXL =false ;this.checkXXXL =false ;
     this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
   }
+  updateForm : boolean
+  validateUpdateForm(){
+    console.log(this.updateName);
+    console.log(this.pictureUpdate);
+    console.log(this.updateDescription);
+    console.log(this.updatePrice);
+    
+    console.log(this.itemSizes.length);
+    console.log(this.itemColors.length);
+    console.log(this.categoryMatch);
+    
+    
+    
+    
+    
+    
+    if(this.updateName === '' || this.pictureUpdate === undefined || this.updateDescription === '' || this.itemSizes.length === 0 || this.updatePrice === '' || this.itemColors.length === 0 || this.categoryMatch === true){
+      this.updateForm = false
+    }else{
+      this.updateForm = true
+    }
+  }
   clearPromoForm(){
     this.editEndDate = undefined
     this.editStartDate = undefined
@@ -1040,12 +1063,12 @@ brand
             if(this.currentViewedItems[key].productID !== this.itemID){
               this.categoryMatch = true
               console.log(this.categoryMatch);
-              
+              this.validateUpdateForm()
               break
             }else{
               this.categoryMatch = false
               console.log(false);
-              
+              this.validateUpdateForm()
             }
             console.log(joined, this.currentViewedItems[key].data.name.toLowerCase() );
             break
@@ -1056,7 +1079,7 @@ brand
             console.log(this.categoryMatch);
             
             //console.log('no match');
-            
+            this.validateUpdateForm()
           }
         }
         //this.checkValidity()
@@ -1065,6 +1088,7 @@ brand
     }else if(val === ''){
       this.categoryMatch = false
       //this.searchInventoryVal = []
+      this.validateUpdateForm()
     }
     console.log(match);
     
@@ -1117,6 +1141,7 @@ brand
     this.itemImageLink = imageLink
     this.itemSizes = sizes
     this.itemColors = colors
+    this.updateForm = true
     console.log(productID, brand, category, name, description, price, imageLink, sizes, colors);
     
     console.log(this.promoUdpate);

@@ -53,41 +53,72 @@ export class PendingOrderPage implements OnInit {
   isConnected : boolean
   ngOnInit() {
 
-    if(navigator.onLine){
-      return this.networkService.getUID().then( result => {
-        console.log(result);
-        if(result === true){
-          this.isConnected = true
-          this.isOnline = true
-          this.isCached = true
-          this.activatedRoute.queryParams.subscribe(result => {
-            //this.item = result.item
-            //console.log(this.item);
-            console.log(result);
-            this.refNo = result.refNo
-            this.status = 'quit'
-            let name = result.user
-            this.userID = result.userID
-            console.log(name);
-            this.cell = result.cell
-            this.getUser(this.userID)
-            console.log(this.cell);
-            this.routingPage = result.currentPage
-            console.log(this.routingPage);
+    // if(navigator.onLine){
+    //   return this.networkService.getUID().then( result => {
+    //     console.log(result);
+    //     if(result === true){
+    //       this.isConnected = true
+    //       this.isOnline = true
+    //       this.isCached = true
+    //       this.activatedRoute.queryParams.subscribe(result => {
+    //         //this.item = result.item
+    //         //console.log(this.item);
+    //         console.log(result);
+    //         this.refNo = result.refNo
+    //         this.status = result.status
+    //         let name = result.user
+    //         this.userID = result.userID
+    //         console.log(name);
+    //         this.cell = result.cell
+    //         this.getUser(this.userID)
+    //         console.log(this.cell);
+    //         this.routingPage = result.currentPage
+    //         console.log(this.routingPage);
             
+    //         this.getOrder(this.refNo, name)
+    //         this.refreshPendingOrder()
+    //       })
+    //     }else{
+    //       this.isConnected = false
+    //     }
+    //   })
+
+    // }else{
+    //   this.isOnline = false
+    //   this.isCached = false
+    // }
+
+    this.activatedRoute.queryParams.subscribe(result => {
+      console.log(result);
+      this.refNo = result.refNo
+      this.status = result.status
+      let name = result.user
+      this.userID = result.userID
+      console.log(name);
+      this.cell = result.cell
+      // this.getUser(this.userID)
+      console.log(this.cell);
+      this.routingPage = result.currentPage
+      console.log(this.routingPage);
+      if(navigator.onLine){
+        return this.networkService.getUID().then( result => {
+          console.log(result);
+          if(result === true){
+            this.isConnected = true
+            this.isOnline = true
+            this.isCached = true
+            this.getUser(this.userID)
             this.getOrder(this.refNo, name)
             this.refreshPendingOrder()
-          })
-        }else{
-          this.isConnected = false
-        }
-      })
-
-    }else{
-      this.isOnline = false
-      this.isCached = false
-    }
-
+          }else{
+            this.isConnected = false
+          }
+        })
+      }else{
+        this.isOnline = false
+        this.isCached = false
+      }
+    })
  
   }
   createPDF(){
@@ -222,39 +253,22 @@ export class PendingOrderPage implements OnInit {
   reload() {
 
     if(navigator.onLine){
-      this.isOnline = true
       return this.networkService.getUID().then( result => {
         console.log(result);
-
         if(result === true){
           this.isConnected = true
-          clearInterval(this.timer)
-
-          this.activatedRoute.queryParams.subscribe(result => {
-            //this.item = result.item
-            //console.log(this.item);
-            console.log(result);
-            this.refNo = result.refNo
-            this.status = 'quit'
-            let name = result.user
-            this.userID = result.userID
-            console.log(name);
-            this.cell = result.cell
-            this.getUser(this.userID)
-            console.log(this.cell);
-            this.routingPage = result.currentPage
-            console.log(this.routingPage);
-            
-            this.getOrder(this.refNo, name)
-            this.refreshPendingOrder()
-          })
+          this.isOnline = true
+          this.isCached = true
+          this.getUser(this.userID)
+          this.getOrder(this.refNo, name)
+          this.refreshPendingOrder()
         }else{
           this.isConnected = false
         }
-      }) 
-
+      })
     }else{
       this.isOnline = false
+      this.isCached = false
     }
 
  
@@ -278,6 +292,7 @@ export class PendingOrderPage implements OnInit {
         //clearInterval(this.timer)
       }
     }
+    
   }
   timer
   pageLoader : boolean
@@ -448,10 +463,12 @@ processOrder(){
     firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
        // console.log(result.metadata);
         //console.log(result);
-        
-        let status = result.data().status
-        this.status = status
-        console.log(status);
+        if(result.exists){
+          let status = result.data().status
+          this.status = status
+          console.log(status);
+        }
+
         
         // for(let key in result.docChanges()){
         //   let change = result.docChanges()[key]
@@ -486,9 +503,12 @@ orderReady(){
     firebase.firestore().collection('Order').doc(this.refNo).onSnapshot({includeMetadataChanges: true}, result => {
         //console.log(result.metadata);
         //console.log(result);
-        
-        let status = result.data().status
-        this.status = status
+        if(result.exists){
+          let status = result.data().status
+          this.status = status
+        }
+
+
 
       })
       
@@ -497,6 +517,7 @@ orderReady(){
   })
 }
 orderCollected(){
+  this.presentLoading()
   let status;
   let date = new Date().getTime()
   let convertedDate = moment(date).format('MMMM, DD YYYY HH:MM')
@@ -562,6 +583,8 @@ refreshPendingOrder(){
   return this.productsService.refreshPendingOrder(this.refNo).then(result => {
 
     this.status = result
+    console.log(this.status);
+    
     console.log(result);
     
   })

@@ -11,5 +11,8 @@ export class SignInPage implements OnInit {
 
   ngOnInit() {
   }
+  checkColor(event, color){
+
+  }
 
 }

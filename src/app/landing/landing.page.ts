@@ -141,6 +141,7 @@ export class LandingPage implements OnInit {
 
   constructor(private networkService : NetworkService, private alertController: AlertController, public loadingCtrl: LoadingController, public navCtrl: NavController, public route: Router, public authService: AuthService, public productService: ProductsService) {
     //console.log(this.department);
+    this.categoryUpdateMatch = false
     this.kwangaSpecialsPicture = undefined
     this.dankieJesuSpecialsPicture = undefined
     this.allSpecialsPicture = undefined
@@ -179,12 +180,12 @@ export class LandingPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('User clicked "cancel"');
+            //console.log('User clicked "cancel"');
           }
         }, {
           text: 'Okay',
           handler: (okay) => {
-            console.log('User clicked "okay"');
+            //console.log('User clicked "okay"');
             return this.signOut()
           }
         }
@@ -230,14 +231,14 @@ export class LandingPage implements OnInit {
         if(navigator.onLine){
           //this.presentLoader()
           return this.networkService.getUID().then( result => {
-            console.log(result);
+            //console.log(result);
             if(result === true){
               clearInterval(this.timer)
               this.isOnline = true
               this.isCached = true
               this.isConnected = true
-              console.log(this.isOnline);
-              console.log(this.isCached, 'iscached');
+              //console.log(this.isOnline);
+              //console.log(this.isCached, 'iscached');
               
               
     
@@ -260,8 +261,8 @@ export class LandingPage implements OnInit {
               this.getOrderHistory()
               this.getInventory()
               this.loader()
-              console.log('you are online');
-              console.log(this.allProducts.length);
+              //console.log('you are online');
+              //console.log(this.allProducts.length);
             
               //if(this.allProducts.length === 0){
                 //this.presentLoader()
@@ -271,7 +272,7 @@ export class LandingPage implements OnInit {
           
                 this.load16CategoryItems()
               //}
-              console.log('Oninit did run');
+              //console.log('Oninit did run');
           
               this.nativeCategory.nativeElement.disabled = true
               
@@ -302,17 +303,17 @@ export class LandingPage implements OnInit {
         }else{
           this.isOnline = false
           this.isCached = false
-          console.log(this.isOnline, 'hello you are offline');
-          console.log(this.isCached);
-          console.log(this.isOnline);
-          console.log(this.isCached);
+          // console.log(this.isOnline, 'hello you are offline');
+          // console.log(this.isCached);
+          // console.log(this.isOnline);
+          // console.log(this.isCached);
           //this.loadingCtrl.dismiss()
           
           // setInterval( () => {
           //   this.checkConnectionStatus()
           // }, 3000)
           
-          console.log('you are offline');
+          //console.log('you are offline');
           //alert("Please check your internet connectivity, we can't connect to the database.")
         }
       }
@@ -321,11 +322,11 @@ export class LandingPage implements OnInit {
 
   }
   reload() { ////copy
-    console.log('On ngOninit');
+    //console.log('On ngOninit');
 
     if(navigator.onLine){
       return this.networkService.getUID().then( result => {
-        console.log(result);
+        //console.log(result);
         if(result === true){ 
           this.presentLoader()
           this.pageLoader = true
@@ -333,7 +334,7 @@ export class LandingPage implements OnInit {
           this.isCached = true
           this.isConnected = true
           clearInterval(this.timer)
-          console.log(this.isOnline);
+          //console.log(this.isOnline);
           
 
           //this.productService.getCategories()
@@ -367,8 +368,8 @@ export class LandingPage implements OnInit {
           this.getOrderHistory()
           this.getInventory()
           this.loader()
-          console.log('you are online');
-          console.log(this.allProducts.length);
+          //console.log('you are online');
+          //console.log(this.allProducts.length);
         
           //if(this.allProducts.length === 0){
             //this.presentLoader()
@@ -378,7 +379,7 @@ export class LandingPage implements OnInit {
       
             this.load16CategoryItems()
           //}
-          console.log('Oninit did run');
+          //console.log('Oninit did run');
       
           this.nativeCategory.nativeElement.disabled = true
           
@@ -408,16 +409,16 @@ export class LandingPage implements OnInit {
 
     }else{
       this.isOnline = false
-      console.log(this.isOnline);
+      //console.log(this.isOnline);
       this.loadingCtrl.dismiss()
-      console.log('you are offline');
+      //console.log('you are offline');
       
     }
     //this.testingEmail()
 
   }
   load16CategoryItems(){
-    console.log(navigator.onLine);
+    //console.log(navigator.onLine);
     
 
     // setTimeout(() => {
@@ -429,11 +430,11 @@ export class LandingPage implements OnInit {
     //   }
     // }, 300000);
     return this.productService.load16CategoryItems().then((result : any) => {
-      console.log(result)
+      //console.log(result)
       if(result !== null && result.length > 0){
         //console.log(result);
           this.allProducts = result
-        console.log(this.allProducts);
+        //console.log(this.allProducts);
       
       this.inventoryLength = this.allProducts.length
       this.sortProducts()
@@ -455,7 +456,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -465,7 +466,7 @@ export class LandingPage implements OnInit {
      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
       this.modifyLocalObjectsVests(result, brand, category)
     }else{
-      console.log('result is empty : ' + result.empty)
+      //console.log('result is empty : ' + result.empty)
     }
     })
   }
@@ -475,7 +476,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -485,7 +486,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -493,16 +494,16 @@ export class LandingPage implements OnInit {
     firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
       //console.log('Running vests snapshots');
       // this.modifyLocalObjects(result, brand, category)
-      console.log(result.docChanges())
-      console.log(result)
-      console.log(result.docs)
-      console.log(result.empty)
-      console.log(result.size)
-      console.log(result.query)
+      // console.log(result.docChanges())
+      // console.log(result)
+      // console.log(result.docs)
+      // console.log(result.empty)
+      // console.log(result.size)
+      // console.log(result.query)
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -514,7 +515,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -526,7 +527,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -538,7 +539,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -548,7 +549,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -558,7 +559,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -568,7 +569,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -578,7 +579,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -588,7 +589,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -598,7 +599,7 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
@@ -608,208 +609,229 @@ export class LandingPage implements OnInit {
       if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
         this.modifyLocalObjectsVests(result, brand, category)
       }else{
-        console.log('result is empty : ' + result.empty)
+        //console.log('result is empty : ' + result.empty)
       }
     })
   }
-
-  modifyLocalObjectsCaps(result, brand, category){
-    let items : Array<any> = []
-    let data : object = {}
-    let productID = ''
-    let docData
-    let addItems : boolean
-    for(let key in result.docChanges()){
-      let change = result.docChanges()[key]
-      if(change.type === 'added'){
-        data = {}
-        productID = change.doc.id
-        docData = change.doc.data()
-        data = {productID: productID, data: docData, category: category, brand: brand}
-        // items.push(data)
-      }else if(change.type === 'removed'){
-        productID = change.doc.id
-        for(let key in this.allProducts){
-          if(productID === this.allProducts[key].productID){
-            let index = Number(key)
-            this.allProducts.splice(index, 1)
-            this.inventoryLength = this.allProducts.length
-          }
-        }
-        if(brand === 'Dankie Jesu'){
-          if(change.doc.data().isSummer === true){
-            for(let key in this.summerGear){
-              if(productID === this.summerGear[key].productID){
-                let index = Number(key)
-                this.summerGear.splice(index, 1)
-                
-              }
-            }
-          }else if(change.doc.data().isSummer === false){
-            for(let key in this.winterGear){
-              if(productID === this.winterGear[key].productID){
-                let index = Number(key)
-                this.winterGear.splice(index, 1)
-              }
-            }
-          }
-        }else if(brand === 'Kwanga'){
-          for(let key in this.kwangaGear){
-            if(productID === this.kwangaGear[key].productID){
-              let index = Number(key)
-              this.kwangaGear.splice(index, 1)
-            }
-          }
-        }
-        this.sortKwangaProducts()
-        this.sortSummerProducts()
-        this.sortWinterProducts()
-      }else if(change.type === 'modified'){
-        productID = change.doc.id
-        docData = change.doc.data()
-        data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
-        for(let key in this.allProducts){
-          if(this.allProducts[key].productID === productID){
-            this.allProducts[key].data = docData
-            //addItems = false
-          }else if(this.allProducts[key].productID !== productID){
-            //addItems = true
-          }
-        }
-      }
+  updateForm : boolean
+  validateUpdateForm(){
+    console.log(this.updateName);
+    console.log(this.updatePic);
+    console.log(this.updateDescription);
+    console.log(this.updatePrice);
+    
+    console.log(this.itemSizes.length);
+    console.log(this.itemColors.length);
+    console.log(this.categoryUpdateMatch);
+    
+    
+    
+    
+    
+    
+    if(this.updateName === '' || this.updatePic === undefined || this.updateDescription === '' || this.itemSizes.length === 0 || this.updatePrice === '' || this.itemColors.length === 0 || this.categoryUpdateMatch === true){
+      this.updateForm = false
+    }else{
+      this.updateForm = true
     }
-    // if(this.allProducts.length === 0){
-    //   this.allProducts.push(items[1])
-    //   return
-    // }
-    if(this.allProducts.length === 0){
-      this.allProducts = items
-    }else if(this.allProducts.length > 0){
-      for(let i in items){
-        addItems = false
-        for(let key in this.allProducts){
-          if(this.allProducts[key].productID !== items[i].productID){
-            addItems = true
-          }else if(this.allProducts[key].productID === items[i].productID){
-            addItems = false
-            //let logo : Array<any> = []
-            //logo.push(addItems);
-            //console.log(logo);
-            
-            break
-          }
-        }
-        if(addItems === true){
-          this.allProducts.unshift(data)
-          this.inventoryLength = this.allProducts.length
-          if(brand === 'Dankie Jesu'){
-            if(this.summer === true){
-              this.summerGear.unshift(data)
-              if(this.summerGear.length > 6){
-                this.summerGear.splice(this.summerGear.length - 1, 1)
-              }
-
-            }else if(this.summer === false){
-              this.winterGear.unshift(data)
-              if(this.winterGear.length > 6){
-                this.winterGear.splice(this.winterGear.length - 1, 1)
-              }
-            }
-          }else if(brand === 'Kwanga'){
-            this.kwangaGear.unshift(data)
-            if(this.kwangaGear.length > 3){
-              this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
-            }
-          }
-        }
-      }
-    }
-    // if(this.allProducts.length === 0){
-    //   this.allProducts = items
-    // }
-
-    let addToWinter : boolean
-    let addToSummer : boolean
-    let addToKwanga : boolean
-
-///////////////////////////////////////////////////////////////////
-    for(let i in this.allProducts){
-      //addToSummer = false
-      for(let j in this.summerGear){
-      if(this.allProducts[i].brand === 'Dankie Jesu'){
-        if(this.allProducts[i].data.isSummer === true){
-          if(this.allProducts[i].productID !== this.summerGear[j].productID){
-            addToSummer = true
-            //console.log(this.allProducts[i].productID);
-            
-          }else if(this.allProducts[i].productID === this.summerGear[j].productID){
-            addToSummer = false
-            //console.log(this.allProducts[i].productID);
-            return
-          }
-          }
-        }
-      }
-      if(addToSummer === true){
-        if(this.summerGear.length < 6){
-          this.summerGear.push(this.allProducts[i])
-        }
-      }
-    }
-    for(let i in this.allProducts){
-      //addToWinter = false
-      for(let j in this.winterGear){
-      if(this.allProducts[i].brand === 'Dankie Jesu'){
-        if(this.allProducts[i].data.isSummer === false){
-          if(this.allProducts[i].productID !== this.winterGear[j].productID){
-            addToWinter = true
-            //console.log(this.allProducts[i].productID);
-            
-          }else if(this.allProducts[i].productID === this.winterGear[j].productID){
-            addToWinter = false
-            break
-          }
-
-          }
-        }
-      }
-      if(addToWinter === true){
-        if(this.winterGear.length < 6){
-          this.winterGear.push(this.allProducts[i])
-        }
-      }
-      if(addToSummer === true){
-        if(this.summerGear.length < 6){
-          this.summerGear.push(this.allProducts[i])
-        }
-      }
-    }
-    for(let i in this.allProducts){
-      //addToSummer = false
-      for(let j in this.kwangaGear){
-      if(this.allProducts[i].brand === 'Kwanga'){
-          if(this.allProducts[i].productID !== this.kwangaGear[j].productID){
-            addToKwanga = true
-            //console.log(this.allProducts[i].productID);
-            
-          }else if(this.allProducts[i].productID === this.kwangaGear[j].productID){
-            addToKwanga = false
-            //console.log(this.allProducts[i].productID);
-            break
-          }
-        }
-      }
-      if(addToKwanga === true){
-        if(this.kwangaGear.length < 3){
-          this.kwangaGear.push(this.allProducts[i])
-        }
-      }
-    }
-    this.sortKwangaProducts()
-    this.sortSummerProducts()
-    this.sortWinterProducts()
   }
+//   modifyLocalObjectsCaps(result, brand, category){
+//     let items : Array<any> = []
+//     let data : object = {}
+//     let productID = ''
+//     let docData
+//     let addItems : boolean
+//     for(let key in result.docChanges()){
+//       let change = result.docChanges()[key]
+//       if(change.type === 'added'){
+//         data = {}
+//         productID = change.doc.id
+//         docData = change.doc.data()
+//         data = {productID: productID, data: docData, category: category, brand: brand}
+//         // items.push(data)
+//       }else if(change.type === 'removed'){
+//         productID = change.doc.id
+//         for(let key in this.allProducts){
+//           if(productID === this.allProducts[key].productID){
+//             let index = Number(key)
+//             this.allProducts.splice(index, 1)
+//             this.inventoryLength = this.allProducts.length
+//           }
+//         }
+//         if(brand === 'Dankie Jesu'){
+//           if(change.doc.data().isSummer === true){
+//             for(let key in this.summerGear){
+//               if(productID === this.summerGear[key].productID){
+//                 let index = Number(key)
+//                 this.summerGear.splice(index, 1)
+                
+//               }
+//             }
+//           }else if(change.doc.data().isSummer === false){
+//             for(let key in this.winterGear){
+//               if(productID === this.winterGear[key].productID){
+//                 let index = Number(key)
+//                 this.winterGear.splice(index, 1)
+//               }
+//             }
+//           }
+//         }else if(brand === 'Kwanga'){
+//           for(let key in this.kwangaGear){
+//             if(productID === this.kwangaGear[key].productID){
+//               let index = Number(key)
+//               this.kwangaGear.splice(index, 1)
+//             }
+//           }
+//         }
+//         this.sortKwangaProducts()
+//         this.sortSummerProducts()
+//         this.sortWinterProducts()
+//       }else if(change.type === 'modified'){
+//         productID = change.doc.id
+//         docData = change.doc.data()
+//         data = {productID: productID, data: docData, category: category, brand: brand}
+//         items.push(data)
+//         for(let key in this.allProducts){
+//           if(this.allProducts[key].productID === productID){
+//             this.allProducts[key].data = docData
+//             //addItems = false
+//           }else if(this.allProducts[key].productID !== productID){
+//             //addItems = true
+//           }
+//         }
+//       }
+//     }
+//     // if(this.allProducts.length === 0){
+//     //   this.allProducts.push(items[1])
+//     //   return
+//     // }
+//     if(this.allProducts.length === 0){
+//       this.allProducts = items
+//     }else if(this.allProducts.length > 0){
+//       for(let i in items){
+//         addItems = false
+//         for(let key in this.allProducts){
+//           if(this.allProducts[key].productID !== items[i].productID){
+//             addItems = true
+//           }else if(this.allProducts[key].productID === items[i].productID){
+//             addItems = false
+//             //let logo : Array<any> = []
+//             //logo.push(addItems);
+//             //console.log(logo);
+            
+//             break
+//           }
+//         }
+//         if(addItems === true){
+//           this.allProducts.unshift(data)
+//           this.inventoryLength = this.allProducts.length
+//           if(brand === 'Dankie Jesu'){
+//             if(this.summer === true){
+//               this.summerGear.unshift(data)
+//               if(this.summerGear.length > 6){
+//                 this.summerGear.splice(this.summerGear.length - 1, 1)
+//               }
+
+//             }else if(this.summer === false){
+//               this.winterGear.unshift(data)
+//               if(this.winterGear.length > 6){
+//                 this.winterGear.splice(this.winterGear.length - 1, 1)
+//               }
+//             }
+//           }else if(brand === 'Kwanga'){
+//             this.kwangaGear.unshift(data)
+//             if(this.kwangaGear.length > 3){
+//               this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
+//             }
+//           }
+//         }
+//       }
+//     }
+//     // if(this.allProducts.length === 0){
+//     //   this.allProducts = items
+//     // }
+
+//     let addToWinter : boolean
+//     let addToSummer : boolean
+//     let addToKwanga : boolean
+
+// ///////////////////////////////////////////////////////////////////
+//     for(let i in this.allProducts){
+//       //addToSummer = false
+//       for(let j in this.summerGear){
+//       if(this.allProducts[i].brand === 'Dankie Jesu'){
+//         if(this.allProducts[i].data.isSummer === true){
+//           if(this.allProducts[i].productID !== this.summerGear[j].productID){
+//             addToSummer = true
+//             //console.log(this.allProducts[i].productID);
+            
+//           }else if(this.allProducts[i].productID === this.summerGear[j].productID){
+//             addToSummer = false
+//             //console.log(this.allProducts[i].productID);
+//             return
+//           }
+//           }
+//         }
+//       }
+//       if(addToSummer === true){
+//         if(this.summerGear.length < 6){
+//           this.summerGear.push(this.allProducts[i])
+//         }
+//       }
+//     }
+//     for(let i in this.allProducts){
+//       //addToWinter = false
+//       for(let j in this.winterGear){
+//       if(this.allProducts[i].brand === 'Dankie Jesu'){
+//         if(this.allProducts[i].data.isSummer === false){
+//           if(this.allProducts[i].productID !== this.winterGear[j].productID){
+//             addToWinter = true
+//             //console.log(this.allProducts[i].productID);
+            
+//           }else if(this.allProducts[i].productID === this.winterGear[j].productID){
+//             addToWinter = false
+//             break
+//           }
+
+//           }
+//         }
+//       }
+//       if(addToWinter === true){
+//         if(this.winterGear.length < 6){
+//           this.winterGear.push(this.allProducts[i])
+//         }
+//       }
+//       if(addToSummer === true){
+//         if(this.summerGear.length < 6){
+//           this.summerGear.push(this.allProducts[i])
+//         }
+//       }
+//     }
+//     for(let i in this.allProducts){
+//       //addToSummer = false
+//       for(let j in this.kwangaGear){
+//       if(this.allProducts[i].brand === 'Kwanga'){
+//           if(this.allProducts[i].productID !== this.kwangaGear[j].productID){
+//             addToKwanga = true
+//             //console.log(this.allProducts[i].productID);
+            
+//           }else if(this.allProducts[i].productID === this.kwangaGear[j].productID){
+//             addToKwanga = false
+//             //console.log(this.allProducts[i].productID);
+//             break
+//           }
+//         }
+//       }
+//       if(addToKwanga === true){
+//         if(this.kwangaGear.length < 3){
+//           this.kwangaGear.push(this.allProducts[i])
+//         }
+//       }
+//     }
+//     this.sortKwangaProducts()
+//     this.sortSummerProducts()
+//     this.sortWinterProducts()
+//   }
   changeDepartment(event) {
     //console.log('Accessory ', this.accessory);
 
@@ -1764,6 +1786,7 @@ export class LandingPage implements OnInit {
     }else if(Number(this.updatePrice) > 10000){
       this.updatePrice = '10000'
     }
+    this.validateUpdateForm()
   }
   changeQuantity(event, item){
     console.log(item);
@@ -1895,6 +1918,7 @@ export class LandingPage implements OnInit {
     reader.readAsDataURL(event.target.files[0]);
     console.log(event.target.files[0]);
     this.pictureUpdate = event.target.files[0]
+    this.validateUpdateForm()
     //this.updatePic = this.updateSearchPic
   }
 
@@ -1911,6 +1935,7 @@ export class LandingPage implements OnInit {
         console.log(this.itemColors);
       }
     }
+    this.validateUpdateForm()
   }
 
   checkSizeUpdateCheckboxes(event, size) {
@@ -1928,6 +1953,7 @@ export class LandingPage implements OnInit {
         console.log(this.itemSizes);
       }
     }
+    this.validateUpdateForm()
     // console.log(event.target.checked);
     // console.log(event.target['name']);
   }
@@ -2028,7 +2054,7 @@ export class LandingPage implements OnInit {
       
       console.log(item);
       this.clickedSearchItem = "showItem"
-
+      this.updateForm = true
       this.popCheckboxXS = false ;this.popCheckboxS = false ;this.popCheckboxM = false ;this.popCheckboxL = false ;this.popCheckboxXL = false ;this.popCheckboxXXL = false ;this.popCheckboxXXXL = false ;
       this.checkBlack = false; this.checkBrown = false; this.checkOrange = false; this.checkYellow = false; this.checkWhite = false
       for(let key in this.itemSizes){
@@ -5299,6 +5325,8 @@ export class LandingPage implements OnInit {
     let val = event.target.value.toLowerCase()
     console.log(event.target.tagName);
     if(item === null){
+      console.log('item is null');
+      
       let match 
       if(val !== '' && val !== '*'){
         let checkVal : Array<string> = val.split('')
@@ -5339,6 +5367,8 @@ export class LandingPage implements OnInit {
         this.searchInventoryVal = []
       }
     }else{
+      console.log('item is not null');
+      
       let match 
       if(val !== '' && val !== '*'){
         let checkVal : Array<string> = val.split('')
@@ -5358,11 +5388,12 @@ export class LandingPage implements OnInit {
               if((this.allProducts[key].category === item.category) && (this.allProducts[key].productID !== item.productID)){
                 this.categoryUpdateMatch = true
                 console.log(this.categoryUpdateMatch);
-                
+                this.validateUpdateForm()
                 break
               }else{
                 this.categoryUpdateMatch = false
                 console.log(this.categoryUpdateMatch);
+                this.validateUpdateForm()
               }
               console.log(joined, this.allProducts[key].data.name.toLowerCase() );
               break
@@ -5370,9 +5401,10 @@ export class LandingPage implements OnInit {
               //console.log(joined, this.allProducts[key].data.name.toLowerCase() );
               this.newProductNameMatch = false
               this.categoryUpdateMatch = false
+
               console.log(this.categoryUpdateMatch);
               //console.log('no match');
-              
+              this.validateUpdateForm()
             }
           }
           //this.checkValidity()
@@ -5381,6 +5413,7 @@ export class LandingPage implements OnInit {
       }else if(val === ''){
         this.categoryMatch = false
         this.searchInventoryVal = []
+        this.validateUpdateForm()
       }
     }
 
