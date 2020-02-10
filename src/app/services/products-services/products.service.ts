@@ -1,4 +1,4 @@
-import { Injectable, Query } from '@angular/core';
+import { Injectable} from '@angular/core';
 import * as firebase from 'firebase'
 import * as moment from 'moment';
 import { LoadingController } from '@ionic/angular';
@@ -124,18 +124,6 @@ return new Promise((resolve, reject)  => {
     })
   }
 
-  // getCategories(){
-  //   return firebase.firestore().collection('Products').doc('Winter').collection('Hat 500').get().then(result => {
-  //   //  console.log(result);
-  //     for(let key in result.docs){
-  //   //    console.log(result.docs[key].data());
-  //     }
-  //     let data = result.docs
-  //  //   console.log(data.values());
-  //   })
-  // }
-
-  //Getting sales items
   getAllSales(brand, category){
     return firebase.firestore().collection('Specials').doc(brand).collection(category).get().then(result => {
       let sales : Array<any> = []
@@ -146,14 +134,6 @@ return new Promise((resolve, reject)  => {
     //  console.log(result.docs[key].data());
       let data = result.docs[key].data()
       sales.push({productID: productID, data : data})
-      // this.getProduct(brand, category, productID, data).then(res=> {
-        
-        
-      //   sales = res
-      //   console.log(sales);
-        
-      //   //return sales
-      // })
     }
     return sales
   })
@@ -165,8 +145,6 @@ return new Promise((resolve, reject)  => {
       let sales : Array<any> = []
       //console.log(product.data());
       productData = product.data()
-      //console.log(data);
-      
       if(productData){
       //  console.log(productData['name']);
         sales.push({
@@ -212,21 +190,7 @@ return new Promise((resolve, reject)  => {
       return sales
     })
   }
-  getAllSalesdddddd(){
-    return firebase.firestore().collection('Products').where('onSale', '==', true).get().then(result => {
-      let sales : Array<any> = []
-      for(let key in result.docs){
-        
-        let productID = result.docs[key].id
-        //console.log(productID);
-      //console.log(result.docs[key].data());
-      let data = result.docs[key].data()
-      sales.push({description: data['description'], productID: productID, name: data['name'],category : data['category'], brand : data['brand'], normalPrice : data['price'], salePrice: data['saleprice'], startDate : data['startDate'], endDate : data['endDate']})
-      }
-     // console.log(sales);
-      return sales
-    })
-  }
+
   getBrandSales(){
     return firebase.firestore().collection('Specials').get().then(result => {
       let sales : Array<any> = []
@@ -319,7 +283,6 @@ return new Promise((resolve, reject)  => {
 
   deleteSpecialsItem(productID, item){
     return firebase.firestore().collection('Specials').doc(productID).delete().then(result => {
-      console.log(result);
       firebase.firestore().collection('Products').doc(item.brand).collection(item.category).doc(productID).update({
         onSale : false,
         discount : 0,

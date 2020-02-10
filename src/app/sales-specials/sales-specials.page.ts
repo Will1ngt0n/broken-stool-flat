@@ -88,7 +88,9 @@ export class SalesSpecialsPage implements OnInit {
   @ViewChild('checkboxWhite', {static : true}) checkboxWhite : ElementRef
   @ViewChild('btnClearForm', {static : true}) btnClearForm : ElementRef
   constructor(private networkService : NetworkService, public loadingCtrl: LoadingController, private alertController : AlertController, private authService : AuthService, public route : Router, public activatedRoute : ActivatedRoute, public productsService : ProductsService) {
-
+    this.isCached = false
+    this.isConnected = false
+    this.isOnline = false
     //this.getDankieJesuSales('Dankie Jesu')
 
 
@@ -131,7 +133,10 @@ export class SalesSpecialsPage implements OnInit {
   isOnline : boolean
   isCached : boolean
   isConnected : boolean
+  preventIonViewDidEnterInit : boolean
   ngOnInit() {
+    console.log('ngOnInit');
+    this.preventIonViewDidEnterInit = true
     if(navigator.onLine){
       return this.networkService.getUID().then( result => {
         console.log(result);
@@ -295,10 +300,17 @@ export class SalesSpecialsPage implements OnInit {
   timer
   ionViewDidEnter(){
     console.log('ion view did enter');
-    if(this.isCached !== true){
-      this.presentLoading()
-      this.pageLoader = true
+    if(this.preventIonViewDidEnterInit = false){
+      if(this.isCached !== true){
+        console.log(this.isCached + ' is cached');
+        
+        // this.presentLoading()
+        // this.pageLoader = true
+      }
+    }else{
+      this.preventIonViewDidEnterInit = false
     }
+
     this.timer = setInterval( () => {
       this.checkConnectionStatus()
     }, 3000)
@@ -750,7 +762,9 @@ viewMore(query){
 //   }
 // }
 loadSalesSnap(){
+  //this.presentLoading()
   this.presentLoading()
+  this.pageLoader = true
   return firebase.firestore().collection('Specials').orderBy('timestamp', 'desc').onSnapshot(result => {
     let sales : Array<any> = []
     console.log(result);
@@ -762,7 +776,7 @@ loadSalesSnap(){
         
         sales.push({productID: productID, data: docData, category: docData.category, brand: docData.brand, link: docData.pictureLink})
       }
-      if(this.loadingCtrl){
+      if(this.pageLoader === true){
         this.loadingCtrl.dismiss()
       }
       console.log(sales);

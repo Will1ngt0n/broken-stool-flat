@@ -103,37 +103,11 @@ export class SummerGearPage implements OnInit {
   }
 
   navigateForward(value){
-    console.log(value);
-    //let parameter = [{category: value, brand: 'Kwanga'}]
-    //this.route.navigate(['/items-list', value], parameter)
-    let parameter = {category: value, brand: 'Dankie Jesu', title: 'Summer Gear', link: 'summer-gear'}
     return this.routeService.storeParemeter(value, 'Dankie Jesu', 'Summer Gear', 'summer-gear').then(result => {
-      console.log('running');
-      console.log(result);
-      
       this.route.navigate(['/items-list', value])
     })
 
   }
-  ionViewWillEnter(){
-    console.log('ion view will enter');
-    
-  }
-  ionViewDidEnter(){
-    console.log('ion view did enter');
-    
-  }
-  ionViewWillLeave(){
-    console.log('ion view will leave');
-    
-  }
-
-  ionViewDidLeave(){
-    console.log('ion view did leave');
-    
-  }
-
-
   back(){
     this.route.navigate(['/landing'])
   }
@@ -157,13 +131,11 @@ export class SummerGearPage implements OnInit {
     pendingItems[0].style.display = "none";
     var inventoryItems = document.getElementsByClassName("inventory-items") as HTMLCollectionOf<HTMLElement>;
     inventoryItems[0].style.display = "none"
-
   }
 
   showLeftSide() {
     console.log("Showing left side menu");
     document.getElementById("left-items-list").style.left = "0"
-
   }
   searchButtonState:string = "search"
   showSearchBar() {

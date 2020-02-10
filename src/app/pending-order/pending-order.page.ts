@@ -256,7 +256,6 @@ export class PendingOrderPage implements OnInit {
 
   }
   reload() {
-
     if(navigator.onLine){
       return this.networkService.getUID().then( result => {
         console.log(result);
@@ -275,8 +274,6 @@ export class PendingOrderPage implements OnInit {
       this.isOnline = false
       this.isCached = false
     }
-
- 
   }
   checkConnectionStatus(){
     if(navigator.onLine){
@@ -287,7 +284,6 @@ export class PendingOrderPage implements OnInit {
         this.reload()
       }else if(this.isCached === true){
         clearInterval(this.timer)
-
       }
     }else{
       this.isOnline = false
@@ -302,10 +298,8 @@ export class PendingOrderPage implements OnInit {
   timer
   pageLoader : boolean
   ionViewDidEnter(){
-    console.log('ion view did enter');
     if(this.isCached !== true){
-      this.presentLoading()
-      this.pageLoader = true
+
     }
     this.timer = setInterval( () => {
       this.checkConnectionStatus()
@@ -343,10 +337,11 @@ export class PendingOrderPage implements OnInit {
   }
   signOut(){
     return this.authService.signOut().then(result => {
-      console.log(result);
     })
   }
   getUser(userID){
+    this.presentLoading()
+    this.pageLoader = true
     return this.productsService.loadUser(userID).then(result => {
       console.log(result);
       this.cell = result.cell
@@ -359,32 +354,21 @@ getOrder(refNo, name){
  return this.productsService.getOrderDetails(refNo).then(result => {
     this.item = result[0]
     this.item['details'].name = name
-    console.log(this.item);
     this.products = this.item['details']['product']
     this.quantity = this.products.length
-    console.log(this.products);
     this.deliveryType = this.item['details']['deliveryType']
     this.totalPrice = this.item['details']['totalPrice']
 
     if(this.deliveryType === 'Delivery'){
       this.deliveryAddress = this.userAddress
-      console.log(this.deliveryAddress);
       this.deliveryFee = this.item['details']['deliveryCost']
-      console.log(this.deliveryFee);
-      
       this.grandTotal = this.totalPrice + this.deliveryFee
     }else if(this.deliveryType === 'Collection'){
       this.deliveryAddress = ''
       this.deliveryFee = 0
       this.grandTotal = this.totalPrice
     }
-
-    console.log(this.deliveryType);
     this.purchaseDate = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
-    console.log(this.purchaseDate);
-    
-
-    console.log(this.products);
     this.countQuantity()
 
   })
@@ -394,57 +378,25 @@ async presentLoading() {
     message: 'Loading...',
   });
   await loading.present();
-
-  // const { role, data } = await loading.onDidDismiss();
-
-  // console.log('Loading dismissed!');
 }
 countQuantity(){
+  console.log('runnig checks');
+  
   this.totalQuantity = 0
   for(let key in this.products){
     this.totalQuantity = this.totalQuantity + this.products[key].quantity
   }
   console.log(this.totalQuantity);
-  if(this.pageLoader){
+  if(this.pageLoader === true){
+    console.log('asddsfs');
+    
     this.loadingCtrl.dismiss()
   }
 }
 goBack(){
   this.route.navigate([this.routingPage])
 }
-​
-// async loadPictures(){
-//   return this.productsService.getPictures().then(result => {
-//     console.log(result);
-//     let pictures : Array<any> = []
-//     for(let key in result.items){
-//       result.items[key].getDownloadURL().then(link => {
-//         let path = result.items[key].fullPath
-//         let splitPath = path.split('/')
-//         let pictureID = splitPath[splitPath.length -1]
-//         // picture['link'] = link
-//         // picture['productID'] = pictureID
-//         this.pictures.push({link : link, productID : pictureID})
-//         console.log(this.pictures);
-//         this.insertPictures()
-//        });
-//        return result
-//       }
-//   })
-// }
-// ​
-// insertPictures(){
-//   for(let i in this.pictures){
-//     //Adding pictures to products arrays
-//     for(let key in this.products){
-//       if(this.pictures[i].productID === this.products[key].productID){
-//         console.log('ddsfds');
-//         this.products[key].pictures = {link: this.pictures[i].link}
-//         console.log(this.products[key])
-//       }
-//     }
-//   }
-// }
+
 ​status : string;
 cancelOrder(){
   let status = 'cancelled'

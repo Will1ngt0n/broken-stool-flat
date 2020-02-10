@@ -110,12 +110,12 @@
         </div>
         <input type="text" placeholder="Item Name" (keyup)='findMatch($event)' [(ngModel)]='updateName' /><br />
         ​<span id="exists" *ngIf="categoryMatch === true">This item already exists on this category</span>
-        <input type="number" placeholder="Price" [(ngModel)]='updatePrice' />
+        <input type="number" placeholder="Price" [(ngModel)]='updatePrice' (keyup)='updatePrices()'/>
         <br />
-        <textarea placeholder="Item Description" rows="3" [(ngModel)]='updateDescription'></textarea>
+        <textarea placeholder="Item Description" rows="3" [(ngModel)]='updateDescription' (keyup)='updateDescriptions()'></textarea>
         <div class="gridded-inputs">
           <ion-button color="danger" (click)="dismissPromo()">Cancel</ion-button>
-          <ion-button color="success" (click)='updateItem()'>Update</ion-button>
+          <ion-button color="success" (click)='updateItem()' [disabled]='!updateForm'>Update</ion-button>
         </div>
       </div>
     </div>
