@@ -203,12 +203,9 @@
         <ion-button color="dark" fill="clear" (click)='back()'>
           <ion-icon name="home"></ion-icon>
         </ion-button>
-        <div class="page-title" *ngIf="title === 'Summer Gear'"><a (click)='toSummerGear()'>{{title}}</a> / {{currentCategory}}
+        <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
         </div>
-        <div class="page-title" *ngIf="title === 'Winter Gear'"><a (click)='toWinterGear()'>{{title}}</a> / {{currentCategory}}
-        </div>
-        <div class="page-title" *ngIf="title === 'Kwanga Gear'"><a (click)='toKwanga()'>{{title}}</a> / {{currentCategory}}
-        </div>
+
       </div>
       <div *ngFor="let item of currentViewedItems">
         <div>
