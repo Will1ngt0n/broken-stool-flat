@@ -23,7 +23,7 @@
 
     </div>
     <div id="forms">
-      <ion-button id="dismisserBtn" fill="clear" (click)="showHideSearchDetails('close')">
+      <ion-button id="dismisserBtn" color="light" fill="clear" (click)="showHideSearchDetails('close')">
         <ion-icon name="close"></ion-icon>
       </ion-button>
       <label for="uploaderBtn" id="imageToupdate">
@@ -144,7 +144,7 @@
           </div>
           <div class="items-list">
             <ion-card class="item-card-list " *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
-              <p class="floating" id="bottom-right">Products ({{item.noOfItems}})</p>
+              <p class="floating" id="bottom-right">({{item.noOfItems}})</p>
               <p *ngIf="item && !item.details.name"><b>Please wait...</b></p>
               <p><b>{{item.details.name}}</b></p>
               <p *ngIf="!item.details.totalPrice">Loading</p>
@@ -358,7 +358,7 @@
           </div>
           <input #itemPrice type="number" class="user-input" placeholder="Price"
             [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price' (keyup)='changePrice()'>
-          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the item"
+          <textarea type="text" maxlength='150' rows="5" class="user-input-area" placeholder="About the product"
             [disabled]='selectedCategory === "Select Category"' [(ngModel)]='description'
             (keyup)='checkItemDescription();'></textarea>
           <div class="sizes">
@@ -463,7 +463,7 @@
               <p><b>{{item.details.name}}</b></p>
               <p>R {{item.details.totalPrice}}</p>
               <p>REF: {{item.refNo}}</p>
-              <p>Products ({{item.noOfItems}})</p>
+              <p>({{item.noOfItems}})</p>
             </div>
           </div>
 
@@ -480,7 +480,7 @@
             <p><b>{{item.details.userID}}</b></p>
             <p>R {{item.details.totalPrice}}</p>
             <p>REF: {{item.refNo}}</p>
-            <p>Products ({{item.details.numberOfItems}})</p>
+            <p>({{item.details.numberOfItems}})</p>
           </div>
         </div>
         <div class="forInventory" *ngIf="listOfItems === 3">
@@ -552,16 +552,16 @@
         <input type="text" class="user-input" placeholder="Product name" maxlength="25"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
           (keyup)='findMatch($event, null); checkValidity()'>
-        <ion-list *ngFor="let item of searchInventoryVal">
-          <div *ngIf='searchInventoryVal.length > 0'>
-            <ion-item (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
+        <span *ngIf='categoryMatch' id="already-exists">An item with that name already exists in selected category</span>
+        <ion-list>
+          <div *ngFor="let item of searchInventoryVal">
+            <ion-item *ngIf='searchInventoryVal.length > 0' (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
           </div>
         </ion-list>
-        <span *ngIf='categoryMatch'>An item with that name already exists in selected category</span>
         <input #itemPrice type="number" class="user-input" placeholder="Price"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price'
           (keyup)='checkValidity(); changePrice()'>
-        <textarea type="text" rows="5" class="user-input-area" placeholder="About the item"
+        <textarea type="text" rows="5" class="user-input-area" placeholder="About the product"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='description'
           (keyup)='checkValidity()'></textarea>
         <div class="sizes">

@@ -1,8 +1,9 @@
 .checkmarksColor{
-    // border: 2px solid red;
+    border: 2px solid red;
     display: flex;
 /* The container */
-.container {
+}
+.inner-container {
   display: block;
   position: relative;
   padding-left: 35px;
@@ -16,11 +17,11 @@
 }
 
 .check-container{
-    border: 2px solid red;
-    height: 44px;
+    background-color: pink;
+    height: 40px;
     width: 100%;
 }
-.checkmarksColor > .check-container:nth-child(1){
+.checkmarksColor > div:nth-child(1){
     background: black;
 }
 .checkmarksColor > .check-container:nth-child(2){
@@ -36,7 +37,7 @@
     background: white;
 }
 /* Hide the browser's default checkbox */
-.container input {
+.inner-container input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -55,12 +56,12 @@
 }
 
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
+.inner-container:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.inner-container input:checked ~ .checkmark {
   background-color: rgba(0, 0, 0, 0.411);
 }
 
@@ -72,12 +73,12 @@
 }
 
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.inner-container input:checked ~ .checkmark:after {
   display: block;
 }
 
 /* Style the checkmark/indicator */
-.container .checkmark:after {
+.inner-container .checkmark:after {
   left: 50%;
   top: 50%;
   width: 8px;
@@ -87,5 +88,4 @@
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg) translate(-100%, -60%);
-}
 }

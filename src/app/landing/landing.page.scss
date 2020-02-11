@@ -42,7 +42,7 @@
     color: white;
     font-weight: bolder;
   }
-  #dismisserBtn{
+  #dismisserBtn {
     position: absolute;
     right: 0;
     z-index: 1000000000000000000000000000000000000000000000000;
@@ -110,8 +110,8 @@
       margin-left: 2.5px;
       margin: 0 auto;
     }
-    .opts-search > div{
-      width: 100%
+    .opts-search > div {
+      width: 100%;
     }
     .opts-search > div:nth-child(1) {
       background: black;
@@ -236,6 +236,7 @@ ion-list > div {
   width: 65%;
   background: white;
   overflow-y: scroll;
+  display: inline-block;
   ::-webkit-scrollbar {
     background: rgb(158, 156, 156);
   }
@@ -460,7 +461,7 @@ ion-searchbar {
       right: 0;
     }
     #bottom-right {
-      bottom: 5px;
+      top: 5px;
       font-style: italic;
     }
   }
@@ -508,7 +509,7 @@ ion-searchbar {
       right: 0;
     }
     #bottom-right {
-      bottom: 5px;
+      top: 5px;
       font-style: italic;
     }
   }
@@ -613,7 +614,7 @@ ion-searchbar {
       right: 0;
     }
     #bottom-right {
-      bottom: 5px;
+      top: 5px;
       font-style: italic;
     }
   }
@@ -659,7 +660,14 @@ ion-searchbar {
 #dismisser {
   display: none;
 }
-@media screen and (max-width: 1330px) {
+@media screen and (max-width: 1024px) {
+  .clicked-from-search > #forms {
+    width: calc(100% - 50px);
+    height: calc(100% - 50px);
+    border-radius: 0px;
+  }
+}
+@media screen and (max-width: 768px) {
   #myFab {
     display: block;
   }
@@ -675,17 +683,9 @@ ion-searchbar {
     height: calc(100% - 55px);
     animation: faderIn 300ms;
   }
-  @media screen and (max-width: 1024px) {
-    .clicked-from-search > #forms {
-      width: calc(100% - 50px);
-      height: calc(100% - 50px);
-      border-radius: 0px;
-    }
-    #dismisser {
-      display: block;
-    }
+  #dismisser {
+    display: block;
   }
-
   @media screen and (max-width: 600px) {
     .clicked-from-search > div {
       width: 100%;
@@ -698,7 +698,7 @@ ion-searchbar {
     }
   }
 }
-@media screen and (min-width: 1331px) {
+@media screen and (min-width: 769px) {
   .mobile-view {
     display: none;
   }
@@ -1063,6 +1063,7 @@ label {
   height: 100%;
   position: relative;
   cursor: pointer;
+  padding: 0px !important;
 }
 .item-container {
   width: 100%;
@@ -1099,8 +1100,7 @@ ion-row {
   padding-left: 10px;
 }
 
-
-#inventory-search{
+#inventory-search {
   width: 100%;
   margin: 0 auto;
   border: 0;
@@ -1109,35 +1109,133 @@ ion-row {
   height: 40px;
   padding: 5px;
 }
-#searcher{
+#searcher {
   padding: 10px;
   width: 100%;
   text-align: center;
 }
 
-#already-exists{
+#already-exists {
   color: red;
   font-size: 12px;
 }
 
-#item-match{
+#item-match {
   // position: absolute;
   width: 100%;
   cursor: pointer;
   z-index: 100;
 }
-#label-match{
+#label-match {
   color: grey;
   font-style: italic;
   font-size: 12px;
 }
-#generate-code{
+#generate-code {
   width: 100%;
   height: 30px;
   padding-left: 5px;
   margin-top: 10px;
 }
-#or, #gen{
+#or,
+#gen {
   text-align: center;
   width: 100%;
+}
+
+.checkmarksColor {
+  border: 2px solid red;
+  display: flex;
+  /* The container */
+}
+.inner-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.check-container {
+  background-color: pink;
+  height: 40px;
+  width: 100%;
+}
+.checkmarksColor > div:nth-child(1) {
+  background: black;
+}
+.checkmarksColor > div:nth-child(2) {
+  background: brown;
+}
+.checkmarksColor > div:nth-child(3) {
+  background: orange;
+}
+.checkmarksColor > div:nth-child(4) {
+  background: yellow;
+}
+.checkmarksColor > div:nth-child(5) {
+  background: white;
+}
+/* Hide the browser's default checkbox */
+.inner-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40px;
+  // width: 100%;
+  background-color: transparent;
+}
+
+/* On mouse-over, add a grey background color */
+.inner-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.inner-container input:checked ~ .checkmark {
+  background-color: rgba(0, 0, 0, 0.411);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.inner-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.inner-container .checkmark:after {
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 13px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg) translate(-100%, -60%);
+}
+
+.title-top > h5 {
+  font-size: 14px;
+  line-height: 25px;
 }
