@@ -96,48 +96,10 @@ export class WinterGearPage implements OnInit {
     })
   }
 
-
-  ionViewWillEnter(){
-    console.log('ion view will enter');
-    
-  }
-  ionViewDidEnter(){
-    console.log('ion view did enter');
-    
-  }
-  ionViewWillLeave(){
-    console.log('ion view will leave');
-    
-  }
-
-  ionViewDidLeave(){
-    console.log('ion view did leave');
-    
-  }
-
-
-  //Routing to sales page
-  viewSales(query){
-    console.log(query);
-    let navOptions = {
-      queryParams : {query : query}
-    }
-    this.navCtrl.navigateForward(['sales-specials'], navOptions)    
-  }
-
-  loadViewedCategory(){
-    
-  }
-
-
   back(){
     this.route.navigate(['/landing'])
   }
   navigateForward(value){
-    console.log(value);
-    //let parameter = [{category: value, brand: 'Kwanga'}]
-    //this.route.navigate(['/items-list', value], parameter)
-    //this.navCtrl.navigateForward(['items-list', value], parameter);
     return this.routeService.storeParemeter(value, 'Dankie Jesu', 'Winter Gear', 'winter-gear').then(result => {
       this.route.navigate(['/items-list', value])
     })

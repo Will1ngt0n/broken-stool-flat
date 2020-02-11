@@ -76,13 +76,8 @@ export class OrderReceiptPage implements OnInit {
   }
 ​   dateClosed
   getOrderHistory(refNo, name){
-    //this.presentLoading()
-    //this.pageLoader = true
     return this.productsService.getOrderHistoryDetails(refNo).then(result => {
-      console.log(result)
-       this.item = result[0]
-       //this.item['details'].name = name
-       console.log(this.item);
+      this.item = result[0]
       this.products = this.item['details']['orders']
       //this.dateClosed = this.item['details']['timestamp']
       this.deliveryType = this.item['details']['deliveryType']
@@ -90,27 +85,17 @@ export class OrderReceiptPage implements OnInit {
         this.deliveryAddress = this.userAddress
         this.deliveryFee = this.item['details']['deliveryCost']
       }
-      console.log(this.deliveryType);
       this.datePurchased = this.item['details']['purchaseDate']
       this.dateClosed = moment(new Date(this.item['details']['timestamp'])).format('DD/MM/YYYY')
-      console.log(this.dateClosed);
-      
-      //  this.quantity = this.products.length
-      //this.totalPrice = this.item['details']['totalPrice']
-       console.log(this.products);
       this.countQuantity()
       this.countTotalPrice()
-     })
-   }
-   countTotalPrice(){
+    })
+  }
+  countTotalPrice(){
     this.totalPrice = 0
-    console.log(this.item);
-    
     for(let key in this.products){
       this.totalPrice = this.totalPrice + this.products[key].quantity * this.products[key].cost
-      
     }
-    console.log(this.totalPrice);
     if(this.deliveryType === 'Delivery'){
       if(this.item['details']['deliveryCost']){
         this.deliveryFee = this.item['details']['deliveryCost']
@@ -119,11 +104,9 @@ export class OrderReceiptPage implements OnInit {
         this.deliveryFee = 100
         this.grandTotal = this.totalPrice + this.deliveryFee 
       }
-
     }else if(this.deliveryType === 'Collection'){
       this.deliveryFee = 0
       this.grandTotal = +this.totalPrice
-      console.log(this.grandTotal);
     }
     if(this.pageLoader){
      this.loadingCtrl.dismiss()     
@@ -134,10 +117,7 @@ export class OrderReceiptPage implements OnInit {
      this.totalQuantity = 0
      for(let key in this.products){
        this.totalQuantity = this.totalQuantity + this.products[key].quantity
-​
      }
-     console.log(this.totalQuantity);
-     
    }
    goBack(){
      this.route.navigate(['/landing'])
@@ -150,35 +130,22 @@ export class OrderReceiptPage implements OnInit {
     if(navigator.onLine){
 
       return this.networkService.getUID().then( result => {
-        console.log(result);
         if(result === true){
           this.isConnected = true
           this.isOnline = true
           this.isCached = true
           this.activatedRoute.queryParams.subscribe(result => {
-            console.log(result);
-            
-            //this.item = result.item
-            //console.log(this.item);
-            console.log(result);
             this.refNo = result.refNo
             let name = result.user
             this.userID = result.userID
-            console.log(this.userID);
             this.getUser(this.userID)
-            console.log(name);
             this.cell = result.cell
-            console.log(this.cell);
             this.routingPage = result.link
-            console.log(this.routingPage);
             //this.presentLoading()
             this.getOrderHistory(this.refNo, name)
-            this.loadPictures().then(result => {
-              console.log(result);
-              
+            this.loadPictures().then(result => {       
             })
-            
-          })
+            })
         }else{
           this.isConnected = false
         }
@@ -188,81 +155,62 @@ export class OrderReceiptPage implements OnInit {
       this.isOnline = false
       this.isCached = false
     }
-
   }
   reload() {
     if(navigator.onLine){
       return this.networkService.getUID().then( result => {
-        console.log(result);
         if(result === true){
           this.isConnected = true
           this.isOnline = true
           this.isCached = true
           clearInterval(this.timer)
           this.activatedRoute.queryParams.subscribe(result => {
-            console.log(result);
-            
-            //this.item = result.item
-            //console.log(this.item);
-            console.log(result);
             this.refNo = result.refNo
             let name = result.user
             this.userID = result.userID
-            console.log(this.userID);
             this.getUser(this.userID)
-            console.log(name);
             this.cell = result.cell
-            console.log(this.cell);
             this.routingPage = result.link
-            console.log(this.routingPage);
             //this.presentLoading()
             this.getOrderHistory(this.refNo, name)
-            this.loadPictures().then(result => {
-              console.log(result);
+            // this.loadPictures().then(result => {
+            //   console.log(result);
               
-            })
-      
+            // })
           })
         }else{
           this.isConnected = false
         }
       })
-
     }else{
       this.isOnline = false
       this.isCached = false
     }
-
   }
   checkConnectionStatus(){
     if(navigator.onLine){
       this.isOnline = true
       console.log(this.isCached);
       if(this.isCached === false){
-
         this.reload()
       }else if(this.isCached === true){
         clearInterval(this.timer)
-
       }
     }else{
       this.isOnline = false
       if(this.pageLoader){
         this.loadingCtrl.dismiss()
         this.pageLoader = false
-        //clearInterval(this.timer)
       }
     }
   }
   ionViewDidEnter(){
     console.log('ion view did enter');
     console.log(this.isCached);
-    
     if(this.isCached !== true){
-      this.presentLoading()
-      this.pageLoader = true
+      // this.presentLoading()
+      // this.pageLoader = true
     }
-
     this.timer = setInterval( () => {
       this.checkConnectionStatus()
     }, 3000)
@@ -271,45 +219,56 @@ export class OrderReceiptPage implements OnInit {
     clearInterval(this.timer)
   }
   getUser(userID){
+    this.presentLoading()
+    this.pageLoader = true
     return this.productsService.loadUser(userID).then(result => {
       console.log(result);
       this.userAddress = result.address
       this.cell = result.cell
-      this.name = result.name
+      if(result.name){
+        this.name = result.name
+      }else{
+        this.name = 'Undefined'
+      }
+
+
+      // if(this.pageLoader === true){
+      //   this.loadingCtrl.dismiss()
+      // }
     })
   }
   async loadPictures(){
-    return this.productsService.getPictures().then(result => {
-      console.log(result);
-      let pictures : Array<any> = []
-      for(let key in result.items){
-        result.items[key].getDownloadURL().then(link => {
-          let path = result.items[key].fullPath
-          let splitPath = path.split('/')
-          let pictureID = splitPath[splitPath.length -1]
-          // picture['link'] = link
-          // picture['productID'] = pictureID
-          this.pictures.push({link : link, productID : pictureID})
-          console.log(this.pictures);
-          this.insertPictures()
-         });
-         return result
-        }
+    // return this.productsService.getPictures().then(result => {
+    //   console.log(result);
+    //   let pictures : Array<any> = []
+    //   for(let key in result.items){
+    //     result.items[key].getDownloadURL().then(link => {
+    //       let path = result.items[key].fullPath
+    //       let splitPath = path.split('/')
+    //       let pictureID = splitPath[splitPath.length -1]
+    //       // picture['link'] = link
+    //       // picture['productID'] = pictureID
+    //       this.pictures.push({link : link, productID : pictureID})
+    //       console.log(this.pictures);
+    //       this.insertPictures()
+    //      });
+    //      return result
+    //     }
 
-    })
+    // })
   }
   
   insertPictures(){
-    for(let i in this.pictures){
-      //Adding pictures to products arrays
-      for(let key in this.products){
-        if(this.pictures[i].productID === this.products[key].productID){
-          console.log('ddsfds');
-          this.products[key].pictures = {link: this.pictures[i].link}
-          console.log(this.products[key])
-        }
-      }
-    }
+    // for(let i in this.pictures){
+    //   //Adding pictures to products arrays
+    //   for(let key in this.products){
+    //     if(this.pictures[i].productID === this.products[key].productID){
+    //       console.log('ddsfds');
+    //       this.products[key].pictures = {link: this.pictures[i].link}
+    //       console.log(this.products[key])
+    //     }
+    //   }
+    // }
   }
 ​
 }

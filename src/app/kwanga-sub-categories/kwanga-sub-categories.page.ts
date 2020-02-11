@@ -56,23 +56,7 @@ export class KwangaSubCategoriesPage implements OnInit {
   constructor(private routeService : RouteService, private alertController : AlertController, private authService : AuthService, private navCtrl : NavController, public route : Router, public productsService : ProductsService ) {
 
   }
-  ionViewWillEnter(){
-    console.log('ion view will enter');
-    
-  }
-  ionViewDidEnter(){
-    console.log('ion view did enter');
-    
-  }
-  ionViewWillLeave(){
-    console.log('ion view will leave');
-    
-  }
 
-  ionViewDidLeave(){
-    console.log('ion view did leave');
-    
-  }
   ngOnInit() {
 
   }
@@ -109,30 +93,11 @@ export class KwangaSubCategoriesPage implements OnInit {
     })
   }
 
-
-
-
-​
-  //Routing to sales page
-  viewSales(query){
-    console.log(query);
-    let navOptions = {
-      queryParams : {query : query}
-    }
-    this.navCtrl.navigateForward(['sales-specials'], navOptions)    
-  }
-
-
   back(){
      this.route.navigate(['/landing'])
   }
 
   navigateForward(value){
-    console.log(value);
-    //let parameter = [{category: value, brand: 'Kwanga'}]
-    //this.route.navigate(['/items-list', value], parameter)
-    //let parameter : NavigationExtras = {queryParams : {category: value, brand: 'Kwanga', title: 'Kwanga Apparel', link: 'kwanga-sub-categories'}}
-    //this.navCtrl.navigateForward(['/items-list', value], parameter)
     return this.routeService.storeParemeter(value, 'Kwanga', 'Kwanga Gear', 'kwanga-sub-categories').then(result => {
       this.route.navigate(['/items-list', value])
     })
