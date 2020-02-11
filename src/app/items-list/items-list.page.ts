@@ -620,6 +620,45 @@ export class ItemsListPage implements OnInit, OnDestroy {
 
     await alert.present();
   }
+  deleteSalesItem(item, productID){
+    console.log("logging deletion");
+    
+    const alert = document.createElement('ion-alert');
+    alert.header = 'Confirm Deletion';
+    alert.message = 'Are you sure you want to remove this item from specials?';
+    alert.buttons = [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary', 
+        handler: (blah) => {
+          console.log('User canceled');
+        }
+      }, {
+        text: 'Remove',
+        handler: () => {
+          console.log('Confirm Okay')
+    
+          console.log(productID);
+          console.log(item);
+          this.presentLoading()
+          return this.productsService.deleteSpecialsItem(productID, item).then(result => {
+            console.log(result);
+            if(result === 'success'){
+              if(this.loadingCtrl){
+                this.loadingCtrl.dismiss()
+              }
+            }
+            //location.reload()
+          })
+        }
+      }
+    ];
+  
+    document.body.appendChild(alert);
+    return alert.present();
+    
+  }
   deleteItemConfirmed(productID, brand, category, item) {
     this.presentLoading()
     return this.productsService.deleteItemFromInventory(productID, brand, category, item).then(result => {
