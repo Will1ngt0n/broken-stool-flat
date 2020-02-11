@@ -9,36 +9,37 @@
   <h1>Custom Checkboxes</h1>
 
   <div class="checkmarksColor">
-
+    <!-- These are custom checkmarks for the CMS -->
     <div class="check-container">
-      <label class="container">
+      <label class="inner-container">
         <input #checkboxBlack type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>
         <span class="checkmark"></span>
       </label>
     </div>
     <div class="check-container">
-      <label class="container">
+      <label class="inner-container">
         <input #checkboxBrown type='checkbox' name='checkboxBrown' (change)='checkColor($event, "Brown")'>
         <span class="checkmark"></span>
       </label>
     </div>
     <div class="check-container">
-      <label class="container">
+      <label class="inner-container">
         <input #checkboxOrange type='checkbox' name='checkboxOrange' (change)='checkColor($event, "Orange")'>
         <span class="checkmark"></span>
       </label>
     </div>
     <div class="check-container">
-      <label class="container">
-        <!-- <input #checkboxYellow type='checkbox' name='checkboxYellow' (change)='checkColor($event, "Yellow")'>
-        <span class="checkmark"></span> -->
+      <label class="inner-container">
+        <input #checkboxYellow type='checkbox' name='checkboxYellow' (change)='checkColor($event, "Yellow")'>
+        <span class="checkmark"></span>
       </label>
     </div>
     <div class="check-container">
-      <label class="container">
+      <label class="inner-container">
         <input #checkboxWhite type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>
         <span class="checkmark"></span>
       </label>
     </div>
   </div>
+
 </ion-content>

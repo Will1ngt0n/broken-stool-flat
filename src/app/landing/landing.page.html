@@ -63,8 +63,8 @@
           <p id="text-size">3XL</p>
         </div>
         <p class="instruction">Choose available colours</p>
-        <div class="opts-search">
-          <div class="myBox">
+        <!-- <div class="opts-search"> -->
+          <!-- <div class="myBox">
             <ion-checkbox class="myCheck" [checked]='checkBlack' (ionChange)='checkColorUpdate($event, "Black")'>
             </ion-checkbox>
           </div>
@@ -80,14 +80,63 @@
             <ion-checkbox class="myCheck" [checked]='checkYellow' (ionChange)='checkColorUpdate($event, "Yellow")'>
             </ion-checkbox>
           </div>
-          <!-- <div class="myBox">
-            <ion-checkbox class="myCheck" [checked]='checkPink' (ionChange)='checkColorUpdate($event, "Pink")'></ion-checkbox>
-          </div> -->
           <div class="myBox">
             <ion-checkbox class="myCheck" [checked]='checkWhite' (ionChange)='checkColorUpdate($event, "White")'>
             </ion-checkbox>
           </div>
-        </div>
+           -->
+
+
+
+
+
+
+
+
+          
+  <div class="checkmarksColor">
+    <!-- These are custom checkmarks for the CMS -->
+    <div class="check-container">
+      <label class="inner-container">
+        <input #checkboxBlack type='checkbox' name='checkboxBlack' (change)='checkColor($event, "Black")'>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="check-container">
+      <label class="inner-container">
+        <input #checkboxBrown type='checkbox' name='checkboxBrown' (change)='checkColor($event, "Brown")'>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="check-container">
+      <label class="inner-container">
+        <input #checkboxOrange type='checkbox' name='checkboxOrange' (change)='checkColor($event, "Orange")'>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="check-container">
+      <label class="inner-container">
+        <input #checkboxYellow type='checkbox' name='checkboxYellow' (change)='checkColor($event, "Yellow")'>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="check-container">
+      <label class="inner-container">
+        <input #checkboxWhite type='checkbox' name='checkboxWhite' (change)='checkColor($event, "White")'>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  
+        <!-- </div> -->
         <textarea rows="4" type="text" placeholder="Description" maxlength="150"
           [(ngModel)]='updateDescription'></textarea>
         <input #updateSearchPic width='100px' id="uploaderBtn" class='pictureInput' type="file"
