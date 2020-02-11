@@ -254,6 +254,7 @@
 .about-information {
   transition: 300ms;
   width: 40%;
+  min-width: 900px;
   margin: 10px auto;
   padding: 10px;
 }
@@ -386,6 +387,7 @@
 @media screen and (max-width: 1050px) {
   .about-information {
     width: 100%;
+    min-width: 100%;
   }
   .document-upload {
     width: 100%;

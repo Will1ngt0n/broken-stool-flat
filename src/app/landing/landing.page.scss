@@ -461,7 +461,7 @@ ion-searchbar {
       right: 0;
     }
     #bottom-right {
-      bottom: 5px;
+      top: 5px;
       font-style: italic;
     }
   }
@@ -509,7 +509,7 @@ ion-searchbar {
       right: 0;
     }
     #bottom-right {
-      bottom: 5px;
+      top: 5px;
       font-style: italic;
     }
   }
@@ -614,7 +614,7 @@ ion-searchbar {
       right: 0;
     }
     #bottom-right {
-      bottom: 5px;
+      top: 5px;
       font-style: italic;
     }
   }
@@ -660,7 +660,14 @@ ion-searchbar {
 #dismisser {
   display: none;
 }
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 1024px){
+    .clicked-from-search > #forms {
+      width: calc(100% - 50px);
+      height: calc(100% - 50px);
+      border-radius: 0px;
+    }
+}
+@media screen and (max-width: 768px) {
   #myFab {
     display: block;
   }
@@ -676,17 +683,9 @@ ion-searchbar {
     height: calc(100% - 55px);
     animation: faderIn 300ms;
   }
-  @media screen and (max-width: 768px) {
-    .clicked-from-search > #forms {
-      width: calc(100% - 50px);
-      height: calc(100% - 50px);
-      border-radius: 0px;
-    }
     #dismisser {
       display: block;
     }
-  }
-
   @media screen and (max-width: 600px) {
     .clicked-from-search > div {
       width: 100%;
@@ -699,7 +698,7 @@ ion-searchbar {
     }
   }
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 769px) {
   .mobile-view {
     display: none;
   }
