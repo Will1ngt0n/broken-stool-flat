@@ -192,9 +192,9 @@ textarea {
 }
 #title,
 #admin {
-  width: 25%;
+  width: 20%;
   height: 100%;
-  p{
+  p {
     cursor: pointer;
   }
 }
@@ -931,7 +931,6 @@ ion-searchbar {
   #admin{
     transition: 1s;
     width: 30%;
-    font-size: 12px;
   }
 }
 a{
