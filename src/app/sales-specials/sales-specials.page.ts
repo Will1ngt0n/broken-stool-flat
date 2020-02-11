@@ -137,71 +137,70 @@ export class SalesSpecialsPage implements OnInit {
   ngOnInit() {
     console.log('ngOnInit');
     this.preventIonViewDidEnterInit = true
-    if(navigator.onLine){
-      return this.networkService.getUID().then( result => {
-        console.log(result);
-        if(result === true){
-          this.isConnected = true
-          this.isOnline = true
-          this.isCached = false
-          this.loadAll()
-          //this.getKwangaSales('Kwanga')
-          this.iterateThrough()
-      
-      
-          console.log(this.department);
-          //this.productsService.getCategories()
-          // this.loadDankieJesuItems()
-          // this.loadKwangaItems()
-          this.colors = { red: '' }
-          this.accessory = false;
-          this.summer = false;
-          this.department = undefined
-          this.addForm = false
-          this.formHasValues = false
-          //this.loadSummerItems()
-      
-          //this.loadBrandProducts()
-      
-          //this.getSummerItems()
-          console.log(this.department);
-          // this.getAllItems()
-         // this.orderItems()
-      
-          this.getPendingOrders()
-          this.getReadyOrders()
-          this.getClosedOrders()
-          this.getInventory()
-          //this.loadSales()
-          this.loadSalesSnap()
-    
-              //this.loadPictures()
-              this.activatedRoute.queryParams.subscribe(params => {
-                console.log(params);
-                this.query = params['query']
-                console.log(this.query);
-                if(this.query === 'viewAll'){
-                  this.toggleAll()
-                }else if(this.query === 'Dankie Jesu'){
-                 this.toggleDankie()
-                }else{
-                  this.toggleKwanga()
-                }
-                // this.loadPictures().then(result => {
-                //   console.log(result);
-                  
-                // })
-              })
+    this.activatedRoute.queryParams.subscribe(params => {
+      console.log(params);
+      this.query = params['query']
+      console.log(this.query);
+      if(this.query === 'viewAll'){
+        this.toggleAll()
+      }else if(this.query === 'Dankie Jesu'){
+       this.toggleDankie()
+      }else{
+        this.toggleKwanga()
+      }
+      if(navigator.onLine){
+        return this.networkService.getUID().then( result => {
+          console.log(result);
+          if(result === true){
+            this.isConnected = true
+            this.isOnline = true
+            this.isCached = false
             
-        }else{
-          this.isConnected = false
-        }
-      })
+            this.loadAll()
+            //this.getKwangaSales('Kwanga')
+            this.iterateThrough()
+        
+        
+            console.log(this.department);
+            //this.productsService.getCategories()
+            // this.loadDankieJesuItems()
+            // this.loadKwangaItems()
+            this.colors = { red: '' }
+            this.accessory = false;
+            this.summer = false;
+            this.department = undefined
+            this.addForm = false
+            this.formHasValues = false
+            //this.loadSummerItems()
+        
+            //this.loadBrandProducts()
+        
+            //this.getSummerItems()
+            console.log(this.department);
+            // this.getAllItems()
+           // this.orderItems()
+        
+            this.getPendingOrders()
+            this.getReadyOrders()
+            this.getClosedOrders()
+            this.getInventory()
+            //this.loadSales()
+            this.loadSalesSnap()
+      
+                //this.loadPictures()
+  
+              
+          }else{
+            this.isConnected = false
+          }
+        })
+  
+      }else{
+        this.isOnline = false
+        this.isCached = false
+      }
+    })
 
-    }else{
-      this.isOnline = false
-      this.isCached = false
-    }
 
 
   }
@@ -246,22 +245,7 @@ export class SalesSpecialsPage implements OnInit {
       this.loadSalesSnap()
 
           //this.loadPictures()
-          this.activatedRoute.queryParams.subscribe(params => {
-            console.log(params);
-            this.query = params['query']
-            console.log(this.query);
-            if(this.query === 'viewAll'){
-              this.toggleAll()
-            }else if(this.query === 'Dankie Jesu'){
-             this.toggleDankie()
-            }else{
-              this.toggleKwanga()
-            }
-            // this.loadPictures().then(result => {
-            //   console.log(result);
-              
-            // })
-          })
+
         
         }else{
           this.isOnline = true
@@ -300,7 +284,7 @@ export class SalesSpecialsPage implements OnInit {
   timer
   ionViewDidEnter(){
     console.log('ion view did enter');
-    if(this.preventIonViewDidEnterInit = false){
+    if(this.preventIonViewDidEnterInit === false){
       if(this.isCached !== true){
         console.log(this.isCached + ' is cached');
         
