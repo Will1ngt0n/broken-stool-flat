@@ -178,13 +178,31 @@ ion-list > div {
   background: white;
   padding-top: 20px;
   transform: translateX(-50%);
+  p{
+    padding-left: 10px;
+    padding-top: 0px;
+    margin-top: 0px;
+    color: grey;
+  }
+  ion-list{
+    border: 2px solid red;
+    margin-top: 0px;
+  }
 }
 .nav-bar {
   width: 100%;
   height: 60px;
-  background: whitesmoke;
+  background: rgb(0,3,36);
   z-index: 100;
   border-bottom: 1px solid black;
+  color: white;
+  #mySearchBar{
+    background: rgba(255, 255, 255, 0.13);
+    color: white;
+    ::placeholder{
+      color: red !important;
+    }
+  }
 }
 .nav-content {
   height: 100%;
@@ -716,26 +734,26 @@ ion-searchbar {
   .small-nav {
     width: 100%;
     height: 50px;
-    background: white;
+    background: #000324;
     display: flex;
     position: absolute;
   }
   .small-nav > div {
     height: 100%;
     line-height: 60px;
+    color: white;
   }
   .small-nav > div:nth-child(1) {
     text-align: center;
     width: 50px;
     font-size: 25px;
-    color: #7c0000;
   }
   .small-nav > div:nth-child(2) {
     width: 100%;
-    font-size: 25px;
-    color: #7c0000;
+    font-size: 20px;
     font-weight: 500;
     animation: 300ms faderIn;
+    line-height: 50px;
     ion-searchbar {
       width: 100%;
       max-width: 250px;
@@ -746,13 +764,11 @@ ion-searchbar {
     text-align: center;
     width: 50px;
     font-size: 25px;
-    color: #7c0000;
   }
   .small-nav > div:nth-child(4) {
     text-align: center;
     width: 50px;
     font-size: 25px;
-    color: #7c0000;
   }
   .cont-small {
     width: 100%;
@@ -1095,6 +1111,8 @@ ion-row {
 
 #dankie-home-button {
   cursor: pointer;
+  height: 90%;
+  margin-top: 5px;
 }
 .title-top {
   padding-left: 10px;

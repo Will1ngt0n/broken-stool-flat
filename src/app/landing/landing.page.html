@@ -5,10 +5,13 @@
     </ion-fab-button>
   </ion-fab>
   <div class="searchResults" *ngIf="searchInput">
-    Search Results
-    <ion-list *ngFor="let item of searchArray">
-      <div *ngIf='searchArray.length > 0'>
-        <ion-item (click)="showHideSearchDetails(item)">{{item.data.name}}</ion-item>
+    
+    <p>
+      Search Results
+    </p>
+    <ion-list>
+      <div *ngFor="let item of searchArray">
+        <ion-item *ngIf='searchArray.length > 0' (click)="showHideSearchDetails(item)">{{item.data.name}}</ion-item>
       </div>
     </ion-list>
 
@@ -106,7 +109,8 @@
     <div class="nav-bar">
       <div class="nav-content">
         <div id="title">
-          <h4 (click)="reloadPage()" id="dankie-home-button">DankieJesu</h4>
+          <img src="../../assets/imgs/Logo/Logo.png" id="appLogo" alt="" (click)="reloadPage()" id="dankie-home-button">
+          <!-- <h4>DankieJesu</h4> -->
         </div>
         <div id="searchbar">
           <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search"

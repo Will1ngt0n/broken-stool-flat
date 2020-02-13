@@ -74,7 +74,7 @@ Disclaimer -->
                     <p id="one" (click)="changeTab('FAQs')">FAQs</p>
                 </div>
                 <div>
-                    <p id="two" (click)="changeTab('Terms and Privacy Policy' )">Terms and Privacy Policy</p>
+                    <p id="two" (click)="changeTab('Terms and Privacy Policy' )">Terms</p>
                 </div>
                 <div>
                     <p id="three" (click)="changeTab('Payment Process')">Payment Process</p>
@@ -89,7 +89,7 @@ Disclaimer -->
         </div>
         <div class="navigator-small" (click)="goAway()">
             <div>
-                <ion-button *ngIf="!usersInput" icon-only fill="clear" (click)="toggleSideMenu()">
+                <ion-button *ngIf="!usersInput" color="warning" icon-only fill="clear" (click)="toggleSideMenu()">
                     <ion-icon name="{{myMenu}}"></ion-icon>
                 </ion-button>
             </div>
@@ -107,7 +107,7 @@ Disclaimer -->
                 <p id="oneS" (click)="changeTab('FAQs')">FAQs</p>
             </div>
             <div>
-                <p id="twoS" (click)="changeTab('Terms and Privacy Policy')">Terms and Privacy Policy</p>
+                <p id="twoS" (click)="changeTab('Terms and Privacy Policy')">Terms</p>
             </div>
             <div>
                 <p id="threeS" (click)="changeTab('Payment Process')">Payment Process</p>
@@ -778,4 +778,60 @@ Disclaimer -->
             </div>
         </div>
     </div>
+    <ion-footer id="webview">
+        <div class="footer">
+          <div class="heading">
+            <img src="../../assets/NoPath - Copy.svg" alt="">
+          </div>
+    ​
+          <div class="contact_details">
+            <h1>CONTACT US</h1>
+            <p>dankiejesu@gmail.com</p>
+            <p>061 446 4674</p>
+            <p class="address">5630 Moilwa Drive <br>
+              Kagiso <br>
+              MOGALE CITY <br>
+              1754</p>
+              <p>Splash Screen Photo by Keagan Henman on Unsplash 
+                
+              </p>
+          </div>
+    ​
+          <div class="info">
+            <h1>INFO</h1>
+            <ion-button href="https://broken-stool.firebaseapp.com/home/FAQs" color="transparent">
+              <span>FAQs</span>
+            </ion-button>
+            <ion-button href="https://broken-stool.firebaseapp.com/home/Terms%20and%20Privacy%20Policy" color="transparent">
+              <span>Terms and Privacy Policy</span>
+            </ion-button>
+            <ion-button href="https://broken-stool.firebaseapp.com/home/Disclaimer" color="transparent">
+              <span>Disclaimer</span>
+            </ion-button>
+            <ion-button href="https://broken-stool.firebaseapp.com/home/Payment%20Process" color="transparent">
+              <span>Payment Process</span>
+            </ion-button>
+            <ion-button href="https://broken-stool.firebaseapp.com/home/About%20Company" color="transparent">
+              <span>Developers</span>
+            </ion-button>
+          </div>
+    ​
+          <div class="connect">
+            <h1>CONNECT</h1>
+            <ion-button href="https://www.facebook.com/brokenstoolbrand/" color="transparent">
+              <ion-icon slot="start" name="logo-facebook"></ion-icon>
+              Facebook
+            </ion-button>
+            <ion-button href="https://www.instagram.com/dankiejesu/" color="transparent">
+              <ion-icon slot="start" name="logo-instagram"></ion-icon>
+              Instagram
+            </ion-button>
+          </div>
+    ​
+          <div class="app_store">
+            <img src="../../assets/android.png" alt="App Store">
+          </div>
+          
+        </div>
+      </ion-footer>
 </ion-content>
