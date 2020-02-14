@@ -604,3 +604,33 @@ ion-footer {
     }
   }
 }
+.feet{
+  // height: 120px;
+  color: white;
+  width: 100%;
+  background: blue;
+  display: flex;
+    padding: 10px;
+  a{
+    color: white;
+    margin-bottom: 10px;
+  }
+  div{
+    width: 30%;
+    height: 100%;
+    margin: 0 auto;
+    background: red;
+    #footer-title{
+      font-weight: bold;
+    }
+    address{
+      margin-bottom: 20px;
+    }
+    #socials{
+      font-size: 1.2vh;
+    }
+  }
+}
+#playStore{
+  height: 50px
+}

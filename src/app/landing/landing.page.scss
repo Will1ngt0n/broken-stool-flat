@@ -123,7 +123,7 @@
       background: orange;
     }
     .opts-search > div:nth-child(4) {
-      background: yellow;
+      background: rgb(255,223,90);
     }
     .opts-search > div:nth-child(5) {
       background: white;
@@ -178,31 +178,24 @@ ion-list > div {
   background: white;
   padding-top: 20px;
   transform: translateX(-50%);
-  p{
+  p {
     padding-left: 10px;
     padding-top: 0px;
     margin-top: 0px;
     color: grey;
   }
-  ion-list{
-    border: 2px solid red;
+  ion-list {
+    // border: 2px solid red;
     margin-top: 0px;
   }
 }
 .nav-bar {
   width: 100%;
   height: 60px;
-  background: rgb(0,3,36);
+  background: rgb(0, 3, 36);
   z-index: 100;
   border-bottom: 1px solid black;
-  color: white;
-  #mySearchBar{
-    background: rgba(255, 255, 255, 0.13);
-    color: white;
-    ::placeholder{
-      color: red !important;
-    }
-  }
+  color: rgb(255,223,90);
 }
 .nav-content {
   height: 100%;
@@ -328,6 +321,9 @@ ion-searchbar {
     width: 100%;
     border-bottom: 2px solid grey;
     cursor: pointer;
+    ion-label{
+      color: black !important;
+    }
   }
   ion-note {
     color: #7c0000;
@@ -841,6 +837,7 @@ ion-searchbar {
       display: flex;
       flex-flow: row;
       justify-content: space-between;
+      color: black;
     }
   }
   .slide-section {
@@ -1081,6 +1078,23 @@ label {
   cursor: pointer;
   padding: 0px !important;
 }
+  .name-holder {
+    width: calc(100% - 10px);
+    min-height: 25px;
+    background: linear-gradient( rgba(0,0,0,0),rgba(0, 0, 0, 0.452));
+    position: absolute;
+    z-index: 1000000;
+    color: white;
+    right: 5px;
+    bottom: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    text-transform: capitalize;
+  }
 .item-container {
   width: 100%;
   height: 100%;
@@ -1091,18 +1105,13 @@ label {
     height: 100%;
     width: 100%;
     border-radius: 5px;
-    box-shadow: 0 2px 4px black;
-    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.219);
+    object-fit: contain;
   }
   p {
-    position: absolute;
-    z-index: 1000000;
-    color: white;
-    right: 10px;
-    bottom: 0px;
     text-align: right;
     font-weight: bold;
-    text-shadow: 0 3px 10px black;
+    margin: 5px;
   }
 }
 ion-row {
@@ -1194,7 +1203,7 @@ ion-row {
   background: orange;
 }
 .checkmarksColor > div:nth-child(4) {
-  background: yellow;
+  background: rgb(255,223,90);
 }
 .checkmarksColor > div:nth-child(5) {
   background: white;
@@ -1256,4 +1265,23 @@ ion-row {
 .title-top > h5 {
   font-size: 14px;
   line-height: 25px;
+}
+
+#mySearchBar {
+  background: rgba(255, 255, 255, 0.13);
+  color: white;
+}
+@media screen and (max-width: 768px){
+#mySearchBar{
+  margin-top: 5px;
+}
+}
+ion-item {
+  height: 40px;
+  width: 100%;
+  border-bottom: 2px solid grey;
+  cursor: pointer;
+  ion-label{
+    color: black !important;
+  }
 }
