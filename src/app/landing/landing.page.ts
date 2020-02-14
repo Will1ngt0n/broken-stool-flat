@@ -202,6 +202,7 @@ export class LandingPage implements OnInit {
   isOnline : boolean
   isCached : boolean
   isConnected : boolean
+  preventIonViewDidEnterInit : boolean
   ngOnInit() { ////copy
     if(this.isCached){
 
@@ -214,6 +215,7 @@ export class LandingPage implements OnInit {
             //console.log(result);
             if(result === true){
               clearInterval(this.timer)
+              this.preventIonViewDidEnterInit = false
               // this.presentLoading()
               // this.pageLoader = true
               this.isOnline = true
@@ -251,6 +253,7 @@ export class LandingPage implements OnInit {
               this.loadBeanies('Dankie Jesu', 'Beanies')
             }else{
               this.isConnected = false
+              this.preventIonViewDidEnterInit = false
             }
           })
     
@@ -268,8 +271,8 @@ export class LandingPage implements OnInit {
       return this.networkService.getUID().then( result => {
         //console.log(result);
         if(result === true){ 
-          this.presentLoader()
-          this.pageLoader = true
+          //this.presentLoader()
+          //this.pageLoader = true
           this.isOnline = true
           this.isCached = true
           this.isConnected = true
@@ -1663,17 +1666,22 @@ export class LandingPage implements OnInit {
   pageLoader : boolean
   ionViewDidEnter(){
     //console.log('hahahahahaahahahahahah');
-    if(this.isCached !== true){
-      // this.presentLoading()
-      // this.pageLoader = true
+    if(this.preventIonViewDidEnterInit === true){
+
     }else{
-      this.pageLoader = false
+      if(this.isCached !== true){
+        // this.presentLoading()
+        // this.pageLoader = true
+      }else{
+        this.pageLoader = false
+      }
+      console.log(this.isOnline);
+      console.log(this.isCached);
+      this.timer = setInterval( () => {
+        this.checkConnectionStatus()
+      }, 3000)
     }
-    console.log(this.isOnline);
-    console.log(this.isCached);
-    this.timer = setInterval( () => {
-      this.checkConnectionStatus()
-    }, 3000)
+
     //console.log('ion view did enter');
 
   }

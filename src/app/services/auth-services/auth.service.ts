@@ -3,6 +3,8 @@ import * as firebase from 'firebase'
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import {LocalStorageService} from 'ngx-webstorage';
+import { Location } from '@angular/common'
+
 declare var window
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class AuthService {
   password
   user : boolean
   //confirmationResult
-  constructor(public alertCtrl: AlertController, public route : Router, private localStorage : LocalStorageService) { }
+  constructor(public alertCtrl: AlertController, public route : Router, private localStorage : LocalStorageService, private loc : Location) { }
   requestLogin(number, appVerifier){
     return firebase.auth().signInWithPhoneNumber(number, appVerifier).then(confirmationResult => {
       window.confirmationResult = confirmationResult;
@@ -69,7 +71,10 @@ export class AuthService {
         console.log(docEmail);
         if(docEmail === email){
           this.user = true
-          this.localStorage.store('inSession', true)
+
+          let loc = this.loc['_platformLocation'].location.origin
+          let bucket =  {inSession : ''}
+          this.localStorage.store('inSession:' + loc, true)
           return firebase.auth().signInWithEmailAndPassword(email, password).then(result => {
             console.log(result);
             this.user = true
@@ -103,7 +108,8 @@ export class AuthService {
       firebase.auth().signOut().then(()=> {
         // Sign-out successful.
         this.user = false
-        this.localStorage.store('inSession', false)
+        let loc = this.loc['_platformLocation'].location.origin
+        this.localStorage.store('inSession:' + loc, false)
         resolve()
         this.checkingAuthState().then(data=>{
           console.log(data);
@@ -169,7 +175,12 @@ export class AuthService {
     })
   }
   checkingAuthStateBoolean() : boolean {
-    return this.localStorage.retrieve('inSession')
+    let loc = this.loc['_platformLocation'].location.origin
+    console.log(loc);
+    console.log(this.localStorage);
+    
+    
+    return this.localStorage.retrieve('inSession:' + loc)
   }
   checkingAuthStateHome(){
     return new Promise((resolve, reject) =>{
