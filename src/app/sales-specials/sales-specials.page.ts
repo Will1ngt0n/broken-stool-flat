@@ -521,7 +521,7 @@ deleteItem(item, productID){
     {
       text: 'Cancel',
       role: 'cancel',
-      cssClass: 'secondary',
+      cssClass: 'secondary', 
       handler: (blah) => {
         console.log('User canceled');
       }

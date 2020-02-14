@@ -157,14 +157,14 @@ export class ItemsListPage implements OnInit, OnDestroy {
   }
   signOut() {
     return this.authService.signOut().then(result => {
-      console.log(result);
+      //console.log(result);
 
     })
   }
   changeDepartment(event) {
-    console.log('Accessory ', this.accessory);
+    //console.log('Accessory ', this.accessory);
 
-    console.log(event.target['value']);
+    //console.log(event.target['value']);
     this.department = event.target['value']
     if (this.department === 'Dankie Jesu') {
       this.categoryOptions = ['Select Category', 'Vests', 'Caps ', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Winter Hats', 'Beanies', 'Bags']
@@ -188,7 +188,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
     }
   }
   changeCategory() {
-    console.log(event.target['value']);
+    //console.log(event.target['value']);
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {
       this.selectedCategory = undefined
@@ -217,8 +217,8 @@ export class ItemsListPage implements OnInit, OnDestroy {
   }
   timer
   ionViewDidEnter(){
-    console.log('ion view did enter');
-    console.log(this.isCached);
+    //console.log('ion view did enter');
+    //console.log(this.isCached);
     
     if(this.isCached !== true){
       // this.presentLoading()
@@ -323,46 +323,26 @@ export class ItemsListPage implements OnInit, OnDestroy {
     this.selectedCategory = 'Select Category'
   }
 
-  loadKwangaItems() {
-    let category: String
-    for (let key in this.kwangaCategories) {
-      category = this.kwangaCategories[key]
-      this.loadItems(category, 'Kwanga')
+  // loadKwangaItems() {
+  //   let category: String
+  //   for (let key in this.kwangaCategories) {
+  //     category = this.kwangaCategories[key]
+  //     this.loadItems(category, 'Kwanga')
 
-    }
-  }
-  loadDankieJesuItems() {
-    let category: String
-    for (let key in this.dankieJesuCategories) {
-      category = this.dankieJesuCategories[key]
-      this.loadItems(category, 'Dankie Jesu')
-    }
-  }
+  //   }
+  // }
+  // loadDankieJesuItems() {
+  //   let category: String
+  //   for (let key in this.dankieJesuCategories) {
+  //     category = this.dankieJesuCategories[key]
+  //     this.loadItems(category, 'Dankie Jesu')
+  //   }
+  // }
   loadViewedCategory() {
 
   }
   //Loading items from the category and brand the user just clicked on in the previous pages
-  loadCategoryItems(category, brand) {
-    let data: Array<any> = []
-    // return this.productsService.loadCategoryItems(category, brand).then(result => {
-    //   if (result !== undefined) {
-    //   }
-    //   console.log(result);
 
-    //   for (let key in result) {
-    //     console.log(result[key]);
-    //     this.currentViewedItems.push(result[key])
-    //   }
-    //   //this.loadPictures()
-    //   console.log('mine');
-
-    // }).then(result => {
-    //   console.log(result);
-
-    //   //this.loadPictures()
-    // })
-
-  }
   loadCategoryItemsSnap(category, brand){
     this.presentLoading()
     return firebase.firestore().collection('Products').doc(brand).collection(category).orderBy('timestamp', 'desc').onSnapshot(result => {
@@ -418,33 +398,33 @@ export class ItemsListPage implements OnInit, OnDestroy {
       }
     }
   }
-  loadItems(category, brand) {
-    let data: Array<any> = []
-    return this.productsService.loadCategoryItems(category, brand).then(result => {
-      if (result !== undefined) {
-      }
-      //console.log(result);
+  // loadItems(category, brand) {
+  //   let data: Array<any> = []
+  //   return this.productsService.loadCategoryItems(category, brand).then(result => {
+  //     if (result !== undefined) {
+  //     }
+  //     //console.log(result);
 
-      for (let key in result) {
-        if (brand === 'Kwanga') {
-          this.kwangaProducts.push(result[key])
-          this.allProducts.push(result[key])
-        } else if (brand === 'Dankie Jesu') {
-          this.dankieJesuProducts.push(result[key])
-          this.allProducts.push(result[key])
-          if (result[key].data.isSummer === true) {
-            this.summerProducts.push(result[key])
-          } else if (result[key].data.isSummer === false) {
-            this.winterProducts.push(result[key])
-          }
-        }
-      }
-      if (this.summerProducts.length > 0) {
-      } else if (this.winterProducts.length > 0) {
-      }
+  //     for (let key in result) {
+  //       if (brand === 'Kwanga') {
+  //         this.kwangaProducts.push(result[key])
+  //         this.allProducts.push(result[key])
+  //       } else if (brand === 'Dankie Jesu') {
+  //         this.dankieJesuProducts.push(result[key])
+  //         this.allProducts.push(result[key])
+  //         if (result[key].data.isSummer === true) {
+  //           this.summerProducts.push(result[key])
+  //         } else if (result[key].data.isSummer === false) {
+  //           this.winterProducts.push(result[key])
+  //         }
+  //       }
+  //     }
+  //     if (this.summerProducts.length > 0) {
+  //     } else if (this.winterProducts.length > 0) {
+  //     }
 
-    })
-  }
+  //   })
+  // }
   orderItems() {
     this.summerProducts.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
     this.winterProducts.sort((a, b) => a.data.dateAdded > b.data.dateAdded ? 1 : 0)
@@ -538,7 +518,6 @@ export class ItemsListPage implements OnInit, OnDestroy {
                 if(reroute === true){
                   this.loc.replaceState('items-list/' + this.currentCategory)
                 }
-                this.loadCategoryItems(this.currentCategory, brand)
                 this.loadCategoryItemsSnap(this.currentCategory, brand)
             })
           })
@@ -619,6 +598,45 @@ export class ItemsListPage implements OnInit, OnDestroy {
     });
 
     await alert.present();
+  }
+  deleteSalesItem(item, productID){
+    console.log("logging deletion");
+    
+    const alert = document.createElement('ion-alert');
+    alert.header = 'Confirm Deletion';
+    alert.message = 'Are you sure you want to remove this item from specials?';
+    alert.buttons = [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary', 
+        handler: (blah) => {
+          console.log('User canceled');
+        }
+      }, {
+        text: 'Remove',
+        handler: () => {
+          console.log('Confirm Okay')
+    
+          console.log(productID);
+          console.log(item);
+          this.presentLoading()
+          return this.productsService.deleteSpecialsItem(productID, item).then(result => {
+            console.log(result);
+            if(result === 'success'){
+              if(this.loadingCtrl){
+                this.loadingCtrl.dismiss()
+              }
+            }
+            //location.reload()
+          })
+        }
+      }
+    ];
+  
+    document.body.appendChild(alert);
+    return alert.present();
+    
   }
   deleteItemConfirmed(productID, brand, category, item) {
     this.presentLoading()
