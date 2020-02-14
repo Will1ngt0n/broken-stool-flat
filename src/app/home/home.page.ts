@@ -352,69 +352,118 @@ export class HomePage {
     // console.log(this.makeBold);
     if (selectedTab === "FAQs") {
       document.getElementById("one").style.fontWeight = "bold"
+      document.getElementById("one").style.borderBottom = "2px solid yellow"
       document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("two").style.borderBottom = "0px solid yellow"
       document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("three").style.borderBottom = "0px solid yellow"
       document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("four").style.borderBottom = "0px solid yellow"
       document.getElementById("five").style.fontWeight = "500"
+      document.getElementById("five").style.borderBottom = "0px solid yellow"
 
       document.getElementById("oneS").style.fontWeight = "bold"
+      document.getElementById("oneS").style.background = "rgb(0, 8, 98)"
       document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("twoS").style.background = "transparent"
       document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("threeS").style.background = "transparent"
       document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fourS").style.background = "transparent"
       document.getElementById("fiveS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.background = "transparent"
     }
     else if (selectedTab === "Terms and Privacy Policy") {
       document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("one").style.borderBottom = "0px solid yellow"
       document.getElementById("two").style.fontWeight = "bold"
+      document.getElementById("two").style.borderBottom = "2px solid yellow"
       document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("three").style.borderBottom = "0px solid yellow"
       document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("four").style.borderBottom = "0px solid yellow"
       document.getElementById("five").style.fontWeight = "500"
+      document.getElementById("five").style.borderBottom = "0px solid yellow"
 
       document.getElementById("oneS").style.fontWeight = "500"
-      document.getElementById("twoS").style.fontWeight = "bold"
+      document.getElementById("oneS").style.background = "transparent"
+      document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("twoS").style.background = "rgb(0, 8, 98)"
       document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("threeS").style.background = "transparent"
       document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fourS").style.background = "transparent"
       document.getElementById("fiveS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.background = "transparent"
     }
     else if (selectedTab === "Payment Process") {
       document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("one").style.borderBottom = "0px solid yellow"
       document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("two").style.borderBottom = "0px solid yellow"
       document.getElementById("three").style.fontWeight = "bold"
+      document.getElementById("three").style.borderBottom = "2px solid yellow"
       document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("four").style.borderBottom = "0px solid yellow"
       document.getElementById("five").style.fontWeight = "500"
+      document.getElementById("five").style.borderBottom = "0px solid yellow"
 
-      document.getElementById("oneS").style.fontWeight = "500"
+      document.getElementById("oneS").style.fontWeight = "bold"
+      document.getElementById("oneS").style.background = "rgb(0, 8, 98)"
       document.getElementById("twoS").style.fontWeight = "500"
-      document.getElementById("threeS").style.fontWeight = "bold"
+      document.getElementById("twoS").style.background = "transparent"
+      document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("threeS").style.background = "transparent"
       document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fourS").style.background = "transparent"
       document.getElementById("fiveS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.background = "transparent"
     }
     else if (selectedTab === "About Company") {
       document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("one").style.borderBottom = "0px solid yellow"
       document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("two").style.borderBottom = "0px solid yellow"
       document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("three").style.borderBottom = "0px solid yellow"
       document.getElementById("four").style.fontWeight = "bold"
+      document.getElementById("four").style.borderBottom = "2px solid yellow"
       document.getElementById("five").style.fontWeight = "500"
+      document.getElementById("five").style.borderBottom = "0px solid yellow"
 
-
-      document.getElementById("oneS").style.fontWeight = "500"
+      document.getElementById("oneS").style.fontWeight = "bold"
+      document.getElementById("oneS").style.background = "rgb(0, 8, 98)"
       document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("twoS").style.background = "transparent"
       document.getElementById("threeS").style.fontWeight = "500"
-      document.getElementById("fourS").style.fontWeight = "bold"
+      document.getElementById("threeS").style.background = "transparent"
+      document.getElementById("fourS").style.fontWeight = "500"
+      document.getElementById("fourS").style.background = "transparent"
       document.getElementById("fiveS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.background = "transparent"
     }
     else if (selectedTab === "Disclaimer") {
-      document.getElementById("one").style.fontWeight = "500 "
+      document.getElementById("one").style.fontWeight = "500"
+      document.getElementById("one").style.borderBottom = "0px solid yellow"
       document.getElementById("two").style.fontWeight = "500"
+      document.getElementById("two").style.borderBottom = "0px solid yellow"
       document.getElementById("three").style.fontWeight = "500"
+      document.getElementById("three").style.borderBottom = "0px solid yellow"
       document.getElementById("four").style.fontWeight = "500"
+      document.getElementById("four").style.borderBottom = "0px solid yellow"
       document.getElementById("five").style.fontWeight = "bold"
-      
-      document.getElementById("oneS").style.fontWeight = "500 "
+      document.getElementById("five").style.borderBottom = "2px solid yellow"
+
+      document.getElementById("oneS").style.fontWeight = "bold"
+      document.getElementById("oneS").style.background = "rgb(0, 8, 98)"
       document.getElementById("twoS").style.fontWeight = "500"
+      document.getElementById("twoS").style.background = "transparent"
       document.getElementById("threeS").style.fontWeight = "500"
+      document.getElementById("threeS").style.background = "transparent"
       document.getElementById("fourS").style.fontWeight = "500"
-      document.getElementById("fiveS").style.fontWeight = "bold"
+      document.getElementById("fourS").style.background = "transparent"
+      document.getElementById("fiveS").style.fontWeight = "500"
+      document.getElementById("fiveS").style.background = "transparent"
     }
 
 
@@ -455,6 +504,7 @@ export class HomePage {
     })
   }
   goHome() {
+    this.toggleSideMenu();
     return this.authService.checkingAuthStateHome().then(result => {
       if (result === null) {
         location.reload()
