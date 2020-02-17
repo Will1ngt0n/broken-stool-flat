@@ -31,7 +31,6 @@
               <p id="dayDate">{{datePurchased}}</p>
             </div>
             <p id="subHeader">
-              {{item.status}} stat
               Products
             </p>
             <div class="items">
@@ -63,6 +62,7 @@
             <!-- <p id="Notifier">Order has been closed.</p> -->
             <p *ngIf="!deliveryAddress" id="Notifier"><b> Order has been collected</b></p>
             <p *ngIf="deliveryAddress" id="Notifier"><b> Order has been delivered</b></p>
+            
             <!-- <ion-button color="dark" (click)='goBack()'>Go Back</ion-button> -->
           </div>
           <div>
