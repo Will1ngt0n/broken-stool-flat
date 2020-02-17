@@ -20,6 +20,9 @@
         <div class="box-card">
           <div>
             <h4>Order Receipt</h4>
+            <div *ngIf='status'>
+              <p>{{status}}</p>
+            </div>
             <h5>{{name}}</h5>
             <p class="nums">{{cell}}</p>
             <p class="refNum"><b>REF</b> {{refNo}}</p>
@@ -104,12 +107,17 @@
             <h4>{{item.product_name}}</h4>
             <p>R {{item.cost}}</p>
             <p><b>QTY</b> {{item.quantity}}</p>
+
           </div>
         </ion-card>
       </div>
       <div id="receipt">
 
         <h4>Order Receipt</h4>
+        <div *ngIf='status'>
+          <p>{{status}}</p>
+        </div>
+
         <h5>Client Name: <b>{{name}}</b></h5>
         <p class="nums">Phone <b>{{cell}}</b></p>
         <p class="refNum">REF <b>{{refNo}}</b></p>

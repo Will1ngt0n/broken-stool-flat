@@ -1947,8 +1947,22 @@ export class LandingPage implements OnInit {
       resolve ((arrayReverse.reverse()).join(''))
     })
   }
+  showSearch : boolean
   findMatch(event, item){
-    let val = event.target.value.toLowerCase()
+    console.log(event);
+    let val
+    if(event.keyCode === 13){
+      //this.searchInventoryVal = []
+      this.showSearch = false
+      val = this.itemName.toLowerCase()
+    }else{
+      this.showSearch = true
+      val = event.target.value.toLowerCase()
+    }
+    console.log(this.itemName);
+    
+console.log(val);
+
     if(item === null){
       let match 
       if(val !== '' && val !== '*'){
@@ -2012,6 +2026,14 @@ export class LandingPage implements OnInit {
         this.validateUpdateForm()
       }
     }
+    // console.log(this.categoryMatch);
+    // let catMatch : boolean = this.categoryMatch
+    // if(event.keyCode === 13){
+    //   this.searchInventoryVal = []
+    //   this.categoryMatch = catMatch
+    //   console.log(this.categoryMatch);
+      
+    // }
   }
   
   searchInventoryVal : Array<any> = []
@@ -2105,4 +2127,18 @@ export class LandingPage implements OnInit {
     
     
   }
+  // dismissAutocomplete(event){
+  //   console.log(event.keyCode);
+  //   console.log(this.categoryMatch);
+    
+  //   if(event.keyCode === 13){
+  //     console.log(this.categoryMatch);
+      
+  //     let categoryMatch : boolean = this.categoryMatch
+  //     this.searchInventoryVal = []
+  //     this.categoryMatch = categoryMatch
+  //     console.log(this.categoryMatch);
+      
+  //   }
+  // }
 }

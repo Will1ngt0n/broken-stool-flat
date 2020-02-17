@@ -75,9 +75,15 @@ export class OrderReceiptPage implements OnInit {
     })
   }
 ​   dateClosed
+  status : string = ''
   getOrderHistory(refNo, name){
     return this.productsService.getOrderHistoryDetails(refNo).then(result => {
       this.item = result[0]
+      console.log(this.item);
+      
+      this.status = this.item['details']['status']
+      console.log(this.status);
+      
       this.products = this.item['details']['orders']
       //this.dateClosed = this.item['details']['timestamp']
       this.deliveryType = this.item['details']['deliveryType']
