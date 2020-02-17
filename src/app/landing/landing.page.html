@@ -116,8 +116,8 @@
           <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search products"
             show-cancel-button="never"></ion-input>
         </div>
-        <div id="admin" (click)='signOutPopup()'>
-          <p>SIGN OUT</p>
+        <div id="admin">
+          <p (click)='signOutPopup()'>SIGN OUT</p>
         </div>
       </div>
     </div>
@@ -231,8 +231,8 @@
       </div>
       <div id="mid">
         <div class="slide-specials">
-          <ion-item (click)='viewSales("viewAll")' color="warning">
-            <ion-label>Sales &amp; Specials</ion-label>
+          <ion-item (click)='viewSales("viewAll")' color="medium">
+            <ion-label id="my-label">Sales &amp; Specials</ion-label>
             <ion-note slot="end" color="primary">
               See All
               <ion-icon name="arrow-forward"></ion-icon>
@@ -246,20 +246,20 @@
               <img class="bg" [src]="allSpecialsPicture" *ngIf='allSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Dankie Jesu")'>
-              <p id="item-label">Dankie Jesu Clothing</p>
+              <p id="item-label">Dankie Jesu Specials</p>
               <img class="bg" src="../../assets/imgs/Dankie.png" *ngIf='!dankieJesuSpecialsPicture' alt="">
               <img class="bg" [src]="dankieJesuSpecialsPicture" *ngIf='dankieJesuSpecialsPicture' alt="">
             </div>
             <div class="box-item" (click)='viewSales("Kwanga")'>
-              <p id="item-label">Kwanga Apparel</p>
+              <p id="item-label">Kwanga Apparel Specials</p>
               <img class="bg" src="../../assets/imgs/Kwanga.png" *ngIf='!kwangaSpecialsPicture' alt="">
               <img class="bg" [src]="kwangaSpecialsPicture" *ngIf='kwangaSpecialsPicture' alt="">
             </div>
           </div>
         </div>
         <div class="slide-winter-summer">
-          <ion-item (click)='viewMore("summer-gear")' color="warning">
-            <ion-label>Summer Gear</ion-label>
+          <ion-item (click)='viewMore("summer-gear")' color="medium">
+            <ion-label id="my-label">Summer Gear</ion-label>
             <ion-note slot="end" color="primary">
               See All
               <ion-icon name="arrow-forward"></ion-icon>
@@ -290,8 +290,8 @@
         </div>
 
         <div class="slide-winter-summer">
-          <ion-item (click)='viewMore("winter-gear")' color="warning">
-            <ion-label>Winter Gear</ion-label>
+          <ion-item (click)='viewMore("winter-gear")' color="medium">
+            <ion-label id="my-label">Winter Gear</ion-label>
             <ion-note slot="end" color="primary">
               See All
               <ion-icon name="arrow-forward"></ion-icon>
@@ -319,9 +319,9 @@
         </div>
 
         <div class="slide-specials">
-          <ion-item (click)='viewMore("kwanga-sub-categories")' color="warning">
-            <ion-label>Kwanga Apparel</ion-label>
-            <ion-note slot="end" color="primary">
+          <ion-item (click)='viewMore("kwanga-sub-categories")' color="medium">
+            <ion-label id="my-label">Kwanga Apparel</ion-label>
+            <ion-note slot="end" color="light">
               See All
               <ion-icon name="arrow-forward"></ion-icon>
 
@@ -348,7 +348,7 @@
 
           </select><br>
 
-          <select #nativeCategory [disabled]='department === "Select Department"' (change)="changeCategory($event);">
+          <select #nativeCategory [disabled]='department === "Select Brand"' (change)="changeCategory($event);">
             <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
           </select><br>
 
@@ -555,7 +555,7 @@
 
         </select><br>
 
-        <select #nativeCategory [disabled]='department === "Select Department"' (change)="changeCategory($event);">
+        <select #nativeCategory [disabled]='department === "Select Brand"' (change)="changeCategory($event);">
           <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
         </select><br>
 
@@ -676,7 +676,9 @@
           <ion-slides pager="false" [options]="sliderConfigSmall" #sliderRefSmall>
             <ion-slide *ngFor='let item of kwangaGear'>
               <div class="slide-img" (click)="showHideSearchDetails(item)">
+                <div class="name-holder1">
                 <p>{{item.data.name}}</p>
+                </div>
                 <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item && item.data.pictureLink' alt="">
                 <img class="slide-img" src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
               </div>

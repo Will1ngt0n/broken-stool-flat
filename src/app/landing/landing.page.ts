@@ -30,7 +30,7 @@ export class LandingPage implements OnInit {
   picture : File
   searchArray
   pictures: Array<any> = []
-  departmentOptions: Array<any> = ['Select Department', 'Dankie Jesu', 'Kwanga']
+  departmentOptions: Array<any> = ['Select Brand', 'Dankie Jesu', 'Kwanga']
   kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports']
   dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies']
   newNumberOfProducts : number
@@ -151,7 +151,7 @@ export class LandingPage implements OnInit {
     this.colors = { red: '' }
     this.accessory = false;
     this.summer = false;
-    this.department = 'Select Department'
+    this.department = 'Select Brand'
     this.selectedCategory = 'Select Category'
     this.addForm = false
     this.formHasValues = false
@@ -466,7 +466,7 @@ export class LandingPage implements OnInit {
     if (this.department === 'Kwanga') {
       this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports']
     }
-    if (this.department === 'Select Department') {
+    if (this.department === 'Select Brand') {
       this.department = undefined
       this.nativeCategory.nativeElement.disabled = true   ////
       this.nativeCategory.nativeElement.value = 'Select Category'   ///
@@ -539,17 +539,17 @@ export class LandingPage implements OnInit {
     if(this.nativeCategory.nativeElement.disabled === true){
       this.selectedCategory = 'Select Category'
     }
-    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.newProductCode === '' || this.newProductCode === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Brand' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.newProductCode === '' || this.newProductCode === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
       this.addForm = false
     } else {
       this.addForm = true
     }
-    if (this.selectedCategory === 'Select Category' || this.department === 'Select Department' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
+    if (this.selectedCategory === 'Select Category' || this.department === 'Select Brand' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
       this.generateCode = false
     } else {
       this.generateCode = true
     }
-    if (this.department !== 'Select Department' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined || this.newProductCode !== '') {
+    if (this.department !== 'Select Brand' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined || this.newProductCode !== '') {
       this.formHasValues = true
     }else{
       this.formHasValues = false
@@ -630,7 +630,7 @@ export class LandingPage implements OnInit {
   clearForm() { //clearform for bigger screens
     this.uploaderImage[0].style.display = "block"
     this.uploadedImage[0].style.display = "none"
-    this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
+    this.departmentOptions = ['Select Brand', 'Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
     this.itemName = ''
@@ -645,10 +645,10 @@ export class LandingPage implements OnInit {
     this.fileInput.nativeElement.value = ''
 
     if(this.departmentCombo){
-    this.departmentCombo.nativeElement.value ='Select Department'
+    this.departmentCombo.nativeElement.value ='Select Brand'
     }
     if(this.mbdepartmentCombo){
-      this.mbdepartmentCombo.nativeElement.value ='Select Department'
+      this.mbdepartmentCombo.nativeElement.value ='Select Brand'
     }
 
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
@@ -661,14 +661,14 @@ export class LandingPage implements OnInit {
     }
     this.formHasValues = false
     this.addForm = false
-    this.department = 'Select Department'
+    this.department = 'Select Brand'
     this.selectedCategory = 'Select Category'
   }
   mbclearForm() { //clearform for small screens
     
     this.uploaderImage[0].style.display = "block"
     this.uploadedImage[0].style.display = "none"
-    this.departmentOptions = ['Select Department', 'Dankie Jesu', 'Kwanga']
+    this.departmentOptions = ['Select Brand', 'Dankie Jesu', 'Kwanga']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
     this.itemName = ''
@@ -680,10 +680,10 @@ export class LandingPage implements OnInit {
     this.fileInput.nativeElement.value = ''
 
     if(this.departmentCombo){
-    this.departmentCombo.nativeElement.value ='Select Department'
+    this.departmentCombo.nativeElement.value ='Select Brand'
     }
     if(this.mbdepartmentCombo){
-      this.mbdepartmentCombo.nativeElement.value ='Select Department'
+      this.mbdepartmentCombo.nativeElement.value ='Select Brand'
     }
 
     let checkboxes: Array<any> = ['checkboxXS', 'checkboxS', 'checkboxM', 'checkboxL', 'checkboxXL', 'checkboxXXL', 'checkboxXXXL', 'checkboxBlack', 'checkboxBrown', 'checkboxOrange', 'checkboxYellow', 'checkboxWhite']
@@ -696,7 +696,7 @@ export class LandingPage implements OnInit {
     }
     this.formHasValues = false
     this.addForm = false
-    this.department = 'Select Department'
+    this.department = 'Select Brand'
     this.selectedCategory = 'Select Category'
   }
   //Routing to sales page

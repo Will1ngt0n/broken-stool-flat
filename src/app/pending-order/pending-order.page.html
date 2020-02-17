@@ -3,7 +3,7 @@
     <div class="nav-bar">
       <div class="nav-content">
         <div id="title">
-          <h4>DankieJesu</h4>
+          <img src="../../assets/imgs/Logo/Logo.png" id="appLogo" alt="" (click)='goBack()' id="dankie-home-button">
         </div>
         <div id="searchbar">
           <ion-searchbar></ion-searchbar>
@@ -60,7 +60,7 @@
             </p>
             <p *ngIf='deliveryAddress' id="address">{{deliveryAddress}}</p>
             <p id="Notifier" *ngIf="status === 'collected'">Order has been closed.</p>
-            <ion-button color="dark" (click)='goBack()'>Go Back</ion-button>
+            <!-- <ion-button color="dark" (click)='goBack()'>Go Back</ion-button> -->
           </div>
           <div>
             <p class="titleName">

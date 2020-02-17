@@ -215,8 +215,11 @@ ion-list > div {
 #admin {
   width: 20%;
   height: 100%;
+    position: relative;
   p {
     cursor: pointer;
+    width: auto;
+    right: 0;
   }
 }
 #admin {
@@ -226,7 +229,8 @@ ion-list > div {
   text-align: right;
   p {
     line-height: 30px;
-    width: 100%;
+    // width: 100%;
+    position: absolute;
   }
   img {
     margin-left: 10px;
@@ -319,15 +323,10 @@ ion-searchbar {
   ion-item {
     height: 40px;
     width: 100%;
-    border-bottom: 2px solid grey;
+    // border-bottom: 2px solid grey;
     cursor: pointer;
-    ion-label{
-      color: black !important;
-    }
   }
   ion-note {
-    color: #7c0000;
-    font-weight: bold;
     cursor: pointer;
   }
   .items {
@@ -381,12 +380,10 @@ ion-searchbar {
   ion-item {
     height: 40px;
     width: 100%;
-    border-bottom: 2px solid grey;
+    // border-bottom: 2px solid grey;
     cursor: pointer;
   }
   ion-note {
-    color: #7c0000;
-    font-weight: bold;
     cursor: pointer;
   }
   .items {
@@ -1095,6 +1092,23 @@ label {
     padding-bottom: 0px;
     text-transform: capitalize;
   }
+  .name-holder1 {
+    width: calc(100% - 10px);
+    min-height: 25px;
+    background: linear-gradient( rgba(0,0,0,0),rgba(0, 0, 0, 0.452));
+    position: absolute;
+    z-index: 1000000;
+    color: white;
+    right: 5px;
+    bottom: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    text-transform: capitalize;
+  }
 .item-container {
   width: 100%;
   height: 100%;
@@ -1279,9 +1293,12 @@ ion-row {
 ion-item {
   height: 40px;
   width: 100%;
-  border-bottom: 2px solid grey;
+  // border-bottom: 2px solid rgb(231, 231, 231);
   cursor: pointer;
-  ion-label{
-    color: black !important;
-  }
+  color: black !important;
+}
+
+#my-label{
+  color: black !important;
+  font-weight: bold;
 }
