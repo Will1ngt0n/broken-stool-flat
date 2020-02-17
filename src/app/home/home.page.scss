@@ -606,28 +606,38 @@ ion-footer {
 }
 .feet{
   // height: 120px;
-  color: white;
+  color: black;
   width: 100%;
-  background: blue;
+  background: rgb(230, 230, 230);
   display: flex;
     padding: 10px;
   a{
-    color: white;
+    color: rgb(0, 71, 104);
     margin-bottom: 10px;
   }
   div{
     width: 30%;
     height: 100%;
     margin: 0 auto;
-    background: red;
+    // background: red;
     #footer-title{
       font-weight: bold;
+      a{
+        ion-icon{
+          font-size: xx-large
+        }
+      }
+    }
+    @media screen and (max-width: 765px){
+      font-weight: 500;
+      font-size: 14px;
     }
     address{
       margin-bottom: 20px;
     }
     #socials{
       font-size: 1.2vh;
+      cursor: pointer;
     }
   }
 }
