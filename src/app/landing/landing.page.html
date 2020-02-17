@@ -351,7 +351,7 @@
             (keyup)='checkItemName(); findMatch($event, null)'>
           <span id="already-exists" *ngIf='categoryMatch'>An item with that name already exists in selected
             category</span>
-          <div>
+          <div *ngIf='showSearch'>
             <span id="label-match" *ngIf="itemName !== null && searchInventoryVal.length > 0">Matching products</span>
             <ion-list id="item-match" *ngFor="let item of searchInventoryVal">
 
@@ -556,12 +556,15 @@
         <input type="text" class="user-input" placeholder="Product name" maxlength="25"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
           (keyup)='findMatch($event, null); checkValidity()'>
-        <span *ngIf='categoryMatch' id="already-exists">An item with that name already exists in selected category</span>
-        <ion-list>
-          <div *ngFor="let item of searchInventoryVal">
-            <ion-item *ngIf='searchInventoryVal.length > 0' (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
-          </div>
-        </ion-list>
+          <span *ngIf='categoryMatch' id="already-exists">An item with that name already exists in selected category</span>
+        <div *ngIf='showSearch'>
+          <ion-list>
+            <div *ngFor="let item of searchInventoryVal">
+              <ion-item *ngIf='searchInventoryVal.length > 0' (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
+            </div>
+          </ion-list>
+        </div>
+
         <input #itemPrice type="number" class="user-input" placeholder="Price"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='price'
           (keyup)='checkValidity(); changePrice()'>

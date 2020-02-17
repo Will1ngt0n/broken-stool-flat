@@ -180,4 +180,7 @@ export class SummerGearPage implements OnInit {
     this.sideMenuButtons = true;
     this.listOfItems = 0;
   }
+  reloadPage(){
+    location.reload()
+  }
 }
