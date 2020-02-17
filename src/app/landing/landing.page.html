@@ -5,7 +5,7 @@
     </ion-fab-button>
   </ion-fab>
   <div class="searchResults" *ngIf="searchInput">
-    
+
     <p>
       Search Results
     </p>
@@ -113,7 +113,7 @@
           <!-- <h4>DankieJesu</h4> -->
         </div>
         <div id="searchbar">
-          <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search"
+          <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search products"
             show-cancel-button="never"></ion-input>
         </div>
         <div id="admin" (click)='signOutPopup()'>
@@ -198,7 +198,7 @@
           <div class="items-list" *ngIf='allProducts && searchSideInventory.length !== 0'>
             <ion-card *ngFor='let item of searchSideInventory'>
               <div (click)="showHideSearchDetails(item)">
-                <img  [src]="item.data.pictureLink" *ngIf='item.data' alt="">
+                <img [src]="item.data.pictureLink" *ngIf='item.data' alt="">
                 <p><b>{{item.data.name}}</b></p>
               </div>
 
@@ -231,7 +231,7 @@
       </div>
       <div id="mid">
         <div class="slide-specials">
-          <ion-item (click)='viewSales("viewAll")'>
+          <ion-item (click)='viewSales("viewAll")' color="warning">
             <ion-label>Sales &amp; Specials</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -258,7 +258,7 @@
           </div>
         </div>
         <div class="slide-winter-summer">
-          <ion-item (click)='viewMore("summer-gear")'>
+          <ion-item (click)='viewMore("summer-gear")' color="warning">
             <ion-label>Summer Gear</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -273,7 +273,9 @@
                   (click)="showHideSearchDetails(item)">
 
                   <div class="item-container">
-                    <p>{{item.data.name}}</p>
+                    <div class="name-holder">
+                      <p>{{item.data.name}}</p>
+                    </div>
                     <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
                     <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data'
                       alt="">
@@ -288,7 +290,7 @@
         </div>
 
         <div class="slide-winter-summer">
-          <ion-item (click)='viewMore("winter-gear")'>
+          <ion-item (click)='viewMore("winter-gear")' color="warning">
             <ion-label>Winter Gear</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -303,7 +305,9 @@
                   (click)="showHideSearchDetails(item)">
 
                   <div class="item-container">
-                    <p>{{item.data.name}}</p>
+                    <div class="name-holder">
+                      <p>{{item.data.name}}</p>
+                    </div>
                     <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
                     <img src="../../assets/imgs/Dankie.png" [src]="item.data.pictureLink" *ngIf='item && item.data'
                       alt="">
@@ -315,7 +319,7 @@
         </div>
 
         <div class="slide-specials">
-          <ion-item (click)='viewMore("kwanga-sub-categories")'>
+          <ion-item (click)='viewMore("kwanga-sub-categories")' color="warning">
             <ion-label>Kwanga Apparel</ion-label>
             <ion-note slot="end" color="primary">
               See All
@@ -325,7 +329,9 @@
           </ion-item>
           <div class="items" *ngIf='kwangaGear'>
             <div class="box-item" *ngFor='let item of kwangaGear' (click)="showHideSearchDetails(item)">
-              <p id="item-label1">{{item.data.name}}</p>
+              <div class="name-holder">
+                <p>{{item.data.name}}</p>
+              </div>
               <img class="bg" [src]="item.data.pictureLink" *ngIf='item && item.data' alt="">
               <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
             </div>
@@ -429,7 +435,7 @@
       </div>
       <div *ngIf="!miniSearchBarState">Dankie Jesu</div>
       <div *ngIf="miniSearchBarState">
-        <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search"
+        <ion-input [(ngModel)]='searchInput' id="mySearchBar" (ionChange)='search()' placeholder="Search products"
           show-cancel-button="never"></ion-input>
       </div>
       <div (click)="showSearchBar()">
