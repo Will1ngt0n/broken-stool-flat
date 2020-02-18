@@ -222,9 +222,12 @@
           </div>
 
         </div>
-        <div class="side-buttons" (click)="showPendingList()">Pending Orders ({{pendingOrdersLength}})</div>
-        <div class="side-buttons" (click)="showHistoryList()">Order History ({{orderHistoryLength}})</div>
-        <div class="side-buttons" (click)="showInventoryList()">Inventory ({{inventoryLength}})</div>
+        <div class="side-buttons" (click)="showPendingList()" *ngIf='pendingOrdersLength < 9'>Pending Orders ({{pendingOrdersLength}})</div>
+        <div class="side-buttons" (click)="showPendingList()" *ngIf='pendingOrdersLength > 9'>Pending Orders (9+)</div>
+        <div class="side-buttons" (click)="showHistoryList()" *ngIf='orderHistoryLength < 9'>Order History ({{orderHistoryLength}})</div>
+        <div class="side-buttons" (click)="showHistoryList()" *ngIf='orderHistoryLength > 9'>Order History (9+)</div>
+        <div class="side-buttons" (click)="showInventoryList()" *ngIf='inventoryLength < 99'>Inventory ({{inventoryLength}})</div>
+        <div class="side-buttons" (click)="showInventoryList()" *ngIf='inventoryLength > 99'>Inventory (99+)</div>
         <div class="helpDesk" id="helpDesk" (click)="goToHelpDesk()">
           Help Desk?
         </div>
@@ -321,7 +324,7 @@
         <div class="slide-specials">
           <ion-item (click)='viewMore("kwanga-sub-categories")' color="medium">
             <ion-label id="my-label">Kwanga Apparel</ion-label>
-            <ion-note slot="end" color="light">
+            <ion-note slot="end" color="primary">
               See All
               <ion-icon name="arrow-forward"></ion-icon>
 
@@ -454,9 +457,12 @@
         </ion-button>
       </div>
       <div class="small-side-items" *ngIf="sideMenuButtons">
-        <div id="smallOne" (click)="showPendingListSmall()">Pending Orders ({{pendingOrdersLength}})</div>
-        <div id="smallTwo" (click)="showHistoryListSmall()">Order History ({{orderHistoryLength}})</div>
-        <div id="smallThree" (click)="showInventoryListSmall()">Inventory ({{inventoryLength}})</div>
+        <div id="smallOne" (click)="showPendingListSmall()" *ngIf='pendingOrdersLength < 9'>Pending Orders ({{pendingOrdersLength}})</div>
+        <div id="smallOne" (click)="showPendingListSmall()" *ngIf='pendingOrdersLength > 9'>Pending Orders (9+)</div>
+        <div id="smallTwo" (click)="showHistoryListSmall()" *ngIf='orderHistoryLength < 9'>Order History ({{orderHistoryLength}})</div>
+        <div id="smallTwo" (click)="showHistoryListSmall()" *ngIf='orderHistoryLength > 9'>Order History (9+)</div>
+        <div id="smallThree" (click)="showInventoryListSmall()" *ngIf='inventoryLength < 99'>Inventory ({{inventoryLength}})</div>
+        <div id="smallThree" (click)="showInventoryListSmall()" *ngIf='inventoryLength > 99'>Inventory (99+)</div>
 
         <div class="helpDesk" id="helpDesk" (click)="goToHelpDesk()">
           Help Desk?

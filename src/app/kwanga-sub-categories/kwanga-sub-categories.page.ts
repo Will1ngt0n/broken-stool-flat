@@ -124,4 +124,7 @@ export class KwangaSubCategoriesPage implements OnInit {
     inventoryItems[0].style.display = "none"
 ​
   }
+  reloadPage(){
+    location.reload()
+  }
 }
