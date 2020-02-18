@@ -64,8 +64,8 @@
             <p *ngIf='deliveryAddress' id="address">{{deliveryAddress}}</p>
             <!-- <p id="Notifier">Order has been closed.</p> -->
             <p *ngIf='status === "cancelled"' id="Notifier-red"><b> Order has been cancelled</b></p>
-            <p *ngIf='status === "collected"' id="Notifier"><b> Order has been collected</b></p>
-            <p *ngIf='status === "delivered"' id="Notifier"><b> Order has been delivered</b></p>
+            <p *ngIf='status === "Collected"' id="Notifier"><b> Order has been collected</b></p>
+            <p *ngIf='status === "Delivered"' id="Notifier"><b> Order has been delivered</b></p>
             <!-- <ion-button color="dark" (click)='goBack()'>Go Back</ion-button> -->
           </div>
           <div>
@@ -114,9 +114,9 @@
       <div id="receipt">
 
         <h4>Order Receipt</h4>
-        <!-- <div *ngIf='status'>
+        <div *ngIf='status'>
           <p>{{status}}</p>
-        </div> -->
+        </div>
 
         <h5>Client Name: <b>{{name}}</b></h5>
         <p class="nums">Phone <b>{{cell}}</b></p>
@@ -157,9 +157,10 @@
           Order Address
         </p>
         <p id="address">{{deliveryAddress}}</p>
+        <p>{{status}}</p>
         <p *ngIf='status === "cancelled"' id="Notifier-red"><b> Order has been cancelled</b></p>
-        <p *ngIf='status === "collected"' id="Notifier"><b> Order has been collected</b></p>
-        <p *ngIf='status === "delivered"' id="Notifier"><b> Order has been delivered</b></p>
+        <p *ngIf='status === "Collected"' id="Notifier"><b> Order has been collected</b></p>
+        <p *ngIf='status === "Delivered"' id="Notifier"><b> Order has been delivered</b></p>
       </div>
     </div>
   </div>
