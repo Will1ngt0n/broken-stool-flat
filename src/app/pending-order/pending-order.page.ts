@@ -398,7 +398,7 @@ goBack(){
 }
 
 ​status : string;
-cancelOrder(){
+cancelOrderConfirmed(){
   let status = 'cancelled'
   this.presentLoading()
   return this.productsService.cancelOrder(this.refNo, status, this.userID, this.products,  this.purchaseDate).then(result => {
@@ -545,5 +545,42 @@ refreshPendingOrder(){
     console.log(result);
     
   })
+}
+cancelOrder(item, productID){
+  console.log("logging deletion");
+  
+  const alert = document.createElement('ion-alert');
+  alert.header = 'Confirm Deletion';
+  alert.message = 'Are you sure you want to remove this item from specials?';
+  alert.buttons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      cssClass: 'secondary', 
+      handler: (blah) => {
+        console.log('User canceled');
+      }
+    }, {
+      text: 'Remove',
+      handler: () => {
+        console.log('Confirm Okay')
+  
+        console.log(productID);
+        console.log(item);
+        this.presentLoading()
+        let status = 'cancelled'
+        this.presentLoading()
+        return this.productsService.cancelOrder(this.refNo, status, this.userID, this.products,  this.purchaseDate).then(result => {
+          this.loadingCtrl.dismiss()
+          this.route.navigate([this.routingPage])
+      
+        })
+      }
+    }
+  ];
+
+  document.body.appendChild(alert);
+  return alert.present();
+  
 }
 }
