@@ -546,12 +546,12 @@ refreshPendingOrder(){
     
   })
 }
-cancelOrder(item, productID){
+cancelOrder(){
   console.log("logging deletion");
   
   const alert = document.createElement('ion-alert');
-  alert.header = 'Confirm Deletion';
-  alert.message = 'Are you sure you want to remove this item from specials?';
+  alert.header = 'Confirm Cancellation';
+  alert.message = 'Are you sure you want to remove this item from pending orders?';
   alert.buttons = [
     {
       text: 'Cancel',
@@ -565,8 +565,8 @@ cancelOrder(item, productID){
       handler: () => {
         console.log('Confirm Okay')
   
-        console.log(productID);
-        console.log(item);
+        // console.log(productID);
+        // console.log(item);
         this.presentLoading()
         let status = 'cancelled'
         this.presentLoading()
