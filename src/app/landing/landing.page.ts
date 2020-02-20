@@ -221,36 +221,7 @@ export class LandingPage implements OnInit {
               this.isOnline = true
               this.isCached = true
               this.isConnected = true
-              this.loadTotalNumberOfProducts()
-              this.getPendingOrders()
-              let date = moment(new Date()).format('LLLL');
-              let tee = moment(new Date('10/12/2019')).format('LLLL')
-              if (date > tee) {
-              }
-          
-              this.getReadyOrders()
-              this.getOrderHistory()
-
-              this.load16CategoryItems()
-              this.nativeCategory.nativeElement.disabled = true
-              //snapshots
-              this.refreshOrderHistory()
-              this.getPendingOrdersSnap()
-              this.loadFormal('Kwanga', 'Formal')
-              this.loadTraditional('Kwanga', 'Traditional')
-              this.loadSmartCasual('Kwanga', 'Smart Casual')
-              this.loadSportsWear('Kwanga', 'Sports')
-              this.loadVests('Dankie Jesu', 'Vests')
-              this.loadCaps('Dankie Jesu', 'Caps')
-              this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-              this.loadShorts('Dankie Jesu', 'Shorts')
-              this.loadCropTops('Dankie Jesu', 'Crop Tops')
-              this.loadTShirts('Dankie Jesu', 'T-Shirts')
-              this.loadBags('Dankie Jesu', 'Bags')
-              this.loadSweaters('Dankie Jesu', 'Sweaters')
-              this.loadHoodies('Dankie Jesu', 'Hoodies')
-              this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-              this.loadBeanies('Dankie Jesu', 'Beanies')
+              this.loadRunFunction()
             }else{
               this.isConnected = false
               this.preventIonViewDidEnterInit = false
@@ -266,6 +237,51 @@ export class LandingPage implements OnInit {
 
 
   }
+  categoryList : Array<any> = []
+  getCategories(){
+    return this.productService.getCategories().then((result : Array<any>) => {
+      let category
+      console.log(result);
+      for(let key in result){
+        this.departmentOptions.push(result[key].brand)
+      }
+    })
+  }
+  loadRunFunction(){
+    this.presentLoading()
+    this.getCategories()
+    this.pageLoader = true
+    this.loadTotalNumberOfProducts()
+    this.getPendingOrders()
+    let date = moment(new Date()).format('LLLL');
+    let tee = moment(new Date('10/12/2019')).format('LLLL')
+    if (date > tee) {
+    }
+
+    this.getReadyOrders()
+    this.getOrderHistory()
+
+    this.load16CategoryItems()
+    this.nativeCategory.nativeElement.disabled = true
+    //snapshots
+    this.refreshOrderHistory()
+    this.getPendingOrdersSnap()
+    this.loadFormal('Kwanga', 'Formal')
+    this.loadTraditional('Kwanga', 'Traditional')
+    this.loadSmartCasual('Kwanga', 'Smart Casual')
+    this.loadSportsWear('Kwanga', 'Sports')
+    this.loadVests('Dankie Jesu', 'Vests')
+    this.loadCaps('Dankie Jesu', 'Caps')
+    this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+    this.loadShorts('Dankie Jesu', 'Shorts')
+    this.loadCropTops('Dankie Jesu', 'Crop Tops')
+    this.loadTShirts('Dankie Jesu', 'T-Shirts')
+    this.loadBags('Dankie Jesu', 'Bags')
+    this.loadSweaters('Dankie Jesu', 'Sweaters')
+    this.loadHoodies('Dankie Jesu', 'Hoodies')
+    this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+    this.loadBeanies('Dankie Jesu', 'Beanies')
+  }
   reload() {
     if(navigator.onLine){
       return this.networkService.getUID().then( result => {
@@ -277,31 +293,32 @@ export class LandingPage implements OnInit {
           this.isCached = true
           this.isConnected = true
           clearInterval(this.timer)
-          this.loadTotalNumberOfProducts()
-          this.getPendingOrders()
+          this.loadRunFunction()
+          // this.loadTotalNumberOfProducts()
+          // this.getPendingOrders()
       
-          this.getReadyOrders()
-          this.getOrderHistory()
-          this.load16CategoryItems()
-          this.nativeCategory.nativeElement.disabled = true
-          //snapshots
-          this.refreshOrderHistory()
-          this.getPendingOrdersSnap()
-          this.loadFormal('Kwanga', 'Formal')
-          this.loadTraditional('Kwanga', 'Traditional')
-          this.loadSmartCasual('Kwanga', 'Smart Casual')
-          this.loadSportsWear('Kwanga', 'Sports')
-          this.loadVests('Dankie Jesu', 'Vests')
-          this.loadCaps('Dankie Jesu', 'Caps')
-          this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-          this.loadShorts('Dankie Jesu', 'Shorts')
-          this.loadCropTops('Dankie Jesu', 'Crop Tops')
-          this.loadTShirts('Dankie Jesu', 'T-Shirts')
-          this.loadBags('Dankie Jesu', 'Bags')
-          this.loadSweaters('Dankie Jesu', 'Sweaters')
-          this.loadHoodies('Dankie Jesu', 'Hoodies')
-          this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-          this.loadBeanies('Dankie Jesu', 'Beanies')
+          // this.getReadyOrders()
+          // this.getOrderHistory()
+          // this.load16CategoryItems()
+          // this.nativeCategory.nativeElement.disabled = true
+          // //snapshots
+          // this.refreshOrderHistory()
+          // this.getPendingOrdersSnap()
+          // this.loadFormal('Kwanga', 'Formal')
+          // this.loadTraditional('Kwanga', 'Traditional')
+          // this.loadSmartCasual('Kwanga', 'Smart Casual')
+          // this.loadSportsWear('Kwanga', 'Sports')
+          // this.loadVests('Dankie Jesu', 'Vests')
+          // this.loadCaps('Dankie Jesu', 'Caps')
+          // this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+          // this.loadShorts('Dankie Jesu', 'Shorts')
+          // this.loadCropTops('Dankie Jesu', 'Crop Tops')
+          // this.loadTShirts('Dankie Jesu', 'T-Shirts')
+          // this.loadBags('Dankie Jesu', 'Bags')
+          // this.loadSweaters('Dankie Jesu', 'Sweaters')
+          // this.loadHoodies('Dankie Jesu', 'Hoodies')
+          // this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+          // this.loadBeanies('Dankie Jesu', 'Beanies')
         }else{
           this.isConnected = false
         }
@@ -312,6 +329,8 @@ export class LandingPage implements OnInit {
     }
   }
   load16CategoryItems(){
+    // this.presentLoading()
+    // this.pageLoader = true
     return this.productService.load16CategoryItems().then((result : any) => {
       if(result !== null && result.length > 0){
         this.allProducts = result
@@ -960,8 +979,8 @@ export class LandingPage implements OnInit {
   }
   
   getPendingOrders() {
-    this.presentLoading()
-    this.pageLoader = true
+
+
     return this.productService.getPendingOrders().then(result => {
       console.log(result);
       //this.pendingOrders = []
@@ -2140,5 +2159,69 @@ console.log(val);
   //     console.log(this.categoryMatch);
       
   //   }
+  // }
+
+  // changeDepartment(event) {
+  //   console.log(this.categoryList);
+  //   this.categoryOptions = ['Select Category']
+  //   this.department = event.target['value']
+  //   console.log(this.department)
+  //   for(let key in this.categoryList){
+  //     if(this.department === this.categoryList[key].brand){
+  //       console.log(this.categoryList[key]);
+  //       for(let i in this.categoryList[key].categoryList){
+  //         this.categoryOptions.push(this.categoryList[key].categoryList[i].category)
+  //       }
+  //       //console.log(options);
+        
+  //     }
+  //   }
+  //   // if (this.department === 'Dankie Jesu') {
+  //   //   this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
+  //   // }
+  //   // if (this.department === 'Kwanga') {
+  //   //   this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports']
+  //   // }
+  //   if (this.department === 'Select Brand') {
+  //     this.department = undefined
+  //     this.nativeCategory.nativeElement.disabled = true   ////
+  //     this.nativeCategory.nativeElement.value = 'Select Category'   ///
+  //   }else{
+  //     this.nativeCategory.nativeElement.disabled = false   ////
+  //   }
+  //   this.checkValidity()
+  // }
+
+  // changeCategory(event) {
+  //   this.selectedCategory = event.target['value']
+  //   if (this.selectedCategory === 'Select Category') {
+  //     this.selectedCategory = 'Select Category'
+  //   }
+  //   for(let key in this.categoryList){
+  //     if(this.department === this.categoryList[key].brand){
+  //       for(let i in this.categoryList[key].categoryList){
+  //         if(this.categoryList[key].categoryList[i].category === this.selectedCategory){
+  //           this.summer = this.categoryList[key].categoryList[i].isSummer
+  //         }
+  //       }
+  //     }
+  //   }
+  //   console.log(this.summer);
+    
+  //   for(let key in this)
+  //   // if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
+  //   //   this.summer = true
+  //   // }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
+  //   // if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
+  //   //   this.summer = false
+  //   // }
+    
+  //   if(this.selectedCategory === 'Bags' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Beanies'){
+  //     this.accessory = true   ///, 'Bags'))
+  //   }else{
+  //     this.accessory = false
+  //   }
+
+  //   this.checkValidity()
   // }
 }
