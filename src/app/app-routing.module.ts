@@ -22,7 +22,11 @@ const routes: Routes = [
   { path: 'pending-order', loadChildren: () => import('./pending-order/pending-order.module').then( m => m.PendingOrderPageModule),  canActivate: [AuthGuard]  },
   { path: 'home', redirectTo: 'home/FAQs', pathMatch: 'full' },
 
-  { path: '**', redirectTo: 'home/FAQs', pathMatch: 'full' }
+  { path: '**', redirectTo: 'home/FAQs', pathMatch: 'full' },  {
+    path: 'popover',
+    loadChildren: () => import('./popover/popover.module').then( m => m.PopoverPageModule)
+  }
+
 
 ];
 

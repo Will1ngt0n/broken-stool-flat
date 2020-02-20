@@ -9,6 +9,7 @@ import { Location } from '@angular/common'
 import { RouteService } from '../services/route-services/route.service';
 import { NetworkService } from '../services/network-service/network.service';
 import { LoginPage } from '../login/login.page';
+import { PopoverController } from '@ionic/angular';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -106,7 +107,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(private networkService : NetworkService, private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+  constructor(private popover: PopoverController, private networkService : NetworkService, private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     this.today = moment(new Date()).format('YYYY-MM-DD')
 
   }
@@ -354,6 +355,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
         data.push({productID: productID, data: docData, category: category, brand: brand})
       }
       this.currentViewedItems = data
+      this.currentSelectedItems = data
       //console.log(data);
       if(this.pageLoader){
         this.loadingCtrl.dismiss()
@@ -509,22 +511,22 @@ export class ItemsListPage implements OnInit, OnDestroy {
             //     reroute = true
             //   }
             // }
-            if(para === 'all-hidden-items'){
-              console.log(true);
-              this.runMe()
-            }
-            let cutPara = para.split('+')
-            console.log(cutPara);
-            let firstPara =  cutPara[0]
-            console.log(firstPara);
+            // if(para === 'all-hidden-items'){
+            //   console.log(true);
+            //   this.runMe()
+            // }
+            // let cutPara = para.split('+')
+            // console.log(cutPara);
+            // let firstPara =  cutPara[0]
+            // console.log(firstPara);
             
-            console.log(para);
-            console.log((this.link + '-hidden-items'));
+            // console.log(para);
+            // console.log((this.link + '-hidden-items'));
             
-            if(para === (this.link + '-hidden-items')){
-              console.log(this.link,  true);
+            // if(para === (this.link + '-hidden-items')){
+            //   console.log(this.link,  true);
               
-            }
+            // }
             this.load16CategoryItems()
             return this.routeService.readParameters().then((result : object)=> {
               console.log(result);
@@ -1124,4 +1126,20 @@ export class ItemsListPage implements OnInit, OnDestroy {
     console.log(this.hiddenItems);
     
   }
+
+  popOpen: boolean = false;
+  openPopover(){
+    var myPopover = document.getElementsByClassName("filterList") as HTMLCollectionOf <HTMLElement>;
+    if(this.popOpen == false){
+      this.popOpen = true;
+      myPopover[0].style.display = "block"
+      myPopover[0].style.height = "unset"
+    }
+    else{
+      this.popOpen = false;
+      myPopover[0].style.display = "none"
+      myPopover[0].style.height = "0"
+    }
+  }
+
 }

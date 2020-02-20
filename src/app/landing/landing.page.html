@@ -222,11 +222,14 @@
           </div>
 
         </div>
-        <div class="side-buttons" (click)="showPendingList()" *ngIf='pendingOrdersLength < 9'>Pending Orders ({{pendingOrdersLength}})</div>
+        <div class="side-buttons" (click)="showPendingList()" *ngIf='pendingOrdersLength < 9'>Pending Orders
+          ({{pendingOrdersLength}})</div>
         <div class="side-buttons" (click)="showPendingList()" *ngIf='pendingOrdersLength > 9'>Pending Orders (9+)</div>
-        <div class="side-buttons" (click)="showHistoryList()" *ngIf='orderHistoryLength < 9'>Order History ({{orderHistoryLength}})</div>
+        <div class="side-buttons" (click)="showHistoryList()" *ngIf='orderHistoryLength < 9'>Order History
+          ({{orderHistoryLength}})</div>
         <div class="side-buttons" (click)="showHistoryList()" *ngIf='orderHistoryLength > 9'>Order History (9+)</div>
-        <div class="side-buttons" (click)="showInventoryList()" *ngIf='inventoryLength < 99'>Inventory ({{inventoryLength}})</div>
+        <div class="side-buttons" (click)="showInventoryList()" *ngIf='inventoryLength < 99'>Inventory
+          ({{inventoryLength}})</div>
         <div class="side-buttons" (click)="showInventoryList()" *ngIf='inventoryLength > 99'>Inventory (99+)</div>
         <div class="helpDesk" id="helpDesk" (click)="goToHelpDesk()">
           Help Desk?
@@ -269,7 +272,7 @@
 
             </ion-note>
           </ion-item>
-          <div class="items" *ngIf='summerGear'>
+          <div class="items" *ngIf='summerGear.length > 0'>
             <ion-grid>
               <ion-row>
                 <ion-col class="my-ion-col" size="2" *ngFor='let item of summerGear'
@@ -286,9 +289,50 @@
                 </ion-col>
               </ion-row>
             </ion-grid>
+          </div>
+          <div class="items" id="isEmpty" *ngIf='summerGear.length == 0'>
+            <div id="floatOn-Empty"><p>Summer Gear has no recent uploads so far</p></div>
+            
+            <ion-grid>
+              <ion-row>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
 
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
 
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
 
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </div>
         </div>
 
@@ -301,7 +345,7 @@
 
             </ion-note>
           </ion-item>
-          <div class="items" *ngIf='winterGear'>
+          <div class="items" *ngIf='winterGear.length > 0'>
             <ion-grid>
               <ion-row>
                 <ion-col class="my-ion-col" size="2" *ngFor='let item of winterGear'
@@ -319,6 +363,50 @@
               </ion-row>
             </ion-grid>
           </div>
+          <div class="items" id="isEmpty" *ngIf='winterGear.length == 0'>
+            <div id="floatOn-Empty"><p>Winter Gear has no recent uploads so far</p></div>
+            
+            <ion-grid>
+              <ion-row>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+                <ion-col class="my-ion-col" size="2">
+                  <div class="item-container">
+                    <div id="placeholder-s"></div>
+                  </div>
+
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
         </div>
 
         <div class="slide-specials">
@@ -330,7 +418,7 @@
 
             </ion-note>
           </ion-item>
-          <div class="items" *ngIf='kwangaGear'>
+          <div class="items" *ngIf='kwangaGear.length > 0'>
             <div class="box-item" *ngFor='let item of kwangaGear' (click)="showHideSearchDetails(item)">
               <div class="name-holder">
                 <p>{{item.data.name}}</p>
@@ -339,6 +427,20 @@
               <img src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
             </div>
 
+          </div>
+          <div class="items" *ngIf='kwangaGear.length == 0'>
+            <div id="floatOn-Empty">
+              <p>Kwanga Apparel has no recent uploads</p>
+            </div>
+            <div class="box-item">
+              <div id="placeholder-s"></div>
+            </div>
+            <div class="box-item">
+              <div id="placeholder-s"></div>
+            </div>
+            <div class="box-item">
+              <div id="placeholder-s"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -457,11 +559,14 @@
         </ion-button>
       </div>
       <div class="small-side-items" *ngIf="sideMenuButtons">
-        <div id="smallOne" (click)="showPendingListSmall()" *ngIf='pendingOrdersLength < 9'>Pending Orders ({{pendingOrdersLength}})</div>
+        <div id="smallOne" (click)="showPendingListSmall()" *ngIf='pendingOrdersLength < 9'>Pending Orders
+          ({{pendingOrdersLength}})</div>
         <div id="smallOne" (click)="showPendingListSmall()" *ngIf='pendingOrdersLength > 9'>Pending Orders (9+)</div>
-        <div id="smallTwo" (click)="showHistoryListSmall()" *ngIf='orderHistoryLength < 9'>Order History ({{orderHistoryLength}})</div>
+        <div id="smallTwo" (click)="showHistoryListSmall()" *ngIf='orderHistoryLength < 9'>Order History
+          ({{orderHistoryLength}})</div>
         <div id="smallTwo" (click)="showHistoryListSmall()" *ngIf='orderHistoryLength > 9'>Order History (9+)</div>
-        <div id="smallThree" (click)="showInventoryListSmall()" *ngIf='inventoryLength < 99'>Inventory ({{inventoryLength}})</div>
+        <div id="smallThree" (click)="showInventoryListSmall()" *ngIf='inventoryLength < 99'>Inventory
+          ({{inventoryLength}})</div>
         <div id="smallThree" (click)="showInventoryListSmall()" *ngIf='inventoryLength > 99'>Inventory (99+)</div>
 
         <div class="helpDesk" id="helpDesk" (click)="goToHelpDesk()">
@@ -568,11 +673,13 @@
         <input type="text" class="user-input" placeholder="Product name" maxlength="25"
           [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'
           (keyup)='findMatch($event, null); checkValidity()'>
-          <span *ngIf='categoryMatch' id="already-exists">An item with that name already exists in selected category</span>
+        <span *ngIf='categoryMatch' id="already-exists">An item with that name already exists in selected
+          category</span>
         <div *ngIf='showSearch'>
           <ion-list>
             <div *ngFor="let item of searchInventoryVal">
-              <ion-item *ngIf='searchInventoryVal.length > 0' (click)="autoFillItemName(item.data.name)">{{item.data.name}}</ion-item>
+              <ion-item *ngIf='searchInventoryVal.length > 0' (click)="autoFillItemName(item.data.name)">
+                {{item.data.name}}</ion-item>
             </div>
           </ion-list>
         </div>
@@ -684,7 +791,7 @@
             <ion-slide *ngFor='let item of kwangaGear'>
               <div class="slide-img" (click)="showHideSearchDetails(item)">
                 <div class="name-holder1">
-                <p>{{item.data.name}}</p>
+                  <p>{{item.data.name}}</p>
                 </div>
                 <img class="slide-img" [src]="item.data.pictureLink" *ngIf='item && item.data.pictureLink' alt="">
                 <img class="slide-img" src="../../assets/imgs/Image Corrupt.jpg" *ngIf="!item.data.pictureLink" alt="">
