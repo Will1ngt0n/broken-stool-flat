@@ -1080,6 +1080,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
   }
   runMeClear(){
     this.currentSelectedItems = this.currentViewedItems
+    this.togglePop()
   }
   hiddenItems : Array<any> = []
   runMe(){
@@ -1096,6 +1097,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
     }
     console.log(this.hiddenItems);
     this.currentSelectedItems = this.hiddenItems
+    this.togglePop()
   }
   visibleItems : Array<any> = []
   currentSelectedItems : Array<any> = []
@@ -1109,6 +1111,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
     }
     console.log(this.visibleItems);
     this.currentSelectedItems = this.visibleItems
+    this.togglePop()
   }
   
   runMeDry(){
