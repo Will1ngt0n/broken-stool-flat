@@ -513,6 +513,11 @@ export class ItemsListPage implements OnInit, OnDestroy {
               console.log(true);
               this.runMe()
             }
+            let cutPara = para.split('+')
+            console.log(cutPara);
+            let firstPara =  cutPara[0]
+            console.log(firstPara);
+            
             console.log(para);
             console.log((this.link + '-hidden-items'));
             
@@ -1071,21 +1076,37 @@ export class ItemsListPage implements OnInit, OnDestroy {
     }
     })
   }
+  runMeClear(){
+    this.currentSelectedItems = this.currentViewedItems
+  }
   hiddenItems : Array<any> = []
   runMe(){
     this.hiddenItems = []
-    console.log(this.allProducts);
+    console.log(this.currentViewedItems);
     console.log(this.link);
     
-    this.loc.go('/items-list' + '/all-hidden-items')
-    for(let key in this.allProducts){
-      if(this.allProducts[key].data.hideItem === true){
+    //this.loc.go('/items-list' + '/all+hidden-items')
+    for(let key in this.currentViewedItems){
+      if(this.currentViewedItems[key].data.hideItem === true){
         console.log(true);
-        this.hiddenItems.push(this.allProducts[key])
+        this.hiddenItems.push(this.currentViewedItems[key])
       }
     }
     console.log(this.hiddenItems);
-    
+    this.currentSelectedItems = this.hiddenItems
+  }
+  visibleItems : Array<any> = []
+  currentSelectedItems : Array<any> = []
+  runMeNot(){
+    this.visibleItems = []
+    for(let key in this.currentViewedItems){
+      if(this.currentViewedItems[key].data.hideItem === false){
+        console.log(true);
+        this.visibleItems.push(this.currentViewedItems[key])
+      }
+    }
+    console.log(this.visibleItems);
+    this.currentSelectedItems = this.visibleItems
   }
   
   runMeDry(){
@@ -1093,7 +1114,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
     console.log(this.allProducts);
     console.log(this.link);
     
-    this.loc.go('/items-list' + '/' + this.link + '-hidden-items')
+    //this.loc.go('/items-list' + '/' + this.link + '+hidden-items')
     for(let key in this.allProducts){
       if(this.allProducts[key].data.hideItem === true){
         console.log(true);

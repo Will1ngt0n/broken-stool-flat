@@ -147,7 +147,7 @@
             <a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
           </div>
         </div>
-        <div class="SubCat" *ngFor='let item of currentViewedItems'>
+        <div class="SubCat" *ngFor='let item of currentSelectedItems'>
           <div class="gridder">
             <div class="hidden" *ngIf='item.data.hideItem === true'>Hidden</div>
             <img defer [src]="item.data.pictureLink" *ngIf='item.data.pictureLink' alt="">
@@ -217,7 +217,7 @@
         </div>
 
       </div>
-      <div *ngFor="let item of currentViewedItems">
+      <div *ngFor="let item of currentSelectedItems">
         <div>
 
           <div class="SubCats">
