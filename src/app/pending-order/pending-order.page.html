@@ -61,6 +61,51 @@
             <p *ngIf='deliveryAddress' id="address">{{deliveryAddress}}</p>
             <p id="Notifier" *ngIf="status === 'collected'">Order has been closed.</p>
             <!-- <ion-button color="dark" (click)='goBack()'>Go Back</ion-button> -->
+            <div class="myStat">
+              <p>Order Status</p>
+              <div id="orderStatus" class="oneStat" *ngIf="status === 'received'">
+                <div>1</div>
+                <div></div>
+                <div>2</div>
+                <div></div>
+                <div>3</div>
+                <div></div>
+                <div>4</div>
+              </div>
+              <div id="orderStatus" class="twoStat" *ngIf="status === 'processed'">
+                <div>1</div>
+                <div></div>
+                <div>2</div>
+                <div></div>
+                <div>3</div>
+                <div></div>
+                <div>4</div>
+              </div>
+              <div id="orderStatus" class="threeStat" *ngIf="status === 'ready'">
+                <div>1</div>
+                <div></div>
+                <div>2</div>
+                <div></div>
+                <div>3</div>
+                <div></div>
+                <div>4</div>
+              </div>
+              <div id="orderStatus" class="fourStat" *ngIf="status === 'Delivered' || status === 'collected'">
+                <div>1</div>
+                <div></div>
+                <div>2</div>
+                <div></div>
+                <div>3</div>
+                <div></div>
+                <div>4</div>
+              </div>
+              <div id="orderStatus-labels">
+                <div>Received</div>
+                <div>In Progress</div>
+                <div>Ready</div>
+                <div>Delivered</div>
+              </div>
+            </div>
           </div>
           <div>
             <p class="titleName">
@@ -87,8 +132,10 @@
               <ion-button color="success" (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection
               </ion-button>
               <div *ngIf="status === 'ready'">
-                <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Collection'">Collected</ion-button>
-                <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Delivery'">Delivered</ion-button>
+                <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Collection'">Collected
+                </ion-button>
+                <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Delivery'">Delivered
+                </ion-button>
               </div>
             </div>
           </div>
@@ -172,8 +219,10 @@
           <ion-button color="success" (click)='orderReady()' *ngIf="status === 'processed'">Ready for Collection
           </ion-button>
           <div *ngIf="status === 'ready'">
-            <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Collection'">Collected</ion-button>
-            <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Delivery'">Delivered</ion-button>
+            <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Collection'">Collected
+            </ion-button>
+            <ion-button color="success" (click)='orderCollected()' *ngIf="deliveryType === 'Delivery'">Delivered
+            </ion-button>
           </div>
         </div>
 

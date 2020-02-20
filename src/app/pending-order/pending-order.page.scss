@@ -114,6 +114,7 @@
       border-right: 1px solid rgba(0, 0, 0, 0.096);
       background: whitesmoke;
       padding: 10px;
+      position: relative;
       h5 {
         color: rgb(87, 87, 87);
       }
@@ -305,8 +306,117 @@
   height: 90%;
   margin-top: 5px;
 }
+.myStat{
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px black;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+  p{
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(49, 49, 49);
+  }
+}
+#orderStatus{
+  // height: 50px;
+  width: 100%;
+  // max-width: 320px;
+  // background: red;
+  display: flex;
+}
+#orderStatus-labels{
+  // height: 50px;
+  width: 100%;
+  // max-width: 320px;
+  // background: red;
+  display: flex;  
+}
+#orderStatus-labels > div {
+  width: 100%;
+  text-align: center;
+}
+#orderStatus-labels > div:nth-child(1) {
+  width: 100%;
+  text-align: left !important;
+}
+#orderStatus-labels > div:nth-child(4) {
+  width: 100%;
+  text-align: right !important;
+}
+#orderStatus > div {
+  margin: 0 auto;
+}
+#orderStatus > div:nth-child(1){
+  background: #ffdf5a;
+}
+#orderStatus > div:nth-child(odd){
+  width: 20px;
+  text-align: center;
+  line-height: 20px;
+  height: 20px;
+  border-radius: 30px;
+  border: 1px solid black
+}
 
+#orderStatus > div:nth-child(even){
+  width: 25%;
+  max-width: 100px;
+  height: 2px;
+  margin-top: 9px;
+  background: black
+}
 
+.oneStat{
+  // background: red;
+}
+.oneStat > div:nth-child(1){
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  margin-top: -5px !important;
+  background: #ffdf5a;
+}
+.twoStat{
+  // background: blue;
+}
+.twoStat > div:nth-child(3){
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  margin-top: -5px !important;
+  background: #ffdf5a;
+}
+.threeStat{
+  // background: #ffdf5a;
+}
+
+.threeStat > div:nth-child(5){
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  margin-top: -5px !important;
+  background: #ffdf5a;
+}
+.threeStat > div:nth-child(3){
+  background: #ffdf5a !important;
+}
+.fourStat{
+  // background: orange;
+}
+.fourStat > div {
+  // background: green;
+}
+.fourStat > div:nth-child(7){
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  margin-top: -5px !important;
+  background: #ffdf5a;
+}
 
 /* width */
 ::-webkit-scrollbar {
