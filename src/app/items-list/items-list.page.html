@@ -146,6 +146,14 @@
             <!-- Use this section to change views by use of *ngIf, replace directory label and content according to the specific page -->
             <a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
           </div>
+          <div class="optionsBtn" (click)="openPopover()">
+            <ion-icon name="more"></ion-icon>
+          </div>
+          <div class="filterList">
+            <p>Show All</p>
+            <p>Show Hidden</p>
+            <p>Show Visible</p>
+          </div>
         </div>
         <div class="SubCat" *ngFor='let item of currentViewedItems'>
           <div class="gridder">
@@ -179,6 +187,12 @@
                 <div (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete</div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="listEmpty" *ngIf="currentViewedItems.length == 0">
+          <p>No items uploaded so far</p>
+          <div id="noItems">
+            <img src="../../assets/imgs/empty.png" alt="">
           </div>
         </div>
       </div>

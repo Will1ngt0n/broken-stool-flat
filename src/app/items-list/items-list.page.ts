@@ -8,6 +8,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { Location } from '@angular/common'
 import { RouteService } from '../services/route-services/route.service';
 import { NetworkService } from '../services/network-service/network.service';
+import { PopoverController } from '@ionic/angular';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
@@ -105,7 +106,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
   @ViewChild('btnClearForm', { static: true }) btnClearForm: ElementRef
 
 
-  constructor(private networkService : NetworkService, private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
+  constructor(private popover: PopoverController, private networkService : NetworkService, private routeService : RouteService, private loc: Location, public loadingCtrl: LoadingController, private alertController: AlertController, private authService: AuthService, private activatedRoute: ActivatedRoute, private productsService: ProductsService, public route: Router) {
     this.today = moment(new Date()).format('YYYY-MM-DD')
 
   }
@@ -1041,4 +1042,20 @@ export class ItemsListPage implements OnInit, OnDestroy {
   alreadyOnSale(){
     this.promoWarnAlert();
   }
+
+  popOpen: boolean = false;
+  openPopover(){
+    var myPopover = document.getElementsByClassName("filterList") as HTMLCollectionOf <HTMLElement>;
+    if(this.popOpen == false){
+      this.popOpen = true;
+      myPopover[0].style.display = "block"
+      myPopover[0].style.height = "unset"
+    }
+    else{
+      this.popOpen = false;
+      myPopover[0].style.display = "none"
+      myPopover[0].style.height = "0"
+    }
+  }
+
 }
