@@ -49,8 +49,8 @@
                     <h5>{{item.data.name}}</h5>
                     <p>{{item.data.description}}.</p>
                     <div class="prices">
-                      <p id="new-price">R {{item.data.saleprice}}</p>
-                      <p id="old-price">R {{item.data.normalPrice}}</p>
+                      <p id="new-price">{{item.data.saleprice | currency : 'R'}}</p>
+                      <p id="old-price">{{item.data.normalPrice | currency : 'R'}}</p>
                     </div>                 
                       <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Remove</ion-button>
                   </div>
@@ -69,8 +69,8 @@
                     <h5>{{item.data.name}}</h5>
                     <p>{{item.data.description}}.</p>
                     <div class="prices">
-                      <p id="new-price">R {{item.data.saleprice}}</p>
-                      <p id="old-price">R {{item.data.normalPrice}}</p>
+                      <p id="new-price">{{item.data.saleprice | currency : 'R'}}</p>
+                      <p id="old-price">{{item.data.normalPrice | currency : 'R'}}</p>
                     </div>
                     <div class="options">
                       <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Remove</ion-button>
@@ -91,8 +91,8 @@
                     <h5>{{item.data.name}}</h5>
                     <p>{{item.data.description}}.</p>
                     <div class="prices">
-                      <p id="new-price">R {{item.data.saleprice}}</p>
-                      <p id="old-price">R {{item.data.normalPrice}}</p>
+                      <p id="new-price">{{item.data.saleprice | currency : 'R'}}</p>
+                      <p id="old-price">{{item.data.normalPrice | currency : 'R'}}</p>
                     </div>
                     <div class="options">
                       <ion-button color="danger" (click)='deleteItem(item, item.productID)'>Remove</ion-button>
@@ -145,8 +145,8 @@
             <div>
               <p id="item-name-small">{{item.data.name}}</p>
               <div class="prices">
-                <p id="new-price">R {{item.data.saleprice}}</p>
-                <p id="old-price">R {{item.data.normalPrice}}</p>
+                <p id="new-price">{{item.data.saleprice | currency : 'R'}}</p>
+                <p id="old-price">{{item.data.normalPrice | currency : 'R'}}</p>
               </div>
 
               <div class="opts">
@@ -169,8 +169,8 @@
             <div>
               <p id="item-name-small">{{item.data.name}}</p>
               <div class="prices">
-                <p id="new-price">R {{item.data.saleprice}}</p>
-                <p id="old-price">R {{item.data.normalPrice}}</p>
+                <p id="new-price">{{item.data.saleprice | currency : 'R'}}</p>
+                <p id="old-price">{{item.data.normalPrice | currency : 'R'}}</p>
               </div>
               <div class="opts">
                 <div>
@@ -192,8 +192,8 @@
             <div>
               <p id="item-name-small">{{item.data.name}}</p>
               <div class="prices">
-                <p id="new-price">R {{item.data.saleprice}}</p>
-                <p id="old-price">R {{item.data.normalPrice}}</p>
+                <p id="new-price">{{item.data.saleprice | currency : 'R'}}</p>
+                <p id="old-price">{{item.data.normalPrice | currency : 'R'}}</p>
               </div>
               <div class="opts">
                 <div>

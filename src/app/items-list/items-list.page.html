@@ -11,7 +11,7 @@
       <div class="item-data">
         <h3>{{itemName}}</h3>
         <p class="item-detail">
-          R {{itemPrice}}
+          {{itemPrice | currency : 'R'}}
         </p>
         <p class="item-detail">Description</p>
         <p class="description">
@@ -19,7 +19,7 @@
         </p>
         <input type="number" placeholder="Percentile % (e.g 20)" [(ngModel)]='editPercentage'
           (keyup)='calculateSalePrice($event);'>
-          <p *ngIf="salePrice">Sale Price R {{salePrice}}</p>
+          <p *ngIf="salePrice">Sale Price {{salePrice}}</p>
         <div class="gridded-inputs">
           <input type="date" placeholder="Start Date" [(ngModel)]='editStartDate' [min]='today'
             (change)='enableEndDateInput()' /><input [disabled]='!editStartDate' type="date" placeholder="End Date"
@@ -41,7 +41,7 @@
       <div class="item-data">
         <h3>{{updateName}}</h3>
         <p class="item-detail">
-          R {{updatePrice}}
+          {{updatePrice | currency : 'R'}}
         </p>
 
         <p class="item-detail">Choose Avalable Sizes</p>
@@ -124,7 +124,7 @@
     <div class="nav-bar">
       <div class="nav-content">
         <div id="title">
-          <img src="../../assets/imgs/Logo/Logo.png" id="appLogo" alt="" (click)="reloadPage()" id="dankie-home-button">
+          <img src="../../assets/imgs/Logo/Logo.png" id="appLogo" alt="" (click)="back()" id="dankie-home-button">
           <!-- <h4>DankieJesu</h4> -->
         </div>
         <div id="searchbar">
@@ -155,10 +155,10 @@
             <div id="info">
               <h5>{{item.data.name}}</h5>
               <p id="theDesc">{{item.data.description}}.</p>
-              <p *ngIf="item.data.onSale === false"><b>R {{item.data.price}}</b></p>
+              <p *ngIf="item.data.onSale === false"><b>{{item.data.price | currency:'R '}}</b></p>
               <div class="on-sale" *ngIf="item.data.onSale === true">
-                <p id="new-price"><b>R {{item.data.saleprice}}</b></p>
-                <p id="old-price"><b>R {{item.data.price}}</b></p>
+                <p id="new-price"><b>{{item.data.saleprice | currency : 'R'}}</b></p>
+                <p id="old-price"><b>{{item.data.price | currency : 'R'}}</b></p>
               </div>
               <div class="options"> 
                 <div *ngIf="item.data.onSale === false"
@@ -219,10 +219,10 @@
             </div>
             <div>
               <h5>{{item.data.name}}</h5>
-              <p *ngIf="item.data.onSale === false"><b>R {{item.data.price}}</b></p>
+              <p *ngIf="item.data.onSale === false"><b>R {{item.data.price | currency : 'R'}}</b></p>
               <div class="on-sale" *ngIf="item.data.onSale === true">
-                <p id="new-price"><b>R {{item.data.saleprice}}</b></p>
-                <p id="old-price"><b>R {{item.data.price}}</b></p>
+                <p id="new-price"><b>R {{item.data.saleprice | currency : 'R'}}</b></p>
+                <p id="old-price"><b>R {{item.data.price | currency : 'R'}}</b></p>
               </div>
               <p class="description">{{item.data.description}}</p>
               <br>

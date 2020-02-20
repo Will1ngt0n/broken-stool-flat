@@ -1031,4 +1031,41 @@ return new Promise((resolve, reject)  => {
       })
     })
   }
+  getCategories(){
+    return new Promise( (resolve, reject) => {
+      let brands : Array<any> = []
+      let all : Array<any> = []
+      firebase.firestore().collection('brands').get().then(result => {
+        for(let key in result.docs){
+          brands.push(result.docs[key].data().name)
+        }
+        console.log(brands);
+      })
+      .then( log => {
+        firebase.firestore().collection('category').get().then(result => {
+          let name : string = ''
+          let isSummer : string = ''
+          let categoryList : Array<any> = []
+          for(let key in brands){
+            categoryList = []
+            for(let i in result.docs){
+              let text = result.docs[i].data().brand
+              let category = result.docs[i].data().name
+              let isSummer = result.docs[i].data().isSummer
+              let isAccessory = result.docs[i].data().isAccessory
+              let now = {category : category, isSummer: isSummer}
+              if(text === brands[key]){
+                console.log(now);
+                
+                categoryList.push({category : category, isSummer: isSummer, isAccessory : isAccessory})
+              }
+            }
+            all.push({brand: brands[key], categoryList})
+            console.log(all);
+            resolve(all)
+          }
+        })
+      })
+    })
+  }
 } 

@@ -713,9 +713,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
             }, 30);
           if (result === 'success') {
             //location.reload()
-            if(this.loadingCtrl){
               this.loadingCtrl.dismiss()
-            }
             this.productAlert('Product was successfully updated')
             this.clearUpdateForm()
             return this.dismissPromo()

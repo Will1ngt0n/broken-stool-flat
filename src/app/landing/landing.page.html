@@ -134,7 +134,7 @@
               <p class="floating" *ngIf="item.details.status === 'cancelled'">Cancelled</p>
               <p class="floating" *ngIf="item.details.status !== 'cancelled'">{{item.details.status}}</p>
               <p><b>{{item.details.userID}}</b></p>
-              <p>R {{item.details.grandTotal}}</p>
+              <p>{{item.details.grandTotal | currency : 'R'}}</p>
               <p>REF: {{item.refNo}}</p>
               <p>Products ({{item.details.numberOfItems}})</p>
 
@@ -152,7 +152,7 @@
               <p *ngIf="item && !item.details.name"><b>Please wait...</b></p>
               <p><b>{{item.details.name}}</b></p>
               <p *ngIf="!item.details.totalPrice">Loading</p>
-              <p>R {{item.details.totalPrice}}</p>
+              <p>{{item.details.totalPrice  | currency : 'R'}}</p>
               <p *ngIf="!item.refNo">Loading</p>
 
               <p>REF: {{item.refNo}}</p>
@@ -477,7 +477,7 @@
           <div *ngFor='let item of pendingOrders' (click)='viewPendingOrder(item)'>
             <div class="myItems" *ngIf='pendingOrders'>
               <p><b>{{item.details.name}}</b></p>
-              <p>R {{item.details.totalPrice}}</p>
+              <p>{{item.details.totalPrice | currency : 'R'}}</p>
               <p>REF: {{item.refNo}}</p>
               <p>({{item.noOfItems}})</p>
             </div>
@@ -494,7 +494,7 @@
           <div class="myItems" *ngFor='let item of history' (click)='viewOrderHistory(item)'>
 
             <p><b>{{item.details.userID}}</b></p>
-            <p>R {{item.details.totalPrice}}</p>
+            <p>{{item.details.totalPrice | currency : 'R'}}</p>
             <p>REF: {{item.refNo}}</p>
             <p>({{item.details.numberOfItems}})</p>
           </div>
