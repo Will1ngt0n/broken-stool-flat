@@ -1058,4 +1058,23 @@ export class ItemsListPage implements OnInit, OnDestroy {
     }
   }
 
+  popOpenS: boolean = false;
+  openPopoverS(){
+    var myPopoverS = document.getElementsByClassName("filterListS") as HTMLCollectionOf <HTMLElement>;
+    if(this.popOpenS == false){
+      this.popOpenS = true;
+      myPopoverS[0].style.display = "block"
+      myPopoverS[0].style.height = "unset"
+    }
+    else{
+      this.popOpenS = false;
+      myPopoverS[0].style.display = "none"
+      myPopoverS[0].style.height = "0"
+    }
+  }
+
+  togglePop(){
+    this.openPopoverS()
+    this.openPopover()
+  }
 }

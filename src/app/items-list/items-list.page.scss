@@ -1030,10 +1030,30 @@ a{
   text-align: center;
   position: absolute;
   right: 0;
-  background: red;
+  // background: red;
   cursor: pointer;
 }
 .filterList{
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.205);
+  overflow: hidden;
+  border-radius: 5px;
+  z-index: 100;
+  height: 0;
+  display: none;
+  transition: 300ms;
+  p{
+    font-weight: 600;
+    color: rgb(68, 68, 68);
+    cursor: pointer;
+  }
+}
+
+.filterListS{
   position: absolute;
   right: 0;
   top: 40px;
