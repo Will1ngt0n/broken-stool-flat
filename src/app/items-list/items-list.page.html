@@ -177,9 +177,18 @@
                 <div (click)='hideItem(item.productID, item.brand, item.category, item)'
                   *ngIf='item.data.hideItem !== false && item.data.hideItem !==true'>Hide</div>
                 <div (click)='deleteItem(item.productID, item.brand, item.category, item)'>Delete</div>
+                <div (click)='runMe()'>
+                  All Hidden items
+                </div>
+                <div (click)='runMeDry()'>
+                  All Hidden items
+                </div>
               </div>
             </div>
+
           </div>
+
+
         </div>
       </div>
       <div id="right">

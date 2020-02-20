@@ -733,18 +733,18 @@ export class LandingPage implements OnInit {
 
   loadKwangaItems() {
     let category: String
-    for (let key in this.kwangaCategories) {
-      category = this.kwangaCategories[key]
-      console.log(category);
-      this.loadItems(category, 'Kwanga')
-    }
+    // for (let key in this.kwangaCategories) {
+    //   category = this.kwangaCategories[key]
+    //   console.log(category);
+    //   this.loadItems(category, 'Kwanga')
+    // }
   }
   loadDankieJesuItems() {
     let category: String
-    for (let key in this.dankieJesuCategories) {
-      category = this.dankieJesuCategories[key]
-      this.loadItems(category, 'Dankie Jesu')
-    }
+    // for (let key in this.dankieJesuCategories) {
+    //   category = this.dankieJesuCategories[key]
+    //   this.loadItems(category, 'Dankie Jesu')
+    // }
   }
 
   loadTotalNumberOfProducts(){
