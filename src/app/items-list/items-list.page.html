@@ -146,7 +146,7 @@
             <!-- Use this section to change views by use of *ngIf, replace directory label and content according to the specific page -->
             <a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
           </div>
-          <div class="optionsBtn" (click)="openPopover()">
+          <div class="optionsBtn" (click)="togglePop()">
             <ion-icon name="more"></ion-icon>
           </div>
           <div class="filterList">
@@ -230,6 +230,14 @@
         <div class="page-title"><a (click)='navigate()'>{{title}}</a> / {{currentCategory}}
         </div>
 
+        <div class="optionsBtn" (click)="togglePop()">
+          <ion-icon name="more"></ion-icon>
+        </div>
+        <div class="filterListS">
+          <p>Show All</p>
+          <p>Show Hidden</p>
+          <p>Show Visible</p>
+        </div>
       </div>
       <div *ngFor="let item of currentSelectedItems">
         <div>
