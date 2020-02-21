@@ -12,12 +12,14 @@ export class ProductsService {
   constructor(public loadingCtrl: LoadingController) {
     this.products = []
   }
-  addItem(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts, productCode){
+  addItem(brand, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, productCode){
     let object_result 
 return new Promise((resolve, reject)  => {
-      firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
+      firebase.firestore().collection('Products').add({
         quantity: 1,
         color: color,
+        brand: brand,
+        category: selectedCategory,
         productCode: productCode,
         pictureLink: 'none',
         price : Number(price),
@@ -31,17 +33,6 @@ return new Promise((resolve, reject)  => {
         timestamp : firebase.firestore.FieldValue.serverTimestamp(),
         dateAdded : moment(new Date()).format('LLLL')
       })
-    .then(result => { // (**)
-      console.log(result, 'second chain');
-      object_result = result
-      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then((result : any) => {
-        console.log(result, 'third chain');
-        let number : string = String(Number(result.data().numberOfProducts) + 1)
-        firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
-          numberOfProducts: number
-        })
-      })
-    })
     .then( (result) => { // (***)
       console.log(result, 'fourth chain');
       let storageRef = firebase.storage().ref('clothes/' + object_result.id)
@@ -51,7 +42,7 @@ return new Promise((resolve, reject)  => {
         console.log(data);
         data.ref.getDownloadURL().then(url => {
           console.log(url, 'sixth chain');
-          firebase.firestore().collection('Products').doc(department).collection(selectedCategory).doc(object_result.id).update({
+          firebase.firestore().collection('Products').doc(object_result.id).update({
             pictureLink: url,
             hideItem: false
           }).then(result => {
@@ -68,7 +59,7 @@ return new Promise((resolve, reject)  => {
   })
 
   }
-  addItems(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture, numberOfProducts){
+  addItems(department, selectedCategory,  itemName, description, price, size, accessory, summer, color, picture){
    // console.log(department);
   //  console.log(selectedCategory);
     return firebase.firestore().collection('Products').doc(department).collection(selectedCategory).add({
@@ -101,12 +92,12 @@ return new Promise((resolve, reject)  => {
       //     })
       //   }
       // }
-      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
-        let number : string = String(Number(result.data().numberOfProducts) + 1)
-        firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
-          numberOfProducts: number
-        })
-      })
+      // firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+      //   let number : string = String(Number(result.data().numberOfProducts) + 1)
+      //   firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+      //     numberOfProducts: number
+      //   })
+      // })
 
       let storageRef = firebase.storage().ref('clothes/' + result.id)
       console.log(picture);
@@ -348,16 +339,16 @@ return new Promise((resolve, reject)  => {
     })
   }
 
-  getNumberOfProducts(){
-    return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
-      console.log(result.data());
-      let number : number = 0
-      number = result.data().numberOfProducts
-      console.log(number);
+  // getNumberOfProducts(){
+  //   return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+  //     console.log(result.data());
+  //     let number : number = 0
+  //     number = result.data().numberOfProducts
+  //     console.log(number);
       
-      return number
-    })
-  }
+  //     return number
+  //   })
+  // }
   loadCategoryItems(category, brand){
    // console.log(brand);
    // console.log(category);
@@ -391,7 +382,7 @@ return new Promise((resolve, reject)  => {
     
     
     return firebase.firestore().collection('Products').doc(brand).collection(category).doc(productID).delete().then( result => {
-      this.updateNumberOfItems()
+      //this.updateNumberOfItems()
       if(item.data.onSale){
         if(item.data.onSale === true){
           console.log(item.data.onSale);
@@ -400,26 +391,26 @@ return new Promise((resolve, reject)  => {
           })
         }
       }
-      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
-        let number : string = String(Number(result.data().numberOfProducts) - 1)
-        firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
-          numberOfProducts: number
-        })
-      })
+      // firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+      //   let number : string = String(Number(result.data().numberOfProducts) - 1)
+      //   firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+      //     numberOfProducts: number
+      //   })
+      // })
       return 'Deleted'
     })
   }
-  updateNumberOfItems(){  //Cloud Function?
-    return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
-      let numberOfProducts = result.data().numberOfProducts - 1
-      console.log(numberOfProducts);
+  // updateNumberOfItems(){  //Cloud Function?
+  //   return firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').get().then(result => {
+  //     let numberOfProducts = result.data().numberOfProducts - 1
+  //     console.log(numberOfProducts);
       
-      firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
-        numberOfProducts: numberOfProducts
-      })
-    })
+  //     firebase.firestore().collection('NumberOfProducts').doc('MwjotZqh3JPKx0qEcuui').update({
+  //       numberOfProducts: numberOfProducts
+  //     })
+  //   })
 
-  }
+  // }
   hideProduct(productID, brand, category, item){
     console.log(productID);
     console.log(brand);
@@ -1040,6 +1031,10 @@ return new Promise((resolve, reject)  => {
           brands.push(result.docs[key].data().name)
         }
         console.log(brands);
+        if(brands.length === 0){
+          console.log('empty');
+          resolve(null)
+        }
       })
       .then( log => {
         firebase.firestore().collection('category').get().then(result => {

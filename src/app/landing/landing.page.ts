@@ -30,11 +30,11 @@ export class LandingPage implements OnInit {
   picture : File
   searchArray
   pictures: Array<any> = []
-  departmentOptions: Array<any> = ['Select Brand', 'Dankie Jesu', 'Kwanga']
+  departmentOptions: Array<any> = ['Select Brand']
   kwangaCategories: Array<any> = ['Formal', 'Traditional', 'Smart Casual', 'Sports']
   dankieJesuCategories: Array<any> = ['Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Bags', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies']
-  newNumberOfProducts : number
-  currentNumberOfProducts : number
+  //newNumberOfProducts : number
+  //currentNumberOfProducts : number
   categoryOptions: Array<any> = ['Select Category']
   inventoryItems: Array<any> = []
   summer: boolean;
@@ -72,7 +72,7 @@ export class LandingPage implements OnInit {
   @ViewChild('sliderRef', { static: false }) slides: IonSlides;
   @ViewChild('sliderRefSmall', { static: true }) mySlides: IonSlides;
   @ViewChild('fileInput', {static:true}) fileInput : ElementRef
-  @ViewChild('departmentCombo', {static : false}) departmentCombo : ElementRef
+  @ViewChild('departmentCombo', {static : true}) departmentCombo : ElementRef
   
   @ViewChild('mbdepartmentCombo', {static : true}) mbdepartmentCombo : ElementRef
   @ViewChild('nativeCategory', {static : true}) nativeCategory : ElementRef
@@ -204,7 +204,6 @@ export class LandingPage implements OnInit {
   isConnected : boolean
   preventIonViewDidEnterInit : boolean
   ngOnInit() { ////copy
-//this.
     if(this.isCached){
 
     }else{
@@ -213,49 +212,16 @@ export class LandingPage implements OnInit {
         if(navigator.onLine){
           //this.presentLoader()
           return this.networkService.getUID().then( result => {
-            //console.log(result);
+            console.log(result);
             if(result === true){
               clearInterval(this.timer)
-              this.preventIonViewDidEnterInit = true
+              this.preventIonViewDidEnterInit = false
               // this.presentLoading()
               // this.pageLoader = true
               this.isOnline = true
               this.isCached = true
               this.isConnected = true
-              // this.loadRunFunction()
-              this.presentLoading()
-              this.getCategories()
-              this.pageLoader = true
-              this.loadTotalNumberOfProducts()
-              this.getPendingOrders()
-              let date = moment(new Date()).format('LLLL');
-              let tee = moment(new Date('10/12/2019')).format('LLLL')
-              if (date > tee) {
-              }
-          
-              this.getReadyOrders()
-              this.getOrderHistory()
-          
-              this.load16CategoryItems()
-              this.nativeCategory.nativeElement.disabled = true
-              //snapshots
-              this.refreshOrderHistory()
-              this.getPendingOrdersSnap()
-              this.loadFormal('Kwanga', 'Formal')
-              this.loadTraditional('Kwanga', 'Traditional')
-              this.loadSmartCasual('Kwanga', 'Smart Casual')
-              this.loadSportsWear('Kwanga', 'Sports')
-              this.loadVests('Dankie Jesu', 'Vests')
-              this.loadCaps('Dankie Jesu', 'Caps')
-              this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-              this.loadShorts('Dankie Jesu', 'Shorts')
-              this.loadCropTops('Dankie Jesu', 'Crop Tops')
-              this.loadTShirts('Dankie Jesu', 'T-Shirts')
-              this.loadBags('Dankie Jesu', 'Bags')
-              this.loadSweaters('Dankie Jesu', 'Sweaters')
-              this.loadHoodies('Dankie Jesu', 'Hoodies')
-              this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-              this.loadBeanies('Dankie Jesu', 'Beanies')
+              this.loadRunFunction()
             }else{
               this.isConnected = false
               this.preventIonViewDidEnterInit = false
@@ -273,19 +239,29 @@ export class LandingPage implements OnInit {
   }
   categoryList : Array<any> = []
   getCategories(){
+    console.log('getting categories');
+    
     return this.productService.getCategories().then((result : Array<any>) => {
       let category
       console.log(result);
-      for(let key in result){
-        this.departmentOptions.push(result[key].brand)
+      if(result === null){
+
+      }else{
+        for(let key in result){
+          this.departmentOptions.push(result[key].brand)
+        }
       }
+
+      this.departmentOptions.push('Add brand')
     })
   }
   loadRunFunction(){
+    console.log('mememeemee');
+    
     this.presentLoading()
     this.getCategories()
     this.pageLoader = true
-    this.loadTotalNumberOfProducts()
+    //this.loadTotalNumberOfProducts()
     this.getPendingOrders()
     let date = moment(new Date()).format('LLLL');
     let tee = moment(new Date('10/12/2019')).format('LLLL')
@@ -327,32 +303,32 @@ export class LandingPage implements OnInit {
           this.isCached = true
           this.isConnected = true
           clearInterval(this.timer)
-          // this.loadRunFunction()
-          this.loadTotalNumberOfProducts()
-          this.getPendingOrders()
+          this.loadRunFunction()
+          // this.loadTotalNumberOfProducts()
+          // this.getPendingOrders()
       
-          this.getReadyOrders()
-          this.getOrderHistory()
-          this.load16CategoryItems()
-          this.nativeCategory.nativeElement.disabled = true
-          //snapshots
-          this.refreshOrderHistory()
-          this.getPendingOrdersSnap()
-          this.loadFormal('Kwanga', 'Formal')
-          this.loadTraditional('Kwanga', 'Traditional')
-          this.loadSmartCasual('Kwanga', 'Smart Casual')
-          this.loadSportsWear('Kwanga', 'Sports')
-          this.loadVests('Dankie Jesu', 'Vests')
-          this.loadCaps('Dankie Jesu', 'Caps')
-          this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-          this.loadShorts('Dankie Jesu', 'Shorts')
-          this.loadCropTops('Dankie Jesu', 'Crop Tops')
-          this.loadTShirts('Dankie Jesu', 'T-Shirts')
-          this.loadBags('Dankie Jesu', 'Bags')
-          this.loadSweaters('Dankie Jesu', 'Sweaters')
-          this.loadHoodies('Dankie Jesu', 'Hoodies')
-          this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-          this.loadBeanies('Dankie Jesu', 'Beanies')
+          // this.getReadyOrders()
+          // this.getOrderHistory()
+          // this.load16CategoryItems()
+          // this.nativeCategory.nativeElement.disabled = true
+          // //snapshots
+          // this.refreshOrderHistory()
+          // this.getPendingOrdersSnap()
+          // this.loadFormal('Kwanga', 'Formal')
+          // this.loadTraditional('Kwanga', 'Traditional')
+          // this.loadSmartCasual('Kwanga', 'Smart Casual')
+          // this.loadSportsWear('Kwanga', 'Sports')
+          // this.loadVests('Dankie Jesu', 'Vests')
+          // this.loadCaps('Dankie Jesu', 'Caps')
+          // this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
+          // this.loadShorts('Dankie Jesu', 'Shorts')
+          // this.loadCropTops('Dankie Jesu', 'Crop Tops')
+          // this.loadTShirts('Dankie Jesu', 'T-Shirts')
+          // this.loadBags('Dankie Jesu', 'Bags')
+          // this.loadSweaters('Dankie Jesu', 'Sweaters')
+          // this.loadHoodies('Dankie Jesu', 'Hoodies')
+          // this.loadTrackSuits('Dankie Jesu', 'Track Suits')
+          // this.loadBeanies('Dankie Jesu', 'Beanies')
         }else{
           this.isConnected = false
         }
@@ -510,50 +486,7 @@ export class LandingPage implements OnInit {
     }
   }
 
-  changeDepartment(event) {
-    this.department = event.target['value']
-    console.log(this.department)
-    if (this.department === 'Dankie Jesu') {
-      this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
-    }
-    if (this.department === 'Kwanga') {
-      this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports']
-    }
-    if (this.department === 'Select Brand') {
-      this.department = undefined
-      this.nativeCategory.nativeElement.disabled = true   ////
-      this.nativeCategory.nativeElement.value = 'Select Category'   ///
-    }else{
-      this.nativeCategory.nativeElement.disabled = false   ////
-    }
-    this.checkValidity()
-  }
-  checkItemName(){
-    this.checkValidity()
-  }
-  checkItemDescription(){
-    this.checkValidity()
-  }
-  changeCategory(event) {
-    this.selectedCategory = event.target['value']
-    if (this.selectedCategory === 'Select Category') {
-      this.selectedCategory = 'Select Category'
-    }
-    if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
-      this.summer = true
-    }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
-    if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
-      this.summer = false
-    }
-    
-    if(this.selectedCategory === 'Bags' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Beanies'){
-      this.accessory = true   ///, 'Bags'))
-    }else{
-      this.accessory = false
-    }
 
-    this.checkValidity()
-  }
 
   check(event, size) {
     let checkbox = event.target['name']
@@ -639,8 +572,8 @@ export class LandingPage implements OnInit {
   }
   addProduct(){
     this.presentLoading()
-    this.currentNumberOfProducts = this.inventoryLength
-    let number : string = String(Number(this.currentNumberOfProducts) + 1)
+    //this.currentNumberOfProducts = this.inventoryLength
+    //let number : string = String(Number(this.currentNumberOfProducts) + 1)
     let sort : Array<string> = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
     let tempColor = this.size
     this.size = []
@@ -659,22 +592,22 @@ export class LandingPage implements OnInit {
         this.itemDescription = result   
       }).then( res => {
         console.log('successful');
-        this.addProducts(number)
+        this.addProducts()
       })
 
     })
 
         
   }
-  addProducts(numberOfProducts) {
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, numberOfProducts, this.newProductCode).then((result : any) => {
+  addProducts() {
+    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, this.newProductCode).then((result : any) => {
       console.log(result);
       if(result === 'success'){
         console.log('successs');
         this.clearForm();
         this.productAlert('Product was successfully added')
       }
-      this.loadTotalNumberOfProducts()
+      //this.loadTotalNumberOfProducts()
       this.loadingCtrl.dismiss()
     })
   }
@@ -781,11 +714,11 @@ export class LandingPage implements OnInit {
     // }
   }
 
-  loadTotalNumberOfProducts(){
-    return this.productService.getNumberOfProducts().then( (result : number) => {
-      this.currentNumberOfProducts = result
-    })
-  }
+  // loadTotalNumberOfProducts(){
+  //   return this.productService.getNumberOfProducts().then( (result : number) => {
+  //     this.currentNumberOfProducts = result
+  //   })
+  // }
 
   presentLoader(){
     this.presentLoading()
@@ -924,17 +857,17 @@ export class LandingPage implements OnInit {
         }
       }
     }
-    console.log(this.inventoryLength, this.currentNumberOfProducts);
+    //console.log(this.inventoryLength, this.currentNumberOfProducts);
     
-    if(this.inventoryLength === Number(this.currentNumberOfProducts)){
-      if(this.loadingCtrl){
-        for(let i = 0; i < 5000; i++){
-          if(i === 4999){
-            this.loadingCtrl.dismiss()
-          }
-        }
-      }
-    }
+    // if(this.inventoryLength === Number(this.currentNumberOfProducts)){
+    //   if(this.loadingCtrl){
+    //     for(let i = 0; i < 5000; i++){
+    //       if(i === 4999){
+    //         this.loadingCtrl.dismiss()
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   getPendingOrdersSnap() {
@@ -1640,7 +1573,7 @@ export class LandingPage implements OnInit {
     return this.productService.deleteItemFromInventory(productID, brand, category, item).then(result => {
       console.log(result);
       if(result = 'Deleted'){
-        this.loadTotalNumberOfProducts()
+        //this.loadTotalNumberOfProducts()
         this.loadingCtrl.dismiss()
         this.productAlert('Product was successfully deleted')
         this.showHideSearchDetails('close')
@@ -2195,27 +2128,77 @@ console.log(val);
   //   }
   // }
 
+  changeDepartment(event) {
+    console.log(this.categoryList);
+    this.categoryOptions = ['Select Category']
+    this.department = event.target['value']
+    console.log(this.department)
+    if(this.department === 'Add brand'){
+      this.nativeCategory.nativeElement.disabled = true
+
+    }else if (this.department === 'Select Brand') {
+      this.department = undefined
+      this.nativeCategory.nativeElement.disabled = true   ////
+      this.nativeCategory.nativeElement.value = 'Select Category'   ///
+    }else{
+      for(let key in this.categoryList){
+        if(this.department === this.categoryList[key].brand){
+          console.log(this.categoryList[key]);
+          for(let i in this.categoryList[key].categoryList){
+            this.categoryOptions.push(this.categoryList[key].categoryList[i].category)
+          }
+          //console.log(options);
+          
+        }
+      }
+      this.nativeCategory.nativeElement.disabled = false 
+    }
+    this.departmentCombo.nativeElement.value = 'Select Category'
+    this.checkValidity()
+  }
+
+  changeCategory(event) {
+    this.selectedCategory = event.target['value']
+    if (this.selectedCategory === 'Select Category') {
+      this.selectedCategory = 'Select Category'
+    }
+    for(let key in this.categoryList){
+      if(this.department === this.categoryList[key].brand){
+        for(let i in this.categoryList[key].categoryList){
+          if(this.categoryList[key].categoryList[i].category === this.selectedCategory){
+            this.summer = this.categoryList[key].categoryList[i].isSummer
+          }
+        }
+      }
+    }
+    console.log(this.summer);
+    
+    for(let key in this)
+    // if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
+    //   this.summer = true
+    // }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
+    // if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
+    //   this.summer = false
+    // }
+    
+    if(this.selectedCategory === 'Bags' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Beanies'){
+      this.accessory = true   ///, 'Bags'))
+    }else{
+      this.accessory = false
+    }
+
+    this.checkValidity()
+  }
+
   // changeDepartment(event) {
-  //   console.log(this.categoryList);
-  //   this.categoryOptions = ['Select Category']
   //   this.department = event.target['value']
   //   console.log(this.department)
-  //   for(let key in this.categoryList){
-  //     if(this.department === this.categoryList[key].brand){
-  //       console.log(this.categoryList[key]);
-  //       for(let i in this.categoryList[key].categoryList){
-  //         this.categoryOptions.push(this.categoryList[key].categoryList[i].category)
-  //       }
-  //       //console.log(options);
-        
-  //     }
+  //   if (this.department === 'Dankie Jesu') {
+  //     this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
   //   }
-  //   // if (this.department === 'Dankie Jesu') {
-  //   //   this.categoryOptions = ['Select Category', 'Vests', 'Caps', 'Bucket Hats', 'Shorts', 'Crop Tops', 'T-Shirts', 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags']
-  //   // }
-  //   // if (this.department === 'Kwanga') {
-  //   //   this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports']
-  //   // }
+  //   if (this.department === 'Kwanga') {
+  //     this.categoryOptions = ['Select Category', 'Formal', 'Traditional', 'Smart Casual', 'Sports']
+  //   }
   //   if (this.department === 'Select Brand') {
   //     this.department = undefined
   //     this.nativeCategory.nativeElement.disabled = true   ////
@@ -2225,30 +2208,23 @@ console.log(val);
   //   }
   //   this.checkValidity()
   // }
-
+  // checkItemName(){
+  //   this.checkValidity()
+  // }
+  // checkItemDescription(){
+  //   this.checkValidity()
+  // }
   // changeCategory(event) {
   //   this.selectedCategory = event.target['value']
   //   if (this.selectedCategory === 'Select Category') {
   //     this.selectedCategory = 'Select Category'
   //   }
-  //   for(let key in this.categoryList){
-  //     if(this.department === this.categoryList[key].brand){
-  //       for(let i in this.categoryList[key].categoryList){
-  //         if(this.categoryList[key].categoryList[i].category === this.selectedCategory){
-  //           this.summer = this.categoryList[key].categoryList[i].isSummer
-  //         }
-  //       }
-  //     }
+  //   if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
+  //     this.summer = true
+  //   }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
+  //   if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
+  //     this.summer = false
   //   }
-  //   console.log(this.summer);
-    
-  //   for(let key in this)
-  //   // if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
-  //   //   this.summer = true
-  //   // }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
-  //   // if(this.selectedCategory === 'Sweaters' || this.selectedCategory === 'Hoodies' || this.selectedCategory === 'Track Suits' || this.selectedCategory === 'Beanies'){
-  //   //   this.summer = false
-  //   // }
     
   //   if(this.selectedCategory === 'Bags' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Beanies'){
   //     this.accessory = true   ///, 'Bags'))
