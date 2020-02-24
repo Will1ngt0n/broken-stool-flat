@@ -449,13 +449,13 @@
         <div class="adding">
           <h4>Add Product</h4>
           <select #departmentCombo (change)="changeDepartment($event); checkValidity()">
-            <option value='i' *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
+            <option *ngFor='let i of departmentOptions' [value]='i'>{{i}}</option>
 
-          </select><br>
+          </select><br>   <button (click)='change()'>Change</button>
 
           <select #nativeCategory [disabled]='department === "Select Brand"' (change)="changeCategory($event);">
             <option *ngFor='let x of categoryOptions' [value]='x'>{{x}}</option>
-          </select><br>
+          </select><br>   <button (click)='change2()'>Change 2</button>
 
           <input type="text" maxlength='25' class="user-input" placeholder="Product name"
             [disabled]='selectedCategory === "Select Category"' [(ngModel)]='itemName'

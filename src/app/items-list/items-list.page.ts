@@ -527,7 +527,7 @@ export class ItemsListPage implements OnInit, OnDestroy {
             //   console.log(this.link,  true);
               
             // }
-            this.load16CategoryItems()
+            this.loadAllProducts()
             return this.routeService.readParameters().then((result : object)=> {
               console.log(result);
                 this.currentCategory = result['category']
@@ -1061,10 +1061,10 @@ export class ItemsListPage implements OnInit, OnDestroy {
   alreadyOnSale(){
     this.promoWarnAlert();
   }
-  load16CategoryItems(){
+  loadAllProducts(){
     // this.presentLoading()
     // this.pageLoader = true
-    return this.productsService.load16CategoryItems().then((result : any) => {
+    return this.productsService.loadAllProducts().then((result : any) => {
       if(result !== null && result.length > 0){
         this.allProducts = result
         console.log(this.allProducts);

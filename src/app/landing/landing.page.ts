@@ -161,7 +161,7 @@ export class LandingPage implements OnInit {
     this.size = []
     this.color = []
     this.picture = undefined
-    
+    this.categoryMatch = false
     this.isOnline = false
     this.isCached = false
     this.isConnected = false
@@ -244,22 +244,29 @@ export class LandingPage implements OnInit {
     return this.productService.getCategories().then((result : Array<any>) => {
       let category
       console.log(result);
+      this.categoryList = result
       if(result === null){
 
       }else{
-        for(let key in result){
-          this.departmentOptions.push(result[key].brand)
+        for(let key in this.categoryList){
+          this.departmentOptions.push(this.categoryList[key].brand.name)
+
         }
       }
 
       this.departmentOptions.push('Add brand')
+
+      console.log(this.categoryOptions);
+      
     })
   }
+  refreshTimer
   loadRunFunction(){
     console.log('mememeemee');
     
     this.presentLoading()
     this.getCategories()
+    this.loadAllProducts()
     this.pageLoader = true
     //this.loadTotalNumberOfProducts()
     this.getPendingOrders()
@@ -271,26 +278,16 @@ export class LandingPage implements OnInit {
     this.getReadyOrders()
     this.getOrderHistory()
 
-    this.load16CategoryItems()
+
     this.nativeCategory.nativeElement.disabled = true
     //snapshots
-    this.refreshOrderHistory()
-    this.getPendingOrdersSnap()
-    this.loadFormal('Kwanga', 'Formal')
-    this.loadTraditional('Kwanga', 'Traditional')
-    this.loadSmartCasual('Kwanga', 'Smart Casual')
-    this.loadSportsWear('Kwanga', 'Sports')
-    this.loadVests('Dankie Jesu', 'Vests')
-    this.loadCaps('Dankie Jesu', 'Caps')
-    this.loadBucketHats('Dankie Jesu', 'Bucket Hats')
-    this.loadShorts('Dankie Jesu', 'Shorts')
-    this.loadCropTops('Dankie Jesu', 'Crop Tops')
-    this.loadTShirts('Dankie Jesu', 'T-Shirts')
-    this.loadBags('Dankie Jesu', 'Bags')
-    this.loadSweaters('Dankie Jesu', 'Sweaters')
-    this.loadHoodies('Dankie Jesu', 'Hoodies')
-    this.loadTrackSuits('Dankie Jesu', 'Track Suits')
-    this.loadBeanies('Dankie Jesu', 'Beanies')
+
+    this.refreshTimer= setInterval( () => {
+      this.refreshProducts()
+      this.refreshOrderHistory()
+      this.getPendingOrdersSnap()
+    }, 3000)
+
   }
   reload() {
     if(navigator.onLine){
@@ -309,7 +306,7 @@ export class LandingPage implements OnInit {
       
           // this.getReadyOrders()
           // this.getOrderHistory()
-          // this.load16CategoryItems()
+          // this.loadAllProducts()
           // this.nativeCategory.nativeElement.disabled = true
           // //snapshots
           // this.refreshOrderHistory()
@@ -338,10 +335,12 @@ export class LandingPage implements OnInit {
       this.loadingCtrl.dismiss()
     }
   }
-  load16CategoryItems(){
+  loadAllProducts(){
     // this.presentLoading()
     // this.pageLoader = true
-    return this.productService.load16CategoryItems().then((result : any) => {
+    return this.productService.loadAllProducts().then((result : any) => {
+      console.log(result);
+      
       if(result !== null && result.length > 0){
         this.allProducts = result
       this.inventoryLength = this.allProducts.length
@@ -353,130 +352,96 @@ export class LandingPage implements OnInit {
     }
     })
   }
+  refreshProducts(){
+    firebase.firestore().collection('Products').onSnapshot(result => {
+      console.log('onsnapshot');
+      
+      let data : object = {}
+      let productID : string = ''
+      let docData : object = {}
+      let category : string = ''
+      let brand : string = ''
+      let item : Array<any> = []
+      for(let key in result.docChanges()){
+        console.log(result.docChanges()[key]);
+        let change = result.docChanges()[key]
+        if(change.type === 'modified'){
+          console.log('yuno');
+          let oldIndex = change.oldIndex
+          if(oldIndex === -1){
+            data = {}
+            productID = change.doc.id
+            docData = change.doc.data()
+            data = {productID: productID, data: docData, category: docData['category'], categoryID: docData['categoryID'], brand: docData['brand'], brandID: docData['brandID']}
+            //console.log(data);
+            this.allProducts.unshift(data)
+           // console.log(this.allProducts);
+            
+          }else if(oldIndex !== -1){
+            //console.log('modified');
+            data = {}
+            productID = change.doc.id
+            docData = change.doc.data()
+            data = {productID: productID, data: docData, category: docData['category'], categoryID: docData['categoryID'], brand: docData['brand'], brandID: docData['brandID']}
+            //console.log(data);
+            for(let key in this.allProducts){
+              if(this.allProducts[key].productID === productID){
+                this.allProducts[key] = data
+              }
+            }
+          //  console.log(this.allProducts);
+            
+          }
+        }else if(change.type === 'removed'){
+          console.log('removed');
+          
+          data = {}
+          productID = change.doc.id
+          console.log(productID);
+          
+          for(let key in this.allProducts){
+            if(productID === this.allProducts[key].productID){
+              console.log(this.allProducts);
+              
+              console.log('matching productID');
+              
+              this.allProducts.splice(Number(key), 1)
+              this.inventoryLength = this.allProducts.length
+            }
+          }
+        }else{
+          let addItem : boolean
+          console.log('added new item');
+          data = {}
+          productID = change.doc.id
+          docData = change.doc.data()
+          data = {productID: productID, data: docData, category: docData['category'], categoryID: docData['categoryID'], brand: docData['brand'], brandID: docData['brandID']}
+          for(let key in this.allProducts){
+            if(productID === this.allProducts[key].productID){
+              addItem = false
+              break
+            }else{
+              addItem = true
+            }
+          }
+          if(this.allProducts.length === 0){
+            addItem = true
+          }
+          if(addItem === true){
+            console.log(true);
+                        
+            this.allProducts.unshift(data)
+            this.inventoryLength = this.allProducts.length
+          }else{
+            console.log(false);
 
-  loadFormal(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
+          }
+        }
       }
     })
-  }
-  loadTraditional(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-     if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-      this.modifyLocalObjects(result, brand, category)
-    }else{
-    }
-    })
-  }
-  loadSmartCasual(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadSportsWear(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadVests(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
+    clearInterval(this.refreshTimer)
   }
 
-  loadCaps(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-
-  loadBucketHats(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-
-  loadShorts(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadCropTops(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadTShirts(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadBags(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadSweaters(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadHoodies(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadTrackSuits(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
-  loadBeanies(brand, category){
-    firebase.firestore().collection('Products').doc(brand).collection(category).onSnapshot(result => {
-      if(result.docChanges().length !== 0 && (result.docChanges()[0].type === 'modified' || result.docChanges()[0].type === 'removed')){
-        this.modifyLocalObjects(result, brand, category)
-      }else{
-      }
-    })
-  }
   updateForm : boolean
   validateUpdateForm(){
     if(this.updateName === '' || this.updatePic === undefined || this.updateDescription === '' || this.itemSizes.length === 0 || this.updatePrice === '' || this.itemColors.length === 0 || this.categoryUpdateMatch === true){
@@ -522,23 +487,34 @@ export class LandingPage implements OnInit {
   }
   generateCode : boolean
   checkValidity() {
+    console.log(this.categoryMatch);
+    
     if(this.nativeCategory.nativeElement.disabled === true){
       this.selectedCategory = 'Select Category'
     }
     if (this.selectedCategory === 'Select Category' || this.department === 'Select Brand' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.newProductCode === '' || this.newProductCode === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
       this.addForm = false
+      console.log(this.addForm);
+      
     } else {
       this.addForm = true
+      console.log(this.addForm);
     }
     if (this.selectedCategory === 'Select Category' || this.department === 'Select Brand' || this.size.length === 0 || this.color.length === 0 || this.itemName === '' || this.description === '' || this.price === '' || this.fileInput.nativeElement.value === '' || this.picture === undefined || this.categoryMatch === undefined || this.categoryMatch === true) {
       this.generateCode = false
+      console.log(this.generateCode);
+      
     } else {
       this.generateCode = true
+      console.log(this.generateCode);
     }
     if (this.department !== 'Select Brand' || this.selectedCategory !== 'Select Category' || this.size.length !== 0 || this.color.length !== 0 || this.itemName !== '' || this.description !== '' || this.price !== '' || this.fileInput.nativeElement.value !== '' || this.picture !== undefined || this.newProductCode !== '') {
       this.formHasValues = true
+      console.log(this.formHasValues);
+      
     }else{
       this.formHasValues = false
+      console.log(this.formHasValues);
     }
   }
   checkColor(event, color) {
@@ -600,7 +576,7 @@ export class LandingPage implements OnInit {
         
   }
   addProducts() {
-    return this.productService.addItem(this.department, this.selectedCategory, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, this.newProductCode).then((result : any) => {
+    return this.productService.addItem(this.department, this.departmentID, this.selectedCategory, this.selectedCategoryID, this.itemName, this.description, this.price, this.size, this.accessory, this.summer, this.color, this.picture, this.newProductCode).then((result : any) => {
       console.log(result);
       if(result === 'success'){
         console.log('successs');
@@ -654,7 +630,7 @@ export class LandingPage implements OnInit {
     
     this.uploaderImage[0].style.display = "block"
     this.uploadedImage[0].style.display = "none"
-    this.departmentOptions = ['Select Brand', 'Dankie Jesu', 'Kwanga']
+    this.departmentOptions = ['Select Brand']
     this.categoryOptions = ['Select Category']
     this.selectedCategory = ''
     this.itemName = ''
@@ -1705,202 +1681,7 @@ export class LandingPage implements OnInit {
     })
   }
 
-  modifyLocalObjects(result, brand, category){
-    let items : Array<any> = []
-    let data : object = {}
-    let productID = ''
-    let docData
-    let addItems : boolean
-    for(let key in result.docChanges()){
-      let change = result.docChanges()[key]
-      if(change.type === 'added'){
-        data = {}
-        productID = change.doc.id
-        docData = change.doc.data()
-        data = {productID: productID, data: docData, category: category, brand: brand}
-        // items.push(data)
-      }else if(change.type === 'removed'){
-        productID = change.doc.id
-        for(let key in this.allProducts){
-          if(productID === this.allProducts[key].productID){
-            let index = Number(key)
-            this.allProducts.splice(index, 1)
-            this.inventoryLength = this.allProducts.length
-          }
-        }
-        if(brand === 'Dankie Jesu'){
-          if(change.doc.data().isSummer === true){
-            for(let key in this.summerGear){
-              if(productID === this.summerGear[key].productID){
-                let index = Number(key)
-                this.summerGear.splice(index, 1)
 
-              }
-            }
-          }else if(change.doc.data().isSummer === false){
-            for(let key in this.winterGear){
-              if(productID === this.winterGear[key].productID){
-                let index = Number(key)
-                this.winterGear.splice(index, 1)
-              }
-            }
-          }
-        }else if(brand === 'Kwanga'){
-          for(let key in this.kwangaGear){
-            if(productID === this.kwangaGear[key].productID){
-              let index = Number(key)
-              this.kwangaGear.splice(index, 1)
-            }
-          }
-        }
-        if(this.kwangaGear.length > 0){
-          this.sortKwangaProducts()
-        }
-        if(this.summerGear.length > 0){
-          this.sortSummerProducts()
-        }
-        if(this.winterGear.length > 0){
-          this.sortWinterProducts()
-        }
-      }else if(change.type === 'modified'){
-        productID = change.doc.id
-        docData = change.doc.data()
-        data = {productID: productID, data: docData, category: category, brand: brand}
-        items.push(data)
-        for(let key in this.allProducts){
-          if(this.allProducts[key].productID === productID){
-            this.allProducts[key].data = docData
-          }
-        }
-        if(this.allProducts.length === 0){
-          this.allProducts = items
-          this.inventoryLength = this.allProducts.length
-          if(brand === 'Dankie Jesu'){
-            if(items[0].data.isSummer === true){
-              this.summerGear.unshift(data)
-            }else if(items[0].data.isSummer === false){
-              this.winterGear.unshift(data)
-            }
-          }else if(brand === 'Kwanga'){
-            this.kwangaGear.unshift(data)
-          }
-        }else if(this.allProducts.length > 0){
-          for(let i in items){
-            addItems = false
-            for(let key in this.allProducts){
-              if(this.allProducts[key].productID !== items[i].productID){
-                addItems = true
-              }else if(this.allProducts[key].productID === items[i].productID){
-                addItems = false
-                let logo : Array<any> = []
-                logo.push(addItems);
-                break
-              }
-            }
-            if(addItems === true){
-              this.allProducts.unshift(data)
-              this.inventoryLength = this.allProducts.length
-              if(brand === 'Dankie Jesu'){
-                if(this.summer === true){
-                  this.summerGear.unshift(data)
-                  if(this.summerGear.length > 6){
-                    this.summerGear.splice(this.summerGear.length - 1, 1)
-                  }
-    
-                }else if(this.summer === false){
-                  this.winterGear.unshift(data)
-                  if(this.winterGear.length > 6){
-                    this.winterGear.splice(this.winterGear.length - 1, 1)
-                  }
-                }
-              }else if(brand === 'Kwanga'){
-                this.kwangaGear.unshift(data)
-                if(this.kwangaGear.length > 3){
-                  this.kwangaGear.splice(this.kwangaGear.length - 1, 1)
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    let addToWinter : boolean
-    let addToSummer : boolean
-    let addToKwanga : boolean
-
-///////////////////////////////////////////////////////////////////
-    for(let i in this.allProducts){
-      for(let j in this.summerGear){
-      if(this.allProducts[i].brand === 'Dankie Jesu'){
-        if(this.allProducts[i].data.isSummer === true){
-          if(this.allProducts[i].productID !== this.summerGear[j].productID){
-            addToSummer = true
-          }else if(this.allProducts[i].productID === this.summerGear[j].productID){
-            addToSummer = false
-            return
-          }
-          }
-        }
-      }
-      if(addToSummer === true){
-        if(this.summerGear.length < 6){
-          this.summerGear.push(this.allProducts[i])
-        }
-      }
-    }
-    for(let i in this.allProducts){
-      //addToWinter = false
-      for(let j in this.winterGear){
-      if(this.allProducts[i].brand === 'Dankie Jesu'){
-        if(this.allProducts[i].data.isSummer === false){
-          if(this.allProducts[i].productID !== this.winterGear[j].productID){
-            addToWinter = true
-          }else if(this.allProducts[i].productID === this.winterGear[j].productID){
-            addToWinter = false
-            break
-          }
-          }
-        }
-      }
-      if(addToWinter === true){
-        if(this.winterGear.length < 6){
-          this.winterGear.push(this.allProducts[i])
-        }
-      }
-      if(addToSummer === true){
-        if(this.summerGear.length < 6){
-          this.summerGear.push(this.allProducts[i])
-        }
-      }
-    }
-    for(let i in this.allProducts){
-      for(let j in this.kwangaGear){
-      if(this.allProducts[i].brand === 'Kwanga'){
-          if(this.allProducts[i].productID !== this.kwangaGear[j].productID){
-            addToKwanga = true            
-          }else if(this.allProducts[i].productID === this.kwangaGear[j].productID){
-            addToKwanga = false
-            break
-          }
-        }
-      }
-      if(addToKwanga === true){
-        if(this.kwangaGear.length < 3){
-          this.kwangaGear.push(this.allProducts[i])
-        }
-      }
-    }
-    if(this.kwangaGear.length > 0 ){
-      this.sortKwangaProducts()
-    }
-    if(this.summerGear.length > 0){
-      this.sortSummerProducts()
-    }
-    if(this.winterGear.length > 0){
-      this.sortWinterProducts()
-    }
-  }
 
   newProductNameMatch
  private cutNameArray(checkVal){
@@ -2127,9 +1908,11 @@ console.log(val);
       
   //   }
   // }
-
+  departmentID
   changeDepartment(event) {
     console.log(this.categoryList);
+    console.log(this.department);
+    
     this.categoryOptions = ['Select Category']
     this.department = event.target['value']
     console.log(this.department)
@@ -2141,8 +1924,13 @@ console.log(val);
       this.nativeCategory.nativeElement.disabled = true   ////
       this.nativeCategory.nativeElement.value = 'Select Category'   ///
     }else{
+      console.log('runnnnnniiiiiiiiing');
+      console.log(this.categoryList);
+      
+      //this.categoryList = this.
       for(let key in this.categoryList){
-        if(this.department === this.categoryList[key].brand){
+        if(this.department === this.categoryList[key].brand.name){
+          this.departmentID = this.categoryList[key].brand.brandID
           console.log(this.categoryList[key]);
           for(let i in this.categoryList[key].categoryList){
             this.categoryOptions.push(this.categoryList[key].categoryList[i].category)
@@ -2153,19 +1941,22 @@ console.log(val);
       }
       this.nativeCategory.nativeElement.disabled = false 
     }
-    this.departmentCombo.nativeElement.value = 'Select Category'
+    this.categoryOptions.push('Add Category')
+   // this.departmentCombo.nativeElement.selectedIndex = 0
     this.checkValidity()
   }
-
+  selectedCategoryID
   changeCategory(event) {
     this.selectedCategory = event.target['value']
     if (this.selectedCategory === 'Select Category') {
       this.selectedCategory = 'Select Category'
     }
     for(let key in this.categoryList){
-      if(this.department === this.categoryList[key].brand){
+      if(this.department === this.categoryList[key].brand.name){
         for(let i in this.categoryList[key].categoryList){
           if(this.categoryList[key].categoryList[i].category === this.selectedCategory){
+            console.log('match is ', true);
+            
             this.summer = this.categoryList[key].categoryList[i].isSummer
           }
         }
@@ -2173,7 +1964,21 @@ console.log(val);
     }
     console.log(this.summer);
     
-    for(let key in this)
+    for(let key in this.categoryList){
+      if(this.department === this.categoryList[key].brand.name){
+        for(let i in this.categoryList[key].categoryList){
+          if(this.categoryList[key].categoryList[i].category === this.selectedCategory){
+            this.selectedCategoryID = this.categoryList[key].categoryList[i].categoryID
+            console.log(this.selectedCategoryID);
+            
+            console.log('match is ', true);
+            this.accessory = this.categoryList[key].categoryList[i].isAccessory
+          }
+        }
+      }
+    }
+    console.log(this.accessory);
+    
     // if(this.selectedCategory === 'Vests' || this.selectedCategory === 'Caps' || this.selectedCategory === 'Bucket Hats' || this.selectedCategory === 'Shorts' || this.selectedCategory === 'Crop Tops' || this.selectedCategory === 'T-Shirts'){
     //   this.summer = true
     // }   /// 'Sweaters', 'Hoodies', 'Track Suits', 'Beanies', 'Bags')
@@ -2188,6 +1993,28 @@ console.log(val);
     }
 
     this.checkValidity()
+  }
+
+  change(){
+    console.log(this.departmentCombo);
+    
+    console.log(this.departmentCombo.nativeElement.value);
+    let index  = Number(this.departmentCombo.nativeElement.length) - 1
+    let change = this.departmentCombo.nativeElement[index].value
+    console.log(change);
+    this.departmentOptions.splice(index, 1)
+    this.departmentOptions.push('Dankie Jesu')
+    this.departmentCombo.nativeElement.selectedIndex = 0
+    this.departmentOptions.push(change)
+  }
+
+  change2(){
+    let index = Number(this.nativeCategory.nativeElement.length) - 1
+    let change = this.nativeCategory.nativeElement[index].value
+    this.categoryOptions.splice(index, 1)
+    this.categoryOptions.push('Vests')
+    this.nativeCategory.nativeElement.selectedIndex = 0
+    this.categoryOptions.push(change)
   }
 
   // changeDepartment(event) {
@@ -2208,12 +2035,12 @@ console.log(val);
   //   }
   //   this.checkValidity()
   // }
-  // checkItemName(){
-  //   this.checkValidity()
-  // }
-  // checkItemDescription(){
-  //   this.checkValidity()
-  // }
+  checkItemName(){
+    this.checkValidity()
+  }
+  checkItemDescription(){
+    this.checkValidity()
+  }
   // changeCategory(event) {
   //   this.selectedCategory = event.target['value']
   //   if (this.selectedCategory === 'Select Category') {
